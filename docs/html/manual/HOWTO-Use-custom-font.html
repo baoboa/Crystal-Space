@@ -1,0 +1,181 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.13.1 Using a Custom Font</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.13.1 Using a Custom Font">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.13.1 Using a Custom Font">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="HOWTO-Use-custom-font"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="3D-Renderer.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Renderer-Mixmodes.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="3D-Renderer.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 4.13.1 Using a Custom Font </h3>
+
+<p>This section describes how to use a custom font within
+Crystal Space.
+</p>
+<p>Crystal Space has a plugin that specifies the font server to use.  The font
+server that almost all applications use is the font multiplexer, together with
+the FreeType2 and the default font server.  The <small>SCF</small> class names of these
+modules are:
+</p>
+<ul>
+<li>
+<code>crystalspace.font.server.multiplexer</code>
+</li><li>
+<code>crystalspace.font.server.freetype2</code>
+</li><li>
+<code>crystalspace.font.server.default</code>
+</li></ul>
+
+<p>The font multiplexer not only searches both the FreeType2 and default font
+server for a font, but also can search multiple fonts for a glyph.  This is
+especially important if you plan to internationalize your applications; it
+reduces the worry that a particular font supports the glyphs for a specific
+language.  (Crystal Space ships with the <small>GNU</small> Unifont, which is used as a
+fallback, so it already has pretty good support for internationalization
+out-of-the-box.)
+</p>
+<a name="1"></a>
+<h4 class="subsubheading"> Standard Fonts </h4>
+
+<p>Every font server is expected to return a font
+given the following strings:
+</p>
+<ul>
+<li>
+<code>CSFONT_LARGE &quot;*large&quot;</code>
+</li><li>
+<code>CSFONT_ITALIC &quot;*italic&quot;</code>
+</li><li>
+<code>CSFONT_COURIER &quot;*courier&quot;</code>
+</li><li>
+<code>CSFONT_SMALL &quot;*small&quot;</code>
+</li></ul>
+
+<p>The default font server has these 4 fonts built in.  They are as
+follows:
+</p>
+<ul>
+<li>
+<code>CSFONT_LARGE police</code>
+</li><li>
+<code>CSFONT_ITALIC italic</code>
+</li><li>
+<code>CSFONT_COURIER courier</code>
+</li><li>
+<code>CSFONT_SMALL tiny</code>
+</li></ul>
+
+<p>To use these fonts simply use the LoadFont method and
+pass the font desired.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">Font = G2D-&gt;GetFontServer()-&gt;LoadFont (CSFONT_LARGE);
+</pre></td></tr></table>
+<a name="2"></a>
+<h4 class="subsubheading"> Loadable Fonts </h4>
+
+<p>The font plexer will also look for a file in the virtual file system with the
+name specified.  The font can be a TrueType font or in the custom <small>CSF</small> format.
+</p>
+<p>To specify an alternate font simply use the LoadFont method
+with the file name (and optionally a size) such as:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">Font = G2D-&gt;GetFontServer()-&gt;LoadFont (&quot;/fonts/ttf/Vera.ttf&quot;, 12);
+</pre></td></tr></table>
+<p>The <small>CSF</small> format is a pretty simple binary format for non-scalable fonts 
+that supports individual characters with different widths and optionally an
+alpha component to provide anti-aliasing.
+</p>
+<p>However, using a TrueType font is usually more flexible and results in a 
+higher quality than a <small>CSF</small> font.
+</p>
+<a name="3"></a>
+<h4 class="subsubheading"> Creating <small>CSF</small> Fonts </h4>
+
+<p>The easiest way to is to use the <tt>&lsquo;csfgen&rsquo;</tt> util that comes with CS. 
+It converts a True Type font to the <small>CSF</small> format.
+</p>
+<p>Once the <small>CSF</small> file is created it can be included
+in the application no matter what platforms are 
+targeted.  The base font does not have to be on
+that system.  This is useful if you do not want or can not
+distribute a font with your program and can not rely upon
+it already being present on the target machine.
+</p>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="3D-Renderer.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Renderer-Mixmodes.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="3D-Renderer.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

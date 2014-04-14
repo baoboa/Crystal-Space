@@ -1,0 +1,490 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.15.2 Sprite3D Animation</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.15.2 Sprite3D Animation">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.15.2 Sprite3D Animation">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Sprite3D-Animation"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Animation-Nodes.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="SpriteCal3D-Animation.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Animation.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 4.15.2 Sprite3D Animation </h3>
+
+<p><em>Written by Michael Voase,
+<a href="mailto:mvoase@midcoast.com.au">mvoase@midcoast.com.au</a>.</em>
+</p>
+<p>After you have created your sprite you are now probably wondering
+what you can do to bring your creation to life? In this section
+we explore the two ways in which you can introduce animation
+sequences to your sprite.
+</p>
+<p>For the Crystal Space developer, there are currently two options
+for the production and management of sprite animation. The first
+option is frame based animation, referred to as an action, and the
+second is skeletal animation (which uses the external <small>CAL3D</small>
+library).
+</p>
+<a name="1"></a>
+<h4 class="subsubheading"> Introduction </h4>
+
+<p>Crystal Space provides two basic mechanisms for animating sprites. The first
+is frame based animation in which a mesh is defined in each frame and used
+in a loop (see section <a href="MeshObject-Spr3D.html#0">Sprite3D Mesh Object</a>). The second method is skeletal animation
+using the <small>CAL3D</small> library (see section <a href="MeshObject-SprCal3D.html#0">SpriteCal3D Mesh Object</a>).
+</p>
+<p>For the purpose of this document I will describe frame based animation as an
+<em>action</em>.  This name is coined from the class the implements frame
+animations in the 3D sprite object <samp>&lsquo;iSpriteAction&rsquo;</samp> and has been
+traditionally referred to as an <samp>&lsquo;action&rsquo;</samp> in the sprite loader plug in.
+</p>
+<p>This document presumes that you have an operational copy of Crystal Space.
+For details on obtaining and building Crystal Space please refer to the
+relevant sections on obtaining (see section <a href="Where-to-Get.html#0">Where to Get Crystal Space</a>) and building
+(see section <a href="Building.html#0">Building and Installing</a>) Crystal Space.
+</p>
+<p>Lastly, actions are specific to sprite 3D. There is no exactly
+corresponding interface to genmesh or ball as yet, for example. So I am also
+presuming you have read to sections prior to this section about sprites, if
+not, then it would be a good idea to do so before delving into this section.
+</p>
+<a name="2"></a>
+<h4 class="subsubheading"> Sprite Actions </h4>
+
+<p>A sprite action is a series of frames which contains the position of each
+vertex in a sprite for a particular time. This means for each frame, a
+complete duplicate of the vertex list must be loaded into the sprite for
+each frame. The positions of the vertices of course will vary, however, the
+number of vertices in each frame must be equal. We will cover why later.
+</p>
+<a name="3"></a>
+<h4 class="subsubheading"> Creating a Sprite in a Map File </h4>
+
+<p>A sprite in a map file consists of two declaration. The first is the
+declaration for its <em>factory</em> the second is a declaration of its 
+<em>instance</em> in a given sector. The factory declaration is what we are
+mostly interested in at the moment.
+</p>
+<p>Now if you recall from Mesh Object Concepts (see section <a href="MeshObject-Concepts.html#0">MeshObject Concepts</a>), the
+factory acts as a database of all the vertices, triangles and texels used
+to define a mesh object. The primary purpose of this is to have a single
+database for each mesh object. So this is where we will be defining our
+sprite with its multiple actions.
+</p>
+<p>The declaration starts with the <samp>&lsquo;meshfact&rsquo;</samp> token, and looks something
+like this:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">&lt;meshfact name=&quot;fact&quot;&gt;
+  &lt;plugin&gt;crystalspace.mesh.loader.factory.sprite.3d&lt;/plugin&gt;
+  &lt;params&gt;
+    &lt;material&gt;white&lt;/material&gt;
+    &lt;frame name=&quot;first&quot;&gt;
+      &lt;v x=&quot;0&quot; y=&quot;0&quot; z=&quot;0&quot; u=&quot;0&quot; v=&quot;0&quot;/&gt;
+      &lt;v x=&quot;0&quot; y=&quot;1&quot; z=&quot;0&quot; u=&quot;0&quot; v=&quot;0&quot;/&gt;
+      &lt;v x=&quot;1&quot; y=&quot;0&quot; z=&quot;0&quot; u=&quot;0&quot; v=&quot;0&quot;/&gt;
+      &lt;v x=&quot;0&quot; y=&quot;0&quot; z=&quot;1&quot; u=&quot;0&quot; v=&quot;0&quot;/&gt;
+    &lt;/frame&gt;
+    &lt;frame name=&quot;second&quot;&gt;
+      &lt;v x=&quot;0&quot; y=&quot;0&quot; z=&quot;0&quot; u=&quot;0&quot; v=&quot;0&quot;/&gt;
+      &lt;v x=&quot;0&quot; y=&quot;1.2&quot; z=&quot;0&quot; u=&quot;0&quot; v=&quot;0&quot;/&gt;
+      &lt;v x=&quot;1.2&quot; y=&quot;0&quot; z=&quot;0&quot; u=&quot;0&quot; v=&quot;0&quot;/&gt;
+      &lt;v x=&quot;0&quot; y=&quot;0&quot; z=&quot;1.2&quot; u=&quot;0&quot; v=&quot;0&quot;/&gt;
+    &lt;/frame&gt;
+    &lt;frame name=&quot;third&quot;&gt;
+      &lt;v x=&quot;0&quot; y=&quot;0&quot; z=&quot;0&quot; u=&quot;0&quot; v=&quot;0&quot;/&gt;
+      &lt;v x=&quot;0&quot; y=&quot;1.4&quot; z=&quot;0&quot; u=&quot;0&quot; v=&quot;0&quot;/&gt;
+      &lt;v x=&quot;1.4&quot; y=&quot;0&quot; z=&quot;0&quot; u=&quot;0&quot; v=&quot;0&quot;/&gt;
+      &lt;v x=&quot;0&quot; y=&quot;0&quot; z=&quot;1.4&quot; u=&quot;0&quot; v=&quot;0&quot;/&gt;
+    &lt;/frame&gt;
+    &lt;frame name=&quot;fourth&quot;&gt;
+      &lt;v x=&quot;0&quot; y=&quot;0&quot; z=&quot;0&quot; u=&quot;0&quot; v=&quot;0&quot;/&gt;
+      &lt;v x=&quot;0&quot; y=&quot;1.2&quot; z=&quot;0&quot; u=&quot;0&quot; v=&quot;0&quot;/&gt;
+      &lt;v x=&quot;1.2&quot; y=&quot;0&quot; z=&quot;0&quot; u=&quot;0&quot; v=&quot;0&quot;/&gt;
+      &lt;v x=&quot;0&quot; y=&quot;0&quot; z=&quot;1.2&quot; u=&quot;0&quot; v=&quot;0&quot;/&gt;
+    &lt;/frame&gt;
+    
+    &lt;t t1=&quot;0&quot; t2=&quot;1&quot; t3=&quot;2&quot;/&gt;
+    &lt;t t1=&quot;0&quot; t2=&quot;3&quot; t3=&quot;1&quot;/&gt;
+    &lt;t t1=&quot;0&quot; t2=&quot;2&quot; t3=&quot;3&quot;/&gt;
+    &lt;t t1=&quot;1&quot; t2=&quot;3&quot; t3=&quot;2&quot;/&gt;
+    
+    &lt;action name=&quot;default&quot;&gt;
+      &lt;f name=&quot;first&quot; delay=&quot;200&quot;/&gt;
+      &lt;f name=&quot;second&quot; delay=&quot;200&quot;/&gt;
+      &lt;f name=&quot;third&quot; delay=&quot;200&quot;/&gt;
+      &lt;f name=&quot;fourth&quot; delay=&quot;200&quot;/&gt;
+    &lt;/action&gt;
+  &lt;/params&gt;
+&lt;/meshfact&gt;
+</pre></td></tr></table>
+<p>This example defines a triangular pyramid which grow larger and smaller.
+To put this sprite into action, you also need to declare an instance of
+the sprite in a sector. In your map file (somewhere inside a <samp>&lsquo;sector&rsquo;</samp>
+declaration), place the following mesh object declaration.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">&lt;meshobj name=&quot;test1&quot;&gt;
+  &lt;plugin&gt;crystalspace.mesh.loader.sprite.3d&lt;/plugin&gt;
+  &lt;params&gt;
+    &lt;factory&gt;fact&lt;/factory&gt;
+    &lt;action&gt;default&lt;/action&gt;
+    &lt;tween /&gt;
+  &lt;/params&gt;
+  &lt;move&gt;
+    &lt;v x=&quot;0&quot; y=&quot;0&quot; z=&quot;5.0&quot; /&gt;
+  &lt;/move&gt;
+  &lt;priority&gt;object&lt;/priority&gt;
+  &lt;zuse /&gt;
+&lt;/meshobj&gt;
+</pre></td></tr></table>
+<p>After zipping the map file up with your sprite you should see and active
+sprite five units in front of you.
+</p>
+<a name="4"></a>
+<h4 class="subsubheading"> Meaning of the Sprite </h4>
+
+<p>Okay, we have an example of an animation. As you can see from the example,
+the sprite <em>factory</em> declaration, the sprite consists of four frames
+each enclosed in the <samp>&lsquo;frame&rsquo;</samp> keyword. Each frame defines the vertices
+of the pyramid in each frame. The <samp>&lsquo;v&rsquo;</samp> token stands for <em>vertex</em>.
+You will also note that each frame contains a name. This is important as the
+name is used to reference the frame. This applies to both map files and
+the sprite 3D interface.
+</p>
+<p>After the frames have been defined, a list of triangles is then declared.
+Note that the <samp>&lsquo;t&rsquo;</samp> tokens are declared after the frames. Trying
+to define the triangles before the frames will result in an error and will
+be flagged as such. Each <samp>&lsquo;t&rsquo;</samp> declaration contains three indices
+to the defined frame vertices. The index starts at zero and has a maximum
+value equal the number of vertices minus one. During the course of animation
+the triangle lists are applied to the corresponding frame and are then
+sent to the graphics renderer. This is one reason why each frame must
+contain the same number of vertices. Lastly, at the end of the mesh factory
+declaration, there is an <samp>&lsquo;action&rsquo;</samp> declared. 
+</p>
+<a name="5"></a>
+<h4 class="subsubheading"> Action Declaration </h4>
+
+<p>The declaration starts with the <samp>&lsquo;action&rsquo;</samp> token and is then followed by
+the name of the action. Setting the name is important as this is how you
+will reference the action both in the map file and in the sprite interface.
+Its also a good idea <em>not</em> to use the same name twice, as you will prevent
+the second action from being accessed. You can use the same name for an action
+and a frame, as they are stored in different places. In general though,
+never use the same name for two items of the same type, whether it be a mesh
+object, a frame, or whatever.
+</p>
+<p>After the name of the action, we enter into the body of the action where the
+frame <em>sequences</em> are defined. Each frame of the sequence starts with
+the <samp>&lsquo;F&rsquo;</samp> token (standing for frame) and contains the name of the frame
+and the duration that it is valid for. The frame name must be one from the 
+previous list of frames and the duration is in milliseconds. The duration 
+represents how long the frame will be shown for. This sprite contains only
+one action. It can contain many actions. However, in all cases there must be
+at least one action (usually called <em>default</em>) defined for the sprite.
+</p>
+<p>Lastly to implement this action, the <samp>&lsquo;action&rsquo;</samp> keyword is used in the
+mesh object declaration to tell the engine which action to use on this sprite
+instance. If no action is defined in the mesh object then the engine will
+use the first action defined in the factory regardless of its name.
+</p>
+<a name="6"></a>
+<h4 class="subsubheading"> Tweening and Actions. </h4>
+
+<p>You may have noticed that the animation looks somewhat jumpy when viewed.
+This is due to the tweening flag on the sprite <em>instance</em> being set
+to false. To enable tweening, set the tweening flag to true (it is normally
+enabled). Tweening is a method of producing a smoother animation by
+interpolating the position of the vertices between frame based on a ratio
+of the time into the frame and the duration of the frame. Enabling
+tweening in an animation involves an additional overhead in calculating
+the interpolated vertices, however, produces a more satisfactory result.
+This is also the second reason why each frame must have the same number
+of vertices.
+</p>
+<a name="7"></a>
+<h4 class="subsubheading"> Interfacing with the Sprite </h4>
+
+<p>To begin this section, I am assuming here that you are aware of how to obtain
+the various interfaces from the engine.  If not, read the documentation for
+<small>SCF</small>, the Shared Class Facility.  See section <a href="SCF.html#0">Shared Class Facility (<small>SCF</small>)</a>.  I will be using terminology
+and concepts which are explained in that section.  If you are only interested
+in writing map files for the engine then you can skip ahead to the next
+section.
+</p>
+<p>Secondly, I am also presuming that you have loaded your sprite into the engine,
+and have access to that sprite via the <samp>&lsquo;iEngine&rsquo;</samp> interface.  That implies
+that you have written a basic Crystal Space application (or are hacking up an
+existing application), and can access your sprite mesh factory using calls
+similar to the following:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">iMeshFactoryWrapper *fwrap = Engine-&gt;FindMeshFactory(&quot;name&quot;);
+iMeshObjectFactory *fact = fwrap-&gt;GetMeshObjectFactory();
+
+iMeshWrapper *mwrap = Engine-&gt;FindMeshObject(&quot;name&quot;);
+iMeshObject *mesh = mwrap-&gt;GetMeshObject();
+</pre></td></tr></table>
+<p>With the name being the name of your mesh factory or object, respectively.
+There are four main interfaces that we will be dealing with in this section,
+</p>
+<ul>
+<li>
+<code>iSpriteFrame</code> 
+</li><li>
+<code>iSpriteAction</code> 
+</li><li>
+<code>iSprite3DFactoryState</code> 
+</li><li>
+<code>iSprite3DState</code>. 
+</li></ul>
+
+<p>The declarations for these interfaces can be found in 
+<tt>&lsquo;CS/include/imesh/sprite3d.h&rsquo;</tt>. The first two interfaces can be obtained
+by using the <code>FindFrame()</code> and <code>FindAction()</code> methods  in the 
+<samp>&lsquo;iSprite3dFactoryState&rsquo;</samp> interface (described later).
+The third interface can be obtained by querying the <samp>&lsquo;iMeshObjectFactory&rsquo;</samp>
+interface. The <samp>&lsquo;iSprite3DState&rsquo;</samp> interface can be obtained from the
+<samp>&lsquo;iMeshObject&rsquo;</samp> interface. The following is a summary of the methods in
+each interface and what they do. An example of obtaining the state interfaces
+is described below:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">csRef&lt;iSprite3dFactoryState&gt; fstat =
+  scfQueryInterface&lt;iSprite3dFactoryState&gt; (fact);
+csRef&lt;iSprite3DState&gt; stat =
+  scfQueryInterface&lt;iSprite3DState&gt; (mesh);
+</pre></td></tr></table>
+<p>The <samp>&lsquo;mesh&rsquo;</samp> and <samp>&lsquo;fact&rsquo;</samp> variables are the ones mentioned earlier in
+this chapter.  The following is summary of the methods and interface that are
+useful to the sprite animator during production.  This summary does not fully
+document the <samp>&lsquo;iSprite3DState&rsquo;</samp> or <samp>&lsquo;iSprite3DFactoryState&rsquo;</samp> interfaces
+since they are adequately documented elsewhere.  Only methods which are
+relevant to frame animation are treated here.
+</p>
+<a name="8"></a>
+<h4 class="subsubheading"> <code>iSpriteFrame</code> </h4>
+
+
+<p>Current version: 0.0.2
+</p>
+<dl compact="compact">
+<dt> <code>void SetName(char const*)</code></dt>
+<dd><p>Set the name of this frame.
+</p></dd>
+<dt> <code>char const* GetName()</code></dt>
+<dd><p>Return the name of this frame
+</p></dd>
+<dt> <code>int GetAnmIndex()</code></dt>
+<dd><p>Returns the index of the first vertex used in this frame.  The vertex list is
+stored in the sprite factory.
+</p></dd>
+<dt> <code>int GetTexIndex()</code></dt>
+<dd><p>Returns the index to the first texel used in this frame.  The texel list is
+stored in the sprite factory.
+</p></dd>
+</dl>
+
+<a name="9"></a>
+<h4 class="subsubheading"> <code>iSpriteAction</code> </h4>
+
+
+<p>Current version: 0.0.1
+</p>
+<dl compact="compact">
+<dt> <code>void SetName(char const*)</code></dt>
+<dd><p>Set the name of this action.
+</p></dd>
+<dt> <code>char const* GetName() const</code></dt>
+<dd><p>Return the name of this action.
+</p></dd>
+<dt> <code>int GetFrameCount()</code></dt>
+<dd><p>Get the total number of frames in this animation.
+</p></dd>
+<dt> <code>iSpriteFrame* GetFrame(int)</code></dt>
+<dd><p>Returns frame specified by input argument.
+</p></dd>
+<dt> <code>iSpriteFrame* GetNextFrame()</code></dt>
+<dd><p>Returns the next frame in the sequence.
+</p></dd>
+<dt> <code>int GetFrameDelay(int)</code></dt>
+<dd><p>Returns the duration of frame specified by input argument.
+</p></dd>
+<dt> <code>void AddFrame(iSpriteFrame* frame, int time)</code></dt>
+<dd><p>Adds the frame given by <samp>&lsquo;frame&rsquo;</samp> to this action
+and set the duration to <samp>&lsquo;time&rsquo;</samp> milliseconds. This method is used
+by the loader to add frames to an action. If you want to &ldquo;roll your own&rdquo;,
+you will be using this interface to create your own actions. The frame
+must already be present in the frame list held by the sprite factory
+that this action came from.
+</p></dd>
+</dl>
+
+<a name="10"></a>
+<h4 class="subsubheading"> <code>iSprite3DFactoryState</code> </h4>
+
+
+<p>Current version: 0.0.2
+</p>
+<dl compact="compact">
+<dt> <code>void AddVertices(int number)</code></dt>
+<dd><p>Adds <samp>&lsquo;number&rsquo;</samp> vertices to <strong>all</strong> frames
+in this sprite factory. The all is emphasized so that you are aware
+that the actual number of vertices created is <samp>&lsquo;number&rsquo;</samp> multiplied
+by the number of frames. This is done to satisfy the requirement that
+all frames must be of an equal size.
+</p></dd>
+<dt> <code>iSpriteFrame* AddFrame()</code></dt>
+<dd><p>Creates a new frame on the sprite frame list and
+returns a pointer to the newly created frame. The loader uses
+this method to load frames into a sprite. For each new frame
+added, an additional bank of vertices and texels is created for
+the new frame. Once you have this frame, you will then be using
+the <samp>&lsquo;iSpriteFrame&rsquo;</samp> interface to operate on the frame.
+</p></dd>
+<dt> <code>iSpriteFrame* FindFrame(const char* title)</code></dt>
+<dd><p>Finds the frame named <samp>&lsquo;title&rsquo;</samp> in this sprite
+factory and returns a pointer the frame.
+</p></dd>
+<dt> <code>int GetFrameCount()</code></dt>
+<dd><p>Returns the number of frames in this sprite factory.
+</p></dd>
+<dt> <code>iSpriteFrame* GetFrame(int index) const</code></dt>
+<dd><p>Returns a pointer to frame <samp>&lsquo;index&rsquo;</samp>. This
+frame is part of the list of frames stored in this sprite factory.
+</p></dd>
+<dt> <code>iSpriteAction* AddAction()</code></dt>
+<dd><p>Create a new action and return a pointer to the action.
+Once you have obtained the action, you will then be using the 
+<samp>&lsquo;iSpriteAction&rsquo;</samp> interface to modify this action.
+</p></dd>
+<dt> <code>iSpriteAction* FindAction(const char* title) const</code></dt>
+<dd><p>Returns a pointer to the action named <samp>&lsquo;title&rsquo;</samp>.
+</p></dd>
+<dt> <code>iSpriteAction* GetFirstAction() const</code></dt>
+<dd><p>Returns a pointer to the first action in this sprite factory.
+</p></dd>
+<dt> <code>int GetActionCount() const</code></dt>
+<dd><p>Returns the number of actions stored in this sprite factory.
+</p></dd>
+<dt> <code>iSpriteAction* GetAction(int index) const</code></dt>
+<dd><p>Returns a pointer to action number <samp>&lsquo;index&rsquo;</samp>
+</p></dd>
+<dt> <code>void EnableTweening(bool flag)</code></dt>
+<dd><p>Enables or disables tweening on this sprite factory
+depending on <samp>&lsquo;flag&rsquo;</samp>. 
+</p></dd>
+<dt> <code>bool IsTweeningEnabled()</code></dt>
+<dd><p>Returns the current setting for tweening on this sprite factory.
+</p></dd>
+</dl>
+
+<a name="11"></a>
+<h4 class="subsubheading"> <code>iSprite3DState</code> </h4>
+
+
+<p>Current version: 0.0.4
+</p>
+<dl compact="compact">
+<dt> <code>void SetFrame(int index)</code></dt>
+<dd><p>Sets this sprite to frame number <samp>&lsquo;index&rsquo;</samp> in the
+action current applied to this sprite.
+</p></dd>
+<dt> <code>int GetCurFrame() const</code></dt>
+<dd><p>Returns the index number of the current frame in the
+current action applied to this sprite.
+</p></dd>
+<dt> <code>int GetFrameCount() const</code></dt>
+<dd><p>Returns the number of frames in the current action
+applied to this sprite.
+</p></dd>
+<dt> <code>bool SetAction(const char *title)</code></dt>
+<dd><p>Set the current action of this sprite to the action
+named <samp>&lsquo;title&rsquo;</samp>. Returns a flag indicating if the operation was
+successful or not.
+</p></dd>
+<dt> <code>iSpriteAction* GetCurAction() const</code></dt>
+<dd><p>Returns a pointer to the current action applied to this sprite.
+</p></dd>
+<dt> <code>EnableTweening(bool flag)</code></dt>
+<dd><p>Description: Enables or disables tweening on this sprite according
+to <samp>&lsquo;flag&rsquo;</samp>.
+</p></dd>
+<dt> <code>bool IsTweeningEnabled() const</code></dt>
+<dd><p>Returns a flag indicating if tweening is enabled for this sprite.
+</p></dd>
+</dl>
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Animation-Nodes.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="SpriteCal3D-Animation.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Animation.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

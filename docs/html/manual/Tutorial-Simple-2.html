@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.2.2 Simple Tutorial 2: Adding a Mesh</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.2.2 Simple Tutorial 2: Adding a Mesh">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.2.2 Simple Tutorial 2: Adding a Mesh">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Tutorial-Simple-2"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Simple-Locomotion.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Simple-Loading-Material.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Tutorials.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 4.2.2 Simple Tutorial 2: Adding a Mesh </h3>
+
+<p>This tutorial continues on the Simple Tutorial (see section <a href="Tutorial-Simple.html#0">Simple Tutorial 1: Basic Setup, World Creation</a>).
+In this tutorial we explain a bit about <small>VFS</small>, texture management, and
+how you can add a simple mesh to the room.
+</p>
+<p>This tutorial features (in addition to what is explained in simple1 tutorial):
+</p><ul>
+<li>
+Loading a 3D sprite mesh factory using <code>iLoader::LoadMeshObjectFactory()</code>.
+</li><li>
+Creating a 3D sprite mesh object using <code>iEngine::CreateMeshWrapper()</code>.
+</li><li>
+Using the mesh state interfaces to change mesh factory and object
+attributes.
+</li><li>
+Putting the mesh at some position in the world using
+<code>iMeshWrapper::GetMovable()</code>.
+</li></ul>
+
+<p>Basic setup of a Crystal Space application using <code>csApplicationFramework</code>.
+Crystal Space has the concept of mesh factories and meshes. A mesh is basically
+some kind of 3D object. Crystal Space supports several kinds of meshes. In
+the previous tutorial we used the genmesh mesh to create the geometry of
+our room. In this tutorial we will use the 3D sprite mesh. A mesh
+factory is like a blue-print for a mesh (or sprite). It defines how the mesh
+looks and how it animates. Before you can use a mesh you need to have a
+mesh factory. Once you have a mesh factory you can create multiple
+meshes from this.  See section <a href="MeshObject.html#0">Mesh Object Plug-In System</a>.
+</p>
+<p>In this example we are going to load a mesh factory from disk.  If you have
+the standard Crystal Space distribution then you have the file
+<tt>&lsquo;CS/data/standard.zip&rsquo;</tt>.  In that archive file there is a file called
+<samp>&lsquo;sprite1&rsquo;</samp> which contains the definition of our mesh factory.  If you
+would like to examine the raw sprite data, extract
+it (by using, for instance, the command <samp>&lsquo;unzip -x standard.zip sprite1&rsquo;</samp>)
+and look at how mesh factories for 3D sprites are defined (mesh
+factories for other types of meshes may appear different).
+</p>
+<p>But, how are we actually going to get that file out of that <small>ZIP</small> archive
+from within the Simple application?  This is in fact very easy because Crystal
+Space supports the concept of <small>VFS</small>.  Take a look at the <small>VFS</small>
+documentation (see section <a href="VFS.html#0">Virtual File System (<small>VFS</small>)</a>) to learn how it works.  Suffice it to say that
+<tt>&lsquo;standard.zip&rsquo;</tt> is an archive that is, by default, mounted onto the
+<small>VFS</small> path <tt>&lsquo;/lib/std&rsquo;</tt>.  You can see all the mounted <small>VFS</small> paths in
+the <tt>&lsquo;CS/vfs.cfg&rsquo;</tt> file (and you can add more).  So, this means that our
+sprite file can be found at the path <tt>&lsquo;/lib/std/sprite1&rsquo;</tt>.
+</p>
+<p>If you look at the <tt>&lsquo;sprite1&rsquo;</tt> file you can see that it refers to a material
+named <samp>&lsquo;spark&rsquo;</samp>.  So, we'll have to load that material as well.  This can
+also be found in <tt>&lsquo;standard.zip&rsquo;</tt> at the path <tt>&lsquo;/lib/std/spark.png&rsquo;</tt>.
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top"><a href="Simple-Loading-Material.html#0">4.2.2.1 Loading a Material in Memory</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="Simple-Loading-Mesh-Factory.html#0">4.2.2.2 Loading a Mesh Factory in Memory</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="Simple-Creating-Mesh.html#0">4.2.2.3 Creating a Mesh from a Factory</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+</table>
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Simple-Locomotion.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Simple-Loading-Material.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Tutorials.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

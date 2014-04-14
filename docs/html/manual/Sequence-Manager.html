@@ -1,0 +1,556 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.15.6 Sequence Manager</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.15.6 Sequence Manager">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.15.6 Sequence Manager">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Sequence-Manager"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Socket-Animation.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="ProcTextures.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Animation.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 4.15.6 Sequence Manager </h3>
+
+
+<p><em>Written by Jorrit Tyberghein,
+<a href="mailto:jorrit.tyberghein@gmail.com">jorrit.tyberghein@gmail.com</a>. Last updated 16 August 2003.</em>
+</p>
+<p>When you define geometry in a map file this usually define a static
+representation of the world.  Using the sequence manager it is possible
+to define specific events that trigger on certain conditions.  Using these
+events (sequences) you can move or animate objects, control lights, fog,
+<small class="dots">...</small>.
+</p>
+<p>The sequence manager is actually divided in two plugins.  First there is
+the basic sequence manager itself.  This is nothing more then a schedular
+that can schedule certain actions that should happen at certain times.
+Applications can use this sequence manager for their own purposes if they
+want.
+</p>
+<p>On top of the sequence manager there runs the engine sequence manager. This
+plugin predefines several operations and triggers which make it a lot easier
+to do engine related things like moving objects, controlling lights, <small class="dots">...</small>.
+We will discuss mainly the engine sequence manager in this section.
+</p>
+<p>A sequence represents a small script with commands that operate on objects
+in the world.  A trigger represents a series of conditions which will cause
+the sequence to be executed.  The important thing of the sequence manager
+is that it is very time based.  Operations don't all execute at once but
+at specific times relative to the start of the sequence.  Note that all times
+in the sequence manager are specified in milli-seconds.
+</p>
+<a name="1"></a>
+<h4 class="subsubheading"> Basic Example </h4>
+
+<p>The easiest way to explain the engine sequence manager is to look at a simple
+example as how it can be used from a map file:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">&lt;world&gt;
+  ...
+  &lt;sector name=&quot;hall&quot;&gt;
+    &lt;light name=&quot;roomlight&quot;&gt;
+      &lt;center x=&quot;10&quot; y=&quot;4&quot; z=&quot;10&quot; /&gt;
+      &lt;radius&gt;20&lt;/radius&gt;
+      &lt;color red=&quot;0&quot; green=&quot;0&quot; blue=&quot;0&quot; /&gt;
+      &lt;dynamic /&gt;
+    &lt;/light&gt;
+    ...
+  &lt;/sector&gt;
+  ...
+  &lt;sequences&gt;
+
+    &lt;sequence name=&quot;turn_on_light&quot;&gt;
+      &lt;setlight light=&quot;roomlight&quot; red=&quot;1&quot; green=&quot;1&quot; blue=&quot;1&quot; /&gt;
+      &lt;delay time=&quot;50&quot; /&gt;
+      &lt;setlight light=&quot;roomlight&quot; red=&quot;0&quot; green=&quot;0&quot; blue=&quot;0&quot; /&gt;
+      &lt;delay time=&quot;80&quot; /&gt;
+      &lt;setlight light=&quot;roomlight&quot; red=&quot;1&quot; green=&quot;1&quot; blue=&quot;1&quot; /&gt;
+    &lt;/sequence&gt;
+
+  &lt;/sequences&gt;
+
+  &lt;triggers&gt;
+
+    &lt;trigger name=&quot;trig_turn_on_light&quot;&gt;
+      &lt;sectorvis sector=&quot;hall&quot;&gt;
+        &lt;sphere x=&quot;10&quot; y=&quot;4&quot; z=&quot;10&quot; radius=&quot;5&quot; /&gt;
+      &lt;/sectorvis&gt;
+      &lt;fire delay=&quot;0&quot; sequence=&quot;turn_on_light&quot; /&gt;
+    &lt;/trigger&gt;
+
+  &lt;/triggers&gt;
+&lt;/world&gt;
+</pre></td></tr></table>
+<p>This is a simple example where we turn on a light as soon as we are
+in a certain radius of the light. Let's explain how it works.  First we
+define a sequence which is called <samp>&lsquo;turn_on_light&rsquo;</samp>.  This sequence
+has three <samp>&lsquo;setlight&rsquo;</samp> operations and two delays.  Internally this is
+compiled to something which looks like this:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">time 0ms: setlight 'roomlight',1,1,1
+time 50ms: setlight 'roomlight',0,0,0
+time 130ms: setlight 'roomlight',1,1,1
+</pre></td></tr></table>
+<p>Basically there are three operations here and the delays are only used to
+indicate when these operations are executed relative to the start of the
+entire sequence.  So for example, if the sequence is fired at time 10050 then
+immediatelly at that point the first operation is executed.  50 milliseconds
+later the second operation is executed and finally, 130 milliseconds later
+the last operation is executed.
+</p>
+<p>There are a few important observations to be made about this.  First, as soon
+as a sequence is executed or fired <small>ALL</small> operations in that sequence will
+execute at the correct relative time no matter what happens otherwise.  This
+also means that if you fire another sequence then that sequence will also get
+fired at the same time and depending on the relative timing of the operations
+some of those operations might happen at the same time.
+</p>
+<p>Also note that there are operations that themselves have a duration.  For
+example, there is a <samp>&lsquo;fadelight&rsquo;</samp> operation which fades a light to some
+color.  It has a <samp>&lsquo;duration&rsquo;</samp> parameter. But this duration does <small>NOT</small>
+influence the relative timing in the sequence itself.  So for example if
+you have this:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">&lt;fadelight light=&quot;somelight&quot; red=&quot;0&quot; green=&quot;0&quot; blue=&quot;0&quot;
+    duration=&quot;1000&quot; /&gt;
+&lt;fadelight light=&quot;somelight&quot; red=&quot;1&quot; green=&quot;1&quot; blue=&quot;1&quot;
+    duration=&quot;1000&quot; /&gt;
+</pre></td></tr></table>
+<p>Then this will execute two fade operations on the same light at exactly
+the same time which is probably not what you want. This example is probably
+better written as:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">&lt;fadelight light=&quot;somelight&quot; red=&quot;0&quot; green=&quot;0&quot; blue=&quot;0&quot;
+    duration=&quot;1000&quot; /&gt;
+&lt;delay time=&quot;1000&quot; /&gt;
+&lt;fadelight light=&quot;somelight&quot; red=&quot;1&quot; green=&quot;1&quot; blue=&quot;1&quot;
+    duration=&quot;1000&quot; /&gt;
+</pre></td></tr></table>
+<p>This will place the two operations at a time distance of 1000 milliseconds.
+</p>
+<p>The reason that using <samp>&lsquo;duration&rsquo;</samp> does not automatically advance the
+internal relative time is that it is sometimes useful to start several
+fade operations (or other operations that have a duration) at the same time.
+For example, two fade operations on two different lights.
+</p>
+<p>A sequence as such is not useful. It needs to be fired at some point.
+You can fire sequences manually from code or you can define a trigger
+to fire the sequence if a certain condition is true.  In this case we
+have a trigger which is called <samp>&lsquo;trig_turn_on_light&rsquo;</samp>.  This trigger
+will fire if the sector <samp>&lsquo;hall&rsquo;</samp> is visible and the camera is in the
+sphere defined by the center <samp>&lsquo;10,4,10&rsquo;</samp> and radius <samp>&lsquo;5&rsquo;</samp>.  As soon
+as this condition is valid the <samp>&lsquo;turn_on_light&rsquo;</samp> sequence will be
+fired immediatelly.  Note that this automatically implies that the trigger
+is disabled.  This is to prevent the sequence from being fired several times
+while the trigger condition remains valid.  If you want a trigger that keeps
+firing you have to re-enable it in the sequence.
+</p>
+<a name="2"></a>
+<h4 class="subsubheading"> Second Example </h4>
+
+<table><tr><td>&nbsp;</td><td><pre class="example">&lt;sequences&gt;
+    &lt;sequence name=&quot;animlight&quot;&gt;
+        &lt;fadelight light=&quot;l1&quot; red=&quot;0&quot; green=&quot;0&quot; blue=&quot;0&quot;
+            duration=&quot;1000&quot; /&gt;
+        &lt;delay time=&quot;1000&quot; /&gt;
+        &lt;fadelight light=&quot;l1&quot; red=&quot;1&quot; green=&quot;1&quot; blue=&quot;1&quot;
+            duration=&quot;1000&quot; /&gt;
+        &lt;delay time=&quot;1000&quot; /&gt;
+        &lt;fadelight light=&quot;l1&quot; red=&quot;1&quot; green=&quot;0&quot; blue=&quot;0&quot;
+            duration=&quot;1000&quot; /&gt;
+        &lt;delay time=&quot;1000&quot; /&gt;
+        &lt;fadelight light=&quot;l1&quot; red=&quot;0&quot; green=&quot;1&quot; blue=&quot;0&quot;
+            duration=&quot;1000&quot; /&gt;
+        &lt;delay time=&quot;1000&quot; /&gt;
+        &lt;fadelight light=&quot;l1&quot; red=&quot;0&quot; green=&quot;0&quot; blue=&quot;1&quot;
+            duration=&quot;1000&quot; /&gt;
+        &lt;delay time=&quot;1000&quot; /&gt;
+        &lt;enable trigger=&quot;animlight&quot; /&gt;
+    &lt;/sequence&gt;
+&lt;/sequences&gt;
+&lt;triggers&gt;
+    &lt;trigger name=&quot;animlight&quot;&gt;
+        &lt;sectorvis sector=&quot;large&quot; /&gt;
+        &lt;fire sequence=&quot;animlight&quot; /&gt;
+    &lt;/trigger&gt;
+&lt;/triggers&gt;
+</pre></td></tr></table>
+<p>In this example there is a trigger called <samp>&lsquo;animlight&rsquo;</samp> that fires as
+soon as the sector named <samp>&lsquo;large&rsquo;</samp> is visible.  Here is what happens
+as soon as the condition of the trigger (in this case <samp>&lsquo;sectorvis&rsquo;</samp>)
+is true:
+</p>
+<ol>
+<li>
+First the firing of the trigger will cause the trigger itself to be
+disabled.  This is to avoid the trigger firing again next frame.
+</li><li>
+Then the <samp>&lsquo;animlight&rsquo;</samp> sequence will be executed.  What this basically
+means is that all operations of that sequence are scheduled in the engine
+sequence manager at the appropriate times relative to the current time.
+The <samp>&lsquo;delay&rsquo;</samp> operation in the sequence is responsible for tagging
+every operation with the specified time. So in this particular example six
+operations will be scheduled: five <samp>&lsquo;fadelight&rsquo;</samp> operations (of which
+one is scheduled to execute immediatelly) and one <samp>&lsquo;enable&rsquo;</samp> operation.
+</li><li>
+The first operation that is executed is <samp>&lsquo;fadelight&rsquo;</samp>.  This operation
+will fade the light color of the light named <samp>&lsquo;l1&rsquo;</samp> from whatever
+color it has now to black.  <samp>&lsquo;l1&rsquo;</samp> must be a pseudo-dynamic light for
+this to work.
+</li><li>
+One second later (due to the <samp>&lsquo;delay&rsquo;</samp>) the second <samp>&lsquo;fadelight&rsquo;</samp>
+gets executed.  And so on.
+</li><li>
+Finally the <samp>&lsquo;enable&rsquo;</samp> operation will execute which means that the
+<samp>&lsquo;animlight&rsquo;</samp> trigger is enabled again.  If the <samp>&lsquo;large&rsquo;</samp> sector
+is still visible this will cause the trigger to fire immediatelly again.
+</li></ol>
+
+<p>It is important to note that the <samp>&lsquo;duration&rsquo;</samp> parameter that is given
+in some of the operations does <small>NOT</small> imply that the next operation will
+execute after that operation has finished.  The <samp>&lsquo;duration&rsquo;</samp> parameter
+has no effect on the internal relative time that is maintained for the
+sequence operations.  To influence that you must use <samp>&lsquo;delay&rsquo;</samp>.
+</p>
+<a name="3"></a>
+<h4 class="subsubheading"> Last Example: Using Parameters </h4>
+
+<p>If you want to use the same sequence for different lights you can
+use parameters like in the following example:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">&lt;sequences&gt;
+    &lt;sequence name=&quot;animlight&quot;&gt;
+        &lt;args&gt;
+            &lt;arg name=&quot;l&quot; /&gt;
+            &lt;arg name=&quot;trig&quot; /&gt;
+        &lt;/args&gt;
+        &lt;fadelight light_par=&quot;l&quot; red=&quot;0&quot; green=&quot;0&quot; blue=&quot;0&quot;
+	    duration=&quot;1000&quot; /&gt;
+        &lt;delay time=&quot;1000&quot; /&gt;
+        &lt;fadelight light_par=&quot;l&quot; red=&quot;1&quot; green=&quot;1&quot; blue=&quot;1&quot;
+	    duration=&quot;1000&quot; /&gt;
+        &lt;delay time=&quot;1000&quot; /&gt;
+        &lt;fadelight light_par=&quot;l&quot; red=&quot;1&quot; green=&quot;0&quot; blue=&quot;0&quot;
+	    duration=&quot;1000&quot; /&gt;
+        &lt;delay time=&quot;1000&quot; /&gt;
+        &lt;fadelight light_par=&quot;l&quot; red=&quot;0&quot; green=&quot;1&quot; blue=&quot;0&quot;
+	    duration=&quot;1000&quot; /&gt;
+        &lt;delay time=&quot;1000&quot; /&gt;
+        &lt;fadelight light_par=&quot;l&quot; red=&quot;0&quot; green=&quot;0&quot; blue=&quot;1&quot;
+	    duration=&quot;1000&quot; /&gt;
+        &lt;delay time=&quot;1000&quot; /&gt;
+        &lt;enable trigger_par=&quot;trig&quot; /&gt;
+    &lt;/sequence&gt;
+&lt;/sequences&gt;
+&lt;triggers&gt;
+    &lt;trigger name=&quot;animlight_l1&quot;&gt;
+        &lt;sectorvis sector=&quot;large&quot; /&gt;
+        &lt;fire sequence=&quot;animlight&quot;&gt;
+            &lt;light name=&quot;l&quot; light=&quot;l1&quot; /&gt;
+            &lt;light name=&quot;trig&quot; light=&quot;animlight_l1&quot; /&gt;
+        &lt;/fire&gt;
+    &lt;/trigger&gt;
+    &lt;trigger name=&quot;animlight_l2&quot;&gt;
+        &lt;sectorvis sector=&quot;large&quot; /&gt;
+        &lt;fire sequence=&quot;animlight&quot;&gt;
+            &lt;light name=&quot;l&quot; light=&quot;l2&quot; /&gt;
+            &lt;light name=&quot;trig&quot; light=&quot;animlight_l2&quot; /&gt;
+        &lt;/fire&gt;
+    &lt;/trigger&gt;
+&lt;/triggers&gt;
+</pre></td></tr></table>
+<p>Here you see how the same sequence (<samp>&lsquo;animlight&rsquo;</samp>) is used by
+two different triggers for two different lights.  It is not only the
+light that has to be given as a parameter but also the trigger that
+needs to be enabled again.  That's why two parameters are used.
+</p>
+<p>A lot more is possible here.  I will give a short summary of all commands
+(that are not operations) that are supported in sequences here:
+</p>
+<dl compact="compact">
+<dt> <code>args</code></dt>
+<dd><p>Use this to enumerate all arguments to this sequence.  You
+only have to specify the name of the arguments here.
+</p>
+</dd>
+<dt> <code>delay</code></dt>
+<dd><p>Increase the relative time for following operations.  The
+relative time starts at 0 in the beginning of the sequence. Using <samp>&lsquo;delay&rsquo;</samp>
+you can increase relative time.  If you don't use <samp>&lsquo;delay&rsquo;</samp> between two
+consecutive operations then they will execute at the same time.  You can
+use <samp>&lsquo;delay&rsquo;</samp> with the <samp>&lsquo;time&rsquo;</samp> parameter in which case a constant
+amount will be added.  Or you can use <samp>&lsquo;delay&rsquo;</samp> with the <samp>&lsquo;min&rsquo;</samp> and
+<samp>&lsquo;max&rsquo;</samp> parameters in which case a random amount between the two given
+values will be added.  This amount is truely random in the sense that it will
+be reevaluated every time the sequence fires.
+</p>
+</dd>
+</dl>
+
+<a name="4"></a>
+<h4 class="subsubheading"> Supported Operations </h4>
+
+<p>Here is a list of all operations that you can use in a sequence.  Note that
+every operation is tagged with a relative time (relative to the start
+of the sequence).  If you want to use a parameter for an operation that
+uses an argument to the sequence then you have to add <samp>&lsquo;_par&rsquo;</samp> to the
+parameter name like this: <samp>&lsquo;light_par&rsquo;</samp>.
+</p>
+<dl compact="compact">
+<dt> <code>run</code></dt>
+<dd><p>This operation will run the given sequence.  Parameter is
+<samp>&lsquo;sequence&rsquo;</samp>.
+</p>
+</dd>
+<dt> <code>move</code></dt>
+<dd><p>Move the specified object from the current position to the
+specified position in the given time (duration).  Parameters are
+<samp>&lsquo;mesh&rsquo;</samp>, <samp>&lsquo;duration&rsquo;</samp>, <samp>&lsquo;x&rsquo;</samp>, <samp>&lsquo;y&rsquo;</samp> and <samp>&lsquo;z&rsquo;</samp>.
+</p>
+</dd>
+<dt> <code>movelight</code></dt>
+<dd><p>Exactly like <samp>&lsquo;move&rsquo;</samp> operation, but working on lights. Accepts 
+<samp>&lsquo;light&rsquo;</samp> parameter with the light name.
+</p>
+</dd>
+<dt> <code>rotate</code></dt>
+<dd><p>Rotate the specified object from the current orientation
+to the new orientation in the given time (duration).  Parameters are
+<samp>&lsquo;mesh&rsquo;</samp>, <samp>&lsquo;duration&rsquo;</samp>, optionally <samp>&lsquo;relative&rsquo;</samp> to make the 
+operation relative to the object center, otherwise the pivot
+point with be the <samp>&lsquo;v&rsquo;</samp> parameter. As children you can specify
+rotation matrix and vector using <samp>&lsquo;rotx&rsquo;</samp>, <samp>&lsquo;roty&rsquo;</samp>, <samp>&lsquo;rotz&rsquo;</samp> and
+<samp>&lsquo;v&rsquo;</samp>.
+</p>
+</dd>
+<dt> <code>rotatelight</code></dt>
+<dd><p>Exactly like <samp>&lsquo;rotate&rsquo;</samp> operation, but working on lights. Accepts 
+<samp>&lsquo;light&rsquo;</samp> parameter with the light name.
+</p>
+</dd>
+<dt> <code>material</code></dt>
+<dd><p>Change the material on some object.  Parameters are
+<samp>&lsquo;mesh&rsquo;</samp>, <samp>&lsquo;material&rsquo;</samp>, and optionally a <samp>&lsquo;polygon&rsquo;</samp> parameter
+if you only want to change the material for one polygon.
+</p>
+</dd>
+<dt> <code>fadecolor</code></dt>
+<dd><p>Fade the color of a mesh from the current value to the
+new value.  This only works on some types of meshes. Parameters are
+<samp>&lsquo;mesh&rsquo;</samp>, <samp>&lsquo;red&rsquo;</samp>, <samp>&lsquo;green&rsquo;</samp>, <samp>&lsquo;blue&rsquo;</samp> and <samp>&lsquo;duration&rsquo;</samp>.
+</p>
+</dd>
+<dt> <code>setcolor</code></dt>
+<dd><p>Set the color of a mesh.  This only works on some types of
+meshes. Parameters are <samp>&lsquo;mesh&rsquo;</samp>, <samp>&lsquo;red&rsquo;</samp>, <samp>&lsquo;green&rsquo;</samp> and <samp>&lsquo;blue&rsquo;</samp>.
+</p>
+</dd>
+<dt> <code>fadelight</code></dt>
+<dd><p>Fade the color of a light from the current value to the new value.  Parameters
+are <samp>&lsquo;light&rsquo;</samp>, <samp>&lsquo;red&rsquo;</samp>, <samp>&lsquo;green&rsquo;</samp>, <samp>&lsquo;blue&rsquo;</samp> and <samp>&lsquo;duration&rsquo;</samp>.
+</p>
+</dd>
+<dt> <code>setlight</code></dt>
+<dd><p>Set the color of a light.
+Parameters are <samp>&lsquo;light&rsquo;</samp>, <samp>&lsquo;red&rsquo;</samp>, <samp>&lsquo;green&rsquo;</samp> and <samp>&lsquo;blue&rsquo;</samp>.
+</p>
+</dd>
+<dt> <code>fadeambient</code></dt>
+<dd><p>Fade the color of a dynamic ambient from the current value to the new
+value.  Parameters are <samp>&lsquo;sector&rsquo;</samp>, <samp>&lsquo;red&rsquo;</samp>, <samp>&lsquo;green&rsquo;</samp>, <samp>&lsquo;blue&rsquo;</samp>
+and <samp>&lsquo;duration&rsquo;</samp>.
+</p>
+</dd>
+<dt> <code>setambient</code></dt>
+<dd><p>Set the color of dynamic ambient.
+Parameters are <samp>&lsquo;sector&rsquo;</samp>, <samp>&lsquo;red&rsquo;</samp>, <samp>&lsquo;green&rsquo;</samp> and <samp>&lsquo;blue&rsquo;</samp>.
+</p>
+</dd>
+<dt> <code>fadefog</code></dt>
+<dd><p>Fade the color and density of fog from the current value to the new
+value.  Parameters are <samp>&lsquo;sector&rsquo;</samp>, <samp>&lsquo;red&rsquo;</samp>, <samp>&lsquo;green&rsquo;</samp>, <samp>&lsquo;blue&rsquo;</samp>,
+<samp>&lsquo;density&rsquo;</samp> and <samp>&lsquo;duration&rsquo;</samp>.
+</p>
+</dd>
+<dt> <code>setfog</code></dt>
+<dd><p>Set the color and density of fog.
+Parameters are <samp>&lsquo;sector&rsquo;</samp>, <samp>&lsquo;red&rsquo;</samp>, <samp>&lsquo;green&rsquo;</samp>, <samp>&lsquo;blue&rsquo;</samp>
+and <samp>&lsquo;density&rsquo;</samp>.
+</p>
+</dd>
+<dt> <code>enable</code></dt>
+<dd><p>Enable the given trigger.  Parameter is <samp>&lsquo;trigger&rsquo;</samp>.
+</p>
+</dd>
+<dt> <code>disable</code></dt>
+<dd><p>Disable the given trigger.  Parameter is <samp>&lsquo;trigger&rsquo;</samp>.
+</p>
+</dd>
+<dt> <code>check</code></dt>
+<dd><p>Enable checking of trigger state every <samp>&lsquo;delay&rsquo;</samp> milliseconds
+(or disable if 0).  Use this in combination with <samp>&lsquo;test&rsquo;</samp> below. Parameters
+are <samp>&lsquo;trigger&rsquo;</samp> and <samp>&lsquo;delay&rsquo;</samp>.
+</p>
+</dd>
+<dt> <code>test</code></dt>
+<dd><p>Test the stated of the given trigger and execute the right
+sequence depending on the result.  For this to work you should use
+<samp>&lsquo;check&rsquo;</samp> to enable testing of the trigger at regular times. Parameters are
+<samp>&lsquo;trigger&rsquo;</samp>, <samp>&lsquo;truesequence&rsquo;</samp> and <samp>&lsquo;falsesequence&rsquo;</samp>.  Both
+<samp>&lsquo;truesequence&rsquo;</samp> and <samp>&lsquo;falsesequence&rsquo;</samp> are optional.  <em>Warning!</em>
+This operation does not cause the current sequence to stop.  All operations
+that follow this test operation will still execute at their dedicated times
+regardless of the outcome of this test!
+</p>
+</dd>
+<dt> <code>setvar</code></dt>
+<dd><p>Set a shared variable to some value.  The only required parameter is <samp>&lsquo;var&rsquo;</samp>
+which is the name of the variable you want to set.  Then there are various
+other parameters that you can use to set the variable:
+</p><ul class="toc">
+<li>
+<samp>&lsquo;value&rsquo;</samp>: set the variable to the given floating point value.
+</li><li>
+<samp>&lsquo;add&rsquo;</samp>: add the given floating point value to the variable.
+</li><li>
+<samp>&lsquo;value_var&rsquo;</samp>: set the variable to the value in the given other variable.
+The other variable doesn't have to be a float.
+</li><li>
+<samp>&lsquo;add_var&rsquo;</samp>: add the other variable to this variable.
+</li><li>
+<samp>&lsquo;x&rsquo;</samp>, <samp>&lsquo;y&rsquo;</samp>, <samp>&lsquo;z&rsquo;</samp>: set the variable to the given vector.
+</li><li>
+<samp>&lsquo;red&rsquo;</samp>, <samp>&lsquo;green&rsquo;</samp>, <samp>&lsquo;blue&rsquo;</samp>: set the variable to the given color.
+</li></ul>
+
+</dd>
+</dl>
+
+<a name="5"></a>
+<h4 class="subsubheading"> Supported Conditions </h4>
+
+<p>Here is a list of all conditions that are supported in a trigger:
+</p>
+<dl compact="compact">
+<dt> <code>onclick</code></dt>
+<dd><p>True when the given mesh is clicked on.  Parameter is
+<samp>&lsquo;mesh&rsquo;</samp>.
+</p>
+</dd>
+<dt> <code>lightvalue</code></dt>
+<dd><p>True when the given light has a color which satisfies some condition.
+Parameters are <samp>&lsquo;light&rsquo;</samp>, <samp>&lsquo;operator&rsquo;</samp>, <samp>&lsquo;red&rsquo;</samp>, <samp>&lsquo;green&rsquo;</samp> and
+<samp>&lsquo;blue&rsquo;</samp>. <samp>&lsquo;operator&rsquo;</samp> can be <samp>&lsquo;less&rsquo;</samp> or <samp>&lsquo;greater&rsquo;</samp>.
+</p>
+</dd>
+<dt> <code>manual</code></dt>
+<dd><p>For manual trigger (from application code).  No parameters.
+</p>
+</dd>
+<dt> <code>sectorvis</code></dt>
+<dd><p>True when the sector is visible.  Parameter is <samp>&lsquo;sector&rsquo;</samp>.
+There are also some optional children that this trigger supports:
+</p><ul class="toc">
+<li>
+<samp>&lsquo;insideonly&rsquo;</samp>: only trigger when camera is inside the sector as opposed
+to the sector being visible.
+</li><li>
+<samp>&lsquo;box&rsquo;</samp>: only trigger if camera is in box. This has two children:
+a <samp>&lsquo;min&rsquo;</samp> and a <samp>&lsquo;max&rsquo;</samp> vector.
+</li><li>
+<samp>&lsquo;sphere&rsquo;</samp>: only trigger if camera is in the sphere.  Parameters are
+<samp>&lsquo;x&rsquo;</samp>, <samp>&lsquo;y&rsquo;</samp>, <samp>&lsquo;z&rsquo;</samp> and <samp>&lsquo;radius&rsquo;</samp>.
+</li></ul>
+
+</dd>
+<dt> <code>fire</code></dt>
+<dd><p>This is not a trigger.  It just indicates the sequence that will be executed
+when the trigger is valid.  Parameters are <samp>&lsquo;sequence&rsquo;</samp> and <samp>&lsquo;delay&rsquo;</samp>
+(optional).  In addition you can also specify parameters for the called
+sequence.
+</p>
+</dd>
+<dt> <code>disable</code></dt>
+<dd><p>Normally a trigger is enabled by default.  With this keyword
+you can disable the trigger initially and let some other sequence (or the
+application) enable the trigger.
+</p>
+</dd>
+</dl>
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Socket-Animation.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="ProcTextures.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Animation.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

@@ -1,0 +1,59 @@
+@c -*-texinfo-*-
+@node GenMesh Animation, Socket Animation, SpriteCal3D Animation, Animation
+@subsection GenMesh Animation
+@cindex GenMesh
+
+The shape of a @ref{MeshObject Genmesh, Genmesh} can be animated using an
+animation controller (classes @code{iGenMeshAnimationControl} and
+@code{iGenMeshAnimationControlFactory}).
+
+An animation controller is given the ability to modify the state and shape of
+the mesh, i.e. mainly the main render buffers of the mesh such as the vertices,
+the triangles, the normals, the bitangents, along with other parameters such as
+the bounding box.
+
+An animation controller is associated to a Genmesh using the methods
+@code{iGeneralFactoryState::SetAnimationControlFactory()} or
+@code{iGeneralMeshState::SetAnimationControl()}. If a Genmesh has an animation
+controller, then this controller will have its various methods
+@code{iGenMeshAnimationControl::UpdateXXX()} called every frame, whenever the
+mesh is visible, and allowing the controller to modify the Genmesh.
+
+There are several different animation controllers already available in Crystal
+Space. These are:
+
+@itemize @bullet
+
+@item
+Scripted transformations
+
+Plugin: @code{crystalspace.mesh.anim.genmesh}
+
+This plugin allows to define sets of geometric transformations to be applied on the
+whole mesh, such as rotation, trnaslation, scaling. The transformations to be applied
+are defined in XML scripts.
+
+@item
+Soft body simulation
+
+Plugin: @code{crystalspace.dynamics.softanim}
+
+This plugin allows to animate automatically a Genmesh depending on the motion and
+deformation made by a soft body that is physically simulated.
+
+@item
+Skeletal animation
+
+Plugin: @code{crystalspace.mesh.anim.skeleton2}
+
+This plugin allows to animate the Genmesh based on the motion of a skeleton. This
+plugin has however became obsolete by the @ref{MeshObject Animesh, Animesh}.
+
+@item
+PD lights
+
+Plugin: @code{crystalspace.mesh.anim.pdlight}
+
+@cite{todo}!
+
+@end itemize

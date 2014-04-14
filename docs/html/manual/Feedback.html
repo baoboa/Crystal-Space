@@ -1,0 +1,212 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 1.10 Feedback and Bug Reporting</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 1.10 Feedback and Bug Reporting">
+<meta name="keywords" content="Crystal Space 2.1.0: 1.10 Feedback and Bug Reporting">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Feedback"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="IRC.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Authors.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="CS-Introduction.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="CS-Introduction.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Building.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h2 class="section"> 1.10 Feedback and Bug Reporting </h2>
+
+<p>If you find a bug in Crystal Space there are two ways to report it to the
+developers. The preferred method of reporting bugs is to use the Crystal Space
+bug tracker:
+</p>
+
+<p><a href="http://trac.crystalspace3d.org/trac/CS/">http://trac.crystalspace3d.org/trac/CS/</a>
+</p>
+<p>Additionally, you can send a message to the main Crystal Space mailing list
+(see section <a href="Mailing-Lists.html#0">Mailing Lists</a>) at <a href="mailto:crystal-main@lists.sourceforge.net">crystal-main@lists.sourceforge.net</a>.
+</p>
+
+<p>Try to give as much information as possible about the bug, including:
+</p>
+<ul>
+<li>
+Crystal Space version number. If it is a <small>SVN</small> snapshot then include
+the date and time that you downloaded it. If you are using <small>SVN</small> directly
+then state the revision of your working copy.
+</li><li>
+Operating System (Windows (2000, <small>XP</small>), MacOS/X, Unix &mdash; <small>GNU</small>/Linux,
+Free<small>BSD</small>, etc.  &mdash; <small class="dots">...</small>).
+</li><li>
+The compiler that you used (<small>GCC</small>, Mingw, <small>MSVC</small>, <small class="dots">...</small>).
+</li><li>
+Architecture (Intel x86, <small>AMD</small> x86, <small>AMD</small> 64, <small>SPARC</small>, <small>MIPS</small>,
+<small>M68K</small>, Alpha, PowerPC, <small class="dots">...</small>).
+</li><li>
+Graphics adapter (brand/model, total on-board memory, driver version, <small class="dots">...</small>).
+</li><li>
+Video settings (color depth, resolution, Crystal Space video driver, <small class="dots">...</small>).
+</li><li>
+Description of the problem.
+</li><li>
+Exact error message (or output of Crystal Space). If possible it would be 
+nice to get the output of the Crystal Space application with the
+<samp>&lsquo;-verbose=-scf&rsquo;</samp> option specified on the command line. On Windows, if you 
+are using a gcc based compiler and you compiled in optimize mode then you'll 
+also need to add the <samp>&lsquo;-console&rsquo;</samp> option. If you compiled with <small>MSVC</small> 
+and you build in release mode then you'll need the <samp>&lsquo;-noconsole&rsquo;</samp> option.
+</li><li>
+How to reproduce the crash (if it is reproducible).
+</li><li>
+A fix for the bug if available (Unified diff files are desirable).
+</li></ul>
+
+<p>Below is a general loose example of a desired bug report.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">CS Version: 2.1 SVN (2012 - 01 - 09) - r37308
+
+OS: Debian 6
+
+Compiler: GCC 4.4.5
+
+Architecture: Intel x86 - Pentium 4 2.0GHz
+
+Graphics adaptor: nVidia 5 series - 128MB memory - Driver: 1.73
+
+Graphics settings: 1024x768 - 32 bit colour depth
+
+Description of problem: Error when exiting 'walktest' saying 'segfault'.
+
+Error message:
+
+Below is the output I get running 'walktest'.
+
+./walktest 
+NOTIFY: World saving enabled.
+
+crystalspace.sndsys.renderer.software:
+  Sound System Software Renderer Initializing...
+
+crystalspace.system:
+  Crystal Space version 2.1.0.1747 [Unix-x86(32)-GCC] (Mon 9-Jun-2008).
+  Created by Jorrit Tyberghein and others...
+
+crystalspace.canvas.glx2d:
+  Opening GLX2D
+  Creating Context
+  Video driver GL/X version (direct renderer)
+  Visual ID: 0x00000024, 24bit TrueColor
+  R8:G8:B8:A8, 
+  level 0, double buffered
+
+crystalspace.canvas.openglcommon.driverdb:
+  Applied: GeForce FX 5xxx: Broken 'Inverted fog'
+  Applied: GeForce: RECT texture extension support apparently sucks
+  Applied: NVidia: GENERATE_MIPMAPS does not generate last level
+  Applied: NVidia: ARB_seamless_cube_map broken
+
+crystalspace.canvas.openglcommon:
+  OpenGL renderer: GeForce FX 5500/AGP/SSE/3DNOW! (vendor: NVIDIA Corporation)
+  version 2.1.2 NVIDIA 173.14.27
+  Using windowed mode at resolution 1024x693.
+  Pixel format: Color: 24 Alpha: 8 Depth: 24 Stencil: 8 AccumColor: 48
+  AccumAlpha: 16 MultiSamples: 0 
+  Multisample: disabled
+
+crystalspace.graphics3d.opengl:
+  Using VBO with 64 MB of VBO memory
+shader lighting_default: ....10%....20%....30%....40%....50%....60%....70%....80%....90%....100%
+shader z_only: ....10%....20%....30%....40%....50%....60%....70%....80%....90%....100%
+
+crystalspace.system:
+  Loading map ‘castle’.
+
+Level load time: 12.144 seconds.
+  Precaching all things...
+  
+shader lighting_default@400: ....10%....20%....30%....40%....50%....60%....70%....80%....90%....100%
+shader lighting_default@300: ....10%....20%....30%....40%....50%....60%....70%....80%....90%....100%
+shader lighting_default@200: ....10%....20%....30%....40%....50%....60%....70%....80%....90%....100%
+shader lighting_default@100: ....10%....20%....30%....40%....50%....60%....70%....80%....90%....100%
+  
+  Precaching finished... took 20.162 seconds.
+  
+
+Total load time: 22.013 seconds.
+  Computing OBBs ...
+  --------------------------------------
+  canvas exposed
+Cleaning up...
+segfault
+</pre></td></tr></table>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="IRC.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Authors.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="CS-Introduction.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="CS-Introduction.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Building.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

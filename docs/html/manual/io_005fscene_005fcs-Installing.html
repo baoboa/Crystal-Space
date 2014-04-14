@@ -1,0 +1,175 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 5.8.1 Installing the io_scene_cs add-on script</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 5.8.1 Installing the io_scene_cs add-on script">
+<meta name="keywords" content="Crystal Space 2.1.0: 5.8.1 Installing the io_scene_cs add-on script">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="io_005fscene_005fcs-Installing"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Blender.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="io_005fscene_005fcs-First-Steps.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Blender.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Internals.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 5.8.1 Installing the <code>io_scene_cs</code> add-on script </h3>
+
+<p>This section describes the installation procedure of the <code>io_scene_cs</code> add-on script.
+</p>
+<a name="1"></a>
+<h4 class="subsubheading"> Getting the add-on </h4>
+
+<p>The <code>io_scene_cs</code> add-on script is available in the Crystal Space package,
+within the <samp>&lsquo;CS/scripts/blender&rsquo;</samp> directory. The script should be used with
+the corresponding version of Crystal Space.
+</p>
+<a name="2"></a>
+<h4 class="subsubheading"> Installing the add-on </h4>
+
+<p>Since the script is composed of several files, you cannot simply use the <samp>&lsquo;Install Add-On&rsquo;</samp>
+button of the Blender interface. Instead, you need to copy manually the folder
+<samp>&lsquo;CS/scripts/blender/io_scene_cs&rsquo;</samp> into the Blender add-ons directory
+(<samp>&lsquo;blender/$version/scripts/addons&rsquo;</samp>). By default, this directory should be at:
+</p>
+<ul>
+<li>
+<samp>&lsquo;Windows 7&rsquo;</samp>: <tt>&lsquo;C:\Users\%username%\AppData\Roaming\Blender Foundation\Blender\%version%\scripts\addons&rsquo;</tt>
+</li><li>
+<samp>&lsquo;Windows XP&rsquo;</samp>: <tt>&lsquo;C:\Documents and Settings\%username%\Application Data\Blender Foundation\Blender\%version%\scripts\addons&rsquo;</tt>
+</li><li>
+<samp>&lsquo;Linux&rsquo;</samp>: <tt>&lsquo;/home/$username/.blender/$version/scripts/addons&rsquo;</tt>
+</li></ul>
+
+<p>See
+<a href="http://wiki.blender.org/index.php/Doc:2.6/Manual/Extensions/Python/Add-Ons">the official Blender manual</a>
+for more information on the actual process.
+</p>
+<a name="3"></a>
+<h4 class="subsubheading"> Enabling the add-on </h4>
+
+<p>Blender add-ons are found in the <samp>&lsquo;Add-Ons&rsquo;</samp> tab of the <samp>&lsquo;Files &gt; User Preferences&rsquo;</samp>
+window. Once an add-on has been installed, it has to be enabled before it can be used.
+Simply place a check mark on the <samp>&lsquo;Enable an addon&rsquo;</samp> box of the add-on called
+<samp>&lsquo;Import-Export: Export Crystal Space 3D format&rsquo;</samp>. 
+</p>
+<p>If the add-on doesn't appear in the list, then this probably means that the installation
+was not made correctly. Please check the directory where you placed the <code>io_scene_cs</code>
+add-on script, or check the Blender console for any problems.
+</p>
+<p><img src="content/blender/blender_preferences.png" alt="content/blender/blender_preferences">
+</p>
+<p>The new export functionality is now integrated into Blender and can be used. If you want to
+disable the functionality, uncheck the box. To get more information on the add-on you can
+press the arrow at the left of the entry. Finally, this add-on can be enabled everytime
+you start Blender simply by saving your user preferences (<samp>&lsquo;Save As Default&rsquo;</samp> at the
+bottom of the window).
+</p>
+<a name="4"></a>
+<h4 class="subsubheading"> Testing the presence of the add-on </h4>
+
+<p>Close the Blender <samp>&lsquo;User Preferences&rsquo;</samp> window, then go and check if the
+<samp>&lsquo;Crystal Space Export&rsquo;</samp> panel appears in the <samp>&lsquo;Render&rsquo;</samp> context of the
+<samp>&lsquo;Properties&rsquo;</samp> (or <samp>&lsquo;Buttons&rsquo;</samp>) window (it can appear either at the top
+or at the bottom of the context).
+</p>
+<p><img src="content/blender/io_scene_cs_interface.png" alt="content/blender/io_scene_cs_interface">
+</p>
+<p>If you don't see the interface, then you may:
+</p>
+<ul>
+<li>
+Scroll either to the top and to the bottom of the <samp>&lsquo;Render&rsquo;</samp> context since
+the Crystal Space panel may appear in both places.
+</li><li>
+Check that you have the exporter add-on correctly installed and enabled.
+</li><li>
+Check the <a href="http://wiki.blender.org/index.php/Doc:2.6/Manual/Interface/Window_system/Console_window">Blender console window</a>
+to see if there are any error messages about the exporter. In this case, you may consider
+to <a href="Feedback.html#0">create a bug report</a>.
+</li></ul>
+
+
+<a name="5"></a>
+<h4 class="subsubheading"> Configuring Crystal Space </h4>
+
+<p>Finally, if you want to test your exported meshes and models, you should have a valid
+Crystal Space package installed on your computer, with the <samp>&lsquo;CRYSTAL&rsquo;</samp> environment
+variable pointing to the installation directory. Although this variable is not technically
+needed to use the <code>io_scene_cs</code> script, you will need it in order to view your
+exported files and to use the <samp>&lsquo;Export and Run&rsquo;</samp> functionality of the script.
+For more information on the way to do this,
+See section <a href="HOWTO-Setting-the-CRYSTAL-environment-variable.html#0">Setting the CRYSTAL environment variable</a>.
+</p>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Blender.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="io_005fscene_005fcs-First-Steps.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Blender.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Internals.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

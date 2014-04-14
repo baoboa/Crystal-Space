@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.9.6 Camera Movement</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.9.6 Camera Movement">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.9.6 Camera Movement">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="HOWTO-Camera-Movement"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Cameras-and-Matrices.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Space-Warping.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Engine.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 4.9.6 Camera Movement </h3>
+
+<p>This section describes how to move the camera.
+</p>
+<a name="1"></a>
+<h4 class="subsubheading"> The Camera is a Transform </h4>
+
+<p>Internally in the engine the <samp>&lsquo;csCamera&rsquo;</samp> class inherits
+directly from <samp>&lsquo;csOrthoTransform&rsquo;</samp> which inherits from
+<samp>&lsquo;csReversibleTransform&rsquo;</samp>. If you work with <samp>&lsquo;iCamera&rsquo;</samp> then you
+can get the reference to this transform with <code>camera-&gt;GetTransform()</code>.
+In addition to the transformation a camera also holds a pointer to the
+current sector.
+</p>
+<p>This means that all operations you have in <samp>&lsquo;csOrthoTransform&rsquo;</samp> can
+be used on the camera. One of the most useful functions there is
+<code>LookAt()</code> with which you can make the camera point to some spot.
+Using <code>LookAt()</code> it is very easy to make a 3rd person view.
+</p>
+<p>In addition to the standard functions from <samp>&lsquo;csOrthoTransform&rsquo;</samp> there
+are a number of other functions that you can use. The most interesting
+are <code>MoveWorld()</code> and <code>Move()</code>. These functions will move
+the camera and make sure that it cannot walk through a wall and also make
+sure that walking through portals will work. Both functions move the
+camera a relative amount. The difference between <code>MoveWorld()</code> and
+<code>Move()</code> is that the latter will move the camera in camera space.
+For example, take the following code:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">iCamera* camera;
+camera-&gt;GetTransform ().Move (csVector3 (0, 0, 1));
+</pre></td></tr></table>
+<p>This will move the camera forward in camera space. This means that the
+camera will walk 'forward' :-) On the other hand:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">iCamera* camera;
+camera-&gt;GetTransform ().MoveWorld (csVector3 (0, 0, 1));
+</pre></td></tr></table>
+<p>This will move the camera in the world so that it goes one unit in
+the positive Z direction. This will happen independently of the orientation
+of the camera.
+</p>
+<p>Here is another example which demonstrates how to use the <code>LookAt()</code>
+function. The following example will set a camera at location <samp>&lsquo;3,5,1&rsquo;</samp>
+and let it look at <samp>&lsquo;3,5,10&rsquo;</samp>. The up vector of the camera will be
+<samp>&lsquo;0,1,0&rsquo;</samp> (which is default):
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">csVector3 camera_pos (3, 5, 1);
+csVector3 look_at_pos (3, 5, 10);
+csVector3 up (0, 1, 0);
+camera-&gt;GetTransform ().Move (camera_pos);
+camera-&gt;GetTransform ().LookAt (look_at_pos - camera_pos, up);
+</pre></td></tr></table>
+<a name="2"></a>
+<h4 class="subsubheading"> Include Files </h4>
+
+<p>The include files useful for this section are:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">#include &lt;iengine/camera.h&gt;
+#include &lt;csgeom/transfrm.h&gt;
+</pre></td></tr></table>
+
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Cameras-and-Matrices.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Space-Warping.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Engine.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

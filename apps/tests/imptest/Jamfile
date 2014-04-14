@@ -1,0 +1,6 @@
+SubDir TOP apps tests imptest ;
+
+Description imptest : "Imposter testing application" ;
+Application imptest : [ Wildcard *.cpp *.h ] ;
+LinkWith imptest : crystalspace ;
+FileListEntryApplications imptest : app-demo ;

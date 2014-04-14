@@ -1,0 +1,148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.11.2 Pseudo-dynamic Lights</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.11.2 Pseudo-dynamic Lights">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.11.2 Pseudo-dynamic Lights">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="HOWTO-Pseudo-DynLight"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Lighting.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Materials.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Lighting-System.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 4.11.2 Pseudo-dynamic Lights </h3>
+
+<p>One little known feature in CS is the ability to have pseudo-dynamic
+lights. Pseudo-dynamic lights are somewhere between static lights and
+dynamic lights. Static lights cannot move but they generate high quality
+lightmaps. Dynamic lights can move but the quality of lighting is much
+less. Pseudo-dynamic lights are a variant of static lights. They cannot
+move either but they can change intensity and color dynamically. Since
+they also use lightmaps the quality is very good and they have correct
+shadows. Pseudo-dynamic lights are ideal for lights that can be switched
+on/off or possibly even for outside light that you want to turn off (at
+night). Note that the usage of pseudo-dynamic lights adds an additional
+shadow map to every polygon that is touched by that light. So memory
+usage can go up quickly.
+</p>
+<a name="1"></a>
+<h4 class="subsubheading"> Creating a Pseudo-Dynamic Light </h4>
+
+<p>To specify a pseudo-dynamic light in a map file you use the following
+syntax:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">&lt;light name=&quot;DynLight&quot;&gt;
+  &lt;center x=&quot;23&quot; y=&quot;1&quot; z=&quot;5&quot;/&gt;
+  &lt;radius&gt;10&lt;/radius&gt;
+  &lt;color red=&quot;1&quot; green=&quot;0&quot; blue=&quot;0&quot;/&gt;
+  &lt;dynamic /&gt;
+&lt;light&gt;
+</pre></td></tr></table>
+<p>In other words, the syntax is the same as for a normal light except for
+the <samp>&lsquo;dynamic&rsquo;</samp> keyword. Note that lights usually don't have a name
+but for a pseudo-dynamic light it is convenient to have one since you can
+use that name to find the light later (which is essential if you want to
+change the color/intensity).
+</p>
+<p>To create a pseudo-dynamic light from within an application you can
+use the following code:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">csRef&lt;iLight&gt; light = engine-&gt;CreateLight (&quot;DynLight&quot;,
+  csVector3 (23, 1, 5), 10, csColor (1, 0, 0), true);
+sector-&gt;GetLights ()-&gt;AddLight (light);
+</pre></td></tr></table>
+<p>This will create exactly the same light as the one specified above.
+</p>
+<p>At some point you may want to change the color of the light. You can
+do this with the following code:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">light-&gt;SetColor (csColor (0, 0, 1));
+</pre></td></tr></table>
+<p>This will change the color of the light from red to blue.
+</p>
+<a name="2"></a>
+<h4 class="subsubheading"> Include Files </h4>
+
+<p>The include files useful for this section are:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">#include &lt;iengine/light.h&gt;
+#include &lt;iengine/sector.h&gt;
+#include &lt;iengine/engine.h&gt;
+</pre></td></tr></table>
+
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Lighting.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Materials.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Lighting-System.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

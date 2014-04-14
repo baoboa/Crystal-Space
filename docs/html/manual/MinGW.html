@@ -1,0 +1,235 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 2.4.5 Windows using MinGW</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 2.4.5 Windows using MinGW">
+<meta name="keywords" content="Crystal Space 2.1.0: 2.4.5 Windows using MinGW">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="MinGW"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="MSVC7.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Cygwin.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Building.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Platform-Instructions.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Running-The-Demos.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 2.4.5 Windows using MinGW </h3>
+
+
+<p><em>Written by Eric Sunshine, <a href="mailto:sunshine@sunshineco.com">sunshine@sunshineco.com</a>.  Originally
+written by Philip Wyett, <a href="mailto:philswyett@gmx.co.uk">philswyett@gmx.co.uk</a>. Last updated 18 May 2012.</em>
+</p>
+<p>These instructions are for building Crystal Space with MinGW, the
+<em>Minimalist <small>GNU</small> compiler for Windows</em> (see <a href="http://www.mingw.org/">http://www.mingw.org/</a>).
+</p>
+<p>MinGW is a minimalist development environment for native Microsoft Windows applications,
+and <small>MSYS</small> is a general purpose command line environment.
+</p>
+<a name="1"></a>
+<h4 class="subsubheading"> Necessary Resources </h4>
+
+<p>Download the following packages:
+</p>
+<ul>
+<li>
+You need to install both MinGW and <small>MSYS</small>. This is made using the <tt>&lsquo;mingw-get-inst&rsquo;</tt>
+automated installer that you can find
+<a href="http://sourceforge.net/projects/mingw/files/Installer/mingw-get-inst/">here</a>.
+
+</li><li>
+The most recent Crystal Space <tt>&lsquo;cs-winlibs&rsquo;</tt> package. This package provides a set
+of additional required and optional resources used when building Crystal Space,
+such as zlib, libpng, libjpeg, <small>ODE</small>, <small>NASM</small> (the Netwide Assembler),
+etc.  See section <a href="cs_002dwinlibs.html#0">The &ldquo;cs-winlibs&rdquo; Packages</a>.
+</li></ul>
+
+<a name="2"></a>
+<h4 class="subsubheading"> Installation </h4>
+
+<p>Follow these instructions to install the packages which you downloaded.
+Be sure to install them in the order shown.
+</p>
+<ul>
+<li>
+Install both the MinGW compiler and <small>MSYS</small> using the <tt>&lsquo;mingw-get-inst&rsquo;</tt>
+automated installer. This self-extracting executable will automatically download
+and install all the packages that are needed for your system.
+
+</li><li>
+Install the <tt>&lsquo;cs-winlibs&rsquo;</tt> package. This is a self-extracting executable.
+After the installation, you should opt to also install support for the
+<small>MSYS</small> development environment.  This will augment the <small>MSYS</small> shell
+startup file so a helper script named <tt>&lsquo;cslibs-config&rsquo;</tt> can be found when
+configuring Crystal Space.  This script is used by the Crystal Space configure
+script to determine where the rest of the <tt>&lsquo;cs-winlibs&rsquo;</tt> resources are
+located.
+
+<p>You may want to select &ldquo;MSYS/MinGW typical&rdquo; in the &ldquo;Select Components&rdquo; 
+screen. You can further adjust the selection of installed components depending 
+on your actual set up (e.g. install VisualC-related components if you plan to 
+also use CrystalSpace with VisualC++).
+</p></li></ul>
+
+<p><em>Note</em>: If you ever install a new version of <small>MSYS</small>, then you should 
+also re-install the <tt>&lsquo;cs-winlibs&rsquo;</tt> package.
+</p>
+<a name="3"></a>
+<h4 class="subsubheading"> Building Crystal Space </h4>
+
+<p>You must configure and build Crystal Space from within the <small>MSYS</small> shell
+environment.  To launch this environment, click on the <small>MSYS</small> icon which the
+installation procedure placed upon your desktop, or choose the <small>MSYS</small> item
+from the <em>Programs</em> menu.  This will launch a Unix-like shell window into
+which you type commands.
+</p>
+<p>Crystal Space can be built with either <tt>&lsquo;make&rsquo;</tt> or Jam (see <a href="Requirements.html#GettingJam">GettingJam</a>).
+Both tools work equally well.  The <tt>&lsquo;cs-winlibs&rsquo;</tt> package contains a
+pre-built version of Jam which you can invoke simply by typing <samp>&lsquo;jam&rsquo;</samp> at
+the <small>MSYS</small> command prompt.  In the examples below, wherever <samp>&lsquo;jam&rsquo;</samp>
+is used, you can instead substitute <tt>&lsquo;make -k&rsquo;</tt> if you so desire.
+</p>
+<p>At the shell prompt, go to your <tt>&lsquo;CS&rsquo;</tt> directory with the <samp>&lsquo;cd&rsquo;</samp> command.
+For example, if Crystal Space resides at <tt>&lsquo;C:\work\CS&rsquo;</tt>, invoke the command
+<samp>&lsquo;cd /c/work/CS&rsquo;</samp>.  Next, configure and build the project with the following
+sequence of commands:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">./configure
+jam
+</pre></td></tr></table>
+<p>If you prefer to build a <em>debug</em> version of Crystal Space, substitute
+the following commands for those shown above:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">./configure --enable-debug
+jam
+</pre></td></tr></table>
+<p>If the Crystal Space source directory is read-only, if it is shared between
+several developers, or if you simply dislike building a project within its
+source tree, you can instead configure and build from a different directory.
+For instance:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">mkdir $HOME/builddir
+cd $HOME/builddir
+/c/work/CS/configure --enable-debug
+jam
+</pre></td></tr></table>
+<p>Finally, if you want to utilize Crystal Space as a software development kit
+(<small>SDK</small>), you can install it and then clean up the detritus of the build
+process:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">jam install
+jam distclean
+</pre></td></tr></table>
+<a name="4"></a>
+<h4 class="subsubheading"> Additional Build Options </h4>
+
+<p>Sometimes it is a good idea to remove all of the built programs and executable
+files and start from scratch.  You can do this with the following commands:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">jam clean
+jam
+</pre></td></tr></table>
+<p>Once in a while it is even a good idea to completely clean and re-configure the
+project.  This may be required if you are using the bleeding-edge version of
+Crystal Space from the <small>SVN</small> repository after some radical change.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">jam distclean
+./configure
+jam
+</pre></td></tr></table>
+<a name="5"></a>
+<h4 class="subsubheading"> Troubleshooting </h4>
+
+<p>If you successfully built Crystal Space, yet find that you can not run the
+applications from the <tt>&lsquo;CS\&rsquo;</tt> root directory, a possible cause might be that
+the pathname leading up to the <tt>&lsquo;CS\&rsquo;</tt> directory might have embedded
+whitespace.  For instance, if you installed the project in <tt>&lsquo;C:\my
+stuff\CS&rsquo;</tt>, try renaming the path to <tt>&lsquo;C:\my_stuff\CS&rsquo;</tt> or
+<tt>&lsquo;C:\mystuff\CS&rsquo;</tt>.
+</p>
+<p>// TODO: remove
+</p>
+<a name="6"></a>
+<h3 class="subheading"> Blasting the Past </h3>
+
+<p>If you were previously using the older, deprecated <tt>&lsquo;cs_mingw_0.??.exe&rsquo;</tt>
+package which contained the entire MinGW distribution along with other
+unrelated tools and resources, or the <tt>&lsquo;csmingwlibs&rsquo;</tt> package, it is highly
+recommended that you first remove the older package, as well as any residual
+files and resources before installing the newer MinGW, <small>MSYS</small>, and
+<tt>&lsquo;cs-winlibs&rsquo;</tt> packages.  For best results, it would probably be wise to
+remove the entire old <tt>&lsquo;MinGW&rsquo;</tt> directory (though you may want to make a
+backup copy of it just in case) and clean your environment variables of any
+references to the old resource directories.
+</p>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="MSVC7.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Cygwin.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Building.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Platform-Instructions.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Running-The-Demos.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

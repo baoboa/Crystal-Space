@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 5.7 Assimp's generic import of models</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 5.7 Assimp's generic import of models">
+<meta name="keywords" content="Crystal Space 2.1.0: 5.7 Assimp's generic import of models">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Assimp-importer"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="lighter2-Developer_0027s-Manual.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Blender.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Internals.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h2 class="section"> 5.7 Assimp's generic import of models </h2>
+
+<a name="1"></a>
+<h4 class="subsubheading"> Overview </h4>
+
+<p><a href="http://www.assimp.sourceforge.net">Assimp</a>, the Open Asset Import Library,
+is an open source library providing a generic interface to load 3D models and
+scenes from a <a href="http://assimp.sourceforge.net/main_features_formats.html">huge list of different file formats</a>,
+including 3ds Max, Wavefront, LightWave, Blender, <small>COLLADA</small>, Milkshape.
+</p>
+<p>This library can import the meshes, the material properties, the skeletal
+animations, the lights, cameras and complete scenes. The support for vertex
+and morph animations is planned but not yet implemented. The support for all these
+properties is quite good but may still vary depending on the file format used.
+Therefore, if the results are not good while using a given format, you may try to
+export to another format in order to test and see the difference.
+</p>
+<p>The Assimp plugin that has been implemented in Crystal Space is integrated
+completely transparently into the CS loader system, meaning that it allows you to
+load any asset file of one of the format supported, just like if it was a file of
+the Crystal Space format, therefore without any further need to manipulate or
+import previously the file.
+</p>
+<a name="2"></a>
+<h4 class="subsubheading"> Loader interfaces </h4>
+
+<p>Technically speaking, the Assimp plugin implements the <code>iBinaryLoaderPlugin</code>
+and <code>iModelLoader</code> interfaces of Crystal Space, as any other <small>CS</small>-specific
+loader plugin. Therefore, when the <code>iLoader</code> or <code>iThreadedLoader</code> are
+used to load a file, the Assimp plugin will be selected if it supports the file
+format. It will then analyze the file, and import the objects as genmeshes,
+animeshes or whole scenes depending on the loader interface that was used.
+</p>
+<p>If the <code>iModelLoader</code> interface is used, then only one mesh will be created.
+If there is any skeleton or animation defined, then the mesh will be an
+<a href="MeshObject-Animesh.html#0">Animesh</a>, otherwise it will be a <a href="MeshObject-Genmesh.html#0">Genmesh</a>.
+If the <code>iBinaryLoaderPlugin</code> is used, then a mesh factory will be created for all the
+meshes defined in the file.
+</p>
+<p>Additionally, if a mesh defined in the file contains points or line segments, then
+an extra render mesh will be added to the main mesh (using
+<code>iMeshFactoryWrapper::AddExtraRenderMesh()</code>).
+</p>
+<a name="3"></a>
+<h4 class="subsubheading"> Example </h4>
+
+<p>An example has been added in the <tt>&lsquo;data&rsquo;</tt> directory with the <samp>&lsquo;Seymour&rsquo;</samp>
+<small>COLLADA</small> animated test model. It is composed of one data file and one texture
+file that have been packed in a <small>ZIP</small> file in <tt>&lsquo;CS/data/seymour.zip&rsquo;</tt>. This
+model can be loaded in <tt>&lsquo;viewmesh&rsquo;</tt> using the following command:
+</p>
+<p><code>viewmesh -R=data/seymour.zip Seymour.dae</code>
+</p>
+<a name="4"></a>
+<h4 class="subsubheading"> Morph targets </h4>
+
+<p>A problem that has been mentioned about the Assimp library is that it does not yet
+support the import of vertex and morph animations. To overcome this, some tools have
+been added to Crystal Space in order to load and merge an Animesh with its morph
+targets defined in several different files. See the <a href="Animesh-Tools.html#0">dedicated section</a>
+for more info on this.
+</p>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="lighter2-Developer_0027s-Manual.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Blender.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Internals.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

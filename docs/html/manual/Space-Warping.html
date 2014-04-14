@@ -1,0 +1,189 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.9.7 Space Warping</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.9.7 Space Warping">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.9.7 Space Warping">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Space-Warping"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="HOWTO-Camera-Movement.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Visibility-Culling.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Engine.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 4.9.7 Space Warping </h3>
+
+<p><em>Written by Jorrit Tyberghein,
+<a href="mailto:jorrit.tyberghein@gmail.com">jorrit.tyberghein@gmail.com</a>.  Mathematical typesetting for
+TeX performed by Eric Sunshine, <a href="mailto:sunshine@sunshineco.com">sunshine@sunshineco.com</a>.</em>
+</p>
+<p>A little explanation about space warping in Crystal Space and how the space
+warping matrix/vector work should be given.
+</p>
+<p>Crystal Space always works with 3x3 matrices and one 3-element vector to
+represent transformations.  Let's say that the camera is given as <em>Mc</em> and
+<em>Vc</em> (camera matrix and camera vector, respectively).
+</p>
+<p>When going through a warping portal (mirror for example) there is also a
+warping matrix and two vectors, <em>Mw</em>, <em>Vw1</em> and <em>Vw2</em>.  <em>Vw1</em>
+is the vector that is applied before <em>Mw</em> and <em>Vw2</em> is applied after
+<em>Mw</em>.  The warping transformation is a transformation in world space.  For
+example, if you have the following sector:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">       A
+  +---------+       z
+  |         |       ^
+  |         |       |
+D |    o    | B     o--&gt;x
+  |         |
+  |         |
+  +---------+
+       C
+</pre></td></tr></table>
+<p>With point <em>o</em> at (0,0,0) and the <em>B</em> side a mirror.  Let's say that
+<em>B</em> is 2 units to the right of <em>o</em>.  The warping matrix/vector would
+then be:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">      /-1 0 0 \          / 2 \           / 2 \
+Mw =  | 0 1 0 |    Vw1 = | 0 |     Vw2 = | 0 |
+      \ 0 0 1 /          \ 0 /           \ 0 /
+</pre></td></tr></table>
+
+<p>The mirror swaps along the X-axis.
+</p>
+<p>How is this transformation then used?
+</p>
+<p>To know how this works we should understand that
+<em>Mc</em> and <em>Vc</em>
+(the camera transformation) is a transformation from world space to camera
+space.  Since the warping transformation is in world space we first have to
+apply
+<em>Mw / Vw</em> before <em>Mc / Vc</em>.
+</p>
+<p>So we want to make a new camera transformation matrix/vector that we are then
+going to use for the recursive rendering of the sector behind the mirror.
+Let's call this
+<em>Mc'</em> and <em>Vc'</em>.
+</p>
+<p>The camera transformation is used like this in Crystal Space:
+</p>
+<blockquote><table>
+<tr><td><p> <em>C = Mc * (W - Vc)</em> </p></td><td><p> (Equation 1)
+</p></td></tr>
+</table>
+</blockquote>
+
+
+<p>Where <em>C</em> is the camera space coordinates and <em>W</em> is the world space
+coordinates.
+</p>
+<p>But first we want to transform world space using the warping transformation:
+</p>
+<blockquote><table>
+<tr><td><p> <em>W' = Mw * (W - Vw1) + Vw2</em> </p></td><td><p> (Equation 2)
+</p></td></tr>
+</table>
+</blockquote>
+
+<p>It is important to realize that the
+<em>Mw / Vwn</em>
+transformation is used a little differently here.  The <em>Vw1</em> vector is
+used to translate to the warping polygon first and <em>Vw2</em> is used to go
+back when the matrix <em>Mw</em> has done its work.  This is just how Crystal
+Space does it.  One could use other matrices/vectors to express the warping
+transformations.
+</p>
+<p>Combining equations (1) and (2), but replacing <em>W</em> by <em>W'</em> in (1),
+gives:
+</p>
+<blockquote><p><em>C = Mc * (Mw * (W - Vw1) + Vw2 - Vc)</em><br>
+<em>C = Mc * Mw * ((W - Vw1) - 1 / Mw * (Vc - Vw2))</em><br>
+<em>C = Mc * Mw * (W - (Vw1 + 1 / Mw * (Vc - Vw2)))</em>
+</p></blockquote>
+
+
+<p>And this is the new camera transformation:
+</p>
+<blockquote><p><em>Mc' = Mc * Mw</em><br>
+<em>Vc' = Vw1 + 1 / Mw * (Vc - Vw2)</em>
+</p></blockquote>
+
+<p>In summary, the warping transformation works by first transforming world space
+to a new warped world space.  The new camera transformation is made by
+combining the warping transformation with the old camera transformation.
+</p>
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="HOWTO-Camera-Movement.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Visibility-Culling.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Engine.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

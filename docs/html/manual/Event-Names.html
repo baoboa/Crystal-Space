@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.4.1 Names</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.4.1 Names">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.4.1 Names">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Event-Names"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Event-System.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Event-Scheduling.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Event-System.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 4.4.1 Names </h3>
+
+<p>Events are identified with the help of an extensible hierarchically-structured
+event naming layer.  This system allows event names to be drilled down to
+arbitrary levels of specificity while simultaneously allowing event subscribers
+to express interest in general categories or precise event varieties.
+</p>
+<p>For example: Each joystick is individually named, so event consumers can listen
+only to particular devices, or to particular flavors of events.  For instance,
+the fourth joystick can produce the event
+<samp>&lsquo;crystalspace.input.joystick.3.button.down&rsquo;</samp>; an event handler may wish to
+subscribe to <samp>&lsquo;crystalspace.input.joystick.3.button.down&rsquo;</samp> to only receive
+down events from that joystick, to <samp>&lsquo;crystalspace.input.joystick.3.button&rsquo;</samp>
+to receive all button events from that joystick, to
+<samp>&lsquo;crystalspace.input.joystick.3&rsquo;</samp> to receive all events (buttons and moves)
+from that joystick, to <samp>&lsquo;crystalspace.input.joystick&rsquo;</samp> to receive all events
+from all joysticks, and so on. <em>Note</em>: A consequence of this behaviour is
+that subscribing to event names which themselves <em>are never used for
+actual events</em> is possible. Read on to see how to deal with this.
+</p>
+<p>Event names are translated into an efficient internal representation, the
+<samp>&lsquo;csEventID&rsquo;</samp>, using a singleton event name registry object
+(<samp>&lsquo;csEventNameRegistry&rsquo;</samp>, implementing the <samp>&lsquo;iEventNameRegistry&rsquo;</samp>
+interface) which can always be retrieved using the
+<code>csEventNameRegistry::GetRegistry(iObjectRegistry*)</code> method.  The actual
+name translation is performed by the <code>GetID()</code> method, which takes a
+string or <samp>&lsquo;csString&rsquo;</samp> argument and returns a <samp>&lsquo;csEventID&rsquo;</samp>.  The
+<samp>&lsquo;csEventID&rsquo;</samp>s are then used in calls to subscribe to event queues and in
+comparisons to determine the type of an event.  Many common event types'
+<samp>&lsquo;csEventID&rsquo;</samp>s can be accessed using macros defined in
+<tt>&lsquo;include/csutil/eventnames.h&rsquo;</tt>, e.g., <samp>&lsquo;crystalspace.application.quit&rsquo;</samp>
+is <samp>&lsquo;csevQuit()&rsquo;</samp>, which must be called with an argument of either an
+<samp>&lsquo;iObjectRegistry&rsquo;</samp> pointer or a <samp>&lsquo;iEventNameRegistry&rsquo;</samp> reference.  Since
+referencing an event <small>ID</small> via one of these macros will consume several
+cycles, performance-sensitive code should cache the results; see, for example,
+the <samp>&lsquo;CS_DECLARE_EVENT_SHORTCUTS&rsquo;</samp> and
+<samp>&lsquo;CS_INITIALIZE_EVENT_SHORTCUTS()&rsquo;</samp> macros in
+<tt>&lsquo;include/csutil/eventnames.h&rsquo;</tt>.
+</p>
+<p>Demultiplexing in event handlers is handled like this:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">static bool DemoEventHandler (iEvent&amp; ev)
+{
+  if (ev.Name == csevMouseButton (object_reg, 0))
+    ...
+  else if (ev.Name == csevMouseMove (object_reg, 0))
+    ...
+  else
+    ...
+}
+</pre></td></tr></table>
+<p>This will handle mouse button and mouse move events for the first mouse.
+</p>
+<p>You can also catch entire event hierarchies with a single test:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">if (name_reg-&gt;IsKindOf(ev.Name, csevKeyboardEvent (name_reg)))
+{
+  HandleKeyboardEvent(ev)
+}
+</pre></td></tr></table>
+<p>This will catch all keyboard events.
+</p>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Event-System.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Event-Scheduling.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Event-System.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

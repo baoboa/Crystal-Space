@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.12.3.6 Procedural, Dynamic and Animated Textures</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.12.3.6 Procedural, Dynamic and Animated Textures">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.12.3.6 Procedural, Dynamic and Animated Textures">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Texture-Mapping-Animations"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Texture-Mapping-Instructions.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Efficient-Textures.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Texture-Mapping.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h4 class="subsubsection"> 4.12.3.6 Procedural, Dynamic and Animated Textures </h4>
+
+<p>OK so we have the texture mapped onto the polygon, now the fun stuff starts.
+There are several ways to introduce movement into textures. Here is the
+terminology used in crystal space to describe these methods and brief
+explanations of what they entail:
+</p>
+<a name="1"></a>
+<h4 class="subsubheading"> Animated Textures </h4>
+ 
+<p>Lets say we have several precomputed texture images, which when taken in 
+sequence form an animation. An Animated texture is simply when you swap
+the texture image mapped on to the polygon between the precomputed texture
+images. This is the simplest, cheapest and most common method.
+</p>
+<a name="2"></a>
+<h4 class="subsubheading"> Dynamic Textures </h4>
+
+<p>Dynamic textures are when you manipulate the texture mapping transformation, or 
+the texture co-ordinates directly. This way you can rotate/scroll for example
+the texture on the polygon while it remains static.
+</p>
+<a name="3"></a>
+<h4 class="subsubheading"> Procedural Textures </h4>
+
+<p>If you still can't produce the effect you want with animated and or dynamic
+textures then you can resort to procedural textures. Another less common name
+for procedural textures is programmatic textures. This is when you write the
+texture on the fly. The texture is typically a buffer you render to in the
+same way as you would render to the main screen. Good procedural texture
+implementations gives you full blown 3d capable facilities to render to the
+texture. Fortunately Crystal Space has this :)
+Typical uses for procedural textures is when the content of the texture responds
+uniquely to user input or behavior. A good example is having a computer terminal
+within the virtual world which the user can type on and can see what they type
+come up on the virtual screen. (see section <a href="ProcTextures.html#0">Procedural Texture System</a>).
+</p>
+
+<hr size="1">
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

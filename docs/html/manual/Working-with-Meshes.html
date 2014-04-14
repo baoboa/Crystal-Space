@@ -1,0 +1,139 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.22.4 Working with Meshes</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.22.4 Working with Meshes">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.22.4 Working with Meshes">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Working-with-Meshes"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Basic-Tools.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Various-Tools.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="BugPlug.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 4.22.4 Working with Meshes </h3>
+
+<p>BugPlug has various nice tools to work with meshes. If you press
+<samp>&lsquo;ctrl-s&rsquo;</samp> then you can select a mesh with your left mouse button.
+Immediatelly you'll notice a blue box and a green 3D cross. On standard
+output you will see output representing the name of the selected mesh
+and the coordinate where you actually hit the mesh. The box
+represents the bounding box of that mesh. The green cross represents
+the three axes of the bounding sphere. You can disable the display
+of the box using <samp>&lsquo;ctrl-d b&rsquo;</samp> and you can disable the display of the
+radius using <samp>&lsquo;ctrl-d r&rsquo;</samp>.
+</p>
+<p>Now with this mesh selected there are a number of things you can do:
+</p>
+<ul>
+<li>
+Show normals (<samp>&lsquo;ctrl-d n&rsquo;</samp>): if you enable visualization of normals
+then BugPlug will show normals (in blue), tangents (in red) and
+bitangents (in green) for every triangle of the selected mesh.
+
+</li><li>
+Show collision detection mesh (<samp>&lsquo;ctrl-d crtl-alt-c&rsquo;</samp>): show the
+triangle mesh that will be used for collision detection with this mesh.
+
+</li><li>
+Show visibility culling mesh (<samp>&lsquo;ctrl-d crtl-alt-v&rsquo;</samp>): show the
+triangle mesh that will be used for visibility culling with this mesh.
+Basically this is the mesh that will occlude other meshes. It will not
+be used to test visibility.
+
+</li><li>
+Show shadow casting mesh (<samp>&lsquo;ctrl-d crtl-alt-s&rsquo;</samp>): show the
+triangle mesh that will be used for shadow casting.
+
+</li><li>
+Show base mesh (<samp>&lsquo;ctrl-d crtl-alt-b&rsquo;</samp>): show the base triangle
+mesh.
+
+</li><li>
+Hide mesh (<samp>&lsquo;ctrl-d h&rsquo;</samp>): hide the current selected mesh.
+
+</li><li>
+Undo hide mesh (<samp>&lsquo;ctrl-d shift-h&rsquo;</samp>): unhide the current selected mesh.
+
+</li></ul>
+
+<p>If you can't find a mesh but you know the name then you can also select
+a mesh using <samp>&lsquo;ctrl-d ctrl-alt-m&rsquo;</samp>. You'll be presented with a dialog
+in which you can type a regexp pattern. Using this you can also select
+multiple meshes. Typing <samp>&lsquo;.*&rsquo;</samp> here will select all meshes. Note that
+this feature only works for meshes in the current sector.
+</p>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Basic-Tools.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Various-Tools.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="BugPlug.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

@@ -1,0 +1,254 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.9.1 Components of a World</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.9.1 Components of a World">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.9.1 Components of a World">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="World-Components"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Engine.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Renderloops.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Engine.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 4.9.1 Components of a World </h3>
+
+<p>This section describes the objects used to build a world.  This is useful to
+understand the format of the Crystal Space map file
+(see section <a href="XML-File-Format.html#0">Format of Map File (<small>XML</small>)</a>).  To understand this you should know the basics of
+the <a href="Portal-Engine.html#0">Portal Engine</a>.  This section describes the components of the world
+independent from the file format, so it is also useful if you want to build a
+world from within your program.
+</p>
+<p>The world is built up from the following objects:
+</p>
+<a name="1"></a>
+<h4 class="subsubheading"> Sectors </h4>
+
+<p>(<code>iSector</code>). For technical details, see the portal engine discussion
+(see section <a href="Portal-Engine.html#0">Portal Engine</a>). Basically sectors define an area
+that can contain several geometrical objects. As opposed to earlier
+versions of Crystal Space, a sector does not itself represent geometry.
+Instead all geometry in a sector is made from <em>Mesh Objects</em>.
+Theoretically a sector is infinite although in practice it is usually
+logically bounded by sector walls or a sky object. You can create sectors
+using the engine (<code>iEngine</code>) or they can be created in a map file.
+</p>
+<a name="2"></a>
+<h4 class="subsubheading"> Mesh Factories </h4>
+
+<p>(<code>iMeshFactoryWrapper</code>, <code>iMeshObjectFactory</code>). See the mesh object
+section for more specific information about mesh factories (see section <a href="MeshObject.html#0">Mesh Object Plug-In System</a>).
+Mesh object factories are objects that can be used to create mesh objects
+that inherit characteristics from their mesh factory. Basically a mesh
+object factory is like a blue-print for creating a mesh object. Mesh
+factories can also be hierarchical like mesh objects. In most cases
+(i.e. like genmesh (see section <a href="MeshObject-Genmesh.html#0">Genmesh Mesh Object</a>) the factory defines the
+actual geometry of an object. You can then create multiple mesh objects
+from those factories.  They will all share the same geometry.
+</p>
+<a name="3"></a>
+<h4 class="subsubheading"> Mesh Objects </h4>
+
+<p>(<code>iMeshWrapper</code>, <code>iMeshObject</code>). See the mesh object section for
+more specific information about mesh objects (see section <a href="MeshObject.html#0">Mesh Object Plug-In System</a>).
+Mesh objects represent geometry in some
+sector. Everything you can see (walls, actors, particle systems, <small class="dots">...</small>) is
+represented by some kind of mesh object. This is a very important concept
+in the Crystal Space engine. Mesh objects can also be hierarchical.
+A mesh object can have several children which in turn can also have children
+and so on. The children of a mesh object are positioned relative to the
+parent. So when you move the parent the children will automatically move
+with the parent. Children of a mesh can be meshes or lights.
+</p>
+<a name="4"></a>
+<h4 class="subsubheading"> Textures </h4>
+
+<p>(<code>iTextureWrapper</code>). See the material section for more information
+about textures.  (see section <a href="Materials.html#0">Materials and Textures</a>).
+Basically a texture represents an actual image that can
+be used in materials. Textures are used to give your mesh objects a real
+appearance. Textures are never used alone but always in a material.
+</p>
+<a name="5"></a>
+<h4 class="subsubheading"> Materials </h4>
+
+<p>(<code>iMaterialWrapper</code>). See the material section for more information
+about materials.  (see section <a href="Materials.html#0">Materials and Textures</a>).
+Basically a material represents a surface appearance
+for a polygon or triangle. A material is most typically made out of a single
+texture but it is also possible to make materials out of a combination of
+textures (using a shader) or even without any textures at all (for example
+a solid color).
+</p>
+<a name="6"></a>
+<h4 class="subsubheading"> Shaders </h4>
+
+<p>(<code>iShader</code>). See the shader section for more information about shaders
+(see section <a href="Shaders.html#0">Shaders</a>). A shader is a piece of code that is typically run on
+the 3D card. It is this code that is responsible for actually rendering
+the surface attributes using the material data. A material and a shader
+work closely together.
+</p>
+<a name="7"></a>
+<h4 class="subsubheading"> Renderloops </h4>
+
+<p>(<code>iRenderLoop</code>). See the renderloop section for more information about
+renderloops (see section <a href="Renderloops.html#0">Renderloops</a>). A renderloop is an engine structure that
+tells the engine how to render the objects in a given sector. Basically it tells
+the engine the steps required to do the rendering of the mesh objects and
+also the steps required to do the lighting. You can make your own renderloops
+but typically you would use one of the standard provided renderloops
+from the <tt>&lsquo;data/shader&rsquo;</tt> directory.
+</p>
+<a name="8"></a>
+<h4 class="subsubheading"> Portals </h4>
+
+<p>(<code>iPortal</code>, <code>iPortalContainer</code>). See the portal discussion
+(see section <a href="Portal-Engine.html#0">Portal Engine</a>).
+The idea is that sectors are normally totally independent areas
+unless you connect them through portals. A portal is basically a 3D polygon
+that has no material but instead represents a view of the destination sector.
+</p>
+<a name="9"></a>
+<h4 class="subsubheading"> Lights </h4>
+
+<p>(<code>iLight</code>). A light is needed to illuminate your level.
+Lights can also be part of a hierarchical object (like mesh objects).
+There are different ways how lighting is applied to objects. See section <a href="Lighting.html#0">Lighting</a>.
+</p>
+<a name="10"></a>
+<h4 class="subsubheading"> Scene Nodes </h4>
+
+<p>(<code>iSceneNode</code>). A scene node is a generic representation of an
+object in a hierarchy. Currently mesh objects and lights are scene nodes.
+</p>
+<a name="11"></a>
+<h4 class="subsubheading"> Collections </h4>
+
+<p>(<code>iCollection</code>). A collection is a group of iObjects. A collection can contain
+textures, materials, mesh objects, mesh factories, lights, collections, sectors,
+sequences, triggers, shared variables, <small class="dots">...</small>. Collections are useful when you
+want to load/unload big parts of a world dynamically. This can be used in
+cases where the world is too big to fit in memory and you want to use dynamic
+loading. It is important to realize that the concept of a collection is not
+geometrical. A collection is typically a group of objects that are located
+close to each other in 3D but it doesn't have to be that way. Collections can
+be organized in any way you want. Some examples:
+</p>
+<ul>
+<li>
+One collection represents a geometrical part of the world, including sectors,
+meshes, lights, materials, <small class="dots">...</small>) used in that area. This is probably
+the most common usage.
+</li><li>
+One collection represents objects of a given type. For example, all materials
+are in one collection. Meshes in another.
+</li><li>
+One collection represents the static objects of your world. The other collection
+represents the dynamic objects (moving objects).
+</li></ul>
+
+<a name="12"></a>
+<h4 class="subsubheading"> Key/Value pairs </h4>
+
+<p>(<code>iKeyValuePair</code>). A key/value pair is a {<var>key</var>,<var>value</var>}
+tuple describing some game specific concept. Key/value tuples are represented
+by a pair of strings (or one name and several named value strings). If you
+have built levels for Quake before, you are probably familiar with this concept
+from Quake's <em>Entities</em>. Almost all objects in the Crystal Space
+engine support these key/value pairs (this is done through the <code>iObject</code>
+system) so you can attach this kind of
+information to anything. Crystal Space itself will not use this information
+but your game can query it and perform the appropriate actions.
+In theory it is up to your program as to how these key-value tuples
+are interpreted.  However, Crystal Space has set some standards to make life
+easier for level designers and also to make levels as portable as possible
+between different Crystal Space games. Note that key value pairs actually
+allow multiple named values for a single key.
+See the section about game data for more information on this subject.
+(see section <a href="Game-Data.html#0">Managing Game Specific Data</a>).
+</p>
+<a name="13"></a>
+<h4 class="subsubheading"> Nodes </h4>
+
+<p>(<code>iMapNode</code>). A node represents a point in space. The engine
+itself will not use nodes but a game can use them to represent game specific
+data. See the section about game data for more information on this subject.
+(see section <a href="Game-Data.html#0">Managing Game Specific Data</a>).
+</p>
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Engine.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Renderloops.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Engine.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

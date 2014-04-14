@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.22.3 Basic Tools</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.22.3 Basic Tools">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.22.3 Basic Tools">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Basic-Tools"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Controlling-BugPlug.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Meshes.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="BugPlug.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 4.22.3 Basic Tools </h3>
+
+<p>The first thing you notice when you start your application using
+BugPlug is the current framerate at the lower-left corner of the display.
+If you don't want to see this you can always press <samp>&lsquo;ctrl-d ctrl-alt-p&rsquo;</samp>.
+To toggle between fps and frame time display, press 
+<samp>&lsquo;ctrl-d ctrl-alt-shift-p&rsquo;</samp>.
+</p>
+<p>Another useful feature is the screenshot feature. Just press <samp>&lsquo;ctrl-d
+f12&rsquo;</samp> and BugPlug will save a screenshot of the current display to the
+current directory. By default this will be a <small>PNG</small> file called
+<tt>&lsquo;crystal000.png&rsquo;</tt>. The digits will automatically be incremented so that
+previous screenshots are not overwritten. You can change the file format,
+filename, and path in <tt>&lsquo;data/config-plugins/bugplug.cfg&rsquo;</tt>.
+</p>
+<p>If you press <samp>&lsquo;ctrl-d e&rsquo;</samp> then BugPlug will render the 3D world in
+wireframe mode. This is useful to see how many triangles there are and can
+also help to see geometry that you can otherwise not see because there is
+not enough light or some materials/shaders are not working properly.
+</p>
+<p>If you run BugPlug and in addition add <samp>&lsquo;-verbose&rsquo;</samp> or <samp>&lsquo;-verbose=-scf&rsquo;</samp>
+on the commandline then BugPlug will show additional debugging information
+at the top-left of the display. The first line of this debugging information
+is the number of sectors that are being displayed. With every number
+you get a current number (what was being rendered last frame), a total number
+and an average number. The second line is the number of triangles. Note
+that what you think of as a single triangle may actually be multiple
+triangles in reality because of lighting and multi-pass effects. The last
+debugging line is the number of meshes that are being rendered. Again
+this number can be higher then you expect. A single mesh object with two
+different materials actually represents two meshes for the renderer.
+</p>
+<hr size="1">
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Copyright (C) 2012 by Matthieu Kraus
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Library General Public
+  License as published by the Free Software Foundation; either
+  version 2 of the License, or (at your option) any later version.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  Library General Public License for more details.
+
+  You should have received a copy of the GNU Library General Public
+  License along with this library; if not, write to the Free
+  Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+-->
+<snippet type="compound">
+  <technique priority="200">
+    <combiner plugin="crystalspace.graphics3d.shader.combiner.glcg" />
+
+    <!--
+	Weak aliases.
+	"Weak" means they do _not_ override aliases specified above this
+	snippet; instead, the weak alias applies only if an alias with the
+	given has not been specified yet.
+	The practical effect is that this allows to use aliased snippets,
+	but also provide "default" snippets and thus does not require users
+	of this snippets to provide all aliases.
+      -->
+    <alias name="position" weak="yes" file="/shader-snippets/position.xml" />
+    <alias name="texcoord" weak="yes" file="/shader-snippets/texcoord-default.xml" />
+    <alias name="parallax" weak="yes" file="/shader-snippets/surface/parallax-occlusion.xml" />
+    <alias name="normalmap" weak="yes" file="/shader-snippets/surface/normalmap.xml" />
+    <alias name="shininess" weak="yes" file="/shader-snippets/surface/shininess-default.xml" />
+    <alias name="fill_buffer" weak="yes" file="/shader-snippets/deferred/lighting/fill_buffer.xml" />
+
+    <!--
+	Snippets - the building blocks of this shader.
+	Their order influence what happens if not all features of the shader
+	are supported; for earlier appearing snippets higher techniques
+	are preferred. Basically, order snippets by 'importance' of the eye
+	candy they produce.
+    -->
+    <snippet id="position" filealias="position" />
+    <snippet id="texcoord" filealias="texcoord" />
+    <snippet id="shininess" filealias="shininess" />
+    <snippet id="normalmap" filealias="normalmap" />
+    <snippet id="parallax" filealias="parallax" />
+    <snippet id="fill_buffer" filealias="fill_buffer" />
+    <!-- "connections" describe what snippets take input from what other
+	  snippets (ie the "data flow" is modeled). The exact resolution of
+	  what output is linked to what input is done automatically. -->
+    <connection from="position" to="parallax" />
+    <connection from="texcoord" to="parallax" />
+    <connection from="parallax" to="normalmap" />
+    <connection from="parallax" to="shininess" />
+    <connection from="shininess" to="fill_buffer" />
+    <connection from="normalmap" to="fill_buffer" />
+  </technique>
+</snippet>

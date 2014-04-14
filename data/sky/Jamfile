@@ -1,0 +1,7 @@
+SubDir TOP data sky ;
+
+{
+local files = library [ Wildcard *.png ] ;
+InstallData $(files) : data sky ;
+FileListEntriesData $(files) : sky : data-demo ;
+}

@@ -1,0 +1,80 @@
+<library>
+    <textures>
+        <texture name="fp2">
+            <file>/lib/stdtex/fp2.png</file>
+        </texture>
+    </textures>
+    <shaders>
+        <shader>
+            <file>/shader/particles/basic.xml</file>
+        </shader>
+    </shaders>
+    <materials>
+        <material name="fp2">
+            <texture>fp2</texture>
+            <shader type="diffuse">*null</shader>
+            <shader type="ambient">particles_basic</shader>
+        </material>
+    </materials>
+    <meshfact name="largefireFACT">
+        <plugin>crystalspace.mesh.loader.factory.particles</plugin>
+        <params>
+            <particlesize x="0.9" y="0.9" />
+            <sortmode>distance</sortmode>
+            <individualsize>yes</individualsize> <!-- required to have scaling work -->
+            <rotationmode>vertex</rotationmode> <!-- required to have rotation work -->
+            <integrationmode>both</integrationmode> <!-- required to have rotation work -->
+            <emitter type="sphere">
+                <emissionrate>100</emissionrate>
+                <placement>volume</placement>
+                <mass min="0.1" max="0.1" />
+                <radius>0.5</radius>
+                <!-- <uniformvelocity /> -->
+                <initialvelocity x="0" y="-0.2" z="0" />
+                <initialttl min="5" max="5" />
+            </emitter>
+            <effector type="force">
+                <acceleration x="0" y="0.2" z="0" />
+            </effector>
+
+            <effector type="linear"> 
+                <param rtime="3">
+                    <particlesize x="0.5" y="0.5" />
+                    <angularvelocity y="0"/> <!-- rotation -->
+                    <color red="1" green="1" blue="1" alpha="1"/>
+                </param>
+                <param rtime="2.5">
+                    <particlesize x="0.5" y="0.5" />
+                    <angularvelocity y="0"/>
+                    <color red="1" green="1" blue="0.4" alpha="0"/>
+                </param>
+                <param rtime="2">
+                    <particlesize x="1" y="1" />
+                    <angularvelocity y="1"/>
+                    <color red="1" green="1" blue="0.2" alpha="0.2" />
+                </param>
+                <param rtime="1.3">
+                    <particlesize x="0.8" y="0.8" />
+                    <angularvelocity y="1"/>
+                    <color red="1" green="0.5" blue="0.2" alpha="0.5"/>
+                </param>
+                <param rtime="0.2">
+                    <particlesize x="0.5" y="0.5" />
+                    <angularvelocity y="0"/>
+                    <color red="0.2" green="0.2" blue="0.2" alpha="0.5" />
+                </param>
+                <param rtime="0">
+                    <particlesize x="0.5" y="0.5" />
+                    <angularvelocity y="0"/>
+                    <color red="0" green="0" blue="0" alpha="0.3" />
+                </param>
+            </effector>
+	    <material>fp2</material>
+	    <mixmode>
+		<copy />
+	    </mixmode>
+        </params>
+	<priority>alpha</priority>
+	<ztest />
+    </meshfact>
+</library>

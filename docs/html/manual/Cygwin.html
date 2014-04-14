@@ -1,0 +1,335 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 2.4.6 Windows using Cygwin</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 2.4.6 Windows using Cygwin">
+<meta name="keywords" content="Crystal Space 2.1.0: 2.4.6 Windows using Cygwin">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Cygwin"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="MinGW.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="MacOS_002fX.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Building.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Platform-Instructions.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Running-The-Demos.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 2.4.6 Windows using Cygwin </h3>
+
+
+<p>Originally written by Philip Wyett <a href="mailto:philswyett@gmx.co.uk">philswyett@gmx.co.uk</a>.
+
+<em>Last updated 20 May 2007.</em>
+</p>
+<p>These instructions are for building Crystal Space with Cygwin a <small>GNU</small>
+compiler for Windows created by Red Hat Inc. and other third party
+contributors.
+</p>
+<a name="1"></a>
+<h4 class="subsubheading"> A Warning About Cygwin </h4>
+
+<p>A full or extensive Cygwin installation can take up alot of hard disk space.
+Please be careful if installing on low free space disks.  A typical install can
+be around 400<small>MB</small> and large above 700<small>MB</small>.  Note, however, that a full
+installation of Cygwin is not required for building Crystal Space.  It is
+possible to get by with a fairly minimal installation consisting of the
+<small>GCC</small> compiler and linker suite and related tools, and several support
+libraries as discussed below.
+</p>
+<a name="2"></a>
+<h4 class="subsubheading"> Obtaining Cygwin </h4>
+
+<p>Cygwin uses a custom setup application for installation of Cygwin which can be
+obtained from their official website.
+</p>
+
+<p><a href="http://www.cygwin.com/">http://www.cygwin.com/</a>
+</p>
+<p>The installation program <tt>&lsquo;setup.exe&rsquo;</tt> must be downloaded to your computer.
+</p>
+
+<p><a href="http://www.cygwin.com/setup.exe">http://www.cygwin.com/setup.exe</a>
+</p>
+<a name="3"></a>
+<h4 class="subsubheading"> Installing Cygwin </h4>
+
+<p>First, go to the location where you downloaded the Cygwin <tt>&lsquo;setup.exe&rsquo;</tt>.  It
+is suggested that you download it into a directory of its own since it will
+place additional files in that directory later on when it downloads the actual
+Cygwin packages.
+</p>
+<p><img src="build/platform/win32/cygwin/cygshot1.jpg" alt="build/platform/win32/cygwin/cygshot1">
+</p>
+<p>Launch <tt>&lsquo;setup.exe&rsquo;</tt> to begin the installation process.
+</p>
+<p>You will first be prompted with a Cygwin welcome dialog.  It provides basic
+information about the setup program, such as its version number.
+</p>
+<p><img src="build/platform/win32/cygwin/cygshot2.jpg" alt="build/platform/win32/cygwin/cygshot2">
+</p>
+<p>Click on the <em>Next</em> button to continue.
+</p>
+<p>The next dialog you will see is the <em>Choose a Download Source</em> dialog.
+Here you need to choose if you wish to download and install directly from the
+internet or download to your system so you can install it later.  Cygwin
+can install, uninstall, and update using this program.  So, the decision
+is whether or not you want to download and keep the downloaded files around in
+order to avoid a large download at a later date if you re-install.  If you have
+a fast Internet connection, then you can download and install directly without
+saving the packages to your disk drive.  This is a matter of personal
+preference.
+</p>
+<p><img src="build/platform/win32/cygwin/cygshot3.jpg" alt="build/platform/win32/cygwin/cygshot3">
+</p>
+<p>After deciding, click on the <em>Next</em> button to continue.
+</p>
+<p>Note: For the purposes of this discussion, it is assumed that you are
+installing directly from the Internet.
+</p>
+<p>The next dialog you will see is the <em>Select Root Install Directory</em>
+dialog.  The first thing to choose is the location of where Cygwin should be
+installed.  It is suggested that you install in a directory named <tt>&lsquo;cygwin&rsquo;</tt>
+at the location of your choice.  Point the installer at that directory.
+</p>
+<p>The next thing to decide, if you are a system administrator, is if you want any
+other users of that computer to have access to Cygwin.  Also you are asked if
+you wish to use <small>DOS</small> text file line-ending format (<small>CR/LF</small>) or Unix
+format (<small>LF</small>).  This is all a matter of preference for the user.  If you are
+a pure Windows users it is suggested that you choose the <small>DOS</small> option.
+However, if you might move files to a Unix machine, for instance, it could be
+favorable to use the Unix option.
+</p>
+<p><img src="build/platform/win32/cygwin/cygshot4.jpg" alt="build/platform/win32/cygwin/cygshot4">
+</p>
+<p>After deciding upon a root install location and other options, click on the
+<em>Next</em> button to continue.
+</p>
+<p>The next dialog you will see is the <em>Select Local Package Directory</em>
+dialog.  This directory is corresponds to the location where you placed the
+Cygwin <tt>&lsquo;setup.exe&rsquo;</tt> program.
+</p>
+<p><img src="build/platform/win32/cygwin/cygshot5.jpg" alt="build/platform/win32/cygwin/cygshot5">
+</p>
+<p>If they correspond, click on the <em>Next</em> button to continue.
+</p>
+<p>The next dialog is the <em>Select Your Internet Connection</em>
+dialog.  This lets you specify the type of connection you have.  Most of the
+time it will be a <em>Direct Connection</em>.  However, if you access
+the Internet via proxy server, then select that option and enter the necessary
+information.
+</p>
+<p><img src="build/platform/win32/cygwin/cygshot6.jpg" alt="build/platform/win32/cygwin/cygshot6">
+</p>
+<p>After choosing your internet connection type, click on the <em>Next</em> button
+to continue.
+</p>
+<p>The next dialog you will see is the <em>Choose A Download Site</em> dialog.
+Choose a download location in or as close to your own geographical location as
+possible.
+</p>
+<p><img src="build/platform/win32/cygwin/cygshot7.jpg" alt="build/platform/win32/cygwin/cygshot7">
+</p>
+<p>After choosing the closest download site, click on the <em>Next</em> button
+to continue.
+</p>
+<p>The next dialog is the <em>Select Packages To Install</em> dialog.
+This shows a tree with selectable packages in the branches.  If you have
+sufficient disk space and a high-speed Internet connection, you may wish to
+install the majority of the tools.  On the other hand, if you want to install
+only a minimum set of tools, choose the packages in the <em>Devel</em> branch
+and, at a minimum, <em>jpeg</em>, <em>libpng</em>, <em>opengl</em>, <em>python</em>,
+<em>w32api</em>, and <em>zlib</em> from the <em>Libs</em> branch.
+</p>
+<p><img src="build/platform/win32/cygwin/cygshot8.jpg" alt="build/platform/win32/cygwin/cygshot8">
+</p>
+<p>Note: You do not need to install the <em>Apache server</em>, <em>XFree</em> or
+<em>Games</em> packages.  Also if you miss anything first time round you can
+simply repeat the install process and install the package(s) you missed.
+</p>
+<p>Important: The above <em>Select Packages To Install</em> section is subject to
+change as Cygwin makes additional packages available.
+</p>
+<p>After choosing the packages for installing, click on the <em>Next</em> button to
+continue.
+</p>
+<p>At this point the installer will download and install the selected packages and
+perform post build steps, such as the generation of documentation, etc.
+</p>
+<p>The next dialog is the <em>Create Icons</em> dialog.  If you are
+performing a fresh install and want these icons, then check the boxes.  If you
+are updating you need not check the boxes if you already have the icons.
+</p>
+<p><img src="build/platform/win32/cygwin/cygshot9.jpg" alt="build/platform/win32/cygwin/cygshot9">
+</p>
+<p>After making your selection, click on the <em>Finish</em> button to continue.
+</p>
+<p>After all this, you will be prompted with a dialog to tell you that the
+installation is complete.  Click on the <em>Ok</em> button to finish the
+installation process.
+</p>
+<a name="4"></a>
+<h4 class="subsubheading"> Using the &ldquo;cs-winlibs&rdquo; package </h4>
+
+<p>It is recommended to use the &ldquo;cs-winlibs&rdquo; package to obtain the required
+and optional third-party libraries needed to build Crystal Space.  
+See section <a href="cs_002dwinlibs.html#0">The &ldquo;cs-winlibs&rdquo; Packages</a>.
+</p>
+<p>Crystal Space can also be built using some of the libraries from Cygwin (basic
+libraries like <tt>&lsquo;zlib&rsquo;</tt>, <tt>&lsquo;libpng&rsquo;</tt>, <small class="dots">...</small>) and/or custom-built third
+party libraries.  However you need to take into account that Crystal Space is
+by default built using the <samp>&lsquo;-mno-cygwin&rsquo;</samp> flag; you must either built
+Crystal Space without that flag or build the third party libraries
+accordingly. See the <tt>&lsquo;configure&rsquo;</tt> help for details on how to disable the
+flag.
+</p>
+<p>You may want to select &ldquo;Cygwin typical&rdquo; in the &ldquo;Select Components&rdquo; screen
+when installing <tt>&lsquo;cs-winlibs&rsquo;</tt>.  You can further adjust the selection of
+installed components depending upon your actual set up (e.g. install
+MinGW-related components if you plan to also use CrystalSpace with MinGW/MSYS).
+</p>
+<p>After the installation, if you opted to set up support for the Cygwin
+development environment, the Cygwin shell startup file will be augmented so a
+helper script named <tt>&lsquo;cslibs-config&rsquo;</tt> can be found when configuring Crystal
+Space.  The Crystal Space configure script queries <tt>&lsquo;cslibs-config&rsquo;</tt> to
+determine where the <tt>&lsquo;cs-winlibs&rsquo;</tt> resources are located.
+</p>
+<a name="5"></a>
+<h4 class="subsubheading"> Building Crystal Space </h4>
+<p><a name="Cygwin_003a-Building-Crystal-Space"></a>
+</p>
+<p>Crystal Space can be built with either <tt>&lsquo;make&rsquo;</tt> or Jam (see <a href="Requirements.html#GettingJam">GettingJam</a>).
+Both tools work equally well.  The <tt>&lsquo;cs-winlibs&rsquo;</tt> package contains a
+pre-built version of Jam which you can invoke simply by typing <samp>&lsquo;jam&rsquo;</samp> at
+the Cygwin Bash prompt.  These instructions assume you have installed the
+&ldquo;cs-winlibs&rdquo; and are using <tt>&lsquo;jam&rsquo;</tt>.  However, if you don't, you can
+substitute <samp>&lsquo;make -k&rsquo;</samp> wherever <samp>&lsquo;jam&rsquo;</samp> is used in the examples below.
+</p>
+<p>Open a Cygwin Bash prompt via the desktop shortcut or the via item in the
+Programs menu.  Navigate to the <tt>&lsquo;CS/&rsquo;</tt> directory and issue the following
+commands:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">./configure
+jam all
+</pre></td></tr></table>
+<p>Alternately, if you wish to use Jam to build the project:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">./configure
+make -k all
+</pre></td></tr></table>
+<p>The <samp>&lsquo;-k&rsquo;</samp> option used in the <samp>&lsquo;make -k all&rsquo;</samp> command instructs the
+project builder to ignore errors and continue compiling regardless.  This can
+be useful in cases when localized errors appear in the project since often they
+affect only a single module.
+</p>
+<p>If you prefer to build a <em>debug</em> version of Crystal Space, substitute
+the following commands for those shown above:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">./configure --enable-debug
+jam
+</pre></td></tr></table>
+<p>If the Crystal Space source directory is read-only, if it is shared between
+several developers, or if you simply dislike building a project within its
+source tree, you can instead configure and build from a different directory.
+For instance:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">mkdir $HOME/builddir
+cd $HOME/builddir
+/path/to/CS/configure --enable-debug
+jam
+</pre></td></tr></table>
+<p>Finally, if you want to utilize Crystal Space as a software development kit
+(<small>SDK</small>), you can install it and then clean up the detritus of the build
+process:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">jam install
+jam distclean
+</pre></td></tr></table>
+<a name="6"></a>
+<h4 class="subsubheading"> Additional Build Options </h4>
+
+<p>Sometimes it is a good idea to remove all of the built programs and executable
+files and start from scratch.  You can do this with the following commands:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">jam clean
+jam
+</pre></td></tr></table>
+<p>Once in a while it is even a good idea to completely clean and re-configure the
+project.  This may be required if you are using the bleeding-edge version of
+Crystal Space from the <small>SVN</small> repository after some radical change.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">jam distclean
+./configure
+jam
+</pre></td></tr></table>
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="MinGW.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="MacOS_002fX.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Building.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Platform-Instructions.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Running-The-Demos.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

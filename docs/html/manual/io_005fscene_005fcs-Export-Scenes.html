@@ -1,0 +1,170 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 5.8.3 Exporting Scenes</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 5.8.3 Exporting Scenes">
+<meta name="keywords" content="Crystal Space 2.1.0: 5.8.3 Exporting Scenes">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="io_005fscene_005fcs-Export-Scenes"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="io_005fscene_005fcs-First-Steps.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="io_005fscene_005fcs-Export-Genmesh.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Blender.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Internals.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 5.8.3 Exporting Scenes </h3>
+
+<p>This section presents the main objects and files that are created when a Blender scene is
+exported.
+</p>
+<p>The sectors, portals, lights and cameras are all exported in the <tt>&lsquo;world&rsquo;</tt> file. This
+also means that they will be exported only if the <samp>&lsquo;Export as a CS library&rsquo;</samp> option
+is not checked. See the section on the <a href="XML-File-Format.html#0">format of the Crystal Space map files</a>
+for more information on the <tt>&lsquo;world&rsquo;</tt> file.
+</p>
+<p>The materials and mesh factories are exported in a Crystal Space <samp>&lsquo;library&rsquo;</samp> file,
+either in the <tt>&lsquo;factories&rsquo;</tt> directory or in the main <tt>&lsquo;library&rsquo;</tt> file.
+</p>
+<p>These objects are actually exported only if they are visible in the Blender scene (i.e.
+you haven't unchecked the <cite>Restrict visibility in the viewport</cite> option in the
+<a href="http://wiki.blender.org/index.php/Doc:2.6/Manual/Data_System/The_Outliner">Blender outliner</a>).
+</p>
+<a name="1"></a>
+<h4 class="subsubheading"> Sectors and Portals </h4>
+
+<p>The maps in Crystal Space can be split in <a href="VIS-sectors-and-portals.html#0">several sectors linked by portals</a>.
+The concept of sectors corresponds to the one of the
+<a href="http://wiki.blender.org/index.php/Doc:2.6/Manual/Interface/Scenes">Blender scenes</a>,
+but Blender has no matching concept for the portals.
+</p>
+<p>Each scene in Blender will therefore be exported as a different sector in the Crystal
+Space <tt>&lsquo;world&rsquo;</tt> file. For the creation of the portals that will link together the sectors,
+please have a look at the <a href="io_005fscene_005fcs-Portals.html#0">dedicated page</a>.
+</p>
+<a name="2"></a>
+<h4 class="subsubheading"> Cameras </h4>
+
+<p>All visible cameras in Blender will be exported as camera positions (i.e. <code>iCameraPosition</code> 
+objects) in the Crystal Space <tt>&lsquo;world&rsquo;</tt> file. The name of the cameras is important since they
+are exported in the alphabetical order of their name, with the first camera serving usually
+as the starting position in the Crystal Space scene.
+</p>
+<a name="3"></a>
+<h4 class="subsubheading"> Lights </h4>
+
+<p>All visible lamps in Blender will be exported as lights in Crystal Space. Whatever the lamp 
+type used in Blender, the lamp will be exported as a point light.
+</p>
+<p>The parameters that get exported from a lamp are the distance (radius), the colour (RGB
+components) and the energy (brightness). The attenuation type and the other lamp properties
+are ignored.
+</p>
+<a name="4"></a>
+<h4 class="subsubheading"> Meshes and Mesh factories </h4>
+
+<p>All the mesh objects that are visible in the Blender scene will be exported, either as a
+<a href="io_005fscene_005fcs-Export-Genmesh.html#0">static mesh</a> or an <a href="io_005fscene_005fcs-Export-Animesh.html#0">animated mesh</a>.
+For each different mesh, a file containing the definition of the mesh factory will be generated
+in the <tt>&lsquo;factories&rsquo;</tt> directory. Each instance of the mesh will get an entry in the
+<tt>&lsquo;world&rsquo;</tt> file.
+</p>
+<p>You can parent objects in Blender and they will be exported as similar object hierachies
+in Crystal Space.
+</p>
+<a name="5"></a>
+<h4 class="subsubheading"> Materials and Textures </h4>
+
+<p>All the textures that are used by any of the exported meshes will be exported in the
+<tt>&lsquo;textures&rsquo;</tt> directory.
+</p>
+<p>Only the main material properties will be exported, such as the diffuse map, the
+specular map and specular color, the normal map, and the displacement (parallax) map.
+</p>
+<p>In addition to these Blender material properties, a dedicated panel is accessible in the
+<samp>&lsquo;Material&rsquo;</samp> context of the <samp>&lsquo;Properties&rsquo;</samp> window:
+</p>
+<p><img src="content/blender/materials.png" alt="content/blender/materials">
+</p>
+<p>Note the last two options in the panel, <samp>&lsquo;Render priority&rsquo;</samp> and <samp>&lsquo;Z-buffer mode&rsquo;</samp>,
+that allows to define the <a href="HOWTO-Render-Priorities.html#0">rendering behavior</a> of the submeshes
+associated to the current material. For materials using transparent textures, you would
+typically use a render priority of e.g. <samp>&lsquo;transp&rsquo;</samp>, and the Z-buffer mode <samp>&lsquo;Z-Test&rsquo;</samp>.
+</p>
+<p>Most other Blender material properties are not exported, such as the mirror properties,
+the subsurface scattering, the shadows, etc. Also, materials using the
+<a href="http://wiki.blender.org/index.php/Doc:2.6/Manual/Composite_Nodes">node composition system</a>
+of Blender are not supported at all.
+</p>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="io_005fscene_005fcs-First-Steps.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="io_005fscene_005fcs-Export-Genmesh.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Blender.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Internals.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

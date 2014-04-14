@@ -1,0 +1,172 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 5.2 Some Tips for Efficient Maps</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 5.2 Some Tips for Efficient Maps">
+<meta name="keywords" content="Crystal Space 2.1.0: 5.2 Some Tips for Efficient Maps">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Map-Creation-Tips"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Map-Creation.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Simple-Map-Example.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Internals.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h2 class="section"> 5.2 Some Tips for Efficient Maps </h2>
+
+
+<p><em>Written by Jorrit Tyberghein,
+<a href="mailto:jorrit.tyberghein@gmail.com">jorrit.tyberghein@gmail.com</a>.</em>
+</p>
+<p>In <a href="Map-Creation.html#0">How to Create Optimal Maps for Crystal Space</a> we talked about large scale optimizations on maps
+by using the right visibility culler, packing textures, combining
+objects, using the correct types of object, and lighting considerations.
+In this section we will mention a few other smaller ticks and trips that
+can be used to speed up map loading and also performance at runtime.
+</p>
+<a name="1"></a>
+<h3 class="subheading"> Binary Alpha </h3>
+
+<p>See <a href="Alpha-Textures.html#0">Alpha and Keycolor in Textures</a> for a discussion on how to use binary alpha (when
+only 0% or 100% transparency is required) to improve render speed.
+</p>
+<a name="2"></a>
+<h3 class="subheading"> Efficient Texture Sizes </h3>
+
+<p>Your textures should have optimal sizes to improve loading speed.
+See <a href="Efficient-Textures.html#0">Efficient Textures</a> for an explanation of this.
+</p>
+<a name="3"></a>
+<h3 class="subheading"> Use <small>DDS</small> Image Format </h3>
+
+<p>The <small>DDS</small> image format loads a lot faster. See <a href="Efficient-Textures.html#0">Efficient Textures</a>
+for more information about <small>DDS</small> and how to use it.
+</p>
+<a name="4"></a>
+<h3 class="subheading"> Binary <small>XML</small> </h3>
+
+<p>If you convert your maps to binary <small>XML</small> you can get considerable map loading
+improvements. See <a href="Binary-XML.html#0">Binary <small>XML</small></a> for more information on how to convert your
+maps and use this feature in general.
+</p>
+<a name="5"></a>
+<h3 class="subheading"> Maximum Object Render Distance </h3>
+
+<p>If you have some expensive object or a portal and you know that that object
+is either no longer visible after some distance (due to other objects blocking
+it) or else too small to be really relevant then you can use the <samp>&lsquo;maxrenderdist&rsquo;</samp>
+tag in <small>XML</small> to specify the maximum distance to the camera. If the object
+goes beyond that distance it will no longer be rendered. Here is an example:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">&lt;meshobj name=&quot;complextree&quot;&gt;
+  &lt;params&gt;
+    ...
+  &lt;/params&gt;
+  &lt;maxrenderdist value=&quot;100&quot; /&gt;
+  ...
+&lt;/meshobj&gt;
+</pre></td></tr></table>
+<p>This will cause the object to disappear after 100 units. You can also use a
+variable instead of a hardcoded value (using the <samp>&lsquo;var&rsquo;</samp> attribute). In that
+case you can control the distance at runtime.
+</p>
+<p>This technique is especially useful for portals.
+</p>
+<a name="6"></a>
+<h3 class="subheading"> Far Plane Clipping </h3>
+
+<p>You can also do this object removal for all objects at once using far plane
+clipping. Here is an example:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">&lt;world&gt;
+  ...
+  &lt;start&gt;
+    ...
+    &lt;farplane a=&quot;0&quot; b=&quot;0&quot; c=&quot;1&quot; d=&quot;100&quot; /&gt;
+  &lt;/start&gt;
+  ...
+&lt;/world&gt;
+</pre></td></tr></table>
+<p>This will set a plane that clips away all geometry after distance 100. Note that
+in general you probably also want to use distance fog.
+</p>
+<a name="7"></a>
+<h3 class="subheading"> Static <small>LOD</small> </h3>
+
+<p>You can replace objects that are far away with lower detail version using static <small>LOD</small>.
+Check out <a href="Level-of-Detail.html#0">Level of Detail</a> for more information about how to use this feature.
+</p>
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Map-Creation.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Simple-Map-Example.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Internals.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

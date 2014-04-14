@@ -1,0 +1,168 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.23.2 Loading Images for Pixmaps</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.23.2 Loading Images for Pixmaps">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.23.2 Loading Images for Pixmaps">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="HOWTO-Pixmaps"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="HOWTO-Clicking-on-Objects.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="HOWTO-Recording-Movies.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="HOWTO.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 4.23.2 Loading Images for Pixmaps </h3>
+
+<p>This section describes how you can load an image and use it on a pixmap.  A
+pixmap is a small graphics class that can be used independently from the
+engine.  It may be useful, for instance, to draw a logo on screen or for a
+<em>heads-up-display</em> (<small>HUD</small>).
+</p>
+<a name="1"></a>
+<h4 class="subsubheading"> Getting the Image Loader Plugin </h4>
+
+<p>To load an image you need the image loader plugin. There are two
+ways to make sure you have this plugin in your application. You can put
+a line in your configuration file like this:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">System.Plugins.iImageIO = crystalspace.graphic.image.io.multiplex
+</pre></td></tr></table>
+<p>Or you can add the following line to the call to
+<code>csInitializer::RequestPlugins()</code> in your <code>main()</code> function:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">CS_REQUEST_IMAGELOADER,
+</pre></td></tr></table>
+<p>To actually use the image loader in your application you need to ask the
+shared-object registry for a handle to the image loader:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">csRef&lt;iImageIO&gt; imgldr = csQueryRegistry&lt;iImageIO&gt; (object_reg);
+</pre></td></tr></table>
+<a name="2"></a>
+<h4 class="subsubheading"> Loading the Image from <small>VFS</small> </h4>
+
+<p>Next, you will probably want to load the image from <small>VFS</small> (see section <a href="VFS.html#0">Virtual File System (<small>VFS</small>)</a>).
+This is accomplished by loading the image as raw data and then asking the image
+loader to re-interpret the raw data as an actual <samp>&lsquo;iImage&rsquo;</samp> resource.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">iGraphics3D* g3d = ...
+iTextureManager* txtmgr = g3d-&gt;GetTextureManager ();
+csRef&lt;iDataBuffer&gt; buf = VFS-&gt;ReadFile (&quot;/lib/mydata/test.jpg&quot;);
+csRef&lt;iImage&gt; ifile = imgldr-&gt;Load (buf, txtmgr-&gt;GetTextureFormat ());
+csRef&lt;iTextureHandle&gt; txt =
+  txtmgr-&gt;RegisterTexture (ifile, CS_TEXTURE_2D);
+</pre></td></tr></table>
+<p>This code first uses <small>VFS</small> to load the image from the given <small>VFS</small>
+path. This will only load the image data. <small>VFS</small> doesn't know how to parse
+images. This is the responsibility of the image loader. This is what the
+next line does. Here you give the loaded buffer to the image loader which
+will return the loaded image with an <code>iImage</code> pointer.
+</p>
+<p>Now you have to make sure the image becomes a texture that is usable for
+drawing on screen. This is done with <code>txtmgr-&gt;RegisterTexture()</code>. Because
+we are going to use the texture for a pixmap (which is 2D) we use the
+<samp>&lsquo;CS_TEXTURE_2D&rsquo;</samp> flag.
+</p>
+<a name="3"></a>
+<h4 class="subsubheading"> Using the Texture in a Pixmap </h4>
+
+<p>To create a pixmap using this texture you can simply do:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">csSimplePixmap* pixmap = new csSimplePixmap (txt);
+</pre></td></tr></table>
+<a name="4"></a>
+<h4 class="subsubheading"> Drawing the Pixmap </h4>
+
+<p>There are various ways to draw the pixmap. Check out the <small>API</small> documentation
+for more info. But here is one example:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">pixmap-&gt;DrawScaled (G3D, 10, 10, 400, 400);
+</pre></td></tr></table>
+<p>This will draw the pixmap at location 10, 10 with dimension 400, 400.
+If needed it will scale so that the pixmap really fits there.
+</p>
+<a name="5"></a>
+<h4 class="subsubheading"> Include Files </h4>
+
+<p>The include files useful for this section are:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">#include &lt;cstool/cspixmap.h&gt;
+#include &lt;igraphic/image.h&gt;
+#include &lt;igraphic/imageio.h&gt;
+#include &lt;ivideo/texture.h&gt;
+#include &lt;ivideo/txtmgr.h&gt;
+#include &lt;iutil/vfs.h&gt;
+</pre></td></tr></table>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="HOWTO-Clicking-on-Objects.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="HOWTO-Recording-Movies.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="HOWTO.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

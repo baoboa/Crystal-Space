@@ -1,0 +1,236 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.20.4 Creating an External Crystal Space Application Using Dev-CPP</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.20.4 Creating an External Crystal Space Application Using Dev-CPP">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.20.4 Creating an External Crystal Space Application Using Dev-CPP">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="HOWTO-CS-Project-DevCPP"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="HOWTO-Creating-External-Application-Using-KDevelop.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="HOWTO-Create-RPM.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Making-Own-Projects.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 4.20.4 Creating an External Crystal Space Application Using Dev-CPP </h3>
+
+<p>This section describes how you can use Dev-<small>CPP</small> to compile external
+applications using Crystal Space and <small>CEL</small>. Crystal Space does not presently
+have project files for Dev-<small>CPP</small> so, at this time, you will need to use
+MinGW and <small>MSYS</small> to build Crystal Space itself, however, for your own
+external applications, you can use Dev-<small>CPP</small>.
+</p>
+<a name="1"></a>
+<h4 class="subsubheading"> External Application Requirements </h4>
+
+<p>First, configure, build, and install Crystal Space (and optionally <small>CEL</small>)
+using MinGW and <small>MSYS</small>.
+</p>
+<p>If you installed Crystal Space in a non-standard location you probably
+will need to set the <samp>&lsquo;CRYSTAL&rsquo;</samp> environment variable to point at the
+the location where the <small>SDK</small> was installed.  For instance, if you specified
+<samp>&lsquo;--prefix=/site/sdk&rsquo;</samp> when configuring Crystal Space, then you will need to
+set <samp>&lsquo;CRYSTAL&rsquo;</samp> to <tt>&lsquo;/site/sdk&rsquo;</tt>.
+</p>
+<p>If you plan to use <small>CEL</small> then you also must set the <samp>&lsquo;CEL&rsquo;</samp> environment
+variable.
+</p>
+<a name="2"></a>
+<h4 class="subsubheading"> Specifying the Compiler </h4>
+
+<p>Chances are, the compiler which is provided by Dev-<small>CPP</small> is not compatible
+with the built Crystal Space since Crystal Space is compiled using the version
+of MingW which you have installed.  The easiest way to avoid problems with
+compiler versions here is to define a new compiler in Dev-<small>CPP</small>. To do so,
+invoke the <em>Tools/Compiler Options</em> menu item and click on the green
+<samp>&lsquo;+&rsquo;</samp> icon to add a compiler called MinGW. Make sure that that compiler is
+active in the popup and then switch to the <em>Directories</em> tab.  On that tab
+change the path of everything to point to your MinGW installation rather than
+the Dev-<small>CPP</small> versions. In the <em>Binaries</em> sub-tab you have to add both
+the <tt>&lsquo;bin&rsquo;</tt> directory of MinGW, as well as the <tt>&lsquo;bin&rsquo;</tt> directory of
+<small>MSYS</small>, and remove the path to Dev-<small>CPP</small>. In the <em>Libraries</em>
+sub-tab add the path to the MinGW <tt>&lsquo;lib&rsquo;</tt> directory, and remove the path
+to Dev-<small>CPP</small>. Do the same for on <em>C Includes</em> sub-tab, add MinGW and
+remove Dev-<small>CPP</small>. In the <em>C++ Includes</em> tab you have to add the
+correct <samp>&lsquo;C++&rsquo;</samp> MinGW <tt>&lsquo;include&rsquo;</tt> directory, and remove the Dev-<small>CPP</small>
+directory.  If this is all done correctly you should now be able to use the
+compiler from MinGW.
+</p>
+<a name="3"></a>
+<h4 class="subsubheading"> Creating a New Project </h4>
+
+<p>Select the <samp>&lsquo;File/New/Project&rsquo;</samp> menu and choose <samp>&lsquo;Console Application&rsquo;</samp>
+as the project type. Select an appropriate name and make sure <samp>&lsquo;C++&rsquo;</samp> is
+selected as the language. Save the project file in an appropriate directory.
+It is best to make a new directory for the project file and all other files
+related to the project.
+</p>
+<p>If this is done succesfully Dev-<small>CPP</small> will open with an unsaved
+<tt>&lsquo;main.cpp&rsquo;</tt>. Don't save it yet.
+</p>
+<a name="4"></a>
+<h4 class="subsubheading"> Project Settings </h4>
+
+<p>First, you need to prepare various settings in the project. Select the
+<em>Project/Project Options</em> menu.  Navigate to the <em>Compiler</em> tab and
+switch to the new MinGW compiler which you defined earlier.  Next, go to the
+<em>Parameters</em> tab where you need to add the Crystal Space (and optionally
+<small>CEL</small>) libraries with which you want to link. For Crystal Space, assuming 
+that no special <samp>&lsquo;--prefix&rsquo;</samp> was used, the libraries will usually be in 
+<tt>&lsquo;c:\msys\1.0\local\lib&rsquo;</tt> if <small>MSYS</small> was installed in <tt>&lsquo;c:\msys&rsquo;</tt>, 
+adjust the path(s) as necessary. If not, then you can access the directories 
+from the build location with a path that looks somewhat like this: 
+<tt>&lsquo;..\CS\out\msysx86\optimize\libs&rsquo;</tt>. Substitute <tt>&lsquo;debug&rsquo;</tt> for 
+<tt>&lsquo;optimize&rsquo;</tt> if you build the project in debug mode.
+</p>
+<p>If you installed the Crystal Space <small>SDK</small>, add the following libraries:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">..\CS\lib\libcrystalspace.a
+</pre></td></tr></table>
+
+<p>If you did not install the <small>SDK</small>, then add the directories from the build
+directory (subtituting <samp>&lsquo;debug&rsquo;</samp> for <samp>&lsquo;optimize&rsquo;</samp> if you build in debug
+mode):
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">..\CS\out\msysx86\optimize\libs\libcrystalspace.a
+</pre></td></tr></table>
+<p>Finally, you have to add the <small>GDI</small> library. This can be found
+in the MinGW directory. For example:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">..\MinGW-3.1.0-1\lib\libgdi32.a
+</pre></td></tr></table>
+<p>Next, proceed to the <em>Directories</em> tab. In that tab switch to the
+<em>Include Directories</em> sub-tab and add the following:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">..\CS\include\crystalspace
+..\CS\include
+src
+..\cel\include
+</pre></td></tr></table>
+<p>The last one should only be added if you plan to use <small>CEL</small>.
+</p>
+<p>The <tt>&lsquo;src&rsquo;</tt> directory is where you will put all source code for your
+project. (This is optional, of course.)
+</p>
+<p>This concludes the project settings.
+</p>
+<a name="5"></a>
+<h4 class="subsubheading"> Additional Dynamic Link Libraries </h4>
+
+<p>Crystal Space requires a few Dynamic Link Libraries (<small>DLL</small>'s) so that the
+program can run. The <small>DLL</small>'s that are required depend on what your
+application needs but they can be any of the <small>DLL</small>'s which you find in your
+path where you installed the Crystal Space Library package for Windows (the
+<tt>&lsquo;cs-win32libs&rsquo;</tt> package).  Most commonly the following are at least
+required:
+</p>
+<ul class="toc">
+<li>
+<tt>&lsquo;libz-cs.dll&rsquo;</tt>
+</li><li>
+<tt>&lsquo;libjpeg-cs.dll&rsquo;</tt>
+</li><li>
+<tt>&lsquo;libpng-cs.dll&rsquo;</tt>
+</li></ul>
+
+<p>You can either copy those dll's manually to the project folder (the place where
+the executable will reside), or you can make sure the <small>DLL</small>'s are in a
+standard location mentioned by your <samp>&lsquo;PATH&rsquo;</samp> environment variable, or where
+<small>DLL</small>'s are typically found (e.g. inside the <tt>&lsquo;c:\windows&rsquo;</tt> folder, for
+instance, though modification of system folders is deprecated and discouraged).
+</p>
+<a name="6"></a>
+<h4 class="subsubheading"> Getting Started </h4>
+
+<p>Now that the project is set up it is time to start programming.  As an example,
+replace the <tt>&lsquo;main.cpp&rsquo;</tt> with the one provided here:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">#include &lt;crystalspace.h&gt;
+#include &quot;myapp.h&quot;
+
+CS_IMPLEMENT_APPLICATION
+
+int main(int argc, char *argv[])
+{
+  MyApp app;
+  return app.Main (argc, argv);
+}
+</pre></td></tr></table>
+<p>After this, create <tt>&lsquo;myapp.h&rsquo;</tt> and <tt>&lsquo;myapp.cpp&rsquo;</tt>, which will define the
+master <code>MyApp</code> class for the application. Refer to the other tutorials in
+this manual for more information on how to proceed from this point.
+See section <a href="Tutorial-Simple.html#0">Simple Tutorial 1: Basic Setup, World Creation</a>.
+</p>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="HOWTO-Creating-External-Application-Using-KDevelop.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="HOWTO-Create-RPM.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Making-Own-Projects.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

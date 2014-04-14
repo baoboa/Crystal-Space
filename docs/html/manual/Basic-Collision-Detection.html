@@ -1,0 +1,401 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.14.1 Basic Collision Detection</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.14.1 Basic Collision Detection">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.14.1 Basic Collision Detection">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Basic-Collision-Detection"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Collision-Detection.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Physics-Bullet.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Collision-Detection.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 4.14.1 Basic Collision Detection </h3>
+
+<p>Collision detection in Crystal Space is one of the more complicated issues. In
+this section I give a quick description of all the classes and interfaces in
+Crystal Space and what you should do to use them.
+</p>
+<a name="1"></a>
+<h4 class="subsubheading"> Loading the <samp>&lsquo;iCollideSystem&rsquo;</samp> </h4>
+
+<p>The basis of the collision detection system is the <samp>&lsquo;iCollideSystem&rsquo;</samp>.
+This is an interface which is implemented by some collision detection plugin.
+At this moment we have an implementation using the <small>OPCODE</small> collision
+detection system.
+</p>
+<p>The easiest way to load a collision detection system is to add a line to
+your call to <code>RequestPlugins</code>:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">if (!csInitializer::RequestPlugins (object_reg,
+    CS_REQUEST_VFS,
+    ...,
+    CS_REQUEST_PLUGIN(&quot;crystalspace.collisiondetection.opcode&quot;,
+		iCollideSystem),
+    ...,
+    CS_REQUEST_END))
+{
+  ...
+}
+csRef&lt;iCollideSystem&gt; cd_sys = csQueryRegistry&lt;iCollideSystem&gt; (object_reg);
+</pre></td></tr></table>
+<p>Instead of using the above you can also load the collision detection
+plugin later with the following code:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">csRef&lt;iPluginManager&gt; plugmgr =
+  csQueryRegistry&lt;iPluginManager&gt; (object_reg);
+csRef&lt;iConfigManager&gt; config =
+  csQueryRegistry&lt;iConfigManager&gt; (object_reg);
+const char* p = config-&gt;GetStr (&quot;MyGame.Settings.CollDetPlugin&quot;,
+  &quot;crystalspace.collisiondetection.opcode&quot;);
+csRef&lt;iCollideSystem&gt; cd_sys =
+  csLoadPlugin&lt;iCollideSystem&gt; (plugmgr, p);
+if (!cd_sys)
+{
+  csReport (object_reg, CS_REPORTER_SEVERITY_ERROR,
+    &quot;crystalspace.application.myapp&quot;,
+    &quot;No Collision Detection plugin found!&quot;);
+  return false;
+}
+</pre></td></tr></table>
+<p>In addition to that you might also want to register the collision detection
+system to the object registry so that other modules can find it
+(<code>RequestPlugins</code> does this automatically):
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">object_reg-&gt;Register (cd_sys, &quot;iCollideSystem&quot;);
+</pre></td></tr></table>
+<p>This is a very general example.  It will first get the preferred collision
+detection plugin from the configuration file.  If the configuration file does
+not specify it then it will use <samp>&lsquo;crystalspace.collisiondetection.opcode&rsquo;</samp>
+which is the one we have at the moment.  If you do not want to let the users
+choose another plugin then you can also hard-code the string.  The
+<samp>&lsquo;cd_sys&rsquo;</samp> should be stored somewhere central (i.e. your application class).
+</p>
+<a name="2"></a>
+<h4 class="subsubheading"> Initializing Geometry from the Mesh: The Easy Way </h4>
+
+<p>Before you can use the collision detection system you have to make
+instances of <samp>&lsquo;iCollider&rsquo;</samp>. Only the collide system can do that. To
+create an <samp>&lsquo;iCollider&rsquo;</samp> you have to give an instance of <samp>&lsquo;iTriangleMesh&rsquo;</samp>.
+Several meshes in Crystal Space implement <samp>&lsquo;iTriangleMesh&rsquo;</samp>. If you have
+special geometry on your own you can make your own classes to implement
+<samp>&lsquo;iTriangleMesh&rsquo;</samp>. The easiest way to initialize a collider for a model
+is to use this code:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">iMeshWrapper* mesh = ...;
+csColliderWrapper* wrapper = csColliderHelper::InitializeCollisionWrapper (
+	cd_sys, mesh);
+</pre></td></tr></table>
+<p>This code will create a collider (<code>iCollider</code>) for the geometry in the
+mesh. In addition to that it will also create an instance of
+<code>csColliderWrapper</code> (see <tt>&lsquo;cstool/collider.h&rsquo;</tt>). This is a class
+that helps to keep track of your collider. The <code>csColliderWrapper</code> will
+be attached to the mesh. So if you later have a pointer to the mesh you can
+get the pointer to the collider wrapper by doing:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">iMeshWrapper* mesh = ...;
+csColliderWrapper* wrapper = csColliderWrapper::GetColliderWrapper (
+	mesh-&gt;QueryObject ());
+</pre></td></tr></table>
+<p>The nice thing about <code>InitializeCollisionWrapper</code> is that it takes
+care of hierarchical meshes and knows how to take advantage of the polygon
+mesh information in the factory (possibly sharing colliders between mesh
+object instances that use the same factory).
+</p>
+<a name="3"></a>
+<h4 class="subsubheading"> Initializing Geometry from the Mesh: The Hard Way </h4>
+
+<p>The most primitive code to initialize a collider for a mesh is here:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">csRef&lt;iCollider&gt; MyGame::InitCollider (iMeshWrapper* mesh)
+{
+  iObjectModel* objmodel = mesh-&gt;GetMeshObject ()-&gt;GetObjectModel ();
+  iTriangleMesh* trimesh;
+  if (objmodel-&gt;IsTriangleDataSet (cdsys-&gt;GetTriangleDataID ()))
+    trimesh = objmodel-&gt;GetTriangleData (cdsys-&gt;GetTriangleDataID ());
+  else
+    trimesh = objmodel-&gt;GetTriangleData (cdsys-&gt;GetBaseDataID ());
+  if (trimesh)
+  {
+    csRef&lt;iCollider&gt; cd = cd_sys-&gt;CreateCollider (trimesh);
+    return cd;
+  }
+  else
+  {
+    return 0;
+  }
+}
+</pre></td></tr></table>
+<p>This code can be useful if you have a simple case and you can easily
+store the collider somewhere in your game logic. In most cases you should
+probably use <code>InitializeCollisionWrapper</code>.
+</p>
+<a name="4"></a>
+<h4 class="subsubheading"> Initializing Geometry from the Mesh: The Intermediate Way </h4>
+
+<p>Another way to initialize a collider uses <code>csColliderWrapper</code> but
+without <code>csColliderHelper</code>:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">bool MyGame::InitCollider (iMeshWrapper* mesh)
+{
+  iObjectModel* objmodel = mesh-&gt;GetMeshObject ()-&gt;GetObjectModel ();
+  iTriangleMesh* trimesh;
+  if (objmodel-&gt;IsTriangleDataSet (cdsys-&gt;GetTriangleDataID ()))
+    trimesh = objmodel-&gt;GetTriangleData (cdsys-&gt;GetTriangleDataID ());
+  else
+    trimesh = objmodel-&gt;GetTriangleData (cdsys-&gt;GetBaseDataID ());
+  if (trimesh)
+  {
+    csColliderWrapper* wrapper = new csColliderWrapper(
+    	mesh-&gt;QueryObject(), cd_sys, trimesh);
+    wrapper-&gt;DecRef ();
+    return true;
+  }
+  else
+  {
+    return false;
+  }
+}
+</pre></td></tr></table>
+<p>This example creates a new instance of <samp>&lsquo;csColliderWrapper&rsquo;</samp> which
+is automatically stored with the <samp>&lsquo;iObject&rsquo;</samp> that belongs
+with the given mesh. So there is no need to store it otherwise. Later
+on you can retrieve the collider for some mesh by using
+<code>csColliderWrapper::GetColliderWrapper()</code> again. This is more basic
+then using <code>InitializeCollisionWrapper()</code> as it doesn't take care
+of hierarchical meshes and also doesn't use the factory geometry if
+present.
+</p>
+<a name="5"></a>
+<h4 class="subsubheading"> Initializing Geometry from a Box </h4>
+
+<p>The collision detection system in Crystal Space cannot currently calculate
+correct collisions with objects that animate (like sprites and cal3d sprites
+(see section <a href="MeshObject-Spr3D.html#0">Sprite3D Mesh Object</a>, see section <a href="MeshObject-SprCal3D.html#0">SpriteCal3D Mesh Object</a>). In case of
+cal3d sprites it is simply not supported and for normal sprites it will take
+only the first animation frame of the default action. So most of the times it
+is better to use a box for collision detection instead of the actual model.
+The easiest way to do that is with this code:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">iMeshWrapper* mesh = ...;
+csBox3 box (-.1, 0, -.1, .1, 1.7, .1);
+csTriangleMeshBox* pmbox = new csTriangleMeshBox (box);
+csColliderWrapper* wrapper = new csColliderWrapper (
+	mesh-&gt;QueryObject (), cs_sys, pmbox);
+pmbox-&gt;DecRef ();
+wrapper-&gt;DecRef ();
+</pre></td></tr></table>
+<p>We have to express the box in local object space for the mesh. In the example
+above we assume that the origin of the mesh is at the bottom center. So we
+create a box that is .2 units wide and deep and 1.7 units high.
+</p>
+<p>The fact that the collider wrapper was created from a box instead of the
+usual mesh geometry makes no difference for the collision detection system.
+</p>
+<a name="6"></a>
+<h4 class="subsubheading"> Initializing Geometry for the Entire Level </h4>
+
+<p>The easiest way to initialize colliders for the entire level at once is
+to use the <code>csColliderHelper::InitializeCollisionWrappers()</code> function
+immediatelly after loading a map:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">if (!loader-&gt;LoadMapFile (&quot;world&quot;))
+{
+  ...
+}
+csColliderHelper::InitializeCollisionWrappers (cd_sys, engine);
+</pre></td></tr></table>
+<p>This will call <code>csColliderHelper::InitializeCollisionWrapper()</code> for
+every loaded mesh. You can also restrict the above code to one collection.
+</p>
+<a name="7"></a>
+<h4 class="subsubheading"> The Player Collider </h4>
+
+<p>Depending on the game your player might have a representation of
+geometry or not. If it doesn't you will have to make your own version
+of <samp>&lsquo;iTriangleMesh&rsquo;</samp> to create a collider for the player (possibly
+using <code>csTriangleMeshBox</code> as explained above). Even if
+your player has geometry (i.e. a 3D sprite) it is sometimes still preferable
+to create your own special geometry for the player. The reason is
+gravity. When you would just use one collider for the player you can have
+problems moving around because the player would not be able to jump over
+even the tiniest elevation in height. Sometimes the edge between adjacent
+polygons can even cause the player to collide with that other polygon due
+to numerical inprecision. To solve this problem it is best to make one
+collider that is used for gravity only and another collider that is used
+to test if you can move around. The gravity collider will be used only
+to test if the player can go downwards or upwards. To avoid not being able
+to go over small height elevations, the player collider should float slightly
+above the ground.
+</p>
+<p>The best way to make the gravity collider is to make your own implementation
+of <samp>&lsquo;iTriangleMesh&rsquo;</samp> using <code>csTriangleMeshBox</code>. This is very efficient.
+To keep the returned collider I recommend storing them somewhere in the player
+class or else use <code>csColliderWrapper</code> as explained above.
+</p>
+<a name="8"></a>
+<h4 class="subsubheading"> Doing Collision Detection </h4>
+
+<p>When everything is set up it is time to do collision detection. To test
+for collisions you use the <code>Collide()</code> function in <samp>&lsquo;iCollideSystem&rsquo;</samp>
+or <code>Collide()</code> in <code>csColliderWrapper</code>.
+This will test the collisions between two colliders. The result of this
+will be true or false and in addition the collide system will keep a list
+of all triangle pairs for the hits. Those triangle pairs can be used to
+decide what to do on collision (i.e. slide on a wall for example).
+</p>
+<p>Because collision detection works on two objects at a time it is a good
+idea to have some system on top of the collision detection system that
+detects when it is useful to do collision detection. You can use a bounding
+sphere for that. Also you should only do collision detection if the object
+moves.
+</p>
+<p><em>Note</em>: Do not forget to call <code>ResetCollisionPairs()</code> before doing
+collision detection! Otherwise the internal table of collision pairs will grow
+forever.
+</p>
+<a name="9"></a>
+<h4 class="subsubheading"> Gravity and Sliding Along Walls </h4>
+
+<p>Doing collision detection right is a hard problem. To help with this
+there is a <code>csColliderActor</code> class that you can use. It handles
+gravity and sliding with walls. To use it you must make sure that all
+world geometry has a collider (using
+<code>csColliderHelper::InitializeCollisionWrappers()</code> for example).
+</p>
+<p>At initialization time you use the following code to create the
+collider actor:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">csColliderActor collider_actor;
+iMeshWrapper* mesh = ...;
+...
+collider_actor.SetCollideSystem (cdsys);
+collider_actor.SetEngine (engine);
+collider_actor.InitializeColliders (mesh,
+  	csVector3 (0.2, 0.1, 0.2),
+	csVector3 (0.2, 0.3, 0.2),
+	csVector3 (0, -.2, 0));
+</pre></td></tr></table>
+<p>Then when you want to move the model (for example this is typically
+done in <code>SetupFrame()</code>) you can do this:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">csTicks elapsed_time = vc-&gt;GetElapsedTicks ();
+collider_actor.Move (float (elapsed_time) / 1000.0f, 1.0f, obj_move,
+	angularVelocity);
+</pre></td></tr></table>
+<p><samp>&lsquo;obj_move&rsquo;</samp> is a relative movement vector in object space. For
+example, to move the object forward you can use <code>csVector3(0,0,1)</code>.
+<samp>&lsquo;angularVelocity&rsquo;</samp> is a rotation vector for the model. Typically this
+is something like <code>csVector3(0,1,0)</code> or the 0 vector if you don't want
+to rotate.
+</p>
+<p>Note! Even if the user didn't press any key it is important to keep
+calling the Move() function every frame. The reason for that is so that
+gravity can work. You should just call it with a 0 vector for movement
+and rotation.
+</p>
+<p>Note that <code>csColliderActor</code> can also work with a camera instead of
+a mesh.
+</p>
+<p><samp>&lsquo;csColliderActor&rsquo;</samp> has a function to change gravity.
+</p>
+<a name="10"></a>
+<h4 class="subsubheading"> Limitation of <small>OPCODE</small> </h4>
+
+<p>The current <small>OPCODE</small> collision detection implementation
+has one important limitation. It assumes that the transform from object
+to world space will not change the size of the object; i.e. you cannot scale
+the object using the object to world transformation (which is kept in the
+<samp>&lsquo;iMovable&rsquo;</samp>) and expect collision detection to be ok. The only way
+around this limitation is to use <code>HardTransform()</code> to transform
+the object space vertices itself. But this can of course not be used
+dynamically as you would have to recalculate the collider every time
+the object changes.
+</p>
+<a name="11"></a>
+<h4 class="subsubheading"> Header Files </h4>
+
+<p>The header files useful for this section are:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">#include &lt;iutil/object.h&gt;
+#include &lt;iutil/plugin.h&gt;
+#include &lt;ivaria/collider.h&gt;
+#include &lt;igeom/trimesh.h&gt;
+#include &lt;iengine/mesh.h&gt;
+#include &lt;cstool/collider.h&gt;
+</pre></td></tr></table>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Collision-Detection.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Physics-Bullet.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Collision-Detection.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

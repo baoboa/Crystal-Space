@@ -1,0 +1,245 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: C.9 Release Notes from 0.90 to 0.92</title>
+
+<meta name="description" content="Crystal Space 2.1.0: C.9 Release Notes from 0.90 to 0.92">
+<meta name="keywords" content="Crystal Space 2.1.0: C.9 Release Notes from 0.90 to 0.92">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Release-Notes-92"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Release-Notes-94.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Release-Notes-90.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Licenses.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h2 class="appendixsec"> C.9 Release Notes from 0.90 to 0.92 </h2>
+
+<p>This section documents the major changes between versions 0.90 and 0.92 of
+Crystal Space.
+</p>
+<a name="1"></a>
+<h3 class="subheading"> csInitializer changes </h3>
+
+<p><code>csInitializer::CreateEnvironment()</code> now accepts two additional
+parameters: <samp>&lsquo;argc&rsquo;</samp> and <samp>&lsquo;argv&rsquo;</samp>.
+Consequently <code>csInitializer::SetupKeyboardHandler()</code> has been removed.
+</p>
+<a name="2"></a>
+<h3 class="subheading"> iCollideSystem Changes </h3>
+
+<p>The <code>iCollideSystem::Collide()</code> function now accepts
+<samp>&lsquo;csReversibleTransform&rsquo;</samp> transforms instead of just <samp>&lsquo;csTransform&rsquo;</samp>.
+</p>
+<a name="3"></a>
+<h3 class="subheading"> Texture Manager Changes </h3>
+
+<p>The following deregistration functions have been removed.  Instead, use the
+normal <code>DecRef()</code> mechanism.
+</p>
+<ul>
+<li>
+<code>iTextureManager::UnregisterTexture()</code>
+</li><li>
+<code>iTextureManager::UnregisterMaterial()</code>
+</li></ul>
+
+<a name="4"></a>
+<h3 class="subheading"> iRegion </h3>
+
+<p>The functions <code>iRegion::Find<small class="dots">...</small>()</code> will no longer increase
+the reference count of the returned objects.
+</p>
+<a name="5"></a>
+<h3 class="subheading"> GetThingState </h3>
+
+<p><code>iEngine::GetThingState()</code> has not been removed but this function
+is now deprecated. It is recommended that you get the <samp>&lsquo;iMeshObjectType&rsquo;</samp>
+for the thing mesh objects the usual way (i.e. by loading the plugin).
+</p>
+<a name="6"></a>
+<h3 class="subheading"> iThingState </h3>
+
+<p>The following functions were made <samp>&lsquo;const&rsquo;</samp> in <samp>&lsquo;iThingState&rsquo;</samp>:
+</p><ul>
+<li>
+<code>CurveTexel()</code>
+</li><li>
+<code>CurveVertex()</code>
+</li><li>
+<code>GetCurveVertices()</code>
+</li><li>
+<code>GetCurveVertexCount()</code>
+</li><li>
+<code>GetCurveCount()</code>
+</li><li>
+<code>GetCurvesScale()</code>
+</li><li>
+<code>GetMovingOption()</code>
+</li><li>
+<code>GetPortalCount()</code>
+</li><li>
+<code>GetPortal()</code>
+</li><li>
+<code>GetPortalPolygon()</code>
+</li><li>
+<code>GetVertexCount()</code>
+</li></ul>
+
+<p>The following methods were renamed in <samp>&lsquo;iThingState&rsquo;</samp>:
+</p>
+<ul>
+<li>
+<code>CurveVertex()</code> =&gt; <code>GetCurveVertex()</code>
+</li><li>
+<code>CurveTexel()</code> =&gt; <code>GetCuveTexel()</code>
+</li></ul>
+
+<p>Added several functions to <samp>&lsquo;iThingState&rsquo;</samp>:
+</p>
+<ul>
+<li>
+<code>FindPolygonIndex()</code>
+</li><li>
+<code>RemovePolygon()</code>
+</li><li>
+<code>RemovePolygons()</code>
+</li><li>
+<code>SetVertex()</code>
+</li><li>
+<code>DeleteVertex()</code>
+</li><li>
+<code>DeleteVertices()</code>
+</li><li>
+<code>SetCurveVertex()</code>
+</li><li>
+<code>SetCurveTexel()</code>
+</li><li>
+<code>ClearCurveVertices()</code>
+</li><li>
+<code>FindCurveIndex()</code>
+</li><li>
+<code>RemoveCurve()</code>
+</li><li>
+<code>RemoveCurves()</code>
+</li></ul>
+
+<a name="7"></a>
+<h3 class="subheading"> Isometric Engine </h3>
+
+<p>Added <code>iIsoEngine::GetMaterialList()</code> and removed all other
+material functions from <code>iIsoEngine</code> except the one to create a material
+from a <small>VFS</small> path.
+</p>
+<p>Added <code>iIsoEngine::GetMeshFactories()</code> and removed the following
+functions.
+</p>
+<ul>
+<li>
+<code>AddMeshFactory()</code>
+</li><li>
+<code>FindMeshFactory()</code>
+</li><li>
+<code>RemoveMeshFactory()</code>
+</li></ul>
+
+<a name="8"></a>
+<h3 class="subheading"> Terrain Mesh Object </h3>
+
+<p>Changed <code>iTerrFuncState::LoadMaterialGroup()</code> so that the first
+parameter is now a material list, <samp>&lsquo;iMaterialList&rsquo;</samp>, instead of
+<samp>&lsquo;iEngine&rsquo;</samp>.
+</p>
+<a name="9"></a>
+<h3 class="subheading"> Loader and Saver Plugins </h3>
+
+<p>Changed <code>iLoaderPlugin::Parse()</code> to accept a material list and mesh
+factory list (<samp>&lsquo;iMaterialList&rsquo;</samp> and <samp>&lsquo;iMeshFactoryList&rsquo;</samp>) instead of an
+<samp>&lsquo;iEngine&rsquo;</samp> instance.
+</p>
+<p>Changed <code>iSaverPlugin::WriteDown()</code> so that it no longer has
+the <samp>&lsquo;iEngine&rsquo;</samp> parameter.
+</p>
+<a name="10"></a>
+<h3 class="subheading"> iMeshObject and iMeshObjectFactory Changes </h3>
+
+<p>Added <code>SetLogicalParent()</code> and <code>GetLogicalParent()</code> to
+both <samp>&lsquo;iMeshObject&rsquo;</samp> and <samp>&lsquo;iMeshObjectFactory&rsquo;</samp>. This should
+be no issue for applications simply using mesh objects but it is an
+issue if you made your own mesh object implementation. Also beware
+that there have been some changes in the way the parser interact
+with the plugin loaders. The plugin loaders are no longer responsible
+for setting the factory pointer. The parser will now do that.
+</p>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Release-Notes-94.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Release-Notes-90.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Licenses.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

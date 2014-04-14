@@ -1,0 +1,296 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.5.3 Configuration Domains</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.5.3 Configuration Domains">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.5.3 Configuration Domains">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Config-Domains"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Configuration-File.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Specific-Options.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Options.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 4.5.3 Configuration Domains </h3>
+
+
+<p><em>Written by Eric Sunshine, <a href="mailto:sunshine@sunshineco.com">sunshine@sunshineco.com</a>.</em>
+</p>
+<p>When you run an application, the configuration manager collects configuration
+information from various locations, including information loaded from the
+application's own configuration file and those of plugin modules.  It is
+possible that configuration information gathered from various locations can
+contain conflicting configuration settings.  For this reason, a priority value
+is assigned configuration information from each source, and the priority value
+is used to resolve conflicts.
+</p>
+<p>Priorities are assigned to configuration information based upon the following
+heuristic.  Highest priority sources (known as <em>domains</em>) are listed first;
+lowest priority sources are listed last.
+</p>
+<ul>
+<li>
+Command-line options are given the highest priority.  They override settings
+which appear in configuration files.  For example, the <samp>&lsquo;--video=&rsquo;</samp> option
+will override the <samp>&lsquo;System.Plugins.iGraphics3D&rsquo;</samp> key in all configuration
+files.
+
+</li><li>
+User-specific, application-specific settings exists at the next highest
+priority.  These are settings specific to a particular user and specific to a
+particular application.  This is the place where a user's personal settings are
+stored by a program.  For example, if a game allows a user to choose screen
+resolution, or if it wants to store statistics about the user, it would store
+that information in this domain.  Such information is specific to a particular
+user of this particular application.  Such information is not relevant to other
+users or other applications.
+
+<p>Settings at this priority are stored in a platform-dependent fashion
+(see <a href="#Config-PerUser">Config PerUser</a>).  Often, these settings <em>roam</em> with a user
+automatically as the user moves from machine to machine.
+</p>
+<p>In order to associate settings with itself, an application needs to provide the
+configuration manager with a <em>unique identifier</em>.  Typically, this is
+accomplished by placing a <samp>&lsquo;System.ApplicationID&rsquo;</samp> key in the application's
+own configuration file.  It can also be set programmatically.  Given an
+application's identifer, the configuration manager can locate the user-specific
+settings associated with that application.
+</p>
+<p>It is recommended that you use the form <samp>&lsquo;&lt;Producer&gt;.&lt;ProductName&gt;&rsquo;</samp> when
+constructing an application identifier.  Crystal Space example applications use
+<samp>&lsquo;CrystalSpace&rsquo;</samp> for the <var>Producer</var> portion of the application
+identifier; for example: <samp>&lsquo;CrystalSpace.Walktest&rsquo;</samp>.  Your own application
+identifier can be composed of any suitable components.  For instance, you might
+place the following key in your application-specific configuration file.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">System.ApplicationID = MyCompany.MyGame
+</pre></td></tr></table>
+</li><li>
+User-specific, application-neutral settings have the next highest priority.
+These are settings which are specific to a particular user, but which are not
+specific to any particular application.  For instance, a user might prefer to
+use full-screen mode with all Crystal Space-derived applications, in which case
+he can give the <samp>&lsquo;Video.FullScreen&rsquo;</samp> key a value of <samp>&lsquo;yes&rsquo;</samp> in this
+domain.  As with the user-specific, application-specific domain, these settings
+are stored in a platform-dependent fashion (see <a href="#Config-PerUser">Config PerUser</a>).  Unlike
+settings in the user-specific, application-specific domain which are identified
+by the unique application identifier, settings in this domain are identified
+with the name <samp>&lsquo;CrystalSpace.Global&rsquo;</samp>.
+
+</li><li>
+Application-specific settings have the next highest priority.  These settings
+are specific to a particular application, but are shared among all users of the
+application.  User-specific settings in higher priority domains, as well as
+command-line options, can override these settings.  Conversely,
+application-specific settings can override plugin-specific settings.  For
+instance, if the canvas plugin configuration file specifies a default
+resolution of 640x480, an application configuration file might override that
+setting by giving its own values to the <samp>&lsquo;Video.ScreenWidth&rsquo;</samp> and
+<samp>&lsquo;Video.ScreenHeight&rsquo;</samp> keys.
+
+<p>Application-specific settings typically come from an application's
+configuration file.  For example, the Walktest application stores its settings
+in the file <tt>&lsquo;walktest.cfg&rsquo;</tt>.  As a programmer, you typically specify the
+application's configuration file with the following code:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">csInitializer::SetupConfigManager(object_reg, &quot;myapp.cfg&quot;);
+</pre></td></tr></table>
+</li><li>
+Plugin-specific settings have the lowest priority.  These settings define
+default values for options specific to plugin modules.  For example, the OpenGL
+renderer loads configuration information from the <tt>&lsquo;opengl.cfg&rsquo;</tt> file.
+</li></ul>
+
+<p>If the program allows the user to change options and settings, these changes
+are applied to the user-specific, application-specific domain by default.  It
+is possible programmatically to change settings in other domains, but this is
+rarely useful or needed since most user settings belong in the user-specific,
+application-specific domain.
+</p>
+<p><a name="Config-PerUser"></a>
+</p><a name="1"></a>
+<h2 class="heading"> Platform-Specific Per-User Settings Storage </h2>
+
+<p>When programs store settings for a particular user, those settings belong to
+that user, which means that the settings must be stored separately from
+settings of other users.  Furthermore, it is often convenient and desirable for
+a user's settings to <em>roam</em> with the user as the user moves from machine
+to machine.  In order to satisfy these goals, Crystal Space utilizes
+platform-specific facilities for recording user-specific settings.  Utilization
+of these facilities is typically transparent to both users and programmers,
+however an understanding of some basic issues regarding these facilities is
+useful.
+</p>
+<a name="2"></a>
+<h3 class="subheading"> Application Unique Identifier </h3>
+
+<p>As noted earlier, each application uses a <em>unique identifier</em> to
+distinguish its per-user settings from the per-user settings of other
+applications.  An application typically sets its unique identifier via the
+<samp>&lsquo;System.ApplicationID&rsquo;</samp> key in its application-specific configuration file,
+though the identifier can also be set programmatically.
+</p>
+<p>The actual manner in which the application identifier is employed to access and
+store settings is specific to each platform-dependent implementation, however
+it is a good idea to ensure that each application identifier is unique in order
+to avoid collisions with identifiers of other applications.  For this reason,
+it is strongly recommended that an application identifier be composed with the
+form <samp>&lsquo;&lt;Producer&gt;.&lt;ProductName&gt;&rsquo;</samp>.  Crystal Space example applications use
+<samp>&lsquo;CrystalSpace&rsquo;</samp> for the <var>Producer</var> portion of the application
+identifier; for example: <samp>&lsquo;CrystalSpace.Walktest&rsquo;</samp>.  Your own application
+identifier can be composed of any suitable components.  For instance, you might
+place the following key in your application-specific configuration file.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">System.ApplicationID = MyCompany.MyGame
+</pre></td></tr></table>
+<a name="3"></a>
+<h4 class="subsubheading"> Windows User-Specific Settings </h4>
+
+<p>On Windows, user-specific settings are stored in configuration files in the
+<tt>&lsquo;Application Data&rsquo;</tt> directory.  The exact location and name of this
+directory differs between Windows versions and from language to language.  On
+Windows <small>XP</small>, 2000, and <small>NT</small> the directory is typically
+<tt>&lsquo;C:\Documents and Settings\&lt;username&gt;\Application Data&rsquo;</tt>.  On on Win9x it
+is typically <tt>&lsquo;C:\WINDOWS\Application Data&rsquo;</tt>.
+</p>
+<p>The actual path of the user-specific, application-specific configuration file
+is generated from the application's <em>unique application identifier</em> by
+replacing all dots (<code>'.'</code>) with backslashes (<code>'\'</code>) and adding a
+<tt>&lsquo;.cfg&rsquo;</tt> suffix.  For example, the configuration for the application which
+has a unique identifier <samp>&lsquo;MyGames.ClickFrenzy2&rsquo;</samp> will be stored as
+<tt>&lsquo;Application Data\MyGames\ClickFrenzy2.cfg&rsquo;</tt>.  User-specific,
+application-neutral settings, on the other hand, will be stored as
+<tt>&lsquo;Application Data\CrystalSpace\Global.cfg&rsquo;</tt>.  The configuration file format
+is the described in the configuration file section, <a href="Configuration-File.html#0">Configuration File</a>.
+</p>
+<a name="4"></a>
+<h4 class="subsubheading"> Registry Storage </h4>
+
+<p>On Windows, it is also possible to store configuration settings in the
+Registry.  This is accomplished by instantiating a <samp>&lsquo;csWin32RegistryConfig&rsquo;</samp>
+object and setting it as the configuration manager's <em>dynamic domain</em> after
+the configuration manager has been initialized.  See the documentation for
+<samp>&lsquo;csWin32RegistryConfig&rsquo;</samp> for full details.
+</p>
+<a name="5"></a>
+<h4 class="subsubheading"> Unix User-Specific Settings </h4>
+
+<p>On Unix and Unix-like platforms, user-specific settings are stored in files in
+the hidden directory <tt>&lsquo;$HOME/.crystalspace&rsquo;</tt>.  The actual name of a
+configuration file is generated from the <em>unique application identifier</em>
+with a <tt>&lsquo;.cfg&rsquo;</tt> suffix.  For example, the configuration for the application
+which has a unique identifier <samp>&lsquo;MyGames.ClickFrenzy2&rsquo;</samp> will be stored as:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">$HOME/.crystalspace/MyGames.ClickFrenzy2.cfg
+</pre></td></tr></table>
+<p>User-specific, application-neutral settings, on the other hand, will be stored
+as <tt>&lsquo;$HOME/.crystalspace/CrystalSpace.Global.cfg&rsquo;</tt>.  The configuration file
+format is described in the configuration file section,
+<a href="Configuration-File.html#0">Configuration File</a>.
+</p>
+<a name="6"></a>
+<h4 class="subsubheading"> MacOS/X User-Specific Settings </h4>
+
+<p>On MacOS/X, user-specific settings are stored via the Cocoa <em>defaults
+database</em> (also known programmatically as <samp>&lsquo;NSUserDefaults&rsquo;</samp>).  A program's
+<em>unique application identifier</em> is used as the name of the persistent
+<samp>&lsquo;NSUserDefaults&rsquo;</samp> domain into which the settings are stored.  For example,
+to list all the configuration settings for the application which has a unique
+identifier <samp>&lsquo;MyGames.ClickFrenzy2&rsquo;</samp>, you would invoke the following command:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">defaults read MyGames.ClickFrenzy2
+</pre></td></tr></table>
+<p>User-specific, application-neutral settings, on the other hand, will be stored
+under the <samp>&lsquo;NSUserDefaults&rsquo;</samp> domain named <samp>&lsquo;CrystalSpace.Global&rsquo;</samp>.  You
+can list the user-specific, application-neutral settings like this:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">defaults read CrystalSpace.Global
+</pre></td></tr></table>
+<p>If you want to set some configuration options for all Crystal Space
+applications you can do so by storing the settings in the
+<samp>&lsquo;CrystalSpace.Global&rsquo;</samp> domain.  For instance, to instruct all programs to
+use resolution 1024x768, you could do this:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">defaults write CrystalSpace.Global Video.ScreenWidth 1024
+defaults write CrystalSpace.Global Video.ScreenHeight 768
+</pre></td></tr></table>
+<p>These settings will be used by all Crystal Space-based applications unless
+overridden explicitly by command-line arguments or user-specific,
+application-specific settings.
+</p>
+
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Configuration-File.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Specific-Options.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Options.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

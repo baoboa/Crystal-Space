@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<!--
+  Copyright (C) 2012 by Matthieu Kraus
+	    (C) 2007 by Frank Richter
+	    (C) 2007 by Jorrit Tyberghein
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Library General Public
+  License as published by the Free Software Foundation; either
+  version 2 of the License, or (at your option) any later version.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  Library General Public License for more details.
+
+  You should have received a copy of the GNU Library General Public
+  License along with this library; if not, write to the Free
+  Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+-->
+<combinerlibrary>
+
+  <!-- Note on costs: an estimate of the cost of the coercion - as
+                      rough guide sum the number of those operations
+                      with the given weight:
+                       - cast, swizzle, assigment: 0
+                       - vector op (dot, normalize, ...): 1
+                       - matrix op: matrix size (3 for mat3, 4 for mat4) -->
+       
+  <!-- Each coercion implicitly has an input named "vale" and and output 
+       named "result". Type is the "from" resp. "to" one. -->
+
+  <coercion from="rgb" to="rgba" cost="0">
+    <block location="vertexMain;fragmentMain">
+      result = vec4(value, 1.0);
+    </block>
+  </coercion>
+
+  <coercion from="rgba" to="rgb" cost="0">
+    <block location="vertexMain;fragmentMain">
+      result = value.rgb;
+    </block>
+  </coercion>
+  
+  <coercion from="float" to="rgb" cost="0">
+    <block location="vertexMain;fragmentMain">
+      result = vec3(value);
+    </block>
+  </coercion>
+  
+  <coercion from="float" to="rgba" cost="0">
+    <block location="vertexMain;fragmentMain">
+      result = vec4(value);
+    </block>
+  </coercion>
+  
+  <!------------------------------------------------------------------------->
+  
+  <coercion from="position4_object" to="position4_screen" cost="4">
+    <block location="vertexMain;fragmentMain">
+      result = gl_ModelViewProjectionMatrix * value;
+    </block>
+  </coercion>
+  
+  <coercion from="position4_screen" to="position4_object" cost="4">
+    <block location="vertexMain;fragmentMain">
+      result = gl_ModelViewProjectionMatrixInverse * value;
+    </block>
+  </coercion>
+
+  <coercion from="position4_object" to="position4_camera" cost="4">
+    <block location="vertexMain;fragmentMain">
+      result = gl_ModelViewMatrix * value;
+    </block>
+  </coercion>
+
+  <coercion from="position4_camera" to="position4_object" cost="4">
+    <block location="vertexMain;fragmentMain">
+      result = gl_ModelViewMatrixInverse * value;
+    </block>
+  </coercion>
+
+  <coercion from="position4_camera" to="position4_screen" cost="4">
+    <block location="vertexMain;fragmentMain">
+      result = gl_ProjectionMatrix * value;
+    </block>
+  </coercion>
+
+  <coercion from="position4_screen" to="position4_camera" cost="4">
+    <block location="vertexMain;fragmentMain">
+      result = gl_ProjectionMatrixInverse * value;
+    </block>
+  </coercion>
+
+  <coercion from="position4_object" to="position4_world" cost="4">
+    <block location="vertexMain;fragmentMain">
+      result = objectToWorld * value;
+    </block>
+  </coercion>
+
+  <coercion from="position4_world" to="position4_camera" cost="4">
+    <input file="/shader-snippets/combiner-glsl/worldToCamera.inp" private="yes" />
+    
+    <block location="vertexMain;fragmentMain">
+      result =  worldToCamera * value;
+    </block>
+  </coercion>
+
+  <coercion from="position4_camera" to="position4_world" cost="4">
+    <input file="/shader-snippets/combiner-glsl/cameraToWorld.inp" private="yes" />
+
+    <block location="vertexMain;fragmentMain">
+      result =  cameraToWorld * value;
+    </block>
+  </coercion>
+  
+  <!------------------------------------------------------------------------->
+  
+  <coercion from="direction_object" to="direction_tangent" cost="3">
+    <input file="/shader-snippets/combiner-glsl/Normal.inp" private="yes" />
+    <input file="/shader-snippets/combiner-glsl/Tangent.inp" private="yes" />
+    <input file="/shader-snippets/combiner-glsl/Bitangent.inp" private="yes" />
+    
+    <block location="vertexMain;fragmentMain">
+      mat3 obj2tang;
+      obj2tang[0] = Tangent;
+      obj2tang[1] = Bitangent;
+      obj2tang[2] = Normal;
+      result =  value * obj2tang;
+    </block>
+  </coercion>
+
+  <coercion from="direction_tangent" to="direction_object" cost="3">
+    <input file="/shader-snippets/combiner-glsl/Normal.inp" private="yes" />
+    <input file="/shader-snippets/combiner-glsl/Tangent.inp" private="yes" />
+    <input file="/shader-snippets/combiner-glsl/Bitangent.inp" private="yes" />
+    
+    <block location="vertexMain;fragmentMain">
+      mat3 obj2tang;
+      obj2tang[0] = Tangent;
+      obj2tang[1] = Bitangent;
+      obj2tang[2] = Normal;
+      /* NOTE: This assumes the Normal/Tangent/Bitangent are orthonormal.
+      Only then we the transposed matrix is conveniently equal to the
+      inverse. Lastly, multiplying with the matrix on the left is the same
+      as multiplying with the transpose on the right. */
+      result =  obj2tang * value;
+    </block>
+  </coercion>
+  
+  <coercion from="direction_object" to="direction_screen" cost="4">
+    <block location="vertexMain;fragmentMain">
+      result = (gl_ModelViewProjectionMatrix * vec4 (value, 0.0)).xyz;
+    </block>
+  </coercion>
+  
+  <coercion from="direction_screen" to="direction_object" cost="4">
+    <block location="vertexMain;fragmentMain">
+      result = (gl_ModelViewProjectionMatrixInverse * vec4 (value, 0.0)).xyz;
+    </block>
+  </coercion>
+
+  <coercion from="direction_object" to="direction_camera" cost="4">
+    <block location="vertexMain;fragmentMain">
+      result = (gl_ModelViewMatrix * vec4 (value, 0.0)).xyz;
+    </block>
+  </coercion>
+
+  <coercion from="direction_camera" to="direction_object" cost="4">
+    <block location="vertexMain;fragmentMain">
+      result = (gl_ModelViewMatrixInverse * vec4 (value, 0.0)).xyz;
+    </block>
+  </coercion>
+
+  <coercion from="direction_camera" to="direction_screen" cost="4">
+    <block location="vertexMain;fragmentMain">
+      result = (gl_ProjectionMatrix * vec4 (value, 0.0)).xyz;
+    </block>
+  </coercion>
+
+  <coercion from="direction_screen" to="direction_camera" cost="4">
+    <block location="vertexMain;fragmentMain">
+      result = (gl_ProjectionMatrixInverse * vec4 (value, 0.0)).xyz;
+    </block>
+  </coercion>
+
+  <coercion from="direction_object" to="direction_world" cost="4">
+    <block location="vertexMain;fragmentMain">
+      result = (objectToWorld * vec4 (value, 0.0)).xyz;
+    </block>
+  </coercion>
+
+  <coercion from="direction_world" to="direction_camera" cost="4">
+    <input file="/shader-snippets/combiner-glsl/worldToCamera.inp" private="yes" />
+    
+    <block location="vertexMain;fragmentMain">
+      result = (worldToCamera * vec4 (value, 0.0)).xyz;
+    </block>
+  </coercion>
+
+  <coercion from="direction_camera" to="direction_world" cost="4">
+    <input file="/shader-snippets/combiner-glsl/cameraToWorld.inp" private="yes" />
+
+    <block location="vertexMain;fragmentMain">
+      result = (cameraToWorld * vec4 (value, 0.0)).xyz;
+    </block>
+  </coercion>
+  
+  <!------------------------------------------------------------------------->
+  
+  <coercion from="normal_object" to="normal_tangent" cost="3">
+    <input file="/shader-snippets/combiner-glsl/Normal.inp" private="yes" />
+    <input file="/shader-snippets/combiner-glsl/Tangent.inp" private="yes" />
+    <input file="/shader-snippets/combiner-glsl/Bitangent.inp" private="yes" />
+    
+    <block location="vertexMain;fragmentMain">
+      mat3 obj2tang;
+      obj2tang[0] = Tangent;
+      obj2tang[1] = Bitangent;
+      obj2tang[2] = Normal;
+      result =  value * obj2tang;
+    </block>
+  </coercion>
+
+  <coercion from="normal_tangent" to="normal_object" cost="3">
+    <input file="/shader-snippets/combiner-glsl/Normal.inp" private="yes" />
+    <input file="/shader-snippets/combiner-glsl/Tangent.inp" private="yes" />
+    <input file="/shader-snippets/combiner-glsl/Bitangent.inp" private="yes" />
+    
+    <block location="vertexMain;fragmentMain">
+      mat3 obj2tang;
+      obj2tang[0] = Tangent;
+      obj2tang[1] = Bitangent;
+      obj2tang[2] = Normal;
+      /* NOTE: This assumes the Normal/Tangent/Bitangent are orthonormal.
+      Only then we the transposed matrix is conveniently equal to the
+      inverse. Lastly, multiplying with the matrix on the left is the same
+      as multiplying with the transpose on the right. */
+      result =  obj2tang * value;
+    </block>
+  </coercion>
+  
+  <coercion from="normal_object" to="normal_screen" cost="5">
+    <block location="vertexMain;fragmentMain">
+      result = (gl_ModelViewProjectionMatrix * vec4 (value, 0.0)).xyz;
+      // object to world may have denormalized it
+      result = normalize (result);
+    </block>
+  </coercion>
+  
+  <coercion from="normal_screen" to="normal_object" cost="5">
+    <block location="vertexMain;fragmentMain">
+      result = (gl_ModelViewProjectionMatrixInverse * vec4 (value, 0.0)).xyz;
+      // object to world may have denormalized it
+      result = normalize (result);
+    </block>
+  </coercion>
+
+  <coercion from="normal_object" to="normal_camera" cost="5">
+    <block location="vertexMain;fragmentMain">
+      result = (gl_ModelViewMatrix * vec4 (value, 0.0)).xyz;
+      // object to world may have denormalized it
+      result = normalize (result);
+    </block>
+  </coercion>
+
+  <coercion from="normal_camera" to="normal_object" cost="5">
+    <block location="vertexMain;fragmentMain">
+      result = (gl_ModelViewMatrixInverse * vec4 (value, 0.0)).xyz;
+      // object to world may have denormalized it
+      result = normalize (result);
+    </block>
+  </coercion>
+
+  <coercion from="normal_camera" to="normal_screen" cost="4">
+    <block location="vertexMain;fragmentMain">
+      result = (gl_ProjectionMatrix * vec4 (value, 0.0)).xyz;
+    </block>
+  </coercion>
+
+  <coercion from="normal_screen" to="normal_camera" cost="4">
+    <block location="vertexMain;fragmentMain">
+      result = (gl_ProjectionMatrixInverse * vec4 (value, 0.0)).xyz;
+    </block>
+  </coercion>
+
+  <coercion from="normal_object" to="normal_world" cost="5">
+    <block location="vertexMain;fragmentMain">
+      result = (objectToWorld * vec4 (value, 0.0)).xyz;
+      // object to world may have denormalized it
+      result = normalize (result);
+    </block>
+  </coercion>
+
+  <coercion from="normal_world" to="normal_camera" cost="4">
+    <input file="/shader-snippets/combiner-glsl/worldToCamera.inp" private="yes" />
+    
+    <block location="vertexMain;fragmentMain">
+      result = (worldToCamera * vec4 (value, 0.0)).xyz;
+    </block>
+  </coercion>
+
+  <coercion from="normal_camera" to="normal_world" cost="4">
+    <input file="/shader-snippets/combiner-glsl/cameraToWorld.inp" private="yes" />
+
+    <block location="vertexMain;fragmentMain">
+      result = (cameraToWorld * vec4 (value, 0.0)).xyz;
+    </block>
+  </coercion>
+  
+  <!------------------------------------------------------------------------->
+  
+  <coerciontemplate name="normalize" cost="1">
+    <block location="vertexMain;fragmentMain">
+      result = normalize (value);
+    </block>
+  </coerciontemplate>
+  
+  <coerciontemplate name="passthrough" cost="0">
+    <block location="vertexMain;fragmentMain">
+      result = value;
+    </block>
+  </coerciontemplate>
+  
+</combinerlibrary>

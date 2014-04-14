@@ -1,0 +1,60 @@
+@c -*-texinfo-*-
+@node Assimp importer, Blender, Using lighter2, Working with Engine Content
+@section Assimp's generic import of models
+@cindex Assimp's generic import of models
+
+@subsubheading Overview
+
+@url{http://www.assimp.sourceforge.net, Assimp}, the Open Asset Import Library,
+is an open source library providing a generic interface to load 3D models and
+scenes from a @url{http://assimp.sourceforge.net/main_features_formats.html, huge list of different file formats},
+including 3ds Max, Wavefront, LightWave, Blender, @sc{collada}, Milkshape.
+
+This library can import the meshes, the material properties, the skeletal
+animations, the lights, cameras and complete scenes. The support for vertex
+and morph animations is planned but not yet implemented. The support for all these
+properties is quite good but may still vary depending on the file format used.
+Therefore, if the results are not good while using a given format, you may try to
+export to another format in order to test and see the difference.
+
+The Assimp plugin that has been implemented in Crystal Space is integrated
+completely transparently into the CS loader system, meaning that it allows you to
+load any asset file of one of the format supported, just like if it was a file of
+the Crystal Space format, therefore without any further need to manipulate or
+import previously the file.
+
+@subsubheading Loader interfaces
+
+Technically speaking, the Assimp plugin implements the @code{iBinaryLoaderPlugin}
+and @code{iModelLoader} interfaces of Crystal Space, as any other @sc{cs}-specific
+loader plugin. Therefore, when the @code{iLoader} or @code{iThreadedLoader} are
+used to load a file, the Assimp plugin will be selected if it supports the file
+format. It will then analyze the file, and import the objects as genmeshes,
+animeshes or whole scenes depending on the loader interface that was used.
+
+If the @code{iModelLoader} interface is used, then only one mesh will be created.
+If there is any skeleton or animation defined, then the mesh will be an
+@ref{MeshObject Animesh, Animesh}, otherwise it will be a @ref{MeshObject Genmesh, Genmesh}.
+If the @code{iBinaryLoaderPlugin} is used, then a mesh factory will be created for all the
+meshes defined in the file.
+
+Additionally, if a mesh defined in the file contains points or line segments, then
+an extra render mesh will be added to the main mesh (using
+@code{iMeshFactoryWrapper::AddExtraRenderMesh()}).
+
+@subsubheading Example
+
+An example has been added in the @file{data} directory with the @samp{Seymour}
+@sc{collada} animated test model. It is composed of one data file and one texture
+file that have been packed in a @sc{zip} file in @file{CS/data/seymour.zip}. This
+model can be loaded in @file{viewmesh} using the following command:
+
+@code{viewmesh -R=data/seymour.zip Seymour.dae}
+
+@subsubheading Morph targets
+
+A problem that has been mentioned about the Assimp library is that it does not yet
+support the import of vertex and morph animations. To overcome this, some tools have
+been added to Crystal Space in order to load and merge an Animesh with its morph
+targets defined in several different files. See the @ref{Animesh Tools, dedicated section}
+for more info on this.

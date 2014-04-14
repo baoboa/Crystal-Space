@@ -1,0 +1,256 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.9.10 Level of Detail</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.9.10 Level of Detail">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.9.10 Level of Detail">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Level-of-Detail"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Dynamic-Worlds.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Progressive-Level-of-Detail.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Engine.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 4.9.10 Level of Detail </h3>
+
+
+<p><em>Written by Jorrit Tyberghein,
+<a href="mailto:jorrit.tyberghein@gmail.com">jorrit.tyberghein@gmail.com</a>. Last updated 13 August 2003.</em>
+</p>
+<p>In a 3D engine there are typically two major ways that can be used to
+optimize performance (aside from getting better hardware and making better
+use of hardware). Those two ways are Visibility Culling
+(see section <a href="Visibility-Culling.html#0">Visibility Culling In Detail</a>) and Level of Detail. In this section we will
+talk about the latter.
+</p>
+<p>Level of Detail (or <small>LOD</small>) is the technique of reducing high polygon
+models with a simpler representation that renders faster. In contrast with
+visibility culling, level of detail can improve the performances even if there
+are a lot of objects visible at the same time. Level of Detail is practically
+the only way to improve performance in situations where there is not much
+culling opportunity (like in a space game).
+</p>
+<p>Crystal Space supports several types of <small>LOD</small>:
+</p>
+<ul>
+<li>
+Static <small>LOD</small>: With this kind of <small>LOD</small> you can let the engine
+automatically select between different versions of the same model based
+on the distance to the camera. This requires that you provide the different versions of
+the same model, which is explained in this section.
+</li><li>
+<a href="Progressive-Level-of-Detail.html#0">Progressive <small>LOD</small></a>: The major difference compared
+with static <small>LOD</small> is that this kind of <small>LOD</small> doesn't use discrete <small>LOD</small> levels
+but instead allows the engine to select as many triangles from the original model as
+needed (while still preserving the original model as much as possible). Another advantage
+is that the progressive <small>LOD</small>s are computed automatically. This <small>LOD</small> system is
+currently only supported by Genmeshes. 
+</li><li>
+Imposters: The mesh can be automatically replaced by a procedural image representing
+the mesh from the current camera point of view. Displaying an image is much more cheap
+than a 3D mesh. Here again, the images are computed automatically and do not need any
+additional artistic work.
+</li><li>
+Per-mesh <small>LOD</small>: Some meshes such as the <a href="MeshObject-Terrain2.html#0">terrain</a> and the
+<a href="Furmesh-Mesh.html#0">fur</a> meshes have built-in <small>LOD</small> management.
+</li></ul>
+
+<a name="1"></a>
+<h4 class="subsubheading"> Static <small>LOD</small> From Map File </h4>
+
+<p>Using static <small>LOD</small> from a map file is fairly easy. Here is an example:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">&lt;meshobj name=&quot;loddy&quot;&gt;
+  &lt;nullmesh&gt;
+    &lt;min x=&quot;-1&quot; y=&quot;0&quot; z=&quot;-1&quot; /&gt;
+    &lt;max x=&quot;1&quot; y=&quot;2&quot; z=&quot;1&quot; /&gt;
+  &lt;/nullmesh&gt;
+  &lt;staticlod&gt;
+    &lt;distance d0=&quot;100&quot; d1=&quot;10&quot; /&gt;
+  &lt;/staticlod&gt;
+  &lt;meshobj name=&quot;loddy_lowdetail&quot;&gt;
+    &lt;lodlevel&gt;0&lt;/lodlevel&gt;
+    ...
+  &lt;/meshobj&gt;
+  &lt;meshobj name=&quot;loddy_mediumdetail&quot;&gt;
+    &lt;lodlevel&gt;1&lt;/lodlevel&gt;
+    ...
+  &lt;/meshobj&gt;
+  &lt;meshobj name=&quot;loddy_highdetail_upper&quot;&gt;
+    &lt;lodlevel&gt;2&lt;/lodlevel&gt;
+    ...
+  &lt;/meshobj&gt;
+  &lt;meshobj name=&quot;loddy_highdetail_lower&quot;&gt;
+    &lt;lodlevel&gt;2&lt;/lodlevel&gt;
+    ...
+  &lt;/meshobj&gt;
+  &lt;move&gt;
+    ...
+  &lt;/move&gt;
+&lt;/meshobj&gt;
+</pre></td></tr></table>
+<p>Let's explain what this example does in more detail. First we
+define a mesh object called <samp>&lsquo;loddy&rsquo;</samp>. This is the parent mesh
+which represents the actual model but on itself contains no geometry.
+So that's why we use <samp>&lsquo;nullmesh&rsquo;</samp>. The box given in the nullmesh
+is important as it is used for visibility culling. So you should
+make the box larger then any of the objects inside it. Also the center
+of the box is used for calculating the distance between the box and
+the camera.
+</p>
+<p>Internally <small>LOD</small> uses a function to calculate a detail value betwen
+0 and 1 (0 meaning lowest detail, 1 meaning highest):
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">float lod = m * distance + a;
+</pre></td></tr></table>
+<p>The result of this function is capped so it is always between 0 and 1.
+</p>
+<p>Inside the <samp>&lsquo;staticlod&rsquo;</samp> block you can directly specify the <samp>&lsquo;m&rsquo;</samp> and
+<samp>&lsquo;a&rsquo;</samp> values but it is often easier to use a short-cut and specify <samp>&lsquo;d0&rsquo;</samp>
+and <samp>&lsquo;d1&rsquo;</samp> instead. In the example above we set <samp>&lsquo;d0&rsquo;</samp> equal to 100 which
+means that at distance 100 and beyond we will go to lowest possible detail. We
+also set <samp>&lsquo;d1&rsquo;</samp> equal to 10 which means that at distance 10 or less the
+object will use highest detail. Internally <samp>&lsquo;d0&rsquo;</samp> and <samp>&lsquo;d1&rsquo;</samp> are
+transformed to <samp>&lsquo;m&rsquo;</samp> and <samp>&lsquo;a&rsquo;</samp> using the following equation:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">float m = 1.0 / (d1-d0);
+float a = -m * d0;
+</pre></td></tr></table>
+<p>After this we have four child meshes representing the different detail
+levels. Using the <samp>&lsquo;lodlevel&rsquo;</samp> keyword one can place a child mesh at
+a <small>LOD</small> index. These indices always start at 0 for lowest detail and
+can go as high as you want. The maximum index that is used will be
+represented by detail level equal to 1.
+</p>
+<p>Interesting in the example above is that there are two meshes for level
+2. This means that at the highest detail level we actually use two sub-meshes
+to represent our mesh. Using this trick one can also use static lod to replace
+individual trees with collections of trees.
+</p>
+<p>Note that it is also possible to define static <small>LOD</small> on a hierarchical
+mesh factory using the same syntax as described above. In that case one can
+use <samp>&lsquo;meshref&rsquo;</samp> to make an instance of that hierarchical factory
+(or use <code>iMeshFactoryWrapper-&gt;CreateMeshWrapper()</code>).
+</p>
+<p>Note that it is also possible to use variables for <samp>&lsquo;m&rsquo;</samp> and <samp>&lsquo;v&rsquo;</samp>.
+One can do that like this:
+</p><table><tr><td>&nbsp;</td><td><pre class="example">&lt;variables&gt;
+  &lt;variable name=&quot;Lod M&quot; value=&quot;-.1&quot; /&gt;
+  &lt;variable name=&quot;Lod A&quot; value=&quot;.5&quot; /&gt;
+&lt;/variables&gt;
+...
+&lt;staticlod&gt;
+  &lt;distance varm=&quot;Lod M&quot; vara=&quot;Lod A&quot; /&gt;
+&lt;/staticlod&gt;
+</pre></td></tr></table><p>The advantage of this technique is that one can then use the same
+<small>LOD</small> values for different objects and modify them easily. Also one
+can modify the variables at runtime too with an immediate effect.
+</p>
+<a name="2"></a>
+<h4 class="subsubheading"> Static <small>LOD</small> From Code </h4>
+
+<p>Using static <small>LOD</small> from code is very easy. One basically has to create
+a hierarchical mesh, followed by a static <small>LOD</small> object and then the
+children which should be added to the right <small>LOD</small> level. Here follows
+an example which roughly does the same as our map example in the previous
+section:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">csRef&lt;iMeshWrapper&gt; loddy_mesh = Engine-&gt;CreateMeshWrapper (
+  &quot;crystalspace.mesh.object.null&quot;, &quot;loddy&quot;);
+csRef&lt;iNullMeshState&gt; nullmesh = scfQueryInterface&lt;iNullMeshState&gt; (
+  loddy_mesh-&gt;GetMeshObject ());
+nullmesh-&gt;SetBoundingBox (csBox3 (
+  csVector3 (-1, 0, -1), csVector3 (1, 2, 1)));
+
+iLODControl* lodctrl = loddy_mesh-&gt;CreateStaticLOD ();
+float d0 = 100;
+float d1 = 10;
+float m = 1.0 / (d1-d0);
+float a = -m * d0;
+lodctrl-&gt;SetLOD (m, a);
+
+csRef&lt;iMeshWrapper&gt; loddy_lowdetail = ...
+loddy_mesh-&gt;GetChildren ()-&gt;Add (loddy_lowdetail);
+loddy_mesh-&gt;AddMeshToStaticLOD (0, loddy_lowdetail);
+...
+csRef&lt;iMeshWrapper&gt; loddy_meddetail = ...
+loddy_mesh-&gt;GetChildren ()-&gt;Add (loddy_meddetail);
+loddy_mesh-&gt;AddMeshToStaticLOD (1, loddy_meddetail);
+...
+</pre></td></tr></table>
+<p>To-Do<small class="dots">...</small> @@@
+</p>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Dynamic-Worlds.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Progressive-Level-of-Detail.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Engine.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

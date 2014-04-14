@@ -1,0 +1,234 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 5.8.2 First Steps</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 5.8.2 First Steps">
+<meta name="keywords" content="Crystal Space 2.1.0: 5.8.2 First Steps">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="io_005fscene_005fcs-First-Steps"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="io_005fscene_005fcs-Installing.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="io_005fscene_005fcs-Export-Scenes.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Blender.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Internals.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 5.8.2 First Steps </h3>
+
+<p>This section presents the main panel of the user interface of the <code>io_scene_cs</code>
+add-on script.
+</p>
+<a name="1"></a>
+<h2 class="heading"> Main export panel </h2>
+
+<p>The main <samp>&lsquo;Crystal Space Export&rsquo;</samp> panel is placed in the <samp>&lsquo;Render&rsquo;</samp> context of the
+<samp>&lsquo;Properties&rsquo;</samp> (or <samp>&lsquo;Buttons&rsquo;</samp>) window. Some other panels are also added in some
+other contexts of the <samp>&lsquo;Properties&rsquo;</samp> window, they will be presented later.
+</p>
+<p><img src="content/blender/io_scene_cs_interface.png" alt="content/blender/io_scene_cs_interface">
+</p>
+<p>The panel is composed of several buttons and controls to configure and run the exporter:
+</p>
+<ul>
+<li>
+<strong>Export as a CS library</strong>: whether the scene should be exported as a <samp>&lsquo;library&rsquo;</samp>
+or a <samp>&lsquo;world&rsquo;</samp> file.
+</li><li>
+<strong>Enable double sided meshes</strong>: globally enable the setting of the <samp>&lsquo;double sided&rsquo;</samp>
+property. If it is disabled, then all meshes that are exported will be single sided,
+whatever their specific setting.
+</li><li>
+<strong>Export path</strong>: path to the folder where the generated files will be put.
+</li><li>
+<strong>Export</strong>: export the scene to the specified path.
+</li><li>
+<strong>Export and Run</strong>: export the scene then run it in Crystal Space's <samp>&lsquo;walktest&rsquo;</samp>.
+</li><li>
+<strong>Console</strong>: enable the <code>-console</code> flag of <samp>&lsquo;walktest&rsquo;</samp>
+</li><li>
+<strong>Verbose</strong>: enable the <code>-verbose=-scf</code> flag of <samp>&lsquo;walktest&rsquo;</samp>
+</li><li>
+<strong>Silent</strong>: enable the <code>-silent</code> flag of <samp>&lsquo;walktest&rsquo;</samp>
+</li></ul>
+
+<p>If the <samp>&lsquo;CRYSTAL&rsquo;</samp> environment variable is not defined or pointing to a directory
+containing the <samp>&lsquo;walktest&rsquo;</samp> application, then most of these controls are not present and
+are replaced instead by the comment <samp>&lsquo;'walktest' isn't available!&rsquo;</samp>. See the
+<a href="HOWTO-Setting-the-CRYSTAL-environment-variable.html#0">dedicated section</a> in order to solve this.
+</p>
+<a name="2"></a>
+<h2 class="heading"> The 'Export' button </h2>
+
+<p>When you click on the <strong>Export</strong> button, Blender will start working and writing
+informations about the export process on the
+<a href="http://wiki.blender.org/index.php/Doc:2.6/Manual/Interface/Window_system/Console_window">Blender console</a>,
+until the final message: <samp>&lsquo;EXPORTING complete&rsquo;</samp>. The files generated should have been
+placed in the given export folder.
+</p>
+<p>The structure of the files will depend whether you have checked or not the
+<samp>&lsquo;Export as a CS library&rsquo;</samp> option. If its is <cite>not</cite> checked, then it will be the
+following:
+</p>
+<ul>
+<li>
+a <tt>&lsquo;world&rsquo;</tt> file containing your scene (i.e. all sectors) is created at the root
+of the export directory
+</li><li>
+a <tt>&lsquo;textures&rsquo;</tt> directory is created in the export directory, and all texture files are
+put in it
+</li><li>
+a <tt>&lsquo;factories&rsquo;</tt> directory is created in the export directory, and all library files (i.e.
+the mesh factories) are put in it
+</li></ul>
+
+<p>If the <samp>&lsquo;Export as a CS library&rsquo;</samp> option <cite>is</cite> checked, then there will be only one
+file generated:
+</p>
+<ul>
+<li>
+a <tt>&lsquo;library&rsquo;</tt> file containing all mesh factories is created at the root of the export
+directory
+</li><li>
+a <tt>&lsquo;textures&rsquo;</tt> directory is also created in the export directory, and all texture files
+are put in it
+</li></ul>
+
+<p>If you want to visualize the exported objects, then you can open the library files with
+<samp>&lsquo;viewmesh&rsquo;</samp>. Take care for that that the path where are your files should be mounted
+correctly in the <a href="VFS.html#0">Virtual File System</a> of Crystal Space (<small>VFS</small>).
+</p>
+<p>In order to mount the VFS path, use the following command:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">viewmesh -R=&lt;export_path&gt; factories/&lt;library_file&gt;
+</pre></td></tr></table>
+
+<a name="3"></a>
+<h2 class="heading"> The 'Export and Run' button </h2>
+
+<p>This button allows the user to either launch the export process and view the result in
+the <a href="Walktest.html#0"><samp>&lsquo;walktest&rsquo;</samp></a> application.
+</p>
+<p>In order to work correctly, your scene needs:
+</p>
+<ul>
+<li>
+at least one camera,
+</li><li>
+at least one light lighting your objects,
+</li><li>
+some visible objects below the camera, to be used as a roof and in order for the <samp>&lsquo;walktest&rsquo;</samp>'s
+camera to not fall into the void as soon as you start the map.
+</li></ul>
+
+<p>Once clicked on the <strong>Export and Run</strong> button, the export process will start until
+the status message: <strong>EXPORTING complete</strong> appears on the Blender console. Shortly
+after that, the <samp>&lsquo;walktest&rsquo;</samp> window should appear (otherwise, check the Blender console
+for some output message).
+</p>
+<p>Using the arrow keys, you will be able to move around your scene. Note that <samp>&lsquo;walktest&rsquo;</samp> 
+has a lot of different keys and options, so you may want to have a look at the
+<a href="Walktest.html#0">dedicated manual page</a> for that.
+</p>
+<a name="4"></a>
+<h4 class="subsubheading"> If the 'walktest' window fails to open </h4>
+
+<ul>
+<li>
+Check that there are no errors in the
+<a href="http://wiki.blender.org/index.php/Doc:2.6/Manual/Interface/Window_system/Console_window">Blender console window</a>.
+</li></ul>
+
+<a name="5"></a>
+<h4 class="subsubheading"> If the 'walktest' screen is kept black </h4>
+
+<ul>
+<li>
+Check if there is a light, and if it is close enough to your geometry.
+</li><li>
+It is also possible that since the gravity is activated by default in walktest, the
+camera pans away from the set view too fast. Ensure that you added a floor below 
+your camera.
+</li><li>
+Check the console to ensure that your entire scene is being exported. Sometimes only the
+camera will be exported hence you will only see a black screen. If you have this problem,
+then check that the visibility of your objects is activated in the viewport.
+</li><li>
+Check that the normals from the visible objects are pointing in the correct direction. 
+If you made a cube surrounding the player this usually means you need to reverse its 
+normals (in Blender and in Edit mode, press the hotkey <samp>&lsquo;W&rsquo;</samp> then select 
+<samp>&lsquo;Flip Normals&rsquo;</samp>).
+</li></ul>
+
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="io_005fscene_005fcs-Installing.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="io_005fscene_005fcs-Export-Scenes.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Blender.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Internals.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

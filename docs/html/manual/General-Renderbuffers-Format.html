@@ -1,0 +1,211 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 5.4.1 General Renderbuffers Format</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 5.4.1 General Renderbuffers Format">
+<meta name="keywords" content="Crystal Space 2.1.0: 5.4.1 General Renderbuffers Format">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="General-Renderbuffers-Format"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Map-Format-Reference.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="XML-File-Format.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Map-Format-Reference.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Internals.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 5.4.1 General Renderbuffers Format </h3>
+
+<p>Meshes often require specification of a large amount of data for e.g. mesh
+positions, texture coordinates or triangle indices. Crystal Space has a
+general format for storing such bulk data, giving a unified syntax for
+different types of mesh objects allowing storing both in an <small>XML</small>-based
+format or a compact binary format.
+</p>
+<a name="1"></a>
+<h3 class="subheading"> Buffer <small>XML</small> format </h3>
+
+<a name="2"></a>
+<h4 class="subsubheading"> Top element </h4>
+
+<p>The top element has no fixed name; rather, it differs from mesh object to
+mesh object. However, all top buffer elements have a common set of attributes.
+</p>
+<dl compact="compact">
+<dt> <code>file</code></dt>
+<dd><p>Specifies a file name for an external file with the buffer data in a binary
+representation (see below). If set, all other attributes are ignored.
+</p>
+</dd>
+<dt> <code>type</code></dt>
+<dd><p>Required: attribute identifying the type of the contained data in memory.
+Possible values:
+<samp>&lsquo;int&rsquo;</samp> (or short <samp>&lsquo;i&rsquo;</samp>) - signed 32 bit integer,
+<samp>&lsquo;uint&rsquo;</samp> (<samp>&lsquo;ui&rsquo;</samp>) - unsigned 32 bit integer,
+<samp>&lsquo;byte&rsquo;</samp> (<samp>&lsquo;b&rsquo;</samp>) - signed 8 bit integer,
+<samp>&lsquo;ubyte&rsquo;</samp> (<samp>&lsquo;ub&rsquo;</samp>) - unsigned 8 bit integer,
+<samp>&lsquo;short&rsquo;</samp> (<samp>&lsquo;s&rsquo;</samp>) - signed 16 bit integer,
+<samp>&lsquo;ushort&rsquo;</samp> (<samp>&lsquo;us&rsquo;</samp>) - unsigned 16 bit integer,
+<samp>&lsquo;float&rsquo;</samp> (<samp>&lsquo;f&rsquo;</samp>) - 32 bit IEEE 754 floating point value,
+<samp>&lsquo;double&rsquo;</samp> (<samp>&lsquo;d&rsquo;</samp>) - 64 bit IEEE 754 floating point value.
+</p>
+</dd>
+<dt> <code>components</code></dt>
+<dd><p>Required: number of components per element in the buffer.
+</p>
+</dd>
+<dt> <code>normalized</code></dt>
+<dd><p>Optional: specifies whether the buffer contains normalized data in case of
+(unsigned) integer data. Normalized means the values are normnalized to
+floats in the range of [0;1] (unsigned values) resp. [-1;1] (signed values)
+when used. Unnormalized data is not changed.
+</p>
+</dd>
+<dt> <code>indices</code></dt>
+<dd><p>Optional: specifies whether the buffer is an index buffer. Index buffers are
+handled differently internally and thus must be designated as such. They have
+the restriction that they can have at most one component, can not contain
+float data and can not be normalized.
+</p>
+</dd>
+</dl>
+
+<p>Note that some meshes may specify additional attributes in buffer elements.
+</p>
+<a name="3"></a>
+<h4 class="subsubheading"> Buffer element specification </h4>
+
+<p>Each element in the buffer is specified as an <small>XML</small> element under the top
+element, with the individual components being specified in element attributes.
+</p>
+<p>The <small>XML</small> elements have the name <samp>&lsquo;element&rsquo;</samp> or short <samp>&lsquo;e&rsquo;</samp>.
+</p>
+<p>The attribute names for the individual components are <samp>&lsquo;c0&rsquo;</samp> for the first
+component, <samp>&lsquo;c1&rsquo;</samp> for the second component and so on.
+</p>
+<a name="4"></a>
+<h3 class="subheading"> Buffer binary format </h3>
+
+<p>Overall, a binary buffer file contains a header with information about the
+structure of the file (essentially what you would specify in the top element
+attributes in the <small>XML</small> format) followed by the raw buffer data. Index and
+general buffers have a similar but slightly different format. All values
+are stored in little endian byte order.
+</p>
+<a name="5"></a>
+<h4 class="subsubheading"> General buffer header </h4>
+
+<dl compact="compact">
+<dt> <code>uint16 magic</code></dt>
+<dd><p>Magic word identifying a file as a general buffer file. Must be <code>0x6272</code>.
+</p></dd>
+<dt> <code>uint8 componentType</code></dt>
+<dd><p>The type of components stored in the buffer. The values are the same as in the
+<code>csRenderBufferComponentType</code> enum.
+</p></dd>
+<dt> <code>uint8 componentCount</code></dt>
+<dd><p>Number of components in per element in the buffer.
+</p></dd>
+<dt> <code>uint32 elementCount</code></dt>
+<dd><p>Number of elements in the buffer.
+</p></dd>
+</dl>
+
+<a name="6"></a>
+<h4 class="subsubheading"> Index buffer header </h4>
+
+<dl compact="compact">
+<dt> <code>uint16 magic</code></dt>
+<dd><p>Magic word identifying a file as a general buffer file. Must be <code>0x6269</code>.
+</p></dd>
+<dt> <code>uint8 componentType</code></dt>
+<dd><p>The type of components stored in the buffer. The values are the same as in the
+<code>csRenderBufferComponentType</code> enum. Can not be a floating point or
+normalized type.
+</p></dd>
+<dt> <code>uint8 componentCount</code></dt>
+<dd><p>Number of components in per element in the buffer. Must be 1.
+</p></dd>
+<dt> <code>uint32 elementCount</code></dt>
+<dd><p>Number of elements in the buffer.
+</p></dd>
+<dt> <code>uint32 rangeStart</code></dt>
+<dd><p>Value of the smallest element in the buffer.
+</p></dd>
+<dt> <code>uint32 rangeEnd</code></dt>
+<dd><p>Value of the largest element in the buffer.
+</p></dd>
+</dl>
+
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Map-Format-Reference.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="XML-File-Format.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Map-Format-Reference.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Internals.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

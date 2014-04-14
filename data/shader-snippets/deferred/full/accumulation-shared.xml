@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<!--
+  Copyright (C) 2012 by Matthieu Kraus
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Library General Public
+  License as published by the Free Software Foundation; either
+  version 2 of the License, or (at your option) any later version.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  Library General Public License for more details.
+
+  You should have received a copy of the GNU Library General Public
+  License along with this library; if not, write to the Free
+  Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+-->
+<snippet type="compound">
+  <technique priority="200">
+    <combiner plugin="crystalspace.graphics3d.shader.combiner.glcg" />
+
+    <alias name="use_buffer" weak="yes" file="/shader-snippets/deferred/full/use_buffer.xml" />
+    <alias name="shadow" weak="yes" file="/shader-snippets/deferred/shadow_depth.xml" />
+
+    <snippet id="position" file="/shader-snippets/position.xml" />
+    <snippet id="use_buffer" filealias="use_buffer" />
+    <snippet id="shadow" filealias="shadow" />
+    <snippet id="lighting" filealias="lighting" />
+    <snippet id="attenuate_diffuse" file="/shader-snippets/modulate_rgb.xml" />
+    <snippet id="attenuate_specular" file="/shader-snippets/modulate_rgb.xml" />
+    <snippet id="noambient" file="/shader-snippets/lighting/ambient-null.xml" />
+    <snippet id="apply_lighting" file="/shader-snippets/lighting/apply-lighting.xml" />
+
+    <!-- read gbuffer -->
+    <connection from="position" to="use_buffer" />
+
+    <!-- calculate lighting -->
+    <connection from="use_buffer" to="lighting" />
+
+    <!-- calculate shadow attenuation -->
+    <connection from="use_buffer" to="shadow">
+      <explicit from="position" to="positionV" />
+      <explicit from="position" to="positionW" />
+    </connection>
+
+    <!-- attenuate diffuse -->
+    <connection from="shadow" to="attenuate_diffuse">
+      <explicit from="attenuation" to="a" />
+    </connection>
+    <connection from="lighting" to="attenuate_diffuse">
+      <explicit from="diffuseColor" to="b" />
+    </connection>
+
+    <!-- attenuate specular -->
+    <connection from="shadow" to="attenuate_specular">
+      <explicit from="attenuation" to="a" />
+    </connection>
+    <connection from="lighting" to="attenuate_specular">
+      <explicit from="specularColor" to="b" />
+    </connection>
+
+    <!-- apply lighting -->
+    <connection from="attenuate_diffuse" to="apply_lighting">
+      <explicit from="result" to="lightDiffuse" />
+    </connection>
+    <connection from="attenuate_specular" to="apply_lighting">
+      <explicit from="result" to="lightSpecular" />
+    </connection>
+    <connection from="use_buffer" to="apply_lighting">
+      <explicit from="surfaceDiffuse" to="surfaceDiffuse" />
+      <explicit from="surfaceSpecular" to="surfaceSpecular" />
+    </connection>
+    <connection from="noambient" to="apply_lighting">
+      <explicit from="ambient" to="ambient" />
+    </connection>
+
+    <!-- output combined result -->
+    <output snippet="apply_lighting" name="result" to="color0" />
+  </technique>
+</snippet>

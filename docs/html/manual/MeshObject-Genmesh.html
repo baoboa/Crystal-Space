@@ -1,0 +1,321 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.10.7 Genmesh Mesh Object</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.10.7 Genmesh Mesh Object">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.10.7 Genmesh Mesh Object">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="MeshObject-Genmesh"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="HOWTO-Mesh-Movement.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="MeshObject-Animesh.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="MeshObject.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 4.10.7 Genmesh Mesh Object </h3>
+
+<p><em>Written by Jorrit Tyberghein,
+<a href="mailto:jorrit.tyberghein@gmail.com">jorrit.tyberghein@gmail.com</a>.</em>
+</p>
+<p>A Genmesh is a complex set of 3D triangles (just like a 3D sprite)
+that normally doesn't support any automatic animation (unlike a 3D sprite)
+unless you use a genmesh animation plugin (see section <a href="GenMesh-Animation.html#0">GenMesh Animation</a>).
+In general genmeshes are ideal for high detailed objects. Genmeshes also
+support multiple materials using submeshes.
+</p>
+<p>There is also a <small>HOWTO</small> discussing the creation of genmeshes.
+See section <a href="HOWTO-Create-Genmesh.html#0">Creating a Genmesh Mesh</a>.
+</p>
+<a name="1"></a>
+<h4 class="subsubheading"> Basic Structure </h4>
+
+<p>The following <small>SCF</small> class names are used (for <code>csLoadPlugin</code>):
+</p>
+<ul>
+<li>
+Type plugin: <code>crystalspace.mesh.object.genmesh</code>
+</li><li>
+Loader plugin: <code>crystalspace.mesh.loader.genmesh</code>
+</li><li>
+Factory loader plugin: <code>crystalspace.mesh.loader.factory.genmesh</code>
+</li></ul>
+
+<p>Objects in this plugin implement the following <small>SCF</small> interfaces, which you
+can retrieve with <code>scfQueryInterface</code>:
+</p>
+<ul>
+<li>
+<em>MeshObject</em>
+<ul>
+<li>
+Implements <samp>&lsquo;iMeshObject&rsquo;</samp>
+</li><li>
+Implements <samp>&lsquo;iGeneralMeshState&rsquo;</samp>
+</li></ul>
+</li><li>
+<em>MeshObjectFactory</em>
+<ul>
+<li>
+Implements <samp>&lsquo;iMeshObjectFactory&rsquo;</samp>
+</li><li>
+Implements <samp>&lsquo;iGeneralFactoryState&rsquo;</samp>
+</li></ul>
+</li><li>
+<em>MeshObjectType</em>
+<ul>
+<li>
+Implements <samp>&lsquo;iMeshObjectType&rsquo;</samp>
+</li></ul>
+</li></ul>
+
+<a name="2"></a>
+<h4 class="subsubheading"> Factory State Interface </h4>
+
+<p>Use the <samp>&lsquo;iGeneralFactoryState&rsquo;</samp> <small>SCF</small> interface to access settings for
+a genmesh factory.  The definition of this interface can be found in
+<tt>&lsquo;CS/include/imesh/genmesh.h&rsquo;</tt> and that is also the include file you need
+to include in your applications to use this plugin.  Using this interface you
+can access the material, triangles, vertices, texture coordinates, normals,
+and various other configuration parameters for a genmesh factory.
+</p>
+<a name="3"></a>
+<h4 class="subsubheading"> Factory Loader </h4>
+
+<p>Here is a list of all the tags supported by a genmesh factory and their
+meaning:
+</p><ul>
+<li> <samp>&lsquo;box&rsquo;</samp>
+This is a shortcut for defining a box geometry. It contains two vectors
+named <samp>&lsquo;min&rsquo;</samp> and <samp>&lsquo;max&rsquo;</samp>:
+<samp>&lsquo;&lt;box&gt; &lt;min x=&quot;0&quot; y=&quot;0&quot; z=&quot;0&quot; /&gt; &lt;max x=&quot;1&quot; y=&quot;1&quot; z=&quot;1&quot; /&gt; &lt;/box&gt;&rsquo;</samp>.
+</li><li> <samp>&lsquo;sphere&rsquo;</samp>
+This is a short cut for defining sphere geometry:
+<samp>&lsquo;&lt;sphere rimvertices=&quot;6&quot; reversed=&quot;true&quot; cylindrical=&quot;false&quot;&gt;
+&lt;radius x=&quot;10&quot; y=&quot;10&quot; z=&quot;1&quot; /&gt; &lt;/sphere&gt;&rsquo;</samp>
+</li><li> <samp>&lsquo;numtri&rsquo;</samp>
+Deprecated. This is the old way to specify the number of triangles this
+genmesh will use. It is no longer needed and it is most certainly not needed
+if you use <samp>&lsquo;box&rsquo;</samp> or <samp>&lsquo;sphere&rsquo;</samp>.
+</li><li> <samp>&lsquo;numvt&rsquo;</samp>
+Deprecated. This is the old way to specify the number of vertices this
+genmesh will use. It is no longer needed and it is most certainly not needed
+if you use <samp>&lsquo;box&rsquo;</samp> or <samp>&lsquo;sphere&rsquo;</samp>. Note that if you do not use
+<samp>&lsquo;numvt&rsquo;</samp> that you have to specify vertices with uv in the same <samp>&lsquo;v&rsquo;</samp>
+command but colors and normals have to be specified seperatelly. If you
+don't use <samp>&lsquo;numvt&rsquo;</samp> then you can specify everything in one statement.
+</li><li> <samp>&lsquo;v&rsquo;</samp>
+Unless you use <samp>&lsquo;box&rsquo;</samp> or <samp>&lsquo;sphere&rsquo;</samp> you can use this to add a
+vertex. If you don't use <samp>&lsquo;numvt&rsquo;</samp> (prefered) then you should specify
+all vertex information here: <samp>&lsquo;&lt;v x=&quot;0&quot; y=&quot;0&quot; z=&quot;0&quot; nx=&quot;1&quot; ny=&quot;0&quot; nz=&quot;0&quot;
+red=&quot;.5&quot; green=&quot;.g&quot; blue=&quot;.g&quot; u=&quot;0&quot; v=&quot;.1&quot; /&gt;&rsquo;</samp>. Otherwise you must specify
+normal and color information seperatelly. Note that normal and color information
+is optional. Default color is black and default normal is the 0-vector (meaning
+you'll have to use <samp>&lsquo;autonormals&rsquo;</samp> then).
+</li><li> <samp>&lsquo;n&rsquo;</samp>
+This is only used if you specified <samp>&lsquo;numvt&rsquo;</samp> and it specifies the normal
+information for every vertex. You must have the same number of <samp>&lsquo;n&rsquo;</samp>
+statements as there are vertices. Note that if you use <samp>&lsquo;autonormals&rsquo;</samp>
+then you don't need to specify normals.
+</li><li> <samp>&lsquo;color&rsquo;</samp>
+This is only used if you specified <samp>&lsquo;numvt&rsquo;</samp> and it specifies the color
+information for every vertex. You must have the same number of <samp>&lsquo;color&rsquo;</samp>
+statements as there are vertices.
+</li><li> <samp>&lsquo;submesh&rsquo;</samp>
+Using submeshes you can define subsets of the factory that use different
+material and mixmode. When you don't use <samp>&lsquo;submesh&rsquo;</samp> the entire mesh
+will use the same material and mixmode. As soon as you use submeshes you
+should make sure that every triangle is contained in some submesh. Basically
+inside the <samp>&lsquo;submesh&rsquo;</samp> node you need to specify the triangle indices to
+use, the material, and the mixmode: <samp>&lsquo;&lt;submesh&gt; &lt;t&gt;0&lt;/t&gt; &lt;t&gt;3&lt;/t&gt; <small class="dots">...</small>
+&lt;material&gt;stone&lt;/material&gt; &lt;mixmode&gt; &lt;add /&gt; &lt;/mixmode&gt; &lt;/submesh&gt;&rsquo;</samp>.
+</li><li> <samp>&lsquo;t&rsquo;</samp>
+Add a triangle to the factory. You need to specify the three vertex indices
+that are used for the triangle: <samp>&lsquo;&lt;t v1=&quot;3&quot; v2=&quot;1&quot; v3=&quot;10&quot; /&gt;&rsquo;</samp>.
+</li><li> <samp>&lsquo;material&rsquo;</samp>
+The name of the master material to use for this genmesh. Mesh objects
+that are created from this factory can override this material. Also note
+that if you use submeshes then multiple materials can be used for the same
+factory/object.
+</li><li> <samp>&lsquo;autonormals&rsquo;</samp>
+If you use this then the normals will be calculated automatically from the
+given vertices. By default the vertex table is compressed (all doubles removed)
+in a temporary table and from that table the normal data is calculated so that
+you get a smooth result. If you don't want that compression (because you want
+to ensure that there are explicit seams in the object) you need to set
+the <samp>&lsquo;normalnocompress&rsquo;</samp> flag before this statement.
+</li><li> <samp>&lsquo;normalnocompress&rsquo;</samp>
+Disable compression of the vertex table before <samp>&lsquo;autonormals&rsquo;</samp> is used.
+</li><li> <samp>&lsquo;back2front&rsquo;</samp>
+If you have an object that uses transparency that requires perfect sorting
+from back to front (like objects using alpha transparency) then you may need
+to set this flag. This will ensure that internally there is a <small>BSP</small> tree
+to sort the polygons from back to front when rendering. Note that this slows
+down considerably so only use it if you really need it.
+</li><li> <samp>&lsquo;manualcolors&rsquo;</samp>
+If this flag is set then no lighting values are processed and the colors
+specified for every vertex (which are default black!) are used.
+</li><li> <samp>&lsquo;lighting&rsquo;</samp>
+If this flag is set (default true) then lighting information (from nearby
+lights) is added to the colors of the vertices.
+</li><li> <samp>&lsquo;defaultcolor&rsquo;</samp>
+This color is the default color as used for objects created from this
+factory. Objects can override this default with the <samp>&lsquo;color&rsquo;</samp> statement
+in the object.
+</li><li> <samp>&lsquo;localshadows&rsquo;</samp>
+If this flag is set (default false) then lighting calculation is not
+dynamic but instead static and precalculated. This is faster at runtime and
+additionally shadows on the genmesh object will be supported (only shadows
+calculated per vertex).
+</li><li> <samp>&lsquo;noshadows&rsquo;</samp>
+If this flag is set (default false) then the object will not cast shadows
+on other objects.
+</li><li> <samp>&lsquo;mixmode&rsquo;</samp>
+Control the transparency of this object. See <a href="XMLServices-Mixmode.html#0">Parsing Mixmode</a> for
+a list of possibilities.
+</li><li> <samp>&lsquo;animcontrol&rsquo;</samp>
+Add an animation control to the object.
+</li><li> <samp>&lsquo;renderbuffer&rsquo;</samp>
+Using this statement you can add your own user renderbuffers to the object.
+These renderbuffers can be used by shaders.
+</li></ul>
+
+<a name="4"></a>
+<h4 class="subsubheading"> Object State Interface </h4>
+
+<p><samp>&lsquo;iGeneralMeshState&rsquo;</samp> (residing in <tt>&lsquo;CS/include/imesh/genmesh.h&rsquo;</tt>) is
+the <small>SCF</small> interface that you can use to manipulate settings for a genmesh
+object.  By using this interface you can access the material, blending mode
+(mixmode), and various other configuration parameters for a genmesh object.
+</p>
+<a name="5"></a>
+<h4 class="subsubheading"> Object Loader </h4>
+
+<p>Here is a list of all the tags supported by a genmesh object and their
+meaning:
+</p><ul>
+<li> <samp>&lsquo;factory&rsquo;</samp>
+The name of the factory to use.
+</li><li> <samp>&lsquo;material&rsquo;</samp>
+For this object, override the material from the factory.
+</li><li> <samp>&lsquo;mixmode&rsquo;</samp>
+For this object, override the mixmode from the factory.
+</li><li> <samp>&lsquo;manualcolors&rsquo;</samp>
+For this object, override the manualcolors flag from the factory.
+</li><li> <samp>&lsquo;lighting&rsquo;</samp>
+For this object, override the lighting flag from the factory.
+</li><li> <samp>&lsquo;noshadows&rsquo;</samp>
+For this object, override the noshadows flag from the factory.
+</li><li> <samp>&lsquo;localshadows&rsquo;</samp>
+For this object, override the localshadows flag from the factory.
+</li><li> <samp>&lsquo;renderbuffer&rsquo;</samp>
+Add additional render buffers to this object (the ones added to the
+factory will also be valid).
+</li><li> <samp>&lsquo;submesh&rsquo;</samp>
+You can also define submeshes on the object level instead of the factory
+level. If you use <samp>&lsquo;submesh&rsquo;</samp> in the mesh then the submeshes of the
+factory are ignored.
+</li><li> <samp>&lsquo;color&rsquo;</samp>
+Color of this mesh (overrides <samp>&lsquo;defaultcolor&rsquo;</samp> from factory).
+</li></ul>
+
+<a name="6"></a>
+<h4 class="subsubheading"> Lighting and Colors </h4>
+
+<p>Lighting of genmesh objects is a bit complicated. In this section we describe
+the different possibilities:
+</p>
+<ul>
+<li>
+In all cases the color array from the factory will be added to the colors
+calculated below.
+</li><li>
+If manualcolors is enabled then only the optional animation control still
+matters. No other lighting values are processed.
+</li><li>
+Otherwise if lighting is disabled then the base color of the mesh will be
+added to the factory colors.
+</li><li>
+If lighting is enabled and localshadows is disabled then lighting is calculated
+as follows: factory colors + base color + static ambient + dynamic
+ambient + lighting as calculated from nearby/relevant lights.
+</li><li>
+If both lighting and localshadows are enabled then lighting is calculated as
+follows: factory colors + base color + static ambient + dynamic
+ambient + lighting as precalculated during static lighting +
+dynamic lights
+</li></ul>
+
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="HOWTO-Mesh-Movement.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="MeshObject-Animesh.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="MeshObject.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

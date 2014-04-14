@@ -1,0 +1,241 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 3.1.4.2 Movement Commands</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 3.1.4.2 Movement Commands">
+<meta name="keywords" content="Crystal Space 2.1.0: 3.1.4.2 Movement Commands">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Walktest-Movement"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Walktest-General.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Walktest-Special-Effects.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Running-The-Demos.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Walktest-Console-Commands.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h4 class="subsubsection"> 3.1.4.2 Movement Commands </h4>
+
+<p>The actual code for movement is a maze of twisty little subroutines, all alike,
+and this is reflected in the commands available.
+</p>
+
+<p>There are several concepts in use in the movement commands.
+</p>
+<ul>
+<li>
+Movement in world coordinates.
+</li><li>
+Movement relative to way the camera is facing.
+</li><li>
+Movement relative to the camera's orientation, ie taking account of any
+rotation along the direction you are looking in.
+</li><li>
+Acceleration and decceleration.
+</li></ul>
+
+<p>This has been implemented by having two modes - <samp>&lsquo;move_3d on&rsquo;</samp> and
+<samp>&lsquo;move_3d off&rsquo;</samp>.  This affects the <samp>&lsquo;strafe&rsquo;</samp>, <samp>&lsquo;step&rsquo;</samp>, <samp>&lsquo;rotate&rsquo;</samp>
+and <samp>&lsquo;look&rsquo;</samp> commands which invoke commands prefixed with <samp>&lsquo;imm_&rsquo;</samp> when
+<samp>&lsquo;move_3d&rsquo;</samp> is on.
+</p>
+<p><samp>&lsquo;move_3d&rsquo;</samp> is like Descent, as if you are piloting an air vehicle, and can
+yaw, pitch and roll.
+</p>
+<p>Without <samp>&lsquo;move_3d&rsquo;</samp>, movement is like Quake, and you cannot tip your head
+left and right, only up and down.
+</p>
+<p>Acceleration and maximum speed are configured in the Configuration file, but
+only affect the step (move in direction of view) and strafe (move perpendicular
+to direction of view) commands, not the rotation commands.
+See section <a href="Walktest-Configuration-Files.html#0">Configuration Files</a>.
+</p>
+<dl compact="compact">
+<dt> <code>facenorth</code></dt>
+<dt> <code>facesouth</code></dt>
+<dt> <code>faceeast</code></dt>
+<dt> <code>facewest</code></dt>
+<dt> <code>facedown</code></dt>
+<dt> <code>faceup</code></dt>
+<dd><p>Point in the specified absolute direction.  Useful if you get lost or if you
+are not pointing quite level, since Walktest has a movement bug which means if
+you are not facing horizontally, you tend to drift forwards or backwards.
+</p>
+</dd>
+<dt> <code>turn [<kbd>b</kbd>]</code></dt>
+<dd><p>Turn 180 from the direction you are facing.
+</p></dd>
+</dl>
+
+<p>The next section of commands work differently if <samp>&lsquo;move_3d&rsquo;</samp> is on.
+<samp>&lsquo;move_3D&rsquo;</samp> mode ignores gravity, and gives a full 3D capability, like
+Descent.  The gravity control can be switched off even if <samp>&lsquo;move_3d&rsquo;</samp> is
+off.  It is of limited use, as these commands are not bound to individual keys
+normally, and you don't really want to keep typing them into the console.
+</p>
+<p>In 3D mode, they take a single step as described.  In normal mode, they take a
+parameter giving the distance to move.  Remember that <em>status</em> means this
+commands takes place as long as the keys are held down.
+</p>
+<ul>
+<li> <code>step_forward n</code> [<kbd>status-up</kbd>]
+</li><li> <code>step_backward n</code> [<kbd>status-down</kbd>]
+</li><li> <code>strafe_left n</code> [<kbd>status-alt-left</kbd>]
+</li><li> <code>strafe_right n</code> [<kbd>status-alt-right</kbd>]
+</li><li> <code>look_up n</code> [<kbd>status-pgup</kbd>]
+</li><li> <code>look_down n</code> [<kbd>status-pgdn</kbd>]
+</li><li> <code>rotate_left n</code> [<kbd>status-left</kbd>]
+</li><li> <code>rotate_right n</code> [<kbd>status-right</kbd>]
+</li><li> <code>jump</code> [<kbd>0</kbd>]
+</li></ul>
+
+<p>If <samp>&lsquo;do_gravity&rsquo;</samp> is enabled (the default) and <samp>&lsquo;on_ground&rsquo;</samp> is set, add
+<samp>&lsquo;cfg_jumpspeed&rsquo;</samp> to upward (y) component.  In short, jump.  And you can't
+jump in midair to keep going upwards.
+</p>
+<dl compact="compact">
+<dt> <code>move3d [<kbd>3</kbd>]</code></dt>
+<dd><p>Toggle between between pure 3D movement (Descent-like) and `comfortable'
+movement (Quake-like).  The latter is now default.  This basically affects the
+left and right arrow keys which now rotate the camera how you would expect it
+and also includes a gravity system.  When you enable 3D movement the gravity
+system is also disabled, and the left and right arrow keys are like banking a
+plane left or right.
+</p>
+</dd>
+<dt> <code>do_gravity boolean [<kbd>8</kbd>]</code></dt>
+<dd><p>Enable/disable gravity (enabled by default).  If you disable gravity, you can't
+jump.  You can use the <samp>&lsquo;i_up&rsquo;</samp> or <samp>&lsquo;i_down&rsquo;</samp> commands, but they are not
+bound to keys by default.
+</p></dd>
+</dl>
+
+
+<p>Movement
+</p>
+
+<p>These take a pair.  If first = 1, use Slow mode.  If second = 1, use Fast mode.
+Both may be true, in which case slow is assumed.  These commands are bound to
+movement keys.  The <kbd>Control</kbd> key sets the Slow flag, and
+<kbd>Control-Shift</kbd> sets the Fast flag.  There are key bindings for use with
+Slow and Fast, but not Normal speed.
+</p>
+<ul>
+<li> i_forward s f [<kbd>Control-UP</kbd>] 	
+</li><li> i_backward s f [<kbd>Control-DOWN</kbd>]
+</li><li> i_left s f [<kbd>Control-Alt-LEFT</kbd>]
+</li><li> i_right s f [<kbd>Control-Alt-RIGHT</kbd>]
+</li><li> i_up s f [<kbd>Control-Alt-UP</kbd>]
+</li><li> i_down s f [<kbd>Control-Alt-DOWN</kbd>]
+</li></ul>
+
+<p>These four perform left or right rotation using either camera or world
+coordinates.
+</p>
+<ul>
+<li>  i_rotleftc [<kbd>Control-LEFT</kbd>]
+</li><li>  i_rotleftw [<kbd>Control-Shift-Alt-LEFT</kbd>]
+</li><li>  i_rotrightc [<kbd>Control-RIGHT</kbd>]
+</li><li>  i_rotrightw [<kbd>Control-Shift-Alt-Right</kbd>]
+</li></ul>
+
+<p>These four perform rotation, left or right, around the X (horizontal) or Z
+(direction of view) axes.
+</p>
+<ul>
+<li>  i_rotleftx [<kbd>Control-PGDN</kbd>]
+</li><li>  i_rotleftz [<kbd>Control-Alt-PGUP</kbd>]	
+</li><li>  i_rotrightx [<kbd>Control-PGUP</kbd>]
+</li><li>  i_rotrightz [<kbd>Control-Alt-PGDN</kbd>]
+</li></ul>
+
+<dl compact="compact">
+<dt> <code>colldet boolean [<kbd>Shift-8</kbd>]</code></dt>
+<dd><p>Enable/disable collision detection.  This corresponds to the <samp>&lsquo;-colldet&rsquo;</samp>
+and <samp>&lsquo;-nocolldet&rsquo;</samp> command line options.
+</p>
+</dd>
+<dt> <code>freelook [<kbd>\</kbd>]</code></dt>
+<dd><p>If freelook is enabled the mouse moves the camera around like in Quake.  By
+default freelook is disabled, allowing you to move the mouse to point at
+things.
+</p>
+</dd>
+<dt> <code>inverse_mouse Boolean [<kbd>`</kbd>]</code></dt>
+<dd><p>This changes the up and down operation of the mouse, so the mouse acts like a
+joystick when in freelook mode.  Pull the mouse back to look up, push it
+forwards to look down.
+</p></dd>
+</dl>
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Walktest-General.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Walktest-Special-Effects.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Running-The-Demos.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Walktest-Console-Commands.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

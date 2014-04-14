@@ -1,0 +1,203 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: C.5.18.4 Fire</title>
+
+<meta name="description" content="Crystal Space 2.1.0: C.5.18.4 Fire">
+<meta name="keywords" content="Crystal Space 2.1.0: C.5.18.4 Fire">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Api1_005f0-PartConv-Fire"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Api1_005f0-PartConv-Snow.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Api1_005f0-PartConv-Fountain.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Api1_005f0-Particle-system-changes.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Licenses.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h4 class="subsubsection"> C.5.18.4 Fire </h4>
+
+<p>To convert the old fire particle system to new particles you
+can use an emitter which is oriented at the bottom of the flame.
+To get behaviour equivalent to the old system use a box-shaped emitter, either
+with the metrics specified by  <samp>&lsquo;originbox&rsquo;</samp> or a very small box 
+around <samp>&lsquo;origin&rsquo;</samp>.
+You can use a force effector with random acceleration to have the particles
+shift a bit. Here you see an example of a fire particle system in the
+world file:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">  &lt;meshfact name=&quot;fireFact&quot;&gt;
+    &lt;plugin&gt;crystalspace.mesh.loader.factory.particles&lt;/plugin&gt;
+    &lt;params&gt;
+      &lt;particlesize x=&quot;0.04&quot; y=&quot;0.08&quot; /&gt;
+      &lt;sortmode&gt;none&lt;/sortmode&gt;
+      &lt;emitter type=&quot;sphere&quot;&gt;
+      	&lt;radius&gt;.1&lt;/radius&gt;
+        &lt;emissionrate&gt;250&lt;/emissionrate&gt;
+        &lt;mass min=&quot;5&quot; max=&quot;7.5&quot; /&gt;
+        &lt;uniformvelocity /&gt;
+        &lt;initialvelocity x=&quot;0&quot; y=&quot;1&quot; z=&quot;0&quot; /&gt;
+        &lt;initialttl min=&quot;1&quot; max=&quot;1&quot; /&gt;
+        &lt;placement&gt;center&lt;/placement&gt;
+      &lt;/emitter&gt;
+      &lt;effector type=&quot;lincolor&quot;&gt;
+        &lt;color red=&quot;0.00&quot; green=&quot;0.00&quot; blue=&quot;0.00&quot; time=&quot;1&quot; /&gt;
+        &lt;color red=&quot;1.00&quot; green=&quot;0.35&quot; blue=&quot;0.00&quot; time=&quot;0.96&quot; /&gt;
+        &lt;color red=&quot;1.00&quot; green=&quot;0.22&quot; blue=&quot;0.00&quot; time=&quot;0.9&quot; /&gt;
+        &lt;color red=&quot;1.00&quot; green=&quot;0.12&quot; blue=&quot;0.00&quot; time=&quot;0.8&quot; /&gt;
+        &lt;color red=&quot;0.80&quot; green=&quot;0.02&quot; blue=&quot;0.00&quot; time=&quot;0.7&quot; /&gt;
+        &lt;color red=&quot;0.60&quot; green=&quot;0.00&quot; blue=&quot;0.00&quot; time=&quot;0.75&quot; /&gt;
+        &lt;color red=&quot;0.40&quot; green=&quot;0.00&quot; blue=&quot;0.00&quot; time=&quot;0.5625&quot; /&gt;
+        &lt;color red=&quot;0.20&quot; green=&quot;0.05&quot; blue=&quot;0.05&quot; time=&quot;0.375&quot; /&gt;
+        &lt;color red=&quot;0.10&quot; green=&quot;0.10&quot; blue=&quot;0.10&quot; time=&quot;0.1875&quot; /&gt;
+        &lt;color red=&quot;0.00&quot; green=&quot;0.00&quot; blue=&quot;0.00&quot; time=&quot;0&quot; /&gt;
+      &lt;/effector&gt;
+      &lt;effector type=&quot;force&quot;&gt;
+	&lt;randomacceleration x=&quot;2.5&quot; y=&quot;2.5&quot; z=&quot;2.5&quot; /&gt;
+      &lt;/effector&gt;
+    &lt;/params&gt;
+  &lt;/meshfact&gt;
+  ...
+  &lt;meshobj name=&quot;fire&quot;&gt;
+    &lt;priority&gt;alpha&lt;/priority&gt;
+    &lt;plugin&gt;crystalspace.mesh.loader.particles&lt;/plugin&gt;
+    &lt;ztest /&gt;
+    &lt;params&gt;
+      &lt;factory&gt;fireFact&lt;/factory&gt;
+      &lt;mixmode&gt;
+        &lt;add /&gt;
+      &lt;/mixmode&gt;
+      &lt;material&gt;firematerial&lt;/material&gt;
+    &lt;/params&gt;
+    &lt;move&gt;
+      &lt;v x=&quot;10&quot; y=&quot;0&quot; z=&quot;10&quot; /&gt;
+    &lt;/move&gt;
+  &lt;/meshobj&gt;
+</pre></td></tr></table>
+<p>Here is how this could work in code:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">  csRef&lt;iMeshFactoryWrapper&gt; mfw = engine-&gt;CreateMeshFactory (
+      &quot;crystalspace.mesh.object.particles&quot;, &quot;fire&quot;);
+  if (!mfw) return;
+
+  csRef&lt;iMeshWrapper&gt; exp = engine-&gt;CreateMeshWrapper (mfw, &quot;custom fire&quot;,
+	sector, origin);
+
+  exp-&gt;SetZBufMode(CS_ZBUF_TEST);
+  exp-&gt;GetMeshObject()-&gt;SetMixMode (CS_FX_ADD);
+  exp-&gt;GetMeshObject()-&gt;SetMaterialWrapper (mat);
+
+  csRef&lt;iParticleBuiltinEmitterFactory&gt; emit_factory = 
+      csLoadPluginCheck&lt;iParticleBuiltinEmitterFactory&gt; (
+        object_reg, &quot;crystalspace.mesh.object.particles.emitter&quot;, false);
+  csRef&lt;iParticleBuiltinEffectorFactory&gt; eff_factory = 
+      csLoadPluginCheck&lt;iParticleBuiltinEffectorFactory&gt; (
+        object_reg, &quot;crystalspace.mesh.object.particles.effector&quot;, false);
+
+  csRef&lt;iParticleBuiltinEmitterSphere&gt; sphemit = emit_factory-&gt;CreateSphere ();
+  // Time to live depends on height of sector.
+  float velocity = 0.5f;
+  float seconds_to_live = 2.0f;
+  sphemit-&gt;SetRadius (.2f);
+  sphemit-&gt;SetParticlePlacement (CS_PARTICLE_BUILTIN_VOLUME);
+  sphemit-&gt;SetEmissionRate (float (num) / seconds_to_live);
+  sphemit-&gt;SetInitialMass (5.0f, 7.5f);
+  sphemit-&gt;SetUniformVelocity (true);
+  sphemit-&gt;SetInitialTTL (seconds_to_live, seconds_to_live);
+  sphemit-&gt;SetInitialVelocity (csVector3 (0, velocity, 0),
+      csVector3 (0));
+
+  csRef&lt;iParticleBuiltinEffectorLinColor&gt; lincol = eff_factory-&gt;
+    CreateLinColor ();
+  lincol-&gt;AddColor (csColor4 (0.00, 0.00, 0.00, 1), 2);
+  lincol-&gt;AddColor (csColor4 (1.00, 0.35, 0.00, 0), 1.5);
+  lincol-&gt;AddColor (csColor4 (1.00, 0.22, 0.00, .1), 1.3125);
+  lincol-&gt;AddColor (csColor4 (1.00, 0.12, 0.00, .3), 1.125);
+  lincol-&gt;AddColor (csColor4 (0.80, 0.02, 0.00, .8), 0.9375);
+  lincol-&gt;AddColor (csColor4 (0.60, 0.00, 0.00, .9), 0.75);
+  lincol-&gt;AddColor (csColor4 (0.40, 0.00, 0.00, .97), 0.5625);
+  lincol-&gt;AddColor (csColor4 (0.20, 0.00, 0.00, 1), 0.375);
+  lincol-&gt;AddColor (csColor4 (0.00, 0.00, 0.00, 1), 0.1875);
+  lincol-&gt;AddColor (csColor4 (0.00, 0.00, 0.00, 1), 0);
+
+  csRef&lt;iParticleBuiltinEffectorForce&gt; force = eff_factory-&gt;
+    CreateForce ();
+  force-&gt;SetRandomAcceleration (csVector3 (1.5f, 1.5f, 1.5f));
+
+  csRef&lt;iParticleSystem&gt; partstate =
+  	scfQueryInterface&lt;iParticleSystem&gt; (exp-&gt;GetMeshObject ());
+  partstate-&gt;SetParticleSize (csVector2 (0.04f, 0.08f));
+  partstate-&gt;AddEmitter (sphemit);
+  partstate-&gt;AddEffector (lincol);
+  partstate-&gt;AddEffector (force);
+</pre></td></tr></table>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Api1_005f0-PartConv-Snow.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Api1_005f0-PartConv-Fountain.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Api1_005f0-Particle-system-changes.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Licenses.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

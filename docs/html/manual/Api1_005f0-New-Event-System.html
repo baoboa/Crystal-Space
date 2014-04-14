@@ -1,0 +1,391 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: C.5.1 New Event System</title>
+
+<meta name="description" content="Crystal Space 2.1.0: C.5.1 New Event System">
+<meta name="keywords" content="Crystal Space 2.1.0: C.5.1 New Event System">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Api1_005f0-New-Event-System"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Release-Notes-1_005f0.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Api1_005f0-iEvent-Changes.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Release-Notes-1_005f0.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Licenses.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> C.5.1 New Event System </h3>
+
+<p>The event system has undergone a major rewrite, and most client applications
+will need to make changes in order to adapt to the new architecture.
+</p>
+<a name="1"></a>
+<h4 class="subsubheading"> Event Names </h4>
+
+<p>The old system of 32 static event &quot;types&quot; has been replaced with an extensible 
+tree-structured event naming layer.  This system allows event names to be 
+drilled down to arbitrary levels of specificity while simultaneously allowing 
+event subscribers to express interest in general categories or precise event 
+varieties.
+</p>
+<p>For an example: under the old system, any motion of any joystick would produce 
+a <samp>&lsquo;csevJoystickMove&rsquo;</samp> event, and all subscribers to the corresponding 
+<samp>&lsquo;CSMASK_JoystickMove&rsquo;</samp> mask would receive all such events.  Under the new 
+system, each joystick is individually named, so event consumers can listen 
+only to particular devices, or to particular flavors of events.  For example, 
+the fourth joystick can produce the event 
+<samp>&lsquo;crystalspace.input.joystick.3.button.down&rsquo;</samp>; an event handler may wish 
+to subscribe to <samp>&lsquo;crystalspace.input.joystick.3.button.down&rsquo;</samp> to only 
+receive down events from that joystick, to 
+<samp>&lsquo;crystalspace.input.joystick.3.button&rsquo;</samp> to receive all button events from 
+that joystick, to <samp>&lsquo;crystalspace.input.joystick.3&rsquo;</samp> to receive all events 
+(buttons and moves) from that joystick, to <samp>&lsquo;crystalspace.input.joystick&rsquo;</samp> 
+to receive all events from all joysticks, and so on.
+</p>
+<p>This also means that the concept of Command Codes has been obsoleted.  Rather 
+than describing particular command events with a combination of the 
+<samp>&lsquo;csevCommand&rsquo;</samp> event type and a command-event-specific command code 
+property, each of the old command codes now has its own event name.  
+For example, <samp>&lsquo;cscmdQuit&rsquo;</samp> is now <samp>&lsquo;crystalspace.application.quit&rsquo;</samp>, and 
+the <samp>&lsquo;cscmdPreProcess&rsquo;</samp>/<samp>&lsquo;cscmdProcess&rsquo;</samp>/<samp>&lsquo;cscmdPostProcess&rsquo;</samp>/
+<samp>&lsquo;cscmdFinalProcess&rsquo;</samp> events have been deprecated in favor of the new 
+single <samp>&lsquo;csevFrame&rsquo;</samp> event and six frame &ldquo;phases&rdquo; within which it can
+be received (see below).
+</p>
+<p>Event names are translated into an efficient internal representation, the 
+<samp>&lsquo;csEventID&rsquo;</samp>, using a singleton event name registry object 
+(<samp>&lsquo;csEventNameRegistry&rsquo;</samp>, implementing the <samp>&lsquo;iEventNameRegistry&rsquo;</samp> 
+interface) which can always be retrieved using the 
+<code>csEventNameRegistry::GetRegistry(iObjectRegistry*)</code> method.  The actual 
+name translation is performed by the <code>GetID()</code> method, which takes string 
+or <samp>&lsquo;csString&rsquo;</samp> arguments and returns <samp>&lsquo;csEventID&rsquo;</samp>s.  
+These <samp>&lsquo;csEventID&rsquo;</samp>s are then used in calls to subscribe to event queues 
+and in comparisons to determine the type of an event.  Many common event 
+types' <samp>&lsquo;csEventID&rsquo;</samp>s can be accessed using macros defined in 
+<tt>&lsquo;include/csutil/eventnames.h&rsquo;</tt>, e.g., <samp>&lsquo;crystalspace.application.quit&rsquo;</samp> 
+is <samp>&lsquo;csevQuit()&rsquo;</samp>, which must be called with an argument of either an 
+<samp>&lsquo;iObjectRegistry&rsquo;</samp> pointer or a <samp>&lsquo;iEventNameRegistry&rsquo;</samp> reference.  
+Since referencing an event ID via one of these macros will consume several 
+cycles, performance-sensitive code should cache the results; see, for example, 
+the <samp>&lsquo;CS_DECLARE_EVENT_SHORTCUTS&rsquo;</samp> and 
+<samp>&lsquo;CS_INITIALIZE_EVENT_SHORTCUTS()&rsquo;</samp> macros in 
+<tt>&lsquo;include/csutil/eventnames.h&rsquo;</tt>.
+</p>
+<p>The most intrusive change needed to handle the new event names is in the event 
+demultiplexing you do in event handlers.  For example, code that used to look 
+like this:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example"> static bool DemoEventHandler (iEvent&amp; ev)
+ {
+   if (ev.Type == csevBroadcast 
+    &amp;&amp; csCommandEventHelper::GetCode(&amp;ev) == cscmdProcess)
+   {
+       ...
+   }
+   else if (ev.Type == csevBroadcast 
+    &amp;&amp; csCommandEventHelper::GetCode(&amp;ev) == cscmdFinalProcess)
+   {
+       ...
+   }
+   else ...
+ }
+</pre></td></tr></table>
+<p>should be re-written as:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example"> static bool DemoEventHandler (iEvent&amp; ev)
+ {
+   if (ev.Name == csevProcess (object_reg))
+   {
+       ...
+   }
+   else if (ev.Name == csevFinalProcess (object_reg))
+   {
+       ...
+   }
+   else ...
+ }
+</pre></td></tr></table>
+<p>More interestingly, you can also catch entire event hierarchies with a single 
+test:
+</p><table><tr><td>&nbsp;</td><td><pre class="example"> if (name_reg-&gt;IsKindOf(ev.Name, csevKeyboardEvent (name_reg)))
+ {
+     HandleKeyboardEvent(ev)
+ }
+</pre></td></tr></table>
+
+
+<a name="2"></a>
+<h4 class="subsubheading"> Event Scheduling </h4>
+
+<p>An even more interesting change to the event system is the introduction of a 
+schedulable event subscription system.  In the old system, event handlers 
+subscribed to event types on a first-come, first-served basis.  This begot an 
+increasing number of event types to represent different points in the frame 
+processing chain that a client might want to hook onto: PreProcess, Process, 
+PostProcess, and FinalProcess.  What was really needed was a generic mechanism 
+for representing the order in which handlers of particular events should be 
+invoked, regardless of the order in which they are initialized or in which 
+their respective plugins are loaded.
+</p>
+<p>The new event scheduler takes advantage of properties exposed by a new, 
+enriched <code>iEventHandler</code> interface to do exactly this.  Under the new 
+system, for each event name that an event handler subscribes to, it may also 
+specify essentially arbitrary <em>happens-before</em> and <em>happens-after</em> 
+relationships with other event handlers, both abstractly ('I want to handle 
+all input events before any instance of the <samp>&lsquo;crystalspace.aws&rsquo;</samp> handler') 
+and specifically ('I want to handle the mouse event only after the 
+<samp>&lsquo;crystalspace.cel&rsquo;</samp> event handler').
+</p>
+<p>Specifically, the new functions that all <code>iEventHandler</code> implementations 
+must provide are:
+</p>
+<ul>
+<li>
+<code>const char *GenericName()</code> Returns a simple text name common to all 
+instances of this event handler.
+</li><li>
+<code>csHandlerID GenericID()</code> A csHandlerID is a lightweight way to manage 
+generic handler names.  Under almost all circumstances, the implementation of 
+this method simply returns <code>csHandlerRegistry::GetID(this-&gt;GenericName())</code>.
+</li><li>
+<code>const csHandlerID[] GenericPrec(csEventID)</code> Returns an array 
+(terminated by <code>CS_EVENTLIST_END</code>) of <samp>&lsquo;csHandlerID&rsquo;</samp>s of generic 
+event handlers which, for the event name identified by the argument, should 
+always handle events with that name <em>before</em> instances of the current handler.
+</li><li>
+<code>const csHandlerID[] GenericSucc(csEventID)</code> Returns an array 
+(terminated by <code>CS_EVENTLIST_END</code>) of <samp>&lsquo;csHandlerID&rsquo;</samp>s of generic 
+event handlers which, for the event name identified by the argument, should 
+always handle events with that name <em>after</em> instances of the current 
+handler.
+</li><li>
+<code>const csHandlerID[] InstancePrec(csEventID)</code> Returns an array 
+(terminated by <code>CS_EVENTLIST_END</code>) of <samp>&lsquo;csHandlerID&rsquo;</samp>s of both generic 
+event handlers and event handler instances which, for the event name 
+identified by the argument, should always handle event with that name 
+<em>before</em> this <em>particular</em> instance of the event handler.
+</li><li>
+<code>const csHandlerID[] InstanceSucc(csEventID)</code> Returns an array 
+(terminated by <code>CS_EVENTLIST_END</code>) of <samp>&lsquo;csHandlerID&rsquo;</samp>s of both generic 
+event handlers and event handler instances which, for the event name 
+identified by the argument, should always handle event with that name 
+<em>after</em> this <em>particular</em> instance of the event handler.
+</li></ul>
+
+<p>In many simple cases, you will want to use default implementations of these 
+functions provided by the <code>CS_EVENTHANDLER_NAMES()</code> and 
+<code>CS_EVENTHANDLER_NIL_CONSTRAINTS</code> macros, like so:
+</p><table><tr><td>&nbsp;</td><td><pre class="example"> struct myEventHandler : public iEventHandler
+ {
+   virtual bool HandleEvent (iEvent &amp;Event)
+   {
+     foo();
+     bar();
+     return baz();
+   }
+   CS_EVENTHANDLER_NAMES(&quot;crystalspace.module.name&quot;)
+   CS_EVENTHANDLER_NIL_CONSTRAINTS
+ }
+</pre></td></tr></table>
+<p>As a convention, most csEventHandlers will implement a static method, 
+<code>const char *StaticHandlerName()</code>, which can be retrieved and converted 
+without instantiating the handler.  This name string can then be converted 
+into a <samp>&lsquo;csHandlerID&rsquo;</samp> by calling 
+<code>csHandlerRegistry::GetID(myHandlerClass::StaticHandlerName())</code>.  
+The <samp>&lsquo;csHandlerID&rsquo;</samp> of an instance of an event handler class can be 
+retrieved by passing a pointer to that class to 
+<code>csHandlerRegistry::GetID()</code>, e.g., 
+<code>csHandlerRegistry::GetID(new myHandlerClass())</code>.
+</p>
+
+<a name="3"></a>
+<h4 class="subsubheading"> Event Subscription </h4>
+
+<p>The event scheduling system is invoked by calling the 
+<code>csEventQueue::RegisterListener()</code> or <code>csEventQueue::Subscribe()</code> 
+methods (or, if you are inheriting from <code>csBaseEventHandler</code>, 
+<code>csBaseEventHandler::RegisterQueue</code>).  For each of these, the arguments 
+of interest are the <code>csEventID</code> and <code>csEventID[]</code> parameters.  
+(Note that the <samp>&lsquo;RegisterListener&rsquo;</samp> form with no <samp>&lsquo;csEventID&rsquo;</samp> argument 
+does not subscribe the listener to anything, and must be followed by a call to 
+<code>Subscribe()</code> if you ever want the handler to receive any events.)  
+For each <code>csEventID</code> (arrays are terminated by <code>CS_EVENTLIST_END</code>), 
+these functions will subscribe the event handler to that event name 
+<em>as well as all of its children</em>.  Note, however, that it will only 
+retrieve from the event handler the ordering lists (the Prec and Succ methods) 
+for the event name to which it is <em>explicitly</em> subscribed; if you wish to 
+have one set of ordering constraints for both <samp>&lsquo;crystalspace.input.keyboard&rsquo;</samp> 
+and <samp>&lsquo;crystalspace.input.mouse&rsquo;</samp> but a different set for 
+<samp>&lsquo;crystalspace.input.joystick&rsquo;</samp>, you SHOULD NOT simply subscribe to 
+<samp>&lsquo;crystalspace.input&rsquo;</samp> and have the Prec/Succ functions return different 
+values for each of <samp>&lsquo;.keyboard&rsquo;</samp>, <samp>&lsquo;.mouse&rsquo;</samp>, and <samp>&lsquo;.joystick&rsquo;</samp>; 
+rather, you should subscribe to each of those three event names individually.  
+This restriction helps us avoid the introduction of hard-to-detect 
+circular ordering rules.
+</p>
+<p>Also note that you should use the <code>Subscribe()</code> and <code>Unsubscribe()</code> 
+methods to add and remove events from the set an event handler wishes to 
+receive.  You should only <code>Unsubscribe()</code> from the particular 
+events to which you have <code>Subscribe()</code>d; the behavior is undefined 
+otherwise (e.g., if you subscribe to <samp>&lsquo;crystalspace.input&rsquo;</samp> and 
+subsequently unsubscribe from <samp>&lsquo;crystalspace.input.joystick&rsquo;</samp>).
+</p>
+
+<a name="4"></a>
+<h4 class="subsubheading"> Other porting Issues </h4>
+
+<p>Since the <samp>&lsquo;csBaseEventHandler&rsquo;</samp> object's operation is now linked with 
+having a functional event name registry, any derived class must be sure to 
+call the <samp>&lsquo;Initialize(iObjectRegistry*)&rsquo;</samp> method before calling any of 
+the <samp>&lsquo;RegisterQueue(...)&rsquo;</samp> methods.
+</p>
+
+<a name="5"></a>
+<h4 class="subsubheading"> The <code>csevFrame</code> Transition </h4>
+
+<p>Under the old static event model, CrystalSpace would render each frame by
+dispatching four events in sequence: PreProcess, Process, PostProcess, and
+FinalProcess.  The new event handler scheduling mechanisms enable a more
+flexible and extensible paradigm in which there is only a single event, 
+<samp>&lsquo;csevFrame&rsquo;</samp>, and each handler orders its handling of that event with 
+respect to other handler types and handlers.
+</p>
+<p>However, since it is difficult to plan for (or even imagine) the set of all
+handler types that may appear in a CrystalSpace application, handlers of
+<samp>&lsquo;csevFrame&rsquo;</samp> can use simple helper macros to classify themselves as 
+belonging to any of six &ldquo;phases&rdquo; of frame creation.
+</p><ul>
+<li> 
+<em>Logic</em> - game logic to be performed before any rendering is done.
+Use the <samp>&lsquo;CS_EVENTHANDLER_PHASE_LOGIC(x)&rsquo;</samp> macro.
+</li><li> 
+<em>3D</em> - rendering of the 3D view.
+Use the <samp>&lsquo;CS_EVENTHANDLER_PHASE_3D(x)&rsquo;</samp> macro.
+</li><li> 
+<em>2D</em> - rendering of 2D overlays.
+See the <samp>&lsquo;CS_EVENTHANDLER_PHASE_LOGIC(x)&rsquo;</samp> macro.
+</li><li> 
+<em>Console</em> - used by CEL.
+See the <samp>&lsquo;CS_EVENTHANDLER_PHASE_LOGIC(x)&rsquo;</samp> macro.
+</li><li> 
+<em>Debug</em> - used by bugplug.
+See the <samp>&lsquo;CS_EVENTHANDLER_PHASE_LOGIC(x)&rsquo;</samp> macro.
+</li><li> 
+<em>Frame</em> - final rendering to the screen.
+See the <samp>&lsquo;CS_EVENTHANDLER_PHASE_LOGIC(x)&rsquo;</samp> macro.
+</li></ul>
+
+<p>These macros, included in the declaration of an event handler class, 
+provide all of the naming and constraint methods to make instances of
+that handler class schedule their subscriptions to <samp>&lsquo;csevFrame&rsquo;</samp>
+within the appropriate phase.  (You will not be able to use these macros
+if you need to subscribe the handler to events besides <samp>&lsquo;csevFrame&rsquo;</samp>
+and apply ordering constraints for those events.)
+</p>
+<p>The old PreProcess event corresponded with the Logic phase, 
+Process with the 3D phase, PostProcess with the 2D, Console, and
+Debug phases, and FinalProcess with the Frame phase.  You should 
+update your event handlers which used to subscribe to the old
+Process events to instead subscribe to the <samp>&lsquo;csevFrame&rsquo;</samp> event
+either using the event phase macros listed above or explicitly
+calling out your own subscription ordering constraints.
+</p>
+
+<a name="6"></a>
+<h4 class="subsubheading"> A Few Common Idioms to Change </h4>
+
+<p>If you use <code>csBaseEventHandler</code> you should add this line after
+<code>RequestPlugins()</code>:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">  csBaseEventHandler::Initialize(GetObjectRegistry());
+</pre></td></tr></table>
+<p>The call to <code>RegisterQueue()</code> should be changed too:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">  if (!RegisterQueue(object_reg, csevAllEvents(object_reg)))
+    return ReportError(&quot;Failed to set up event handler!&quot;);
+</pre></td></tr></table>
+<p>To quit the application you should now use:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">  q-&gt;GetEventOutlet ()-&gt;Broadcast (csevQuit (object_reg));
+</pre></td></tr></table>
+<p>Handling a broadcast event can be done like this (note that this will
+be removed in the near future):
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">  if (event.Name == csevProcess (object_reg))
+</pre></td></tr></table>
+<p>Handling a keyboard event can be done like this:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">  if (event.Name == csevKeyboardDown (object_reg))
+</pre></td></tr></table>
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Release-Notes-1_005f0.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Api1_005f0-iEvent-Changes.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Release-Notes-1_005f0.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Licenses.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

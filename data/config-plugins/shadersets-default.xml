@@ -1,0 +1,45 @@
+<shadersets>
+    <shaders>
+        <shader>
+            <file>/shader/early_z/z_only.xml</file>
+        </shader>
+        <shader>
+            <file>/shader/early_z/z_only_instanced.xml</file>
+        </shader>
+        <shader>
+            <file>/shader/lighting/lighting_default_binalpha.xml</file>
+        </shader>
+        <shader>
+            <file>/shader/lighting/lighting_default_instance.xml</file>
+        </shader>
+        <shader>
+            <file>/shader/lighting/lighting_default_instance_binalpha.xml</file>
+        </shader>
+        <shader>
+            <file>/shader/foliage/grass_fullbright.xml</file>
+        </shader>
+    </shaders>
+    <shaderset name="binalpha">
+        <shader type="oc_depthwrite">*null</shader>
+        <shader type="oc_depthtest">z_only</shader>
+        <shader type="base">lighting_default_binalpha</shader>
+        <shader type="diffuse">lighting_default_binalpha</shader>
+    </shaderset>
+    <shaderset name="instanced">
+        <shader type="oc_depthwrite">z_only_instanced</shader>
+        <shader type="base">lighting_default_instance</shader>
+        <shader type="diffuse">lighting_default_instance</shader>
+    </shaderset>
+    <shaderset name="instanced_binalpha">
+        <shader type="oc_depthwrite">*null</shader>
+        <shader type="oc_depthtest">z_only_instanced</shader>
+        <shader type="base">lighting_default_instance_binalpha</shader>
+        <shader type="diffuse">lighting_default_instance_binalpha</shader>
+    </shaderset>
+    <shaderset name="foliage_grass_fullbright">
+        <shader type="oc_depthwrite">*null</shader>
+        <shader type="oc_depthtest">z_only_instanced</shader>
+        <shader type="base">foliage_grass_fullbright</shader>
+        <shader type="diffuse">foliage_grass_fullbright</shader>
+    </shaderset>
+</shadersets>

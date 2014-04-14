@@ -1,0 +1,72 @@
+<library>
+    <textures>
+        <texture name="dot">
+            <file>dot.png</file>
+        </texture>
+    </textures>
+    <shaders>
+        <shader>
+            <file>/shader/particles/basic.xml</file>
+        </shader>
+    </shaders>
+    <materials>
+        <material name="dot">
+            <texture>dot</texture>
+            <shader type="diffuse">*null</shader>
+            <shader type="ambient">particles_basic</shader>
+        </material>
+    </materials>
+
+    <meshfact name="fountainFACT2">
+        <plugin>crystalspace.mesh.loader.factory.particles</plugin>
+        <params>
+            <mixmode>
+              <copy />
+            </mixmode>
+            <particlesize x="0.1" y="0.1" />
+            <individualsize>yes</individualsize> <!-- required to have scaling work -->
+            <rotationmode>vertex</rotationmode> <!-- required to have rotation work -->
+            <integrationmode>both</integrationmode> <!-- required to have rotation work -->
+            <sortmode>distance</sortmode> <!-- required to have proper z-sorting of particles -->
+            <emitter type="cone">
+                <extent x="0" y="0.2" z="0.2" />
+                <coneangle>0.1</coneangle>
+                <placement>volume</placement>
+                <mass min="7.5" max="10" />
+                <initialttl min="5" max="5.5" />
+                <emissionrate>20</emissionrate>
+                <initialvelocity x="1" y="0" z="0" />
+                <initialangularvelocity y="2"/>
+            </emitter>
+            <effector type="force"> <!-- Makes the particles fall down -->
+                <acceleration x="0" y="-0.5" z="0" />
+            </effector>
+            <minbb> <!-- Sets a larger bounding box so the particle doesn't disappear -->
+              <min x="0" y="0" z="0" />
+              <max x="1" y="0" z="1" />
+            </minbb>
+            <effector type="linear"> 
+                <param rtime="5">
+                    <particlesize x="0.1" y="0.1" />
+                    <angularvelocity y="2"/> <!-- rotation -->
+                    <color red="0" green="0.5" blue="1"/>
+                </param>
+                <param rtime="2">
+                    <particlesize x="0.4" y="0.4" />
+                    <angularvelocity y="-2"/>
+                    <color red="1" green="1" blue="1" />
+                </param>
+                <param rtime="0">
+                    <particlesize x="0.5" y="0.5" />
+                    <angularvelocity y="2"/>
+                    <color red="1" green="1" blue="1" />
+                </param>
+            </effector>
+            <material>dot</material>
+        </params>
+        <priority>alpha</priority>
+        <ztest />
+    </meshfact>
+
+</library>
+

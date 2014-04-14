@@ -1,0 +1,528 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 2.3 External Libraries</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 2.3 External Libraries">
+<meta name="keywords" content="Crystal Space 2.1.0: 2.3 External Libraries">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="External-Libraries"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Requirements.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Platform-Instructions.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Building.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Building.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Running-The-Demos.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h2 class="section"> 2.3 External Libraries </h2>
+
+<p>Crystal Space may utilize several external, and publicly available development
+libraries. Those libraries need to be installed on your system before you can
+go on with the building of Crystal Space.
+</p>
+<p>Depending on your system, you may refer to the specific page dedicated to the
+installation of those libraries:
+</p>
+<ul>
+<li>
+<a href="cs_002dwinlibs.html#0">Windows</a>
+</li><li>
+<a href="Debian-Libraries.html#0">Ubuntu and Debian based systems</a>
+</li><li>
+<a href="MacOS_002fX-Libraries.html#0">MacOS/X</a>
+</li></ul>
+
+<p>This section will present most of the libraries that may be used by Crystal Space.
+</p>
+<p>If you use <code>configure</code> for the configuration of Crystal Space, then a
+comprehensive list of the libraries is printed at the end of the process,
+classified whether they have been found or not.
+</p>
+<p>Here is a first list of the main libraries that are needed by Crystal Space,
+and are considered mandatory:
+</p>
+<ul>
+<li>
+OpenGL
+</li><li>
+X Window System (only needed for the systems based on it)
+</li><li>
+<small>CG</small>
+</li><li>
+zlib
+</li><li>
+libpng
+</li><li>
+libjpeg
+</li><li>
+Freetype2
+</li></ul>
+
+<p>Here is a second list, with the libraries that are highly recommended:
+</p>
+<ul>
+<li>
+OpenAL
+</li><li>
+ALSA (only needed for GNU/Linux)
+</li><li>
+Open Sound System (only needed for UNIX based systems)
+</li><li>
+Ogg/Vorbis
+</li><li>
+Assimp
+</li><li>
+Bullet
+</li><li>
+<small>CEGUI</small>
+</li><li>
+wxWidgets
+</li></ul>
+
+<p>And finally, here is a third list, with the libraries that are considered optional:
+</p>
+<ul>
+<li>
+JACK
+</li><li>
+Speex
+</li><li>
+libmng and Little CMS
+</li><li>
+Little CMS (only for some OpenBSD installations)
+</li><li>
+vgvm, Cairo and Cairomm
+</li><li>
+Python
+</li><li>
+<small>GTK</small>
+</li><li>
+Curl
+</li><li>
+Cal3D
+</li><li>
+lib3ds
+</li><li>
+ODE
+</li></ul>
+
+<p>Most of these libraries are optional.  If you do not have them installed, then
+Crystal Space will still function, though features related to the missing
+libraries will be disabled.  Despite being optional, at the very minimum, you
+should at least ensure that zlib, libpng, and libjpeg are installed since much
+useful functionality depends upon those libraries.  Many computer systems come
+with these libraries pre-installed.  If the libraries are not already available
+on your system, then see the following sections for information about how to
+obtain them.
+</p>
+<p>If you need to install some of the libraries yourself pay attention to the
+versions states below. 
+</p>
+<ul>
+<li> 
+&ldquo;Required&rdquo; means that you need to install exactly 
+the version stated, otherwise Crystal Space can not use the library. 
+</li><li> 
+&ldquo;Recommended&rdquo; means that the version stated is known to work well with 
+Crystal Space, however, older or newer versions may work as well. If you have
+a choice between multiple versions for a library, pick the recommended one.
+</li><li>
+&ldquo;Minimum&rdquo; means that a library needs to be at least of the version stated,
+but newer versions are very likely to work as well and can be chosen.
+</li></ul>
+
+<a name="1"></a>
+<h3 class="subheading"> OpenGL </h3>
+
+<p>OpenGL is needed to provide accelerated 3D graphics <em>on all platforms</em>.
+</p>
+<p>No special effort is usually needed to install the development components on
+Windows or MacOS/X, as the various Development Kits for that platform 
+generally contain the headers and libraries needed to utilize OpenGL.
+</p>
+<p>For other platforms the exact installation procedure depends on the operating 
+system/distribution you're using.  While the runtime components are usually
+installed when a graphical desktop is used, development components may 
+still have to be.  It is outside the scope of this manual to detail how this 
+is done on the various distributions and platforms, please refer to other 
+resources for that.
+</p>
+<a name="2"></a>
+<h3 class="subheading"> X Window System </h3>
+
+<p>This is needed to enable graphical output on a number of Unix-like operating 
+systems, most prominently <small>GNU</small>/Linux.  It is <em>not</em> needed for Windows
+or MacOS/X.
+</p>
+<p>The exact installation procedure depends on the operating system/distribution 
+you're using.  If you are, what is likely, running a graphical desktop, the
+needed runtime components of the X Window System are installed and functioning
+on your system.  However, development components (headers and libraries) may 
+still have to be installed.  It is outside the scope of this manual to detail
+how this is done on the various distributions and platforms, please refer to
+other resources for that.
+</p>
+<a name="3"></a>
+<h3 class="subheading"> <small>CG</small> </h3>
+
+<p><em>Version:</em> 2.0 minimum
+</p>
+<p>Many Crystal Space shaders require the <small>CG</small> library from nVidia.
+Crystal Space depends on the <small>CG</small> library with version number at least
+equal to 1.4. If you're on <small>GNU</small>/Linux then you may not find a package
+with that version available, in this case you have to directly download this 
+from <a href="http://developer.nvidia.com/object/cg_toolkit.html#downloads">http://developer.nvidia.com/object/cg_toolkit.html#downloads</a>.
+</p>
+<a name="4"></a>
+<h3 class="subheading"> zlib </h3>
+
+<p><em>Version:</em> 1.0 minimum
+</p>
+<p>Crystal Space relies upon the <code>zlib</code> library for reading <small>ZIP</small> files,
+and for a few other uses.  You can download <code>zlib</code> from:
+</p>
+
+<p><a href="http://www.gzip.org/zlib/">http://www.gzip.org/zlib/</a>
+</p>
+<p>After downloading you can either install the package normally (i.e. <samp>&lsquo;make
+install&rsquo;</samp>) or unpack it into the directory <tt>&lsquo;CS/libs/zlib*&rsquo;</tt>.  In general, if
+you have permission to do so, it is best to install the library.
+</p>
+<a name="5"></a>
+<h3 class="subheading"> libpng </h3>
+
+<p><em>Version:</em> 1.2.x minimum
+</p>
+<p>Crystal Space relies upon the <code>libpng</code> library for reading <small>PNG</small>
+graphic files.  You can download <code>libpng</code> from:
+</p>
+
+<p><a href="http://www.libpng.org/pub/png/libpng.html">http://www.libpng.org/pub/png/libpng.html</a>
+</p>
+<p>After downloading you can either install the package normally (i.e. <samp>&lsquo;make
+-f scripts/makefile.std install&rsquo;</samp>) or unpack it into the directory
+<tt>&lsquo;CS/libs/libpng*&rsquo;</tt>.  In general, if you have permission to do so, it is
+best to install the library.
+</p>
+<a name="6"></a>
+<h3 class="subheading"> libjpeg </h3>
+
+<p><em>Version:</em> 6b minimum
+</p>
+<p>Crystal Space relies upon the <code>libjpeg</code> library for reading <small>JPEG</small>
+graphic files.  You can download <code>libjpeg</code> from:
+</p>
+
+<p><a href="http://www.ijg.org/files/">http://www.ijg.org/files/</a>
+</p>
+<p>After downloading you can either install the package normally (i.e. <samp>&lsquo;make
+install&rsquo;</samp>) or unpack it into the directory <tt>&lsquo;CS/libs/jpeg*&rsquo;</tt>.  In general,
+if you have permission to do so, it is best to install the library.
+</p>
+<a name="7"></a>
+<h3 class="subheading"> Freetype2 </h3>
+
+<p><em>Version:</em> 2.1.x minimum
+</p>
+<p>Crystal Space can utilize the FreeType2 library to display TrueType fonts. You
+can get the latest version at:
+</p>
+
+<p><a href="http://www.freetype.org/">http://www.freetype.org/</a>
+</p>
+<a name="8"></a>
+<h3 class="subheading"> OpenAL </h3>
+
+<p><em>Version:</em> <em>unknown</em>
+</p>
+<p>Crystal Space can utilize the OpenAL library for 3D audio effects. You
+can get the latest version at:
+</p>
+
+<p><a href="http://connect.creativelabs.com/openal/">http://connect.creativelabs.com/openal/</a>
+</p>
+<a name="9"></a>
+<h3 class="subheading"> ALSA </h3>
+
+<p><em>Version:</em> <em>unknown</em>
+</p>
+<p>If you are on a GNU/Linux system, then ALSA is needed for the audio support in
+Crystal Space. You can get the latest version at:
+</p>
+
+<p><a href="http://www.alsa-project.org/">http://www.alsa-project.org/</a>
+</p>
+<a name="10"></a>
+<h3 class="subheading"> Open Sound System </h3>
+
+<p><em>Version:</em> <em>unknown</em>
+</p>
+<p>If you are on a GNU/Linux system, then Open Sound System is needed for the audio support in
+Crystal Space. You can get the latest version at:
+</p>
+
+<p><a href="http://www.opensound.com/oss.html/">http://www.opensound.com/oss.html/</a>
+</p>
+<a name="11"></a>
+<h3 class="subheading"> Ogg/Vorbis libraries </h3>
+
+<p><em>Version:</em> 1.1.x recommended
+</p>
+<p>With this libraries you can use the Ogg/Vorbis sound plugin. You can get the
+latest version at:
+</p>
+
+<p><a href="http://www.vorbis.com/download.psp">http://www.vorbis.com/download.psp</a>
+</p>
+<a name="12"></a>
+<h3 class="subheading"> Assimp </h3>
+
+<p><em>Version:</em> 2.0 recommended
+</p>
+<p>The <a href="Assimp-importer.html#0">Open Asset Import Library</a> can be used to load
+transparently in Crystal Space assets from a
+<a href="http://assimp.sourceforge.net/main_features_formats.html">wide list of different 3D file formats</a>.
+</p>
+<p>You can get the required version at:
+</p>
+
+<p><a href="http://assimp.sourceforge.net/">http://assimp.sourceforge.net/</a>
+</p>
+<a name="13"></a>
+<h3 class="subheading"> Bullet </h3>
+
+<p><em>Version:</em> 2.78 minimum
+</p>
+<p>Crystal Space can provide physical simulation through the <a href="Physics-Bullet.html#0">Bullet plugin</a>.
+You can get the required version at:
+</p>
+
+<p><a href="http://bulletphysics.org/">http://bulletphysics.org/</a>
+</p>
+<a name="14"></a>
+<h3 class="subheading"> <small>CEGUI</small> </h3>
+
+<p><em>Version:</em> 0.7.x required
+</p>
+<p>Crystal Space uses <small>CEGUI</small> for some of it's own tool programs (e.g. 
+<tt>&lsquo;viewmesh&rsquo;</tt>) but also allows external programs to utilize <small>CEGUI</small> for
+their user interface.
+</p>
+
+<p><a href="http://cegui.org.uk">http://cegui.org.uk</a>
+</p>
+<a name="15"></a>
+<h3 class="subheading"> wxWidgets </h3>
+
+<p><em>Version:</em> 2.8.x recommended
+</p>
+<p>Integration into wxWidgets is supported; a special canvas is provided that
+creates a WX window into which Crystal Space can render graphics. To compile
+this canvas, wxWidgets is required.
+</p>
+
+<p><a href="http://wxwidgets.org">http://wxwidgets.org</a>
+</p>
+<a name="16"></a>
+<h3 class="subheading"> JACK </h3>
+
+<p><em>Version:</em> <em>unknown</em>
+</p>
+<p>The JACK library can be used by Crystal Space to combine audio streams. It can be
+installed from:
+</p>
+
+<p><a href="http://jackaudio.org/">http://jackaudio.org/</a>
+</p>
+<a name="17"></a>
+<h3 class="subheading"> Speex </h3>
+
+<p><em>Version:</em> <em>unknown</em>
+</p>
+<p>The Crystal Space Speex plugin brings support for the playback of Speex compressed
+audio streams. The FOSS Speex codec is optimised for voice compression and brings disk
+space and memory savings over other codecs (e.g. ogg vorbis) while maintaining acceptable
+sound quality. 
+</p>
+<p>It can be installed from:
+</p>
+
+<p><a href="http://www.speex.org/">http://www.speex.org/</a>
+</p>
+<a name="18"></a>
+<h3 class="subheading"> libmng and Little CMS </h3>
+<p><a name="GettingLibmng"></a>
+</p>
+<p><em>Version:</em> 1.0.9 recommended
+</p>
+<p>Crystal Space can optionally utilize the <code>libmng</code> library for reading
+<small>MNG</small>/<small>JNG</small> graphic files.  You can download <code>libmng</code> from:
+</p>
+
+<p><a href="http://www.libmng.com/">http://www.libmng.com/</a>
+</p>
+<p>After downloading you can either install the package normally (i.e. <samp>&lsquo;make
+install&rsquo;</samp>) or unpack it into the directory <tt>&lsquo;CS/libs/libmng*&rsquo;</tt>.  In general,
+if you have permission to do so, it is best to install the library.
+</p>
+<p>On some OpenBSD installations, the libmng library may have a dependency
+on the Little CMS library. In this case, it has to be installed from:
+</p>
+
+<p><a href="http://www.littlecms.com/">http://www.littlecms.com/</a>
+</p>
+<a name="19"></a>
+<h3 class="subheading"> vgvm, Cairo and Cairomm </h3>
+
+<p><em>Version:</em> <em>unknown</em>
+</p>
+<p>Crystal Space can optionally utilize the <code>vgvm</code> library for reading
+<small>SVG</small> graphic files.  You can download <code>vgvm</code> from:
+</p>
+
+<p><a href="http://sourceforge.net/projects/vgvm/">http://sourceforge.net/projects/vgvm/</a>
+</p>
+<p>This library has a dependency on the Cairo and Cairomm libraries, which therefore
+need to be installed too:
+</p>
+
+<p><a href="http://cairographics.org/cairomm/">http://cairographics.org/cairomm/</a>
+</p>
+<a name="20"></a>
+<h3 class="subheading"> Python </h3>
+
+<p><em>Version:</em> <em>unknown</em>
+</p>
+<p>Python can be used for Crystal Space thanks to the <a href="Python-Bindings.html#0">Python Bindings</a>. You can
+download it from:
+</p>
+
+<p><a href="http://python.org/">http://python.org/</a>
+</p>
+<a name="21"></a>
+<h3 class="subheading"> GTK </h3>
+
+<p><em>Version:</em> <em>unknown</em>
+</p>
+<p>GTK can be needed on some GNU/Linux distributions. It can be downloaded from:
+</p>
+
+<p><a href="http://www.gtk.org/">http://www.gtk.org/</a>
+</p>
+<a name="22"></a>
+<h3 class="subheading"> Curl </h3>
+
+<p><em>Version:</em> <em>unknown</em>
+</p>
+<p>Curl can be used by Crystal Space to communicate over the HTTP protocol. It can be installed from: 
+</p>
+
+<p><a href="http://curl.haxx.se/">http://curl.haxx.se/</a>
+</p>
+<a name="23"></a>
+<h3 class="subheading"> Cal3D </h3>
+
+<p><em>Version:</em> 0.11.x required
+</p>
+<p>Crystal Space supports skeletal animation using the Cal3D library. You
+can obtain the required version at:
+</p>
+
+<p><a href="https://gna.org/projects/cal3d/">https://gna.org/projects/cal3d/</a>
+</p>
+<a name="24"></a>
+<h3 class="subheading"> lib3ds </h3>
+
+<p><em>Version:</em> 1.2.0 recommended
+</p>
+<p>Crystal Space has support for the popular 3ds model format using the lib3ds
+library. It is recommended that you use the 1.2.0 release.
+</p>
+
+<p><a href="http://lib3ds.sourceforge.net/">http://lib3ds.sourceforge.net/</a>
+</p>
+<a name="25"></a>
+<h3 class="subheading"> <small>ODE</small> </h3>
+
+<p><em>Version:</em> 0.8 recommended
+</p>
+<p>Crystal Space contains a plugin providing physics through <small>ODE</small>. You can get
+the required version at:
+</p>
+
+<p><a href="http://www.ode.org/">http://www.ode.org/</a>
+</p>
+<p><em>Note:</em> You <em>must</em> compile <small>ODE</small> with <small>OPCODE</small> support enabled
+in order to use the library with Crystal Space.
+</p>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Requirements.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Platform-Instructions.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Building.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Building.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Running-The-Demos.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

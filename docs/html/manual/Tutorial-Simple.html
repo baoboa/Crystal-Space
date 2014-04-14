@@ -1,0 +1,161 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.2.1 Simple Tutorial 1: Basic Setup, World Creation</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.2.1 Simple Tutorial 1: Basic Setup, World Creation">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.2.1 Simple Tutorial 1: Basic Setup, World Creation">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Tutorial-Simple"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Tutorials.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Simple-Header-File.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Tutorials.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 4.2.1 Simple Tutorial 1: Basic Setup, World Creation </h3>
+
+<p>This tutorial provides a step-by-step explanation on how you can use Crystal
+Space from within your application.  This tutorial is mainly based on the
+<tt>&lsquo;simple1&rsquo;</tt> application which you can compile and run to see what it does.
+To build <tt>&lsquo;simple1&rsquo;</tt> which ships with Crystal Space, type <samp>&lsquo;make
+simple1&rsquo;</samp> or <samp>&lsquo;jam simple1&rsquo;</samp>, or build the <tt>&lsquo;appsimple1&rsquo;</tt> project if you
+use <small>MSVC</small>.
+</p>
+<p>When you downloaded the Crystal Space package it contains a <tt>&lsquo;CS/include&rsquo;</tt>
+directory. This directory contains all header files you need when using the
+Crystal Space components and libraries in your own applications. On one hand,
+the include directory contains <small>SCF</small> interface definitions.  These pure
+interface file are stored in directories with names starting with the letter
+<samp>&lsquo;i&rsquo;</samp> (as in <tt>&lsquo;iengine/engine.h&rsquo;</tt>).  On the other hand we also have plain
+C++ include files for interfacing with the libraries of Crystal Space.  When
+you install Crystal Space on your development system (for instance, by invoking
+<samp>&lsquo;make install&rsquo;</samp> or <samp>&lsquo;jam install&rsquo;</samp>), these headers are placed in a
+location where they can be easily accessed when writing new programs based on
+Crystal Space.  On Unix systems, for instance, these files usually end up in
+<tt>&lsquo;/usr/local/include/crystalspace&rsquo;</tt>. Since it can be difficult to remember
+which header files contain which classes and interfaces, you can instead
+include the convenient catch-all header file <tt>&lsquo;crystalspace.h&rsquo;</tt>.
+</p>
+<p>Crystal Space also has a reference manual and <small>API</small> documentation.  The
+manual is included in <small>HTML</small> form Crystal Space itself in the
+<tt>&lsquo;CS/docs/html&rsquo;</tt> directory. After you install Crystal Space, the
+documentation resides at <tt>&lsquo;/usr/local/share/docs/crystalspace-*&rsquo;</tt>.
+Documentation is also available online.  The <small>API</small> documentation can be
+generated locally or viewed online.  See section <a href="Where-to-Get.html#0">Where to Get Crystal Space</a>.
+</p>
+<p>Additionally, note that the source code for some of these tutorials can be
+found in the <tt>&lsquo;CS/apps/tutorials&rsquo;</tt> directory. There are also a few
+additional tutorials at that location which are not (yet) covered in the
+documentation.
+</p>
+<p>Before reading this tutorial you should first read the basics
+(see section <a href="The-Basics.html#0">Basics and Overview</a>).
+</p>
+<p>This tutorial features:
+</p><ul>
+<li>
+Basic setup of a Crystal Space application using <code>csApplicationFramework</code>.
+</li><li>
+Setting up the application event handler using <code>csBaseEventHandler</code>.
+</li><li>
+Using events to draw 3D frame and listen to keyboard so we can quit
+the application.
+</li><li>
+Loading of the basic plugins needed to get the engine going using
+<code>csInitializer::RequestPlugins()</code>.
+</li><li>
+Creating of the 3D window.
+</li><li>
+Loading of a texture and material using <code>iLoader::LoadTexture()</code>.
+</li><li>
+Creation of a simple room using <code>iEngine::CreateSector()</code> and
+<code>CS::Geometry::GeneralMeshBuilder</code>. Also adding a few lights so
+that everything is visible.
+</li><li>
+Creation of a view (<code>csView</code> class) and a camera.
+</li><li>
+Basic movement using the keyboard.
+</li></ul>
+
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top"><a href="Simple-Header-File.html#0">4.2.1.1 Simple Header File</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top"><a href="Simple-Event-Handling.html#0">4.2.1.2 Event Handling</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="Simple-World.html#0">4.2.1.3 Creating a &ldquo;World&rdquo;</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="Simple-Camera.html#0">4.2.1.4 The Camera</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="Simple-Locomotion.html#0">4.2.1.5 Locomotion (Moving Around)</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+</table>
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Tutorials.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Simple-Header-File.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Tutorials.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

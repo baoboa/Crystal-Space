@@ -1,0 +1,251 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.10.10.1 General description</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.10.10.1 General description">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.10.10.1 General description">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="MeshObject-Terrain2-General"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="MeshObject-Terrain2.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="MeshObject-Terrain2-XML.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="MeshObject-Terrain2.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h4 class="subsubsection"> 4.10.10.1 General description </h4>
+
+<p>To facilitate future improvements the plugin is split into several smaller 
+and communicating components
+</p>
+<ul>
+<li>
+Terrain system - defines cells, keeps track of loaded data, dispatch request
+to the collision, rendering and data feeder parts.
+</li><li>
+Data feeder - provide height data on demand by either loading it from disk or
+generating it by for example fractal algorithms.
+</li><li>
+Renderer - converts height data into triangles and feeds them into the rendering
+pipeline, providing LoD, culling etc.
+</li><li>
+Collision system - do collision detection between height data and rays, segments 
+and triangles.
+</li></ul>
+ 
+<p>At current there are two implementations of data feeder, one renderer and one
+collision system.
+</p>
+<a name="1"></a>
+<h4 class="subsubheading"> Terrain System </h4>
+
+<p>The terrain system is the central part in <samp>&lsquo;terrain2&rsquo;</samp> plugin as it contains
+definitions of cells as well as holding all other parts together.
+</p>
+<p>The main component in the terrain system is the <samp>&lsquo;cell&rsquo;</samp>. Each cell within a
+terrain system is a self contained area of the 2d map that contains its own 
+height map, material map, renderer-, feeder- and collision-settings.  The 
+self-contained aspect is also related to that the cell is the unit used for paging 
+(on-demand loading and unloading) of terrain data.
+</p>
+<p>Each cell is defined by a small set of properties
+</p>
+<table>
+<tr><td><p> Setting </p></td><td><p> Description
+</p></td></tr>
+<tr><td><p> gridsize
+</p></td><td><p> Number of height points in each direction. Should be one more than power of
+two (2^n+1) such as 129,257,1025. <em>CAUTION: For time being the grid must be
+square</em>.
+</p>
+</td></tr>
+<tr><td><p> position
+</p></td><td><p> 3D offset in XZ-plane of cell relative to mesh center. 
+See more under coordinate systems
+</p>
+</td></tr>
+<tr><td><p> size
+</p></td><td><p> 3D size of cell in CS units. Defines the xz size as well as the max height
+scale.
+</p>
+</td></tr>
+<tr><td><p> heightdata
+</p></td><td><p> Array of height data for each gridpoint, ordered left to right, top to bottom.
+Other geometric properties of the landscape such as normal direction and tangent
+plane is derived from the height data.
+</p></td></tr>
+</table>
+
+
+<a name="2"></a>
+<h4 class="subsubheading"> Coordinate system </h4>
+
+<p>One important point to remember when dealing with terrain2 is the coordinate
+spaces it use. There are two major coordinat spaces to keep track of, namely
+<samp>&lsquo;heightmap space&rsquo;</samp> and <samp>&lsquo;model space&rsquo;</samp>. 
+</p>
+<p>Heightmap space is the 2D coordinate space in which the heightmap is specified, 
+it has (0,0) in upper left corner of heightmap and x increase to the right while
+y increase down. Most operations on cell level, such as 
+<samp>&lsquo;iTerrainCell::GetNormal()&rsquo;</samp> and <samp>&lsquo;iTerrainCell::GetHeight()&rsquo;</samp> operates
+on coordinates in heightmap space.
+</p>
+<p>The second coordinate space is the 3d model space, which is the normal per 
+mesh-object coordinate space that all meshes in CS have. The transform between 
+model space and world space is defined by the iMovable of the mesh wrapper. All
+rendering is in model space as well as some mesh global APIs such as HitBeam.
+</p>
+<p>The transform between heightmap space and model space have a fixed orientation
+(rotation) while the linear components are set via the per cell size and offset.
+</p>
+<p><img src="usingcs/meshobj/terrain2coordspace.jpg" alt="usingcs/meshobj/terrain2coordspace">
+</p>
+<a name="3"></a>
+<h4 class="subsubheading"> Renderer </h4>
+<p>The renderer plugin is the most obviously visible plugin. It takes the terrain
+height data and transforms it into a list of triangles for rendering and in the
+process does such things as mesh simplifcation (LOD algorithms).
+</p>
+<p>In the current codebase of CS there is just one implementation of the rendering
+plugin which is based on the &quot;bruteblock&quot; algorithm. Bruteblock works by dividing
+the full cell grid into four quadrants, then continuing to subdivide those until
+either the lowest subdivision level is reached or the LOD algorithm determins
+there should be no more subdivisions.
+</p>
+<p>Bruteblock accepts a number of named parameters to control the LOD behaviour
+</p>
+<table>
+<tr><td><p> Parameter </p></td><td><p> Description
+</p></td></tr>
+<tr><td><p> block resolution 
+</p></td><td><p> Block resolution in number of gridpoints. Should be power of two, other
+values are rounded down. Default value is 16.
+</p></td></tr>
+<tr><td><p> lod splitcoeff
+</p></td><td><p> Coefficient used in the calculation of per block lod level. Can approximatly
+be interpreted as the distance to split in number of block-widths. Default value
+is 16.
+</p></td></tr>
+<tr><td><p> splat distance
+</p></td><td><p> Distance where to switch from material splatting to basemap rendering.
+Passed on to the shader via the <samp>&lsquo;texture lod distance&rsquo;</samp> shader variable.
+Default value is 200.
+</p></td></tr>
+</table>
+
+<a name="4"></a>
+<h4 class="subsubheading"> Data feeders </h4>
+
+<p>The data feeder is responsible for loading and pre-loading of terrain height
+and material map data. There are two implementations, the simple and the threaded
+data feeders. They both utilize the same loading code and properties however
+the threaded feeder have the ability to preload data in the background at the
+cost of some overhead and higher memory usage.
+</p>
+<p>The feeders take three parameters
+</p>
+<table>
+<tr><td><p> Parameter </p></td><td><p> Description
+</p></td></tr>
+<tr><td><p> heightmap source
+</p></td><td><p> File name of the heightmap data.
+</p></td></tr>
+<tr><td><p> heightmap format
+</p></td><td><p> Data format in the heightmap source. Possible values are <small>IMAGE</small>, 
+<small>RAW8</small>, <small>RAW16LE</small>, <small>RAW16BE</small>, <small>RAW32LE</small>, <small>RAW32BE</small>, <small>RAWFLOATLE</small>,
+<small>RAWFLOATBE</small>. The number specify the bit width, le/be little endian or big
+endian. Default value is <small>IMAGE</small> which means the data is a image to be loaded
+by the normal image loaders (such as a png image). <em>When loading a raw format
+map, make sure to use the right format as no data validation is done. Invalid data
+can cause your application to crash.</em>
+</p></td></tr>
+<tr><td><p> materialmap source
+</p></td><td><p> File name of the material map data.
+</p></td></tr>
+<tr><td><p> offset
+</p></td><td><p> Height offset value to add to height values after loading.
+</p></td></tr>
+</table>
+
+<a name="5"></a>
+<h4 class="subsubheading"> Collision plugin </h4>
+
+<p>The collision plugin is responsible for doing collision detection between the
+height map and triangles or segments/rays. There are currently just a single
+implementation which use a variant of the digital differential algorithm to
+compute the intersection points directly without having to triangulate the terrain.
+The collision plugin have no properties.
+</p>
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="MeshObject-Terrain2.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="MeshObject-Terrain2-XML.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="MeshObject-Terrain2.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

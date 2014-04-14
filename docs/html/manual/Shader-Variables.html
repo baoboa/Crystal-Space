@@ -1,0 +1,257 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.12.1.2 Shader Variables</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.12.1.2 Shader Variables">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.12.1.2 Shader Variables">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Shader-Variables"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Shader-System-Overview.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Shader-Conditions-and-Processing-Instructions-Reference.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Shaders.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h4 class="subsubsection"> 4.12.1.2 Shader Variables </h4>
+
+
+<p>Shaders need to use shader variables to be able to access the resources they 
+need to do what they have to do.  This includes things like the texture, the 
+ambient color, the light transformation, and more.  Each shader uses a number
+of variables usually provided by the material, while also a number of 
+variables are automatically supplied by the engine and other components.  This
+section commonly used variables of both kinds.
+</p>
+<a name="1"></a>
+<h3 class="subheading"> Variables from Materials </h3>
+
+<p>These variables are usually provided by materials.  It is also possible to 
+add custom variables that you can then use in your own materials with your 
+own shaders.  Variable names can be arbitrary, however, if you want to add
+a parameter to allow customization of a shader, you should first look into
+this list whether there might be a name that is already used for the purpose
+you desire.  If you use custom names, it's a good idea to try to somewhat 
+stick to the same conventions as used here.
+</p>
+<dl compact="compact">
+<dt> <samp>&lsquo;tex diffuse&rsquo;</samp></dt>
+<dd><p>diffuse texture
+</p></dd>
+<dt> <samp>&lsquo;tex normal&rsquo;</samp></dt>
+<dd><p>normal map texture
+</p></dd>
+<dt> <samp>&lsquo;tex height&rsquo;</samp></dt>
+<dd><p>height map texture for parallax shading
+</p></dd>
+</dl>
+
+<a name="2"></a>
+<h3 class="subheading"> Variables from the Crystal Space Components </h3>
+
+<p>These variables are defined by various components and are mostly useful when
+writing custom shaders.
+</p>
+<a name="3"></a>
+<h4 class="subsubheading"> Utility textures </h4>
+
+<dl compact="compact">
+<dt> <samp>&lsquo;standardtex normalization map&rsquo;</samp></dt>
+<dd><p>Normalization cube map.
+</p></dd>
+<dt> <samp>&lsquo;standardtex white&rsquo;</samp></dt>
+<dd><p>1x1 white texture. Mostly useful as a &ldquo;dummy&rdquo; texture.
+</p></dd>
+</dl>
+
+<a name="4"></a>
+<h4 class="subsubheading"> Buffers </h4>
+
+<dl compact="compact">
+<dt> <samp>&lsquo;vertices&rsquo;</samp></dt>
+<dd><p>Render buffer with mesh vertices.
+</p></dd>
+<dt> <samp>&lsquo;texture coordinates&rsquo;</samp></dt>
+<dd><p>Render buffer with texture coordinates. 
+</p></dd>
+<dt> <samp>&lsquo;colors&rsquo;</samp></dt>
+<dd><p>Render buffer with per-vertex colors.
+</p></dd>
+</dl>
+
+<a name="5"></a>
+<h4 class="subsubheading"> Transforms </h4>
+
+<dl compact="compact">
+<dt> <samp>&lsquo;world2camera transform&rsquo;</samp></dt>
+<dt> <samp>&lsquo;object2world transform&rsquo;</samp></dt>
+</dl>
+
+<a name="6"></a>
+<h4 class="subsubheading"> Lighting </h4>
+
+<p><samp>&lsquo;N&rsquo;</samp> denotes the light number.  The first light is light number <code>0</code>.
+The upper limit for the value of <samp>&lsquo;N&rsquo;</samp> depends on the shader as well as the
+render loop.
+</p>
+<dl compact="compact">
+<dt> <samp>&lsquo;light ambient&rsquo;</samp></dt>
+<dd><p>Ambient lighting color.
+</p></dd>
+<dt> <samp>&lsquo;light N position&rsquo;</samp></dt>
+<dd><p>Light position in camera space.
+</p></dd>
+<dt> <samp>&lsquo;light N position world&rsquo;</samp></dt>
+<dd><p>Light position in world space.
+</p></dd>
+<dt> <samp>&lsquo;light N transform&rsquo;</samp></dt>
+<dd><p>Light transformation in camera space.  Mostly relevant as some lights might be
+rotated.
+</p></dd>
+<dt> <samp>&lsquo;light N transform world&rsquo;</samp></dt>
+<dd><p>Light transformation in world space.
+</p></dd>
+<dt> <samp>&lsquo;light N diffuse&rsquo;</samp></dt>
+<dd><p>Light diffuse color.
+</p></dd>
+<dt> <samp>&lsquo;light N specular&rsquo;</samp></dt>
+<dd><p>Light specular color.
+</p></dd>
+<dt> <samp>&lsquo;light N attenuation&rsquo;</samp></dt>
+<dd><p>Light attenuation coefficients.
+</p></dd>
+<dt> <samp>&lsquo;light N attenuationtex&rsquo;</samp></dt>
+<dd><p>Light attenuation texture.
+</p></dd>
+<dt> <samp>&lsquo;light N type&rsquo;</samp></dt>
+<dd><p>Light type, one of the <code>csLightType</code> enumerants.
+</p></dd>
+<dt> <samp>&lsquo;light N inner falloff&rsquo;</samp></dt>
+<dd><p>Inner falloff for spotlights as the cosine of the angle.
+</p></dd>
+<dt> <samp>&lsquo;light N outer falloff&rsquo;</samp></dt>
+<dd><p>Outer falloff for spotlights as the cosine of the angle.
+</p></dd>
+</dl>
+
+<a name="7"></a>
+<h4 class="subsubheading"> Terrain related </h4>
+
+<dl compact="compact">
+<dt> <samp>&lsquo;texture lod distance&rsquo;</samp></dt>
+<dt> <samp>&lsquo;splat alpha map&rsquo;</samp></dt>
+</dl>
+
+<a name="8"></a>
+<h4 class="subsubheading"> Miscelleanous </h4>
+
+<dl compact="compact">
+<dt> <samp>&lsquo;mat flatcolor&rsquo;</samp></dt>
+<dd><p>Flat color of the material.  To be used if no diffuse texture was specified.
+</p></dd>
+<dt> <samp>&lsquo;standard time&rsquo;</samp></dt>
+<dd><p>Current ticks in seconds.  Useful for animations.
+</p></dd>
+<dt> <samp>&lsquo;tex lightmap&rsquo;</samp></dt>
+<dd><p>Lightmap texture.  Present if a mesh uses lightmap lighting.
+</p></dd>
+<dt> <samp>&lsquo;texture coordinates lightmap&rsquo;</samp></dt>
+<dd><p>Buffer with lightmap texture coordinates.  Present if a mesh uses lightmap 
+lighting.
+</p></dd>
+<dt> <samp>&lsquo;point radius&rsquo;</samp></dt>
+<dd><p>Radius when point sprites are rendered.
+</p></dd>
+<dt> <samp>&lsquo;point scale&rsquo;</samp></dt>
+<dd><p>Scale when point sprites are rendered.
+</p></dd>
+</dl>
+
+<a name="9"></a>
+<h4 class="subsubheading"> Fog </h4>
+
+<p>Crystal Space provides some shader &ldquo;snippets&rdquo; to deal with fog, it's 
+recommended to use these to add fog support to some shader.
+</p>
+<dl compact="compact">
+<dt> <samp>&lsquo;fogplane&rsquo;</samp></dt>
+<dt> <samp>&lsquo;fog density&rsquo;</samp></dt>
+<dt> <samp>&lsquo;fog color&rsquo;</samp></dt>
+<dt> <samp>&lsquo;fog start&rsquo;</samp></dt>
+<dt> <samp>&lsquo;fog end&rsquo;</samp></dt>
+<dt> <samp>&lsquo;fog mode&rsquo;</samp></dt>
+<dt> <samp>&lsquo;standardtex fog&rsquo;</samp></dt>
+</dl>
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Shader-System-Overview.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Shader-Conditions-and-Processing-Instructions-Reference.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Shaders.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

@@ -1,0 +1,224 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.10.12 Portal Container Mesh Object</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.10.12 Portal Container Mesh Object">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.10.12 Portal Container Mesh Object">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="MeshObject-Portal-Container"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="MeshObject-Particles.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="MeshObject-SprCal3D.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="MeshObject.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 4.10.12 Portal Container Mesh Object </h3>
+
+<p><em>Written by Jorrit Tyberghein,
+(<a href="mailto:jorrit.tyberghein@gmail.com">jorrit.tyberghein@gmail.com</a>).</em>
+</p>
+<p>This is a special type of mesh object which basically represents a collection
+of portals. The portal container is not implemented as a seperate plugin
+but is built-in into the engine plugin. There is no type or factory
+interface for portal containers. They are created by the engine directly
+as mesh objects.
+</p>
+<a name="1"></a>
+<h4 class="subsubheading"> Object State Interface </h4>
+
+<p><samp>&lsquo;iPortalContainer&rsquo;</samp> (residing in
+<tt>&lsquo;CS/include/iengine/portalcontainer.h&rsquo;</tt>) is the <small>SCF</small> interface
+that you can use to manipulate settings for a portal container. By using
+this interface you can access the portals contained in this portal
+container.
+</p>
+<p>To create a portal container you need to use <small>API</small> calls in the engine:
+<code>iEngine::CreatePortalContainer()</code> and <code>iEngine::CreatePortal()</code>.
+Portal containers are normal mesh objects otherwise. They implement
+<code>iMeshObject</code> and are put in a sector like other mesh objects.
+</p>
+<a name="2"></a>
+<h4 class="subsubheading"> Object Loader </h4>
+
+<p>With normal mesh objects you have a specific loader plugin to load
+the mesh. Portal containers are loaded by the standard map loader instead.
+There are two basic ways to add a portal container to a sector. Either
+you use <samp>&lsquo;portals&rsquo;</samp> to define multiple portals at once (in one portal
+container) or else you use a single <samp>&lsquo;portal&rsquo;</samp> statement to create
+a portal container with one portal. In both cases you place it in
+a sector (it becomes a normal mesh object). In the case of <samp>&lsquo;portals&rsquo;</samp>
+you can also add many regular mesh object statement like <samp>&lsquo;move&rsquo;</samp> to
+move the portal and others. Here is an example:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">&lt;portals name=&quot;myPortal&quot;&gt;
+  &lt;portal&gt;
+    &lt;v x=&quot;0.2&quot; y=&quot;2.8&quot; z=&quot;-0.8&quot; /&gt;
+    &lt;v x=&quot;0.2&quot; y=&quot;2.8&quot; z=&quot;0.8&quot; /&gt;
+    &lt;v x=&quot;0.2&quot; y=&quot;-1&quot; z=&quot;0.8&quot; /&gt;
+    &lt;v x=&quot;0.2&quot; y=&quot;-1&quot; z=&quot;-0.8&quot; /&gt;
+    &lt;sector&gt;destSector&lt;/sector&gt;
+    &lt;float /&gt;
+    &lt;clip /&gt;
+  &lt;/portal&gt;
+  &lt;hardmove&gt;
+    &lt;v x=&quot;13&quot; y=&quot;0&quot; z=&quot;12&quot; /&gt;
+  &lt;/hardmove&gt;
+  &lt;priority&gt;object&lt;/priority&gt;
+&lt;/portals&gt;
+</pre></td></tr></table>
+<p>Here you see how a portal container with a single portal is created.
+The destination sector is <samp>&lsquo;destSector&rsquo;</samp>.
+</p>
+<p>When you use the short-hand <samp>&lsquo;portal&rsquo;</samp> statement you can't set mesh
+parameters like the position of the portal (you'll have to encode position
+in the vertices) and render priority.
+</p>
+<p>Here is a list of all the tags supported by a portal object and their
+meaning (these tags are for usage inside the <samp>&lsquo;portal&rsquo;</samp> statement and
+not directly inside <samp>&lsquo;portals&rsquo;</samp>):
+</p><ul>
+<li> <samp>&lsquo;sector&rsquo;</samp>
+The name of the destination sector for this portal.
+</li><li> <samp>&lsquo;autoresolve&rsquo;</samp>
+With this flag set (default) the portal will automatically connect
+to the sector as soon as it is created. That means you can create a portal
+to a sector that doesn't yet exist. As soon as the sector is created it
+will connect to it. If the sector is then removed again the portal
+will become a <samp>&lsquo;null-portal&rsquo;</samp> again. With this flag not set you can
+also create a portal that will connect to a sector as soon as it is created
+but it will not be able to reconnect later if the sectors goes away
+and is created again. i.e. connection is one-time only.
+</li><li> <samp>&lsquo;key&rsquo;</samp>
+Add a key-value item to this portal container.
+</li><li> <samp>&lsquo;v&rsquo;</samp>
+Add a vertex to the portal polygon.
+</li><li> <samp>&lsquo;maxvisit&rsquo;</samp>
+If you use space-warping portals it is easy to get in a situation where
+you have infinite recursion (i.e. imagine two mirroring portals facing
+each other). To avoid this problem there is a maximum recursion limit
+per portal. By default this is set to 5. You can change this value here.
+</li><li> <samp>&lsquo;matrix&rsquo;</samp>
+If you use this then the portal will be a space warping portal. That
+means that it will change the camera transform. Using this you can
+do various tricks like mirrors and othes.
+</li><li> <samp>&lsquo;wv&rsquo;</samp>
+This vector is added to the camera transform before the matrix is
+applied. It enables space warping.
+</li><li> <samp>&lsquo;ww&rsquo;</samp>
+This vector is added to the camera transform after the matrix is
+applied. It enables space warping.
+</li><li> <samp>&lsquo;mirror&rsquo;</samp>
+This is a shortcut to enable a space warping camera that mirrors space
+(like a mirror would work).
+</li><li> <samp>&lsquo;clipstraddling&rsquo;</samp>
+With this flag set the portal will clip geometry of an object that
+is straddling this portal (i.e. the object is both in the source and
+destination sector and the portal 'cuts' the object). This is only needed
+if the portal is on a surface that is transparent. A space warping portal
+will have the effect of this flag automatically.
+</li><li> <samp>&lsquo;clip&rsquo;</samp>
+If this flag is set then this portal will clip all geometry in the
+destination sector. This must be used for portals which arrive in the middle
+of a sector. Otherwise objects that are in the destination sector and are
+between the camera and the position of where the portal is in the source
+sector might be rendered in front of the portal incorrectly.
+</li><li> <samp>&lsquo;zfill&rsquo;</samp>
+With this flag set the portal will do a Z-fill after rendering the contents
+(as if it was a normal polygon). this is mainly useful for floating portals
+where it is possible that there is geometry in the same sector that will
+be rendered behind the portal (and thus could accidently get written in the
+portal sector because the Z-buffer cannot be trusted).
+</li><li> <samp>&lsquo;float&rsquo;</samp>
+If this flag is used then the portal will use possible available stencil
+buffer hardware to do good clipping. This flag should be used if you have
+a portal that is not at the boundary of a sector (i.e. there can be geometry
+behind the portal but in the same source sector as the portal) and that can
+be covered (or itself covers) other objects. It is usually used in
+combination with <samp>&lsquo;zfill&rsquo;</samp> and sometimes with <samp>&lsquo;clip&rsquo;</samp> if the
+destination of the portal enters in the middle of a sector.
+</li><li> <samp>&lsquo;colldet&rsquo;</samp>
+If this flag is set then this portal is used for collision detection.
+</li><li> <samp>&lsquo;viscull&rsquo;</samp>
+If this flag is set then this portal can be used for visibility culling (i.e.
+it acts as an occluder for objects behind the portal but in the same sector
+as the portal itself).
+</li><li> <samp>&lsquo;static&rsquo;</samp>
+This flag indicates if the destination of this portal should not
+be transformed from object to world space. For mirrors you should disable
+this flag because you want the destination to move with the source.
+</li></ul>
+
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="MeshObject-Particles.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="MeshObject-SprCal3D.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="MeshObject.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

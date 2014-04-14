@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.18.4.1 Configuration</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.18.4.1 Configuration">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.18.4.1 Configuration">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Configuration"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Python-Bindings.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Embedding-in-a-c_002b_002b-application.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Python-Bindings.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h4 class="subsubsection"> 4.18.4.1 Configuration </h4>
+
+<p>Once Crystal Space is built and optionally installed, you can use the Python
+bindings. 
+</p>
+<p>If you installed, you should be ready to go. Because of this, it is recommended to at least install the bindings, so you dont have to mess with the pythonpath so much, by doing:
+</p>
+<p> <code>jam install_bindings</code>
+</p>
+<p>If you dont want to install you need to make sure that Python can locate the
+appropriate Crystal Space resources.
+</p>
+<ol>
+<li>
+Tell Python where to find <tt>&lsquo;cspace&rsquo;</tt> package (it will be a directory with many .py and shared library files) by setting your <samp>&lsquo;PYTHONPATH&rsquo;</samp>
+environment variable to mention the directory where <tt>&lsquo;cspace&rsquo;</tt> package
+resides.
+
+
+<p>After successfully building crystalspace, the python <tt>&lsquo;cspace&rsquo;</tt> package it will be under CS/out/&lt;buildsystem&gt;/&lt;buildmode&gt;/bindings/python/. For example in linux 386, optimize build, it will be at CS/out/linuxx86/optimize/bindings/python/. Where CS
+means the top-level build directory (this will be the <tt>&lsquo;CS&rsquo;</tt> directory if you
+configured and built in the <tt>&lsquo;CS&rsquo;</tt> directory).
+</p>
+<p>Note it is recommended to at least install the bindings, so you dont have to mess with pythonpath so much, by doing:
+</p>
+<p> <code>jam install_bindings</code>
+</p>
+
+<p>Note, if building with msvc, the files are elsewhere.
+</p>
+</li><li>
+If necessary, set your <samp>&lsquo;CRYSTAL&rsquo;</samp> environment variable to allow Crystal
+Space to locate its plugin modules and other resources.
+</li></ol>
+
+
+<hr size="1">
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

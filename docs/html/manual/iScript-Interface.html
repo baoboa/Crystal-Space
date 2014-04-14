@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.18.1 The iScript Interface</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.18.1 The iScript Interface">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.18.1 The iScript Interface">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="iScript-Interface"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Scripting-Languages.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Java-Bindings.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Scripting-Languages.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 4.18.1 The iScript Interface </h3>
+
+<p>The <samp>&lsquo;iScript&rsquo;</samp> interface is used from C++ code to interact with scripting
+language interpreters. It enables one to create and destroy variables and
+set and get their values, call subroutines, and create new objects in the
+scripting language.
+</p>
+<p>The <samp>&lsquo;iScriptObject&rsquo;</samp> interface represents an object in the scripting
+language, and enables one to call its methods and set and get its properties.
+It can also provide the name of the object's class (returned as a string),
+test for membership of a certain class (the &quot;is-a&quot; relationship, returning
+true if the object in question is an instance of the specified class or one of
+its subclasses), and if the object is a scripting language wrapper around a
+C++ object (i.e. it is part of the Crystal Space bindings) then it can provide
+a pointer to the underlying C++ object.
+</p>
+<p>The <samp>&lsquo;iScriptValue&rsquo;</samp> interface represents a constant expression as used by
+the scripting language, such as 3.14159 or &quot;hello&quot;. Pointers to implementations
+of this interface are used with variable accessors and subroutine calls in
+<samp>&lsquo;iScript&rsquo;</samp> and with property accessors and method calls in
+<samp>&lsquo;iScriptObject&rsquo;</samp>. New instances are returned by <samp>&lsquo;iScript::RValue()&rsquo;</samp>.
+The storable types are <samp>&lsquo;int&rsquo;</samp>, <samp>&lsquo;float&rsquo;</samp>, <samp>&lsquo;double&rsquo;</samp>, <samp>&lsquo;bool&rsquo;</samp>,
+<samp>&lsquo;const char*&rsquo;</samp> (string) and <samp>&lsquo;iScriptObject*&rsquo;</samp>.
+</p>
+<p>These interfaces are defined in <tt>&lsquo;include/ivaria/script.h&rsquo;</tt>, and fully
+documented in the Public <small>API</small> Reference.
+</p>
+<hr size="1">
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

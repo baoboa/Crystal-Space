@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.2.4.8 Explosion Class</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.2.4.8 Explosion Class">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.2.4.8 Explosion Class">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Mazing-Explosion-Class"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Mazing-Adversary-Class.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Mazing-Laser-Class.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Tutorial-Mazing.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h4 class="subsubsection"> 4.2.4.8 Explosion Class </h4>
+
+<p>This is a very simple class that keeps track of an explosion. Once the
+explosion particle system has died out the instance of this class will be
+removed as well.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">class Explosion
+{
+private:
+  csRef&lt;iMeshWrapper&gt; mesh;
+  int timeleft;
+
+public:
+  Explosion (iMeshWrapper* mesh, int timeleft);
+
+  bool Handle (csTicks elapsed_ticks);
+
+  iMeshWrapper* GetMesh () const { return mesh; }
+};
+</pre></td></tr></table>
+<p>The main function here is the <code>Handle()</code> function. This one takes
+the elapsed ticks (i.e. milliseconds) since last frame which it will use
+to decide when to delete the explosion mesh.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">Explosion::Explosion (iMeshWrapper* mesh, int timeleft)
+{
+  Explosion::mesh = mesh;
+  Explosion::timeleft = timeleft;
+}
+
+bool Explosion::Handle (csTicks elapsed_ticks)
+{
+  timeleft -= elapsed_ticks;
+  if (timeleft &lt;= 0)
+  {
+    return false;
+  }
+  return true;
+}
+</pre></td></tr></table>
+<p>The implementation is very simple. The <code>Explosion</code> class is instantiated
+with a certain lifetime (see later). Every frame <code>Handle()</code> will be called
+which will subtract the elapsed ticks from the lifetime. When the lifetime
+becomes smaller or equal then 0 then the explosion should be removed.
+</p>
+<hr size="1">
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

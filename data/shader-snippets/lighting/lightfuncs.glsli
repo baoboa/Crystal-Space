@@ -1,0 +1,233 @@
+<!--
+  Copyright (C) 2008 by Frank Richter
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Library General Public
+  License as published by the Free Software Foundation; either
+  version 2 of the License, or (at your option) any later version.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  Library General Public License for more details.
+
+  You should have received a copy of the GNU Library General Public
+  License along with this library; if not, write to the Free
+  Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+-->
+<include>
+<![CDATA[
+
+#ifndef _LIGHTFUNCS_GLSLI_
+#define _LIGHTFUNCS_GLSLI_
+
+#define MAX_LIGHTS 8
+#define MAX_OSM 8
+
+float Attenuation_Linear (float d, float invLightRadius)
+{
+  return (clamp (1.0 - d * invLightRadius, 0.0, 1.0));
+}
+
+float Attenuation_Inverse (float d)
+{
+  return 1.0/d;
+}
+
+float Attenuation_Realistic (float d)
+{
+  return 1.0/(d*d);
+}
+
+float Attenuation_CLQ (float d, vec3 coeff)
+{
+  return 1.0/(dot (vec3 (1.0, d, d*d), vec3 (coeff)));
+}
+
+float Light_Spot (vec3 surfToLight, vec3 lightDir, float falloffInner, float falloffOuter)
+{
+  return smoothstep (falloffOuter, falloffInner, dot (surfToLight, lightDir));
+}
+
+
+// Number of lights provided
+uniform int lightProps_count;
+// Light world-space position
+uniform vec4 lightProps_posWorld[MAX_LIGHTS];
+// Transformation from light space to world space
+uniform mat4 lightProps_transform[MAX_LIGHTS];
+// Transformation from world space to light space
+uniform mat4 lightProps_transformInv[MAX_LIGHTS];
+// Diffuse color
+uniform vec3 lightProps_colorDiffuse[MAX_LIGHTS];
+// Specular color
+uniform vec3 lightProps_colorSpecular[MAX_LIGHTS];
+// Attenuation vector (XYZ are CLQ coefficients; W is light radius)
+uniform vec4 lightProps_attenuationVec[MAX_LIGHTS];
+// Cosine of inner falloff angle
+uniform float lightProps_falloffInner[MAX_LIGHTS];
+// Cosine of outerr falloff angle
+uniform float lightProps_falloffOuter[MAX_LIGHTS];
+
+struct LightSpace
+{
+  vec3 direction;
+  vec3 surfaceToLight;
+  float lightDistance;
+};
+
+LightSpace MakeLightSpaceWorld (int lightNum, vec4 surfPositionWorld)
+{
+  LightSpace ls;
+  vec4 pos = lightProps_posWorld[lightNum];
+  mat4 lightTransform = lightProps_transform[lightNum];
+  vec3 lightDirW = (lightTransform * vec4 (0, 0, 1, 0)).xyz;
+  ls.direction = lightDirW;
+  vec3 surfToLightF = (pos - surfPositionWorld).xyz;
+  ls.lightDistance = length (surfToLightF);
+  ls.surfaceToLight = normalize (surfToLightF);
+  return ls;
+}
+
+void MakeLightSpaceTangentVP (int lightNum, mat4 world2tangent, vec4 surfPositionWorld,
+                              out vec3 vp_dir, out vec3 vp_surfToLight)
+{
+  vec4 pos = lightProps_posWorld[lightNum];
+  mat4 lightTransform = lightProps_transform[lightNum];
+  vec4 lightDirW = (lightTransform * vec4 (0, 0, 1, 0));
+  vp_dir = (world2tangent * lightDirW).xyz;
+  vp_surfToLight = (world2tangent * vec4 ((pos - surfPositionWorld).xyz, 0)).xyz;
+}
+
+LightSpace MakeLightSpaceTangentVP (vec3 vp_dir, vec3 vp_surfToLight)
+{
+  LightSpace ls;
+  ls.direction = vp_dir;
+  ls.lightDistance = length (vp_surfToLight);
+  ls.surfaceToLight = normalize (vp_surfToLight);
+  return ls;
+}
+
+struct Shadow
+{
+  float visibility;
+};
+
+Shadow MakeShadowNone ()
+{
+  Shadow s;
+  s.visibility = 1.0;
+  return s;
+}
+
+// Transformation from light to shadow map space
+uniform mat4 lightPropsSM_shadowMapTF[MAX_LIGHTS];
+// Shadow map
+uniform sampler2D lightPropsSM_shadowMap[MAX_LIGHTS];
+// Shadow map pixel size + dimensions
+uniform vec4 lightPropsSM_shadowMapPixels[MAX_LIGHTS];
+uniform vec4 lightPropsSM_shadowMapUnscale[MAX_LIGHTS];
+  
+uniform sampler2D lightPropsSM_shadowMapNoise;
+
+// Transformation from light to shadow map space
+uniform mat4 lightPropsOM_opacityMapTF[MAX_LIGHTS];
+// Depth map start
+uniform sampler2D lightPropsOM_shadowMapStart[MAX_LIGHTS];  
+// Depth map end
+uniform sampler2D lightPropsOM_shadowMapEnd[MAX_LIGHTS];  
+// Depth map size
+uniform float lightPropsOM_size[MAX_LIGHTS];
+// Split function
+uniform sampler2D lightPropsOM_splitFunc[MAX_LIGHTS];    
+// OSM
+uniform sampler2D lightPropsOM_opacityMap[MAX_OSM * MAX_LIGHTS];
+uniform int lightPropsOM_opacityMapNumSplits[MAX_LIGHTS];
+
+struct Light
+{
+  // Direction of incidence
+  vec3 incidence;
+  // Incidence-dependent attenuation
+  float attenuation;
+};
+
+// Directional light
+Light MakeLightDirectional (LightSpace space)
+{
+  Light l;
+  l.incidence = -space.direction;
+  l.attenuation = 1.0;
+  return l;
+}
+
+// Point light
+Light MakeLightPoint (LightSpace space)
+{
+  Light l;
+  l.incidence = space.surfaceToLight;
+  l.attenuation = 1.0;
+  return l;
+}
+
+// Spot light
+Light MakeLightSpot (LightSpace space, float falloffInner, float falloffOuter)
+{
+  Light l;
+  l.incidence = -space.direction;
+  l.attenuation = Light_Spot (space.surfaceToLight, l.incidence, falloffInner, falloffOuter);
+  return l;
+}
+
+]]>
+
+Light GetCurrentLight (LightSpace lightSpace, int lightNum)
+{
+<?if vars."light type".int == consts.CS_LIGHT_DIRECTIONAL ?>
+  return MakeLightDirectional (lightSpace);
+<?elsif vars."light type".int == consts.CS_LIGHT_SPOTLIGHT ?>
+  return MakeLightSpot (lightSpace, 
+    lightProps_falloffInner[lightNum],
+    lightProps_falloffOuter[lightNum]);
+<?else?>
+<?! Assume point light ?>
+  return MakeLightPoint (lightSpace);
+<?endif?>
+}
+
+<![CDATA[
+void ComputeLight (LightSpace lightSpace, Light light, 
+                   vec3 eyeToSurf, vec3 surfNormal,
+                   float surfShininess, 
+                   vec3 lightDiffuse, vec3 lightSpecular,
+                   vec4 lightAttenuationVec,
+                   float shadowFactor,
+                   out vec3 d, out vec3 s)
+{
+  vec3 L = light.incidence;
+  vec3 H = normalize (lightSpace.surfaceToLight - eyeToSurf);
+  float spot = light.attenuation;
+  
+  float NdotL = dot (surfNormal, L);
+  float NdotH = dot (surfNormal, H);
+  float specularCoeff = (NdotL > 0.0) ? pow(max(0.0, NdotH), surfShininess) : 0.0;
+  float diffuseCoeff = max(0.0, NdotL);
+
+  float lightDist = lightSpace.lightDistance;
+  float attn;
+  float invAttnRadius = lightAttenuationVec.w;
+  if (invAttnRadius > 0.0)
+    attn = Attenuation_Linear (lightDist, invAttnRadius);
+  else
+    attn = Attenuation_CLQ (lightDist, lightAttenuationVec.xyz);
+  
+  attn *= shadowFactor;
+
+  d = lightDiffuse * diffuseCoeff * spot * attn;
+  s = lightSpecular * specularCoeff * spot * attn;
+}
+
+#endif // _LIGHTFUNCS_GLSLI_
+ 
+]]>
+</include>

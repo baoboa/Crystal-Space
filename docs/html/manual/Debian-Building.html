@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 2.4.2.3 Building Crystal Space</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 2.4.2.3 Building Crystal Space">
+<meta name="keywords" content="Crystal Space 2.1.0: 2.4.2.3 Building Crystal Space">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Debian-Building"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Debian-Libraries.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="cs_002dwinlibs.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Building.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Debian.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Running-The-Demos.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h4 class="subsubsection"> 2.4.2.3 Building Crystal Space </h4>
+
+<p>Now that all dependencies are setup, you can go ahead with the compilation
+of Crystal Space.
+</p>
+<a name="1"></a>
+<h4 class="subsubheading"> Configure and build the project </h4>
+
+<p>Download and unpack a source package of Crystal Space, either
+<a href="http://www.crystalspace3d.org/main/Download">an official release from the website</a>
+or <a href="http://www.crystalspace3d.org/main/Download_trunk">a development version from Subversion</a>.
+</p>
+<p>Then open a new terminal, go to the directory where you unpacked Crystal Space,
+run the configuration script and build the entire project:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">./configure
+jam
+</pre></td></tr></table>
+<p>This is the end of the compilation process of Crystal Space. You can now try
+to run a test application such as <samp>&lsquo;walktest&rsquo;</samp> or <samp>&lsquo;startme&rsquo;</samp>.
+</p>
+<p>You can also see more information on the available building options at the
+<a href="Unix.html#0">dedicated page</a>.
+</p>
+<a name="2"></a>
+<h4 class="subsubheading"> Update your environment variables </h4>
+
+<p>This is not advised to do a <code>make install</code> for Crystal Space, since it
+can interfere with other installations you may have made previously. The
+dedicated way to deal with that problem is to define the
+<a href="HOWTO-Setting-the-CRYSTAL-environment-variable.html#0">CRYSTAL environment variable</a>.
+</p>
+<p>In order to do so, you can open your <tt>&lsquo;~/.bashrc&rsquo;</tt> file and add the following
+new line at the end of it:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">export CRYSTAL=path_to_your_CS_directory
+</pre></td></tr></table>
+<p>Also, since you haven't installed Crystal Space, your system will most probably
+have troubles finding its shared library files. To deal with that, you would need
+to add an entry in your <code>LD_LIBRARY_PATH</code> environment variable, so add also
+the following line to your <tt>&lsquo;~/.bashrc&rsquo;</tt> file:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:path_to_your_CS_directory
+</pre></td></tr></table>
+<p>The changes you made to your <tt>&lsquo;~/.bashrc&rsquo;</tt> file will only get available for
+the next terminals you would open. You may therefore prefer to close the terminals
+you have already opened in order to avoid getting problems with the environment
+variables not defined.
+</p>
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Debian-Libraries.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="cs_002dwinlibs.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Building.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Debian.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Running-The-Demos.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

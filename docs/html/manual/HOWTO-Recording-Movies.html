@@ -1,0 +1,172 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.23.3 Recording Movies</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.23.3 Recording Movies">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.23.3 Recording Movies">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="HOWTO-Recording-Movies"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="HOWTO-Pixmaps.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="HOWTO.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 4.23.3 Recording Movies </h3>
+
+<p>This section describes how to use the in-game movie recorder.
+</p>
+<a name="1"></a>
+<h4 class="subsubheading"> What is the Movie Recorder Used For? </h4>
+
+<p>The movie recorder plugin lets you record a Crystal Space application's video
+output quickly into a NuppelVideo file.  NuppelVideo is a format designed for
+fast recording rather than efficient storage, so typically you would reencode
+the resulting video in DivX or a similar format.
+</p>
+<p>The plugin keeps Crystal Space's virtual clock in sync with the movie's frame
+rate, so you can render very complex scenes slower than real-time and play them
+back later full speed.
+</p>
+<p>Currently this plugin does not handle audio or formats other than NuppelVideo,
+but both of these are planned for the future.
+</p>
+<a name="2"></a>
+<h4 class="subsubheading"> Preparing Up the Movie Recorder </h4>
+
+<p>The movie recorder plugin (probably <tt>&lsquo;movierecorder.so&rsquo;</tt> or
+<tt>&lsquo;movierecorder.dll&rsquo;</tt>) should be compiled as part of a full Crystal Space
+build.
+</p>
+<p>You can also use the movie recorder with an existing binary without any
+recompilation.  Just place the movie recorder plugin in the application's
+library directory.
+</p>
+<p>Like the BugPlug plugin (see section <a href="BugPlug.html#0">Using the BugPlug Debugging Plugin</a>), the movie recorder can be loaded
+and manipulated explicitly by an application or it can be loaded transparently
+into any application automatically.  To load it transparently for all
+applications, you add a setting to your user-specific, application-neutral
+configuration (see section <a href="Config-Domains.html#0">Configuration Domains</a>).  To do this, in the
+<samp>&lsquo;CrystalSpace.Global&rsquo;</samp> configuration domain, give the setting
+<samp>&lsquo;System.Plugins.iMovieRecorder&rsquo;</samp> the
+value <samp>&lsquo;crystalspace.utilities.movierecorder&rsquo;</samp>.  To find out how to do this
+for your particular platform, see the platform-specific intructions for
+manipulating configuration information (see <a href="Config-Domains.html#Config-PerUser">Config PerUser</a>).  The movie
+recorder plugin should now load automatically when your application
+initializes.  Last, but not least, you can use the command line argument
+<samp>&lsquo;--plugin=crystalspace.utilities.movierecorder&rsquo;</samp> to enable the recorder on
+a per-application basis.
+</p>
+<a name="3"></a>
+<h4 class="subsubheading"> Using the Movie Recorder </h4>
+
+<p>Like the BugPlug plugin's screenshot facility, the movie recorder creates a new
+numbered file when you press the recording hotkey.  By default, this key is
+<kbd><kbd>ALT</kbd>-r</kbd>.  If you can see notice messages overlaid on your application
+or in the terminal you are running it from, you should see a &ldquo;Video recorder
+started&rdquo; message indicating the name of the file being recorded to.  Press the
+record hotkey again to stop the recording.
+</p>
+<p>During recording, you can use the pause hotkey to temporarily suspend
+recording.  By default this is <kbd><kbd>ALT</kbd>-p</kbd>.  Press it again to resume
+recording to the same file.
+</p>
+<a name="4"></a>
+<h4 class="subsubheading"> Processing the Resulting Movies </h4>
+
+<p>You can view the resulting NuppelVideo files using <em>mplayer</em>, an open
+source and cross-platform media player.  For re-distribution, you should use a
+format with a better compression ratio, like DivX.  mplayer's counterpart,
+<em>mencoder</em>, handles this task nicely:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">mencoder crystal000.nuv -o my_movie.avi -ovc lavc \
+    -lavcopts vcodec=mpeg4:vbitrate=1600
+</pre></td></tr></table>
+
+<p>This creates an <small>AVI</small> file using FFmpeg's <em>mpeg4</em> codec.  See mencoder's
+manpage for more information.
+</p>
+<a name="5"></a>
+<h4 class="subsubheading"> Configuring the Movie Recorder </h4>
+
+<p>The movie recorder reads its configuration from
+<tt>&lsquo;data/config-plugins/movierecorder.cfg&rsquo;</tt> if it exists.  This lets you change the
+recording and pause hotkeys, the filenames, and compression settings.  See the
+comments in the default <tt>&lsquo;movierecorder.cfg&rsquo;</tt> for a description of each
+item.
+</p>
+
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="HOWTO-Pixmaps.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="HOWTO.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

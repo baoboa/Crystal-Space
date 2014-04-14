@@ -1,0 +1,164 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.2.1.5 Locomotion (Moving Around)</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.2.1.5 Locomotion (Moving Around)">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.2.1.5 Locomotion (Moving Around)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Simple-Locomotion"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Simple-Camera.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Tutorial-Simple-2.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Tutorial-Simple.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h4 class="subsubsection"> 4.2.1.5 Locomotion (Moving Around) </h4>
+
+<p>Staring at that solid wall gets a bit boring after some time.  The problem is
+that we can't move the camera to change our view point.  Let's add some code
+to do exactly this.  Edit <tt>&lsquo;simple.cpp&rsquo;</tt> again and change
+<tt>&lsquo;Frame()&rsquo;</tt> as follows:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">void Simple::Frame ()
+{
+  // First get elapsed time from the virtual clock.
+  csTicks elapsed_time = vc-&gt;GetElapsedTicks ();
+
+  // Now rotate the camera according to keyboard state
+  float speed = (elapsed_time / 1000.0) * (0.03 * 20);
+
+  iCamera* c = view-&gt;GetCamera();
+  if (kbd-&gt;GetKeyState (CSKEY_SHIFT))
+  {
+    // If the user is holding down shift, the arrow keys will cause
+    // the camera to strafe up, down, left or right from it's
+    // current position.
+    if (kbd-&gt;GetKeyState (CSKEY_RIGHT))
+      c-&gt;Move (CS_VEC_RIGHT * 4 * speed);
+    if (kbd-&gt;GetKeyState (CSKEY_LEFT))
+      c-&gt;Move (CS_VEC_LEFT * 4 * speed);
+    if (kbd-&gt;GetKeyState (CSKEY_UP))
+      c-&gt;Move (CS_VEC_UP * 4 * speed);
+    if (kbd-&gt;GetKeyState (CSKEY_DOWN))
+      c-&gt;Move (CS_VEC_DOWN * 4 * speed);
+  }
+  else
+  {
+    // left and right cause the camera to rotate on the global Y
+    // axis; page up and page down cause the camera to rotate on the
+    // _camera's_ X axis (more on this in a second) and up and down
+    // arrows cause the camera to go forwards and backwards.
+    if (kbd-&gt;GetKeyState (CSKEY_RIGHT))
+      rotY += speed;
+    if (kbd-&gt;GetKeyState (CSKEY_LEFT))
+      rotY -= speed;
+    if (kbd-&gt;GetKeyState (CSKEY_PGUP))
+      rotX += speed;
+    if (kbd-&gt;GetKeyState (CSKEY_PGDN))
+      rotX -= speed;
+    if (kbd-&gt;GetKeyState (CSKEY_UP))
+      c-&gt;Move (CS_VEC_FORWARD * 4 * speed);
+    if (kbd-&gt;GetKeyState (CSKEY_DOWN))
+      c-&gt;Move (CS_VEC_BACKWARD * 4 * speed);
+  }
+
+  // We now assign a new rotation transformation to the camera.  You
+  // can think of the rotation this way: starting from the zero
+  // position, you first rotate &quot;rotY&quot; radians on your Y axis to get
+  // the first rotation.  From there you rotate &quot;rotX&quot; radians on the
+  // your X axis to get the final rotation.  We multiply the
+  // individual rotations on each axis together to get a single
+  // rotation matrix.  The rotations are applied in right to left
+  // order .
+  csMatrix3 rot = csXRotMatrix3 (rotX) * csYRotMatrix3 (rotY);
+  csOrthoTransform ot (rot, c-&gt;GetTransform().GetOrigin ());
+  c-&gt;SetTransform (ot);
+
+  ...
+}
+</pre></td></tr></table>
+<p>With this change, you can rotate the camera with the left
+and right arrow keys and move forward and backward with the up and down arrow
+keys.  Try it out to see the effect.  To rotate the camera we use
+<code>SetTransform()</code> which expects a transformation matrix.
+</p>
+<p>That's it for now.  In this tutorial you learned how to set up the Crystal
+Space system for use, how to create a simple room with some lights, how to
+respond to events, and how to handle some basic camera operations.
+</p>
+<p>You can now go on to the next tutorial (see section <a href="Tutorial-Simple-2.html#0">Simple Tutorial 2: Adding a Mesh</a>)) to learn
+how to add a 3D sprite to this application.
+</p>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Simple-Camera.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Tutorial-Simple-2.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Tutorial-Simple.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

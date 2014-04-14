@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: C.4.3 iPolygonMesh deprecation</title>
+
+<meta name="description" content="Crystal Space 2.1.0: C.4.3 iPolygonMesh deprecation">
+<meta name="keywords" content="Crystal Space 2.1.0: C.4.3 iPolygonMesh deprecation">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Api1_005f2-iPolygonMesh"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Api1_005f2-Rendering.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Api1_005f2-Renamings.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Release-Notes-1_005f2.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Licenses.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> C.4.3 iPolygonMesh deprecation </h3>
+
+<p>The <code>iPolygonMesh</code> interface and everything related to that interface
+has been deprecated. This implies that the following classes, interfaces,
+and methods are now deprecated:
+</p>
+<ul class="toc">
+<li> <code>iPolygonMesh</code>
+Use <code>iTriangleMesh</code> instead.
+</li><li> <code>csPolygonMeshTools</code>
+Use <code>csTriangleMeshTools</code> instead.
+</li><li> <code>csPolygonMesh</code>
+Use <code>csTriangleMesh</code> instead.
+</li><li> <code>csPolygonMeshBox</code>
+Use <code>csTriangleMeshBox</code> instead.
+</li><li> <code>iObjectModel</code>
+All methods related to <code>iPolygonMesh</code> are deprecated. Use the
+ones with <code>iTriangleMesh</code> instead.
+</li><li> <code>csColliderWrapper</code>
+All methods related to <code>iPolygonMesh</code> are deprecated. Use the
+ones with <code>iTriangleMesh</code> instead.
+</li></ul>
+
+<p>In addition the <samp>&lsquo;polymesh&rsquo;</samp> keyword in world files has been
+deprecated. Instead use <samp>&lsquo;trimesh&rsquo;</samp>:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">&lt;trimesh&gt;
+  ...
+  &lt;id&gt;colldet&lt;/id&gt;
+  &lt;id&gt;viscull&lt;/id&gt;
+  ...
+&lt;/trimesh&gt;
+</pre></td></tr></table>
+<p>Here is an example on how to fetch the collision detection triangle
+mesh:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">iObjectModel* model = ...;
+csRef&lt;iStringSet&gt; strset = csQueryRegistry&lt;iStringSet&gt; (object_reg);
+csStringID id = strset-&gt;Request (&quot;colldet&quot;);
+iTriangleMesh* trimesh = model-&gt;GetTriangleData (id);
+</pre></td></tr></table>
+<hr size="1">
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

@@ -1,0 +1,261 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.10.19.1 Furmesh Mesh Object</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.10.19.1 Furmesh Mesh Object">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.10.19.1 Furmesh Mesh Object">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="MeshObject-Furmesh"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Furmesh-Mesh.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Furmesh-Animation.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Furmesh-Mesh.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h4 class="subsubsection"> 4.10.19.1 Furmesh Mesh Object </h4>
+
+<p><em>Written by Alexandru - Teodor Voicu,
+<a href="mailto:voicualexandruteodor@gmail.com">voicualexandruteodor@gmail.com</a>.</em>
+</p>
+<p>A Furmesh is a set of 3D triangles that is used to  create both hairs and 
+furs on base meshes (currently only AnimatedMeshes are supported).
+Furmeshes can update their position based on physics or on the base mesh's 
+animation, via the Furmesh Animation Control (see section <a href="Furmesh-Animation.html#0">Furmesh Animation</a>). 
+Defining complex shaders, that can have lookup textures, updated whenever 
+needed, is done via the Furmesh Material Properties (see section <a href="Furmesh-Material.html#0">Furmesh Material</a>). You can find some other info about the Furmesh plugin on 
+this blog: <a href="http://hairrendering.wordpress.com/">http://hairrendering.wordpress.com/</a>.
+</p>
+<p>There is also a <small>HOWTO</small> discussing the creation of furmeshes.
+See section <a href="HOWTO-Create-Furmesh.html#0">Creating a Furmesh Mesh</a>.
+</p>
+<a name="1"></a>
+<h4 class="subsubheading"> Basic Structure </h4>
+
+<p>The following <small>SCF</small> class names are used (for <code>csLoadPlugin</code>):
+</p>
+<ul>
+<li>
+Type plugin: <code>crystalspace.mesh.furmesh</code>
+</li><li>
+Loader plugin: <code>crystalspace.mesh.loader.furmesh</code>
+</li><li>
+Factory loader plugin: <code>crystalspace.mesh.loader.factory.furmesh</code>
+</li></ul>
+
+<p>Objects in this plugin implement the following <small>SCF</small> interfaces, which you
+can retrieve with <code>scfQueryInterface</code>:
+</p>
+<ul>
+<li>
+<em>MeshObject</em>
+<ul>
+<li>
+Implements <samp>&lsquo;iMeshObject&rsquo;</samp>
+</li><li>
+Implements <samp>&lsquo;iFurMesh&rsquo;</samp>
+</li></ul>
+</li><li>
+<em>MeshObjectFactory</em>
+<ul>
+<li>
+Implements <samp>&lsquo;iMeshObjectFactory&rsquo;</samp>
+</li><li>
+Implements <samp>&lsquo;iFurMeshFactory&rsquo;</samp>
+</li></ul>
+</li><li>
+<em>MeshObjectType</em>
+<ul>
+<li>
+Implements <samp>&lsquo;iMeshObjectType&rsquo;</samp>
+</li></ul>
+</li></ul>
+
+<a name="2"></a>
+<h4 class="subsubheading"> Factory State Interface </h4>
+
+<p>No attributes are specified in the current factory state implementation.
+</p>
+<a name="3"></a>
+<h4 class="subsubheading"> Factory Loader </h4>
+
+<p>No tags supported.
+</p>
+<a name="4"></a>
+<h4 class="subsubheading"> Object State Interface </h4>
+
+<p><samp>&lsquo;iFurMeshState&rsquo;</samp> (residing in <tt>&lsquo;CS/include/imesh/furmesh.h&rsquo;</tt>) is
+the <small>SCF</small> interface that you can use to manipulate settings for a furmesh
+object.  By using this interface you can access the material, blending mode
+(mixmode), and various other configuration parameters for a furmesh object.
+</p>
+<a name="5"></a>
+<h4 class="subsubheading"> Object Loader </h4>
+
+<p>Here is a list of all the tags supported by a furmesh object and their
+meaning:
+</p><ul>
+<li> <samp>&lsquo;factory&rsquo;</samp>
+The name of the factory to use.
+</li><li> <samp>&lsquo;strandwidth&rsquo;</samp>
+This is a float variable used to set the width of a fur strand:
+<samp>&lsquo;&lt;strandwidth&gt;0.001&lt;/strandwidth&gt;&rsquo;</samp>.
+</li><li> <samp>&lsquo;displacement&rsquo;</samp>
+This is a float variable used to set the distance between the furmesh and the base
+mesh:
+<samp>&lsquo;&lt;displacement&gt;0.02&lt;/displacement&gt;&rsquo;</samp>.
+</li><li> <samp>&lsquo;densitymap&rsquo;</samp>
+This is a UV greyscale texture of the base mesh, giving information about the density
+of the Furmesh, based on areas. White means the highest density, while black means no
+furs.
+<samp>&lsquo;&lt;densitymap&gt;krystal_skull_densitymap&lt;/densitymap&gt;&rsquo;</samp>.
+</li><li> <samp>&lsquo;densityfactorguidefurs&rsquo;</samp>
+This is a float variable used to specify what is the maximum density for LOD guide furs.
+<samp>&lsquo;&lt;densityfactorguidefurs&gt;10&lt;/densityfactorguidefurs&gt;&rsquo;</samp>.
+</li><li> <samp>&lsquo;densityfactorfurstrands&rsquo;</samp>
+This is a float variable used to specify what is the maximum density for fur strands.
+<samp>&lsquo;&lt;densityfactorfurstrands&gt;120&lt;/densityfactorfurstrands&gt;&rsquo;</samp>.
+</li><li> <samp>&lsquo;heightmap&rsquo;</samp>
+This is a UV greyscale texture of the base mesh, giving information about the height
+of the Furmesh, based on areas. White means the biggest height, while black means 0 height.
+<samp>&lsquo;&lt;heightmap&gt;krystal_skull_heightmap&lt;/heightmap&gt;&rsquo;</samp>.
+</li><li> <samp>&lsquo;heightfactor&rsquo;</samp>
+This is a float variable used to specify what is the maximum height for furs.
+<samp>&lsquo;&lt;heightfactor&gt;0.4&lt;/heightfactor&gt;&rsquo;</samp>.
+</li><li> <samp>&lsquo;controlpointsdistance&rsquo;</samp>
+This is a float variable used to set the distance between points on a fur strand. 
+<samp>&lsquo;&lt;controlpointsdistance&gt;0.05&lt;/controlpointsdistance&gt;&rsquo;</samp>.
+</li><li> <samp>&lsquo;positiondeviation&rsquo;</samp>
+This is a float variable used to set the percentage of the maximum deviation a fur strand
+might have. 
+<samp>&lsquo;&lt;positiondeviation&gt;0.005&lt;/positiondeviation&gt;&rsquo;</samp>.
+</li><li> <samp>&lsquo;growtangents&rsquo;</samp>
+This is a variable, specifying if guide furs should initially grow based on normal or
+tangent direction. While normal direction is good for small furs, tangent direction might be
+used for longer static furs.
+<samp>&lsquo;&lt;growtangents/&gt;&rsquo;</samp>.
+</li><li> <samp>&lsquo;mixmode&rsquo;</samp>
+Control the transparency of this object. See <a href="XMLServices-Mixmode.html#0">Parsing Mixmode</a> for
+a list of possibilities.
+<samp>&lsquo;&lt;mixmode&gt; &lt;copy /&gt; &lt;/mixmode&gt;&rsquo;</samp>.
+</li><li> <samp>&lsquo;priority&rsquo;</samp>
+Set the rendering priority for this furmesh object.
+<samp>&lsquo;&lt;priority&gt;object&lt;/priority&gt;&rsquo;</samp>.
+</li></ul>
+
+<a name="6"></a>
+<h4 class="subsubheading"> Furmesh Data Structures </h4>
+
+<p>Because a Furmesh can update its geometry by being synchronized with various
+physics objects, such as Bullet ropes for hairs (which are computationally 
+expensive), only a small part (less than 1%) of the geometry really has such an
+external object attached.
+</p>
+<p>This lead to creating two types of data structures: guide furs, which always 
+have a corresponding external object and fur strands, which have references to 
+three close guide furs in order to update their position.
+</p>
+<p>Guide furs are created on each vertex of the base mesh, the mesh on which fur
+will grow, and are never displayed, except only for debug purpose.
+</p>
+<p>Fur strands are generated by iterating through the triangles specified by the
+base mesh and choosing three random barycentric coordinates in order to determine
+their position relative to three guide furs. The barycentric coordinates are used 
+both to update the position of fur strands, using the guide furs and to generate 
+UV coordinates.
+</p>
+<a name="7"></a>
+<h4 class="subsubheading"> Furmesh Geometry </h4>
+
+<p>In order to keep the number of geometry as low as possible, fur strands are 
+represented as triangle strips that always face the camera, not as very thin 
+cylinders like in reality. Because of the always facing the camera constraint,
+all the geometry related data from the Furmesh can be computed more
+efficiently, directly when updating the fur strands. This is the reason why the 
+Furmesh doesn't have any methods to compute normals, tangents or binormals, 
+or gives access to the <code>iRenderBuffers</code>.
+</p>
+<a name="8"></a>
+<h4 class="subsubheading"> Furmesh LOD System </h4>
+
+<p>Due to the high number of fur strands, a LOD system had to be used, especially when 
+the viewer was further away from the Furmesh so that it could be rendered at lower 
+quality. Apart from displaying fewer fur strands, the number of guide furs vary as 
+well. In order to make this possible another type of fur structure had to be added,
+LOD guide furs, which on lower LOD settings act as normal fur strands, while on 
+higher LOD act as guide furs. The methods that allow setting various LODs are: 
+<code>SetGuideLOD()</code>, <code>SetStrandLOD()</code>, or  <code>SetLOD()</code> which acts as an
+overall LOD function, calling both previous defined methods.
+</p>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Furmesh-Mesh.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Furmesh-Animation.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Furmesh-Mesh.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

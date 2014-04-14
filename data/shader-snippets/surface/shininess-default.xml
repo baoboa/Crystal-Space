@@ -1,0 +1,217 @@
+<!--
+  Copyright (C) 2008-2011 by Frank Richter
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Library General Public
+  License as published by the Free Software Foundation; either
+  version 2 of the License, or (at your option) any later version.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  Library General Public License for more details.
+
+  You should have received a copy of the GNU Library General Public
+  License along with this library; if not, write to the Free
+  Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+-->
+<snippet>
+  <technique priority="100">
+    <combiner name="cg" plugin="crystalspace.graphics3d.shader.combiner.glcg" />
+    <combiner name="glsl" plugin="crystalspace.graphics3d.shader.combiner.glsl" />
+    
+    <input file="/shader-snippets/texCoord.inp"	/>
+    
+    <input name="texSpecular" type="tex2d" default="complex">
+      <block location="cg:pass">
+	<texture name="tex specular" destination="fragmentIn.texSpecular"
+		 fallback="tex diffuse" />
+      </block>
+      <block location="glsl:pass">
+        <texture name="tex specular" destination="in_texSpecular"
+                 fallback="tex diffuse" />
+      </block>
+      
+      <block location="cg:fragmentIn">
+	<uniform type="tex2d" name="texSpecular" />
+      </block>
+      <block location="glsl:inputs">
+        <uniform type="tex2d" name="in_texSpecular" />
+      </block>
+      
+      <block location="cg:fragmentMain">
+	texSpecular = fragmentIn.texSpecular;
+      </block>
+      <block location="glsl:fragmentMain">
+        #sampler_assign texSpecular in_texSpecular
+      </block>
+    </input>
+    
+    <input name="shininessFactor" type="float" default="complex" private="yes">
+      <block location="shadervars">
+	<shadervar name="shininess" type="float">32</shadervar>
+      </block>
+      
+      <block location="cg:variablemap">
+	<variablemap variable="shininess" destination="fragmentIn.shininess" />
+	<variablemap variable="shininess" destination="vertexIn.shininess" />
+      </block>
+      <block location="glsl:variablemap">
+        <variablemap variable="shininess" destination="in_shininess" />
+      </block>
+      
+      <block location="cg:fragmentIn">
+	<uniform type="float" name="shininess" />
+      </block>
+      <block location="glsl:inputs">
+        <uniform type="float" name="in_shininess" />
+      </block>
+      
+      <block location="cg:vertexIn">
+	<uniform type="float" name="shininess" />
+      </block>
+      
+      <block location="cg:fragmentMain">
+	shininessFactor = fragmentIn.shininess;
+      </block>
+      <block location="glsl:fragmentMain">
+        shininessFactor = in_shininess;
+      </block>
+
+      <block location="cg:vertexMain">
+	shininessFactor = vertexIn.shininess;
+      </block>
+      <block location="glsl:vertexMain">
+        shininessFactor = in_shininess;
+      </block>
+    </input>
+      
+    <block location="tags">
+      <tag>specular</tag>
+    </block>
+    
+    <block location="cg:vertexMain">
+      shininess = 0;
+    </block>
+    <block location="glsl:vertexMain">
+      shininess = 0.0;
+    </block>
+    
+    <block location="cg:fragmentMain">
+      shininess = tex2D (texSpecular, texCoord).a * shininessFactor;
+    </block>
+    <block location="glsl:fragmentMain">
+      shininess = texture2D (texSpecular, texCoord).a * shininessFactor;
+    </block>
+    
+    <output name="shininess" type="float" />
+  </technique>
+  
+  <technique priority="50">
+    <combiner name="cg" plugin="crystalspace.graphics3d.shader.combiner.glcg" />
+    <combiner name="glsl" plugin="crystalspace.graphics3d.shader.combiner.glsl" />
+    
+    <input name="shininessFactor" type="float" default="complex" private="yes">
+      <block location="shadervars">
+	<shadervar name="shininess" type="float">32</shadervar>
+      </block>
+      
+      <block location="cg:variablemap">
+	<variablemap variable="shininess" destination="fragmentIn.shininess" />
+	<variablemap variable="shininess" destination="vertexIn.shininess" />
+      </block>
+
+      <block location="glsl:variablemap">
+        <variablemap variable="shininess" destination="in_shininess" />
+      </block>
+            
+      <block location="cg:fragmentIn">
+	<uniform type="float" name="shininess" />
+      </block>
+      
+      <block location="cg:vertexIn">
+	<uniform type="float" name="shininess" />
+      </block>
+      
+      <block location="glsl:inputs">
+        <uniform type="float" name="in_shininess" />
+      </block>
+      
+      <block location="cg:fragmentMain">
+	shininessFactor = fragmentIn.shininess;
+      </block>
+
+      <block location="glsl:fragmentMain">
+        shininessFactor = in_shininess;
+      </block>
+
+      <block location="cg:vertexMain">
+	shininessFactor = vertexIn.shininess;
+      </block>
+
+      <block location="glsl:vertexMain">
+        shininessFactor = in_shininess;
+      </block>
+    </input>
+      
+    <input name="shininessFactorPV" type="float" default="complex" private="yes">
+      <block location="shadervars">
+	<shadervar name="shininess vertex lighting scale" type="float">1</shadervar>
+      </block>
+      
+      <block location="cg:variablemap">
+	<variablemap variable="shininess vertex lighting scale" destination="vertexIn.shininessScale" />
+	<variablemap variable="shininess vertex lighting scale" destination="fragmentIn.shininessScale" />
+      </block>
+      <block location="glsl:variablemap">
+        <variablemap variable="shininess vertex lighting scale" destination="in_shininessScale" />
+      </block>
+      
+      <block location="cg:fragmentIn">
+	<uniform type="float" name="shininessScale" />
+      </block>
+      
+      <block location="cg:vertexIn">
+	<uniform type="float" name="shininessScale" />
+      </block>
+      
+      <block location="glsl:inputs">
+        <uniform type="float" name="in_shininessScale" />
+      </block>
+      
+      <block location="cg:fragmentMain">
+	shininessFactorPV = fragmentIn.shininessScale;
+      </block>
+      
+      <block location="glsl:fragmentMain">
+        shininessFactorPV = in_shininessScale;
+      </block>
+      
+      <block location="cg:vertexMain">
+	shininessFactorPV = vertexIn.shininessScale;
+      </block>
+      
+      <block location="glsl:vertexMain">
+        shininessFactorPV = in_shininessScale;
+      </block>
+    </input>
+      
+    <block location="cg:vertexMain">
+      shininess = shininessFactorPV * shininessFactor;
+    </block>
+    
+    <block location="glsl:vertexMain">
+      shininess = shininessFactorPV * shininessFactor;
+    </block>
+    
+    <block location="cg:fragmentMain">
+      shininess = shininessFactorPV * shininessFactor;
+    </block>
+    
+    <block location="glsl:fragmentMain">
+      shininess = shininessFactorPV * shininessFactor;
+    </block>
+    
+    <output name="shininess" type="float" />
+  </technique>
+</snippet>

@@ -1,0 +1,31 @@
+@c -*-texinfo-*-
+@node 3DSMax, COLLADA, Blender, Working with Engine Content
+@section Making Levels and Models in 3DSMax
+@cindex 3DSMax
+
+3DSMax is a very powerful commercial 3D modeller which is supported very
+well by Crystal Space.
+
+@subheading Exporting Levels
+
+An exporter script to be ran from 3DSMax is available in @file{CS/scripts/max}.
+
+This script has been developed by the team of @url{http://www.planeshift.it/, PlaneShift},
+and can export complete levels in Crystal Space. See the dedicated manual
+located at @file{CS/scripts/max/exporterguide/index.html}.
+
+@subheading Exporting Cal3d Models
+
+Models of type Cal3d (@pxref{MeshObject SprCal3D}) can be converted from
+3DSMax.
+
+@subheading Export plugin
+
+A dedicated plugin also to be ran from 3DSMax is in development. It has
+basic support for static meshes and materials. It can be found in the
+@sc{svn} repository @file{CSExporters/CrystalMax}
+
+@subheading Assimp Library
+
+Finally, one of the best solution to import static and animated models is
+by using the @ref{Assimp importer, Assimp importer}.

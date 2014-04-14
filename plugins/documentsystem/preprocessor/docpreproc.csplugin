@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!-- docpreproc.csplugin -->
+<plugin>
+  <scf>
+    <classes>
+      <class>
+        <name>crystalspace.document.preprocessor</name>
+        <implementation>DocumentPreprocessor</implementation>
+        <description>Document preprocessor</description>
+      </class>
+    </classes>
+  </scf>
+</plugin>

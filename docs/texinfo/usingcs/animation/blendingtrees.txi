@@ -1,0 +1,299 @@
+@c -*-texinfo-*-
+@node Animation Blending Trees, Sprite3D Animation, Animation, Animation
+@subsection Animation Blending Trees
+@cindex BlendingTrees
+
+The @ref{MeshObject Animesh, Animesh meshes} are animated using a structure called
+an animation blending tree, a system allowing complex generation and combination of
+animations.
+
+@menu
+* Animation Nodes General:: General concepts and examples
+* Animation Nodes:: List of animation nodes
+@end menu
+
+@node Animation Nodes General, Animation Nodes, Animation Blending Trees, Animation Blending Trees
+@subsubsection General concepts and examples
+
+In an animation blending tree, the combination of animations is made by creating
+a tree of animation nodes that will blend the position and orientation of each
+bone of the skeleton of the Animesh, hence the name of the method. The structure
+of the tree, i.e. the choice of animation nodes and the way they are combined,
+will affect the behavior of the animation.
+
+Each leaf of the blending tree is either a raw animation sequence (user-defined
+by an artist or acquired by technologies such as motion capture), or a procedural
+node, i.e. a node dynamically generating an animation. The other nodes in the
+tree are used for the combination of sub-trees in order to achieve complex
+animations and behaviors.
+
+@subsubheading First example: a windmill
+
+A windmill is extremely simple since it has a priori only a single animation: the
+wheel turning. This animation will be defined in a very simple animation sequence
+(a @code{CS::Animation::iSkeletonAnimation}), with e.g. two key frames.
+
+In order to animate the mesh of your windmill, you would create a blending tree
+containing a single animation node, a @code{CS::Animation::iSkeletonAnimationNodeFactory},
+that would simply play the wheel animation. Before that, you need to configure the
+@code{CS::Animation::iSkeletonAnimationNodeFactory} in order to play cyclically,
+otherwise the animation will be stopped after it has been played once.
+
+The blending tree has a single node and looks like this:
+
+@ifnottex
+@example
+   CS::Animation::iSkeletonAnimationNode
+@end example
+@end ifnottex
+
+Now, say that there is more wind, and that you want to change the speed of the
+rotation of the wheel. For that, you would access the @code{CS::Animation::iSkeletonAnimationNode}
+in the blending tree (using e.g. @code{CS::Animation::iSkeletonAnimNode::FindNode()}),
+and change the animation speed with @code{CS::Animation::iSkeletonAnimNode::SetPlaybackSpeed()}.
+
+@subsubheading Second example: debugging your windmill
+
+Event if the first windmill example is very simple, it might just not work and
+your wheel just don't do what you want. A way to analyze a bit further what is
+going on is to use a @code{CS::Animation::iSkeletonDebugNode}. With this node,
+you would be able to display the structure of the skeleton of your mesh, and
+hopefully to understand your problem.
+
+In order to use the @samp{Debug} node, you would just add it at the top of your
+blending tree, i.e. the root, with the the @code{CS::Animation::iSkeletonAnimationNode}
+as a child node. Now, when the animation is played, both nodes are activated,
+and you can either animate your windmill and visualize the skeleton.
+
+The structure of the blending tree now looks like this:
+
+@ifnottex
+@example
+     CS::Animation::iSkeletonDebugNode
+                      |
+                      |
+   CS::Animation::iSkeletonAnimationNode
+@end example
+@end ifnottex
+
+@subsubheading Third example: dynamic behavior
+
+Now, say that you have several different animations of your wheel turning at
+various speed, e.g. with the wheel starting to roll out when the speed is high.
+You may use a @code{CS::Animation::iSkeletonSpeedNode} that will take all these
+animations as input child nodes, and combine them in order to generate a new
+animation, whatever the rotation speed asked by the user.
+
+Say also, that you want to attach some pieces of tissue to the wheel, and that
+you want those pieces to ba animated through soft body physical simulation. For
+that, you would use a @code{CS::Animation::iSkeletonRagdollNode} in order to
+create the physical rigid bodies that will represent the wheel (you would need
+to provide the collision model of your animesh for that). Then you would create
+a Genmesh animated by the soft body controller, and attach it to the rigid bodies
+of your wheel.
+
+Now, the structure of the blending tree looks like this:
+
+@ifnottex
+@example
+                                    CS::Animation::iSkeletonDebugNode
+                                                     |
+                                                     |
+                                   CS::Animation::iSkeletonRagdollNode
+                                                     |
+                                                     |
+                                    CS::Animation::iSkeletonSpeedNode
+                                                     |
+                          ----------------------------------------------------------
+                          |                                                        |
+       CS::Animation::iSkeletonAnimationNode                    CS::Animation::iSkeletonAnimationNode
+             ('normal speed' animation)                                 ('high speed' animation)
+@end example
+@end ifnottex
+
+@subsubheading Other examples
+
+Other examples of setup of animations trees and general Animesh usage can be
+found in the @code{avatartest} application. The @code{csbias} demo is also another
+interesting example.
+
+
+@node Animation Nodes, , Animation Nodes General, Animation Blending Trees
+@subsubsection List of animation nodes
+
+Here is the extensive list of the animation nodes that are shipped within
+Crystal Space.
+
+You can find an example of loading of these animation nodes from a Crystal Space
+library file in @file{CS/data/krystal/anims_idle.cslib}.
+
+@subsubheading Raw animation
+
+These are the objects @code{CS::Animation::iSkeletonAnimationNode} and
+@code{CS::Animation::iSkeletonAnimationNodeFactory}.
+
+This animation node allows the storage and playback of raw animation data. In this
+sense, they are probably the most used animation nodes since they are the main way
+to store pre-defined animations.
+
+The key frames of the animations are defined with a time stamp and some key values
+for the orientation and position of the bones of the skeleton. When playing back the
+animation, the data will be interpolated between the available key frames.
+
+The node can be configured to be played cyclically or not.
+
+The animations stored in this node are usually defined by an artist. They can
+also be loaded from motion captured data using the @ref{Animesh Tools, dedicated tool}.
+
+@subsubheading Finite State Machine
+
+These are the objects @code{CS::Animation::iSkeletonFSMNode} and
+@code{CS::Animation::iSkeletonFSMNodeFactory}.
+
+This animation node allows to control the animation of the skeleton by navigating
+into the states of a Finite State Machine (FSM). This node is useful e.g. to drive
+the locomotion and the actions of a character.
+
+Each state of the FSM corresponds to an animation child node that will be played
+while the FSM is in that state. A crossfade and a transition sub-node can also be
+defined between the states of the FSM, they will be used when the FSM is switched
+between the two states, allowing for a smooth transition between two states.
+
+Automatic transitions can also be defined, they will be followed automatically at
+the end of the current playing state if no other state has been asked by the user
+to switch to.
+
+An example of Finite State Machine being used to drive the locomotion of a character
+can be found in CEL, within the @samp{pcactormove} property class.
+
+@subsubheading Blending node
+
+These are the objects @code{CS::Animation::iSkeletonBlendNode} and
+@code{CS::Animation::iSkeletonBlendNodeFactory}.
+
+This node will blend together any number of child nodes. Each child node can receive
+a different weight in order to parameterize their influence.
+
+@subsubheading Random node
+
+These are the objects @code{CS::Animation::iSkeletonRandomNode} and
+@code{CS::Animation::iSkeletonRandomNodeFactory}.
+
+This node will play randomly one of its child node, allowing for more varied animations.
+
+@subsubheading Priority
+
+These are the objects @code{CS::Animation::iSkeletonPriorityNode} and
+@code{CS::Animation::iSkeletonPriorityNodeFactory}.
+
+This node blends its child nodes according to their priority. It is useful e.g. to
+add a secondary motion on top of a base animation while preserving most of the base
+animation.
+
+@subsubheading LookAt
+
+These are the objects @code{CS::Animation::iSkeletonLookAtNode} and
+@code{CS::Animation::iSkeletonLookAtNodeFactory}.
+
+This node aligns automatically some bone with a user-defined target. It is useful e.g.
+to breathe life into a character by generating an active interaction from the character.
+
+@subsubheading Speed
+
+These are the objects @code{CS::Animation::iSkeletonSpeedNode} and
+@code{CS::Animation::iSkeletonSpeedNodeFactory}.
+
+This node takes as child nodes the animations of the mesh moving at different speed,
+e.g. idle, walking, running, sprinting, and combines these animations to achieve any
+desired custom speed.
+
+@subsubheading Ragdoll
+
+These are the objects @code{CS::Animation::iSkeletonRagdollNode} and
+@code{CS::Animation::iSkeletonRagdollNodeFactory}.
+
+This node allows the interaction between the Animesh mesh and the physical
+simulation, allowing to either control the animation of the mesh through physical
+simulation, and to hit and collide with the other objects of the simulation.
+
+On demand, this node can create automatically the rigid bodies and joints for the
+bones of the skeleton of the Animesh, these rigid bodies will collide and interact
+with the physical environment.
+
+The bones can be set in dynamic state e.g. to have a character falling realistically
+in a stairwell, or in kinematic state in order for the mesh to interact with the
+environment while being animated by the classical animation method. This allows for
+example to attach to the mesh some external objects or clothes that will be
+physically animated while colliding with the character (i.e. its bones in kinematic
+state).
+
+Both states can also be combined to achieve effects such as the main body of the
+avatar classically animated, and sub-trees such as hair, clothes or accessories
+animated by the physical simulation.
+
+In order to use a ragdoll animation node, you must first define a body skeleton
+(see section @ref{MeshObject Animesh}), that will define the colliders and physical
+properties that the ragdoll node must use for all bones of the skeleton. Once done,
+you must also define in the body skeleton some body chains that will allow you to
+designate the set of bones that you want to manipulate within the ragdoll node.
+
+Whenever you change the dynamic state of some of the body chains, the ragdoll node
+will create and update automatically the rigid bodies and joints of the skeleton. You
+can use the ragdoll node to access those physical objects and manipulate them
+externally.
+
+@subsubheading Inverse Kinematics
+
+These are the objects @code{CS::Animation::iSkeletonIKNode} and
+@code{CS::Animation::iSkeletonIKNodeFactory}.
+
+This node generates an animation that places a bone end effector at a specific
+position and orientation. It allows e.g. a character to grab an object regardless
+of the relative position of the character and the object.
+
+There are two different implementation of this node:
+
+@itemize @bullet
+@item
+Using the Cyclic Coordinate Descent algorithm (object @code{CS::Animation::iSkeletonIKCCDNodeFactory}).
+This method is quite robust, but has some high computation costs.
+@item
+Using the physical simulation (object @code{CS::Animation::iSkeletonIKPhysicalNodeFactory}).
+This method has the advantage of being able to react realistically to collisions on
+the path of the arm to the effector, the drawback is that the physical simulation may
+behave strangely if the motion of the target of the effector is not manipulated wisely.
+@end itemize
+
+In order to use Inverse Kinematics animation nodes, you must first define a body skeleton
+and some body chains within it. The body chains will be used to designate the set of
+bones that will be manipulated by the IK animation node (e.g. the arms). For the animation
+node based on the physical simulation, you must also use a ragdoll animation node in
+combination, therefore a definition for all colliders and joints of the body chains.
+
+@subsubheading Retarget
+
+These are the objects @code{CS::Animation::iSkeletonRetargetNode} and
+@code{CS::Animation::iSkeletonRetargetNodeFactory}.
+
+This node allows to retarget (or redirect) an animation that was defined for one skeleton
+to another skeleton. It is useful for example to re-use animations or to input
+motion captured data into your Animesh. However, the two skeletons must still have
+a similar topology and limb proportions, otherwise the results won't look good.
+
+@subsubheading Debug
+
+These are the objects @code{CS::Animation::iSkeletonDebugNode} and
+@code{CS::Animation::iSkeletonDebugNodeFactory}.
+
+This node currently simply allows to display the state of part or the whole skeleton. It
+is useful if you want to visualize either the skeleton of your mesh or the actual effects
+of the animations and animation nodes that you have defined.
+
+@subsubheading Noise
+
+These are the objects @code{CS::Animation::iSkeletonNoiseNode} and
+@code{CS::Animation::iSkeletonNoiseNodeFactory}.
+
+This node can generate animations through pseudo-random noise functions such as
+the Perlin noise. This allows to breathe life into an entity by adding some random
+variations in its motion.

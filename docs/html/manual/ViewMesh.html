@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 5.14 Previewing Models (viewmesh)</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 5.14 Previewing Models (viewmesh)">
+<meta name="keywords" content="Crystal Space 2.1.0: 5.14 Previewing Models (viewmesh)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="ViewMesh"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="3D-Sprites-Example-3.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Internals.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Internals.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h2 class="section"> 5.14 Previewing Models (<code>viewmesh</code>) </h2>
+
+<p>Viewmesh is a tool included with Crystal Space that can be used to
+preview models (mesh factories and libraries).
+</p>
+<a name="1"></a>
+<h3 class="subheading"> Commandline Options </h3>
+
+<ul>
+<li> <samp>&lsquo;-R&rsquo;</samp>
+Real path from where to load the model. This option takes a path and
+then mounts it to <samp>&lsquo;/tmp/viewmesh&rsquo;</samp>. Then it sets the current
+<small>VFS</small> directory to that.
+</li><li> <samp>&lsquo;-C&rsquo;</samp>
+This is the current <small>VFS</small> directory to use when loading the model.
+If you use this option in combination with <samp>&lsquo;-R&rsquo;</samp> you can change
+the current directory relative to <samp>&lsquo;/tmp/viewmesh&rsquo;</samp>.
+</li><li> <samp>&lsquo;-L&rsquo;</samp>
+Load a library file (for textures or materials for example). This is a
+<small>VFS</small> path to the library file (possibly relative to the current
+<small>VFS</small> dir as given by <samp>&lsquo;-R&rsquo;</samp> and <samp>&lsquo;-C&rsquo;</samp>).
+</li><li> <samp>&lsquo;-Scale&rsquo;</samp>
+Scale the loaded object with the given factor.
+</li></ul>
+
+<p>And then there is an optional filename parameter. Here is an example on how
+to use viewmesh:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">viewmesh -R=c:\data\gamedata.zip -C=objects/actor factories/genActor
+</pre></td></tr></table>
+<p>This example requires some explanation. First we use the <samp>&lsquo;-R&rsquo;</samp> option
+to take our game data archive and mount that to <samp>&lsquo;/tmp/viewmesh&rsquo;</samp>.
+Then we use the <samp>&lsquo;-C&rsquo;</samp> option to go inside the <samp>&lsquo;objects/actor&rsquo;</samp>
+directory that is inside that <small>ZIP</small> archive. And finally we load
+the actual model that is still in a deeper directory called
+<samp>&lsquo;factories/genActor&rsquo;</samp>. This example demonstrates how it can be useful
+to have good control over the current directory in <small>VFS</small>. Usually
+with models exported from blender2crystal there will be a <samp>&lsquo;factories&rsquo;</samp>
+and a <samp>&lsquo;textures&rsquo;</samp> directory. So you want the current directory to be
+the parent of those so that the model can reference textures like
+<samp>&lsquo;textures/bla.jpg&rsquo;</samp>.
+</p>
+<a name="2"></a>
+<h3 class="subheading"> User Interface </h3>
+
+<p>@&nbsp;TODO
+</p>
+
+
+<hr size="1">
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

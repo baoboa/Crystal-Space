@@ -1,0 +1,265 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.9.3 Render Priorities and Objects in Sectors</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.9.3 Render Priorities and Objects in Sectors">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.9.3 Render Priorities and Objects in Sectors">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="HOWTO-Render-Priorities"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Renderloops.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Portal-Engine.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Engine.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 4.9.3 Render Priorities and Objects in Sectors </h3>
+
+<p>Renderpriorities give the map creator some extra control over when objects
+have to be rendered. In this section the basic
+rendering algorithm is explained. This is a more theoretical explanation.
+Later some examples are given of some commonly used configurations.
+</p>
+<a name="1"></a>
+<h4 class="subsubheading"> Meshes and Sectors </h4>
+
+<p>One of the most fundamental concepts in Crystal Space is a sector (interface
+<code>iSector</code>). A sector is basically empty
+space which needs to be filled with geometry.
+</p>
+<p>To put geometry in a sector you use one or more mesh objects
+(see section <a href="MeshObject.html#0">Mesh Object Plug-In System</a>).  Note that a mesh object can also be in several sectors
+at once.  This happens when some object is busy traversing some portal from one
+sector to another.  The list of sectors that a mesh object is in and also the
+position (i.e. transform) is kept by an instance of <code>iMovable</code>
+(see section <a href="HOWTO-Mesh-Movement.html#0">Mesh Movement</a>).
+</p>
+<a name="2"></a>
+<h4 class="subsubheading"> Render Priorities </h4>
+
+<p>The engine supports the notion of render priorities. There is usually
+a limited set of render priority slots available. By default these are:
+</p>
+<ol>
+<li>
+<samp>&lsquo;init&rsquo;</samp>
+</li><li>
+<samp>&lsquo;sky&rsquo;</samp>
+</li><li>
+<samp>&lsquo;sky2&rsquo;</samp>
+</li><li>
+<samp>&lsquo;portal&rsquo;</samp>
+</li><li>
+<samp>&lsquo;wall&rsquo;</samp>
+</li><li>
+<samp>&lsquo;wall2&rsquo;</samp>
+</li><li>
+<samp>&lsquo;object&rsquo;</samp>
+</li><li>
+<samp>&lsquo;object2&rsquo;</samp>
+</li><li>
+<samp>&lsquo;transp&rsquo;</samp>
+</li><li>
+<samp>&lsquo;alpha&rsquo;</samp>
+</li><li>
+<samp>&lsquo;final&rsquo;</samp>
+</li></ol>
+
+<p>But you can setup your own render priorities by calling the engine
+<small>API</small>. Objects which are in a lower
+render priority (i.e. <samp>&lsquo;sky&rsquo;</samp> is lower than <samp>&lsquo;wall&rsquo;</samp>) will be rendered
+before objects with a higher priority. So using the render priority system
+you can choose in which order to render objects.
+</p>
+<p>The <samp>&lsquo;alpha&rsquo;</samp> render priority is a bit special. Objects in that
+render priority will be rendered from back to front. This is needed for
+objects that use alpha transparency and also if you need a mix of different
+kinds of transparencies. If you use a single other kind of transparency
+like add or mult (but not both) then you can use the <samp>&lsquo;transp&rsquo;</samp> render
+priority. That one is not sorted from back to front so it is only usable for
+transparencies that are correct even if rendered in other order.
+</p>
+<p>For keycolor objects (see section <a href="Alpha-Textures.html#0">Alpha and Keycolor in Textures</a>) you can use the normal
+<samp>&lsquo;object&rsquo;</samp> render priority with <samp>&lsquo;ZUSE&rsquo;</samp> z-buffer mode. This is also
+true for objects that have textures using binary alpha.
+</p>
+<p>To set up render priorities from within your application you can use
+the <code>engine-&gt;RegisterRenderPriority()</code> function.
+</p>
+<p>To set the render priority for an object you can use the following
+in a map file:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">&lt;meshobj name=&quot;myObject&quot;&gt;
+  &lt;plugin&gt;...&lt;/plugin&gt;
+  &lt;params&gt;
+    ...
+  &lt;/params&gt;
+  &lt;priority&gt;object&lt;/priority&gt;
+&lt;/meshobj&gt;
+</pre></td></tr></table>
+<p>To set the render priority from within the code you can do:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">iMeshWrapper* mesh;
+mesh-&gt;SetRenderPriority (engine-&gt;GetRenderPriority (&quot;object&quot;));
+</pre></td></tr></table>
+<p>By default objects will be put in the <samp>&lsquo;object&rsquo;</samp> render queue.
+</p>
+<a name="3"></a>
+<h4 class="subsubheading"> Z-Buffer Render Mode </h4>
+
+<p>In addition to render priorities you can also choose how the object
+will be rendered with regards to the Z-buffer. There are four possibilities:
+</p>
+<ul class="toc">
+<li>
+<samp>&lsquo;ZUSE&rsquo;</samp>: use the Z-buffer to see where the object has to be rendered and
+also update the Z-buffer wherever the object is actually rendered.
+</li><li>
+<samp>&lsquo;ZFILL&rsquo;</samp>: only update the Z-buffer where the object is rendered but don't
+check against the existing Z-buffer contents.
+</li><li>
+<samp>&lsquo;ZTEST&rsquo;</samp>: use the Z-buffer to see where the object has to be rendered
+but don't update the Z-buffer.
+</li><li>
+<samp>&lsquo;ZNONE&rsquo;</samp>: don't update or read the Z-buffer when rendering this object.
+</li></ul>
+
+<p>To set the Z-buffer mode from a map file you can do the following:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">&lt;meshobj name=&quot;myObject&quot;&gt;
+  &lt;plugin&gt;...&lt;/plugin&gt;
+  &lt;params&gt;
+    ...
+  &lt;/params&gt;
+  &lt;priority&gt;object&lt;/priority&gt;
+  &lt;zuse /&gt;
+&lt;/meshobj&gt;
+</pre></td></tr></table>
+<p>To set the Z-buffer mode from the code you can use the following example:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">  iMeshWrapper* mesh;
+  mesh-&gt;SetZBufMode (CS_ZBUF_USE);
+</pre></td></tr></table>
+<p><samp>&lsquo;ZUSE&rsquo;</samp> is the default Z-buffer mode for objects created from within
+an application.
+</p>
+<p>By using the z-buffer mode in combination with the render priorities we
+now have a very powerful system to control object rendering in a sector.
+In the following sections we will show some popular examples. But first
+we show in a table what the common usage is of the render priorities in
+combination with the Z-buffer modes:
+</p>
+<ul class="toc">
+<li>
+<samp>&lsquo;sky&rsquo;</samp>: This render priority is used for rendering the object that
+represents the sky. This can be a skybox, or a skydome, or something else.
+Usually these objects have <samp>&lsquo;ZNONE&rsquo;</samp> or <samp>&lsquo;ZFILL&rsquo;</samp> render mode. If
+you want to use <samp>&lsquo;ZNONE&rsquo;</samp> you have to make sure that the Z-buffer
+is cleared every frame.
+</li><li>
+<samp>&lsquo;portal&rsquo;</samp>: Sometimes portals need to be put here.
+</li><li>
+<samp>&lsquo;wall&rsquo;</samp>: Sector walls are put in this queue. They are usually rendered
+using <samp>&lsquo;ZFILL&rsquo;</samp>.
+</li><li>
+<samp>&lsquo;object&rsquo;</samp>: After sector walls the normal objects are rendered. Usually
+these have <samp>&lsquo;ZUSE&rsquo;</samp> Z-buffer mode. You can also use this render priority
+for objects using keycolor transparency.
+</li><li>
+<samp>&lsquo;transp&rsquo;</samp>: Non-alpha transparent objects need to be rendered after all other
+objects. The best Z-buffer mode for these kinds of objects is <samp>&lsquo;ZTEST&rsquo;</samp>.
+</li><li>
+<samp>&lsquo;alpha&rsquo;</samp>: Alpha transparent objects need to be rendered after all other
+objects (and in back to front render mode as seen from the camera). The
+best Z-buffer mode for these kinds of objects is <samp>&lsquo;ZTEST&rsquo;</samp>.
+</li></ul>
+
+<p>Note that sky objects are usually created with the <samp>&lsquo;CAMERA&rsquo;</samp> keyword
+(in map file) or the <code>CS_ENTITY_CAMERA</code> flag (in
+<code>iMeshWrapper::GetFlags()</code>). The camera keyword makes sure that the
+camera will always be in the center of that object. So you can move forever
+in some direction without ever reaching the bounds of the sky.
+</p>
+<a name="4"></a>
+<h4 class="subsubheading"> Include Files </h4>
+
+<p>The include files useful for this section are:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">#include &lt;iengine/mesh.h&gt;
+#include &lt;iengine/sector.h&gt;
+#include &lt;iengine/engine.h&gt;
+#include &lt;ivideo/graph3d.h&gt;
+</pre></td></tr></table>
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Renderloops.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Portal-Engine.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Engine.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

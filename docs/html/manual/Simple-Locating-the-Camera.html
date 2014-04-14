@@ -1,0 +1,155 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.2.3.3 Locating the Camera</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.2.3.3 Locating the Camera">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.2.3.3 Locating the Camera">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Simple-Locating-the-Camera"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Simple-Loading-The-Map.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Tutorial-Mazing.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Tutorial-Simple-Map.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h4 class="subsubsection"> 4.2.3.3 Locating the Camera </h4>
+
+<p><samp>&lsquo;flarge&rsquo;</samp> contains a number of sectors and various objects, and those
+are now all loaded in memory. However, this is not enough. We also have
+to set the camera to some sector and position in that world. In the
+previous tutorials we simply used the sector that we just created
+and a fixed position in that sector. (Keep in mind that in Crystal
+Space a position in space is always defined as a sector in combination
+with a position.) When loading a map we can't work that way because
+we don't know which sectors are in the map (unless we make an application
+that can only read one map file, but that's not very flexible) and we
+also don't know where we can safely put our camera. In the map files
+it is possible to specify one or more starting positions. We will
+query the engine for such a starting position and initialize our
+view (camera) to that. This happens with the following code which you should
+add just after <code>engine-&gt;Prepare()</code> in the <code>Application()</code> method:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">  ...
+  engine-&gt;Prepare ();
+
+  // Find the starting position in this level.
+  csVector3 pos (0, 0, 0);
+  if (engine-&gt;GetCameraPositions ()-&gt;GetCount () &gt; 0)
+  {
+    // There is a valid starting position defined in the level file.
+    iCameraPosition* campos = engine-&gt;GetCameraPositions ()-&gt;Get (0);
+    room = engine-&gt;GetSectors ()-&gt;FindByName (campos-&gt;GetSector ());
+    pos = campos-&gt;GetPosition ();
+  }
+  else
+  {
+    // We didn't find a valid starting position. So we default
+    // to going to room called 'room' at position (0,0,0).
+    room = engine-&gt;GetSectors ()-&gt;FindByName (&quot;room&quot;);
+    pos = csVector3 (0, 0, 0);
+  }
+  if (!room)
+    ReportError(&quot;Can't find a valid starting position!&quot;);
+
+  view-&gt;GetCamera ()-&gt;SetSector (room);
+  view-&gt;GetCamera ()-&gt;GetTransform ().SetOrigin (pos);
+
+  // Initialize our collider actor.
+  collider_actor.SetCollideSystem (cdsys);
+  collider_actor.SetEngine (engine);
+  csVector3 legs (.2f, .3f, .2f);
+  csVector3 body (.2f, 1.2f, .2f);
+  csVector3 shift (0, -1, 0);
+  collider_actor.InitializeColliders (view-&gt;GetCamera (),
+  	legs, body, shift);
+
+  Run ();
+  ...
+}
+</pre></td></tr></table>
+<p>First, we see how many camera positions there were defined in the
+map by using <code>iEngine::GetCameraPositionCount()</code>. If there are none,
+then the map didn't define a starting position. In that case we will
+assume there is a sector called 'room' and we will start the camera
+at (0,0,0) in that sector. Otherwise we will use the first
+starting position defined in the map.
+</p>
+<p>Once we know our position in the sector, we are also able to initialize the
+camera's collision data, as shown in the code above.
+</p>
+<p>That's it. After adding this code this application will now load
+the <samp>&lsquo;flarge&rsquo;</samp> map and display it so you can explore the map.
+</p>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Simple-Loading-The-Map.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Tutorial-Mazing.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Tutorial-Simple-Map.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

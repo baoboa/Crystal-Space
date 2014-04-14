@@ -1,0 +1,181 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.20.6 Setting the CRYSTAL environment variable</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.20.6 Setting the CRYSTAL environment variable">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.20.6 Setting the CRYSTAL environment variable">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="HOWTO-Setting-the-CRYSTAL-environment-variable"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="HOWTO-Create-RPM.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Distributing-Own-Project.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Making-Own-Projects.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 4.20.6 Setting the CRYSTAL environment variable </h3>
+
+<p>This section describes how to set the <samp>&lsquo;CRYSTAL&rsquo;</samp> environment variable under
+a variety of operating systems.
+</p>
+<a name="1"></a>
+<h4 class="subsubheading"> Windows 95/98/ME </h4>
+
+<p>First, locate the file <tt>&lsquo;autoexec.bat&rsquo;</tt>.  This can be found on your system
+drive i.e. the <tt>&lsquo;C:\&rsquo;</tt> drive most commonly.  Open the file with Notepad.
+Insert the following, making sure to change the string to correspond to the
+location of the <tt>&lsquo;CS&rsquo;</tt> directory on your computer.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">SET CRYSTAL=C:\projects\CS
+</pre></td></tr></table>
+<p>After adding the above simply click <em>File</em> and <em>Save</em>.  Close Notepad
+and reboot your computer.
+</p>
+<a name="2"></a>
+<h4 class="subsubheading"> Windows NT4/2000/XP </h4>
+
+<p>The instructions for NT based Windows system may vary slightly but is
+essentially the same for adding a new environment variable to a system.
+</p>
+<p>First, open the <em>Control Panel</em>.  Now locate the <em>System</em> utility and
+click on the icon.  You will now be presented with a dialog box.  Click on the
+<em>Advanced</em> tab, then on the button <em>Environment Variables</em>.
+</p>
+<p>The <em>Environment Variables</em> dialog box should now be visible.  You should
+notice that there are two sections for adding environment variables, <em>User</em>
+and <em>System</em>.  We classify <samp>&lsquo;CRYSTAL&rsquo;</samp> as a system variable but adding
+it as a user variable will work just as well.
+</p>
+<p>To create the <samp>&lsquo;CRYSTAL&rsquo;</samp> environment variable first click on the <em>New</em>
+button.  You will be presented with a dialog for inserting the necessary
+information.  In the text box <em>Variable name</em> insert <samp>&lsquo;CRYSTAL&rsquo;</samp> and in
+the <em>Variable value</em> text box type the path to your <samp>&lsquo;CS&rsquo;</samp> dir (i.e.
+<samp>&lsquo;C:\projects\CS&rsquo;</samp>).
+</p>
+<p>Now hit the <em>Ok</em> buttons until you are back at the <em>Control Panel</em>.
+</p>
+<p>If you have any command lines sessions open you will need to close and restart
+them for the variable to take effect.  Rebooting should not be necessary.
+</p>
+<a name="3"></a>
+<h4 class="subsubheading"> Unix (<small>GNU</small>/Linux, <small>BSD</small>, Darwin, etc.) </h4>
+
+<p>There are several ways of setting environment variables in Unix.  There are two
+common types of Unix shells, the Bourne shell (and its variants, such as Bash),
+and the C-shell (and its variants, such as Tcsh).  Setting environment
+variables in Bourne shells is done in two steps.  First set the variable, and
+then export it so that it is available to programs run by the shell.  For
+example, if Crystal Space is installed in <tt>&lsquo;/usr/local/CS&rsquo;</tt> the correct
+commands would be:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">CRYSTAL=&quot;/usr/local/CS&quot;
+export CRYSTAL
+</pre></td></tr></table>
+<p>Some Bourne shells (such as Bash) allow the two steps to be combined, so that
+the following single command may also work:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">export CRYSTAL=&quot;/usr/local/CS&quot;
+</pre></td></tr></table>
+<p>For C-shell, you instead use the <samp>&lsquo;setenv&rsquo;</samp> command.  For example:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">setenv CRYSTAL &quot;/usr/local/CS&quot;
+</pre></td></tr></table>
+<p>If you do not want to type these commands each time you start up a shell, you
+should insert them into one of the shell startup files that are automatically
+invoked when the shell launches.  For Bourne shell, you can place the commands
+in a file named <tt>&lsquo;.profile&rsquo;</tt> in your home directory.  Bash users can insert
+them into the file <tt>&lsquo;.bash_profile&rsquo;</tt>, or alternately <tt>&lsquo;/etc/profile&rsquo;</tt> if
+you want to set the <samp>&lsquo;CRYSTAL&rsquo;</samp> environment variable for all users.  C-shell
+users can insert the <samp>&lsquo;setenv&rsquo;</samp> command into the <tt>&lsquo;.cshrc&rsquo;</tt> file in their
+home directory (or, the file <tt>&lsquo;.tcshrc&rsquo;</tt> for Tcsh users).
+</p>
+<p>If you are modifying a global startup file, such as <tt>&lsquo;/etc/profile&rsquo;</tt>, be
+sure to read the comments in the since some configuration tools of
+<small>GNU</small>/Linux distributions override the settings.  In this case the
+distributions often created other files that are called automatically and are
+not touched by the configuration tools.
+</p>
+<a name="4"></a>
+<h4 class="subsubheading"> MacOS/X </h4>
+
+<p>Rather than setting an environment variable, MacOS/X users should set up the
+<samp>&lsquo;CrystalSpaceRoot&rsquo;</samp> default in order to allow Crystal Space applications to
+be launched from the Finder.  As with the <samp>&lsquo;CRYSTAL&rsquo;</samp> environment variable,
+the <samp>&lsquo;CrystalSpaceRoot&rsquo;</samp> default should point at the root of the Crystal
+Space directory hierarchy, such as <samp>&lsquo;/usr/local/CS&rsquo;</samp>.  See the build
+instructions for MacOS/X for a more detailed description.
+See section <a href="MacOS_002fX-Running-Programs.html#0">Using Crystal Space</a>.
+</p>
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="HOWTO-Create-RPM.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Distributing-Own-Project.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Making-Own-Projects.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

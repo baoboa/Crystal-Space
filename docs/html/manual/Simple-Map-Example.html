@@ -1,0 +1,194 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 5.3 Simple Map Example</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 5.3 Simple Map Example">
+<meta name="keywords" content="Crystal Space 2.1.0: 5.3 Simple Map Example">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Simple-Map-Example"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Map-Creation-Tips.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Map-Format-Reference.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Internals.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h2 class="section"> 5.3 Simple Map Example </h2>
+
+<p>This <small>HOWTO</small> shows you a very simple map you can make by using a world file
+and explains a few of the concepts in it.
+</p>
+<p>Here is the map:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">&lt;world&gt;
+  &lt;textures&gt;
+    &lt;texture name=&quot;andrew_wood&quot;&gt;
+      &lt;file&gt;/lib/stdtex/andrew_wood.jpg&lt;/file&gt;
+    &lt;/texture&gt;
+  &lt;/textures&gt;
+  &lt;materials&gt;
+    &lt;material name=&quot;wood&quot;&gt;
+      &lt;texture&gt;andrew_wood&lt;/texture&gt;
+    &lt;/material&gt;
+  &lt;/materials&gt;
+  &lt;plugins&gt;
+    &lt;plugin name=&quot;genmesh&quot;&gt;crystalspace.mesh.loader.genmesh&lt;/plugin&gt;
+  &lt;/plugins&gt;
+
+  &lt;sector name=&quot;room&quot;&gt;
+    &lt;meshobj name=&quot;walls&quot;&gt;
+      &lt;plugin&gt;genmesh&lt;/plugin&gt;
+      &lt;zfill /&gt;
+      &lt;params&gt;
+        ...
+      &lt;/params&gt;
+    &lt;/meshobj&gt;
+    &lt;light&gt;
+      &lt;center x=&quot;0&quot; y=&quot;3&quot; z=&quot;0&quot;/&gt;
+      &lt;radius&gt;40&lt;/radius&gt;
+      &lt;color red=&quot;1&quot; green=&quot;1&quot; blue=&quot;1&quot;/&gt;
+    &lt;/light&gt;
+  &lt;/sector&gt;
+&lt;/world&gt;
+</pre></td></tr></table>
+<p>The structure of the map file is nested. At the highest level there
+is the <samp>&lsquo;world&rsquo;</samp> keyword which represents the entire world. Inside
+the world the two first sections describe the textures and materials.
+A texture is basically a direct representation of an image on disk. In
+this case we define a texture called <samp>&lsquo;andrew_wood&rsquo;</samp> which corresponds
+to the texture file <tt>&lsquo;/lib/stdtex/andrew_wood.jpg&rsquo;</tt>. Keep in mind that
+the filename is a <small>VFS</small> file! See section <a href="VFS.html#0">Virtual File System (<small>VFS</small>)</a>. A texture is not directly
+usable on geometrical objects. Before we can use it we need to make a
+material as well. The reason for this is that with materials we can
+define many other additional effects (like multi-texture materials and
+so on). In this example we define a material called <samp>&lsquo;wood&rsquo;</samp> that uses
+the <samp>&lsquo;andrew_wood&rsquo;</samp> texture.
+</p>
+<p>The engine itself does not render any geometry. Mesh objects are responsible
+for that. See section <a href="MeshObject.html#0">Mesh Object Plug-In System</a>. These are separate plugins. This duality is
+also present in the map loader. The map loader itself does not know how
+to parse geometrical objects. It will delegate the loading of mesh objects
+to mesh object loaders (again separate plugins). In the <samp>&lsquo;PLUGINS&rsquo;</samp>
+section we indicate what plugins we are going to use in this map file. In
+this case we are only going to use the <samp>&lsquo;crystalspace.mesh.loader.genmesh&rsquo;</samp>
+loader which loads generic polygon based objects. We call this plugin
+<samp>&lsquo;genmesh&rsquo;</samp>.
+</p>
+<p>In this simple example we only have one sector in the world called <samp>&lsquo;room&rsquo;</samp>.
+If you need multiple sectors you can use multiple <samp>&lsquo;sector&rsquo;</samp> statements.
+In the room sector we have one mesh object (<samp>&lsquo;meshobj&rsquo;</samp>) and one light
+(<samp>&lsquo;light&rsquo;</samp>).
+</p>
+<p>When defining mesh objects there are several things to keep in mind. Aside
+from the geometry which is handled by the mesh object plugin, the engine
+also keeps track of some stuff. Important to know is that everything inside
+the <samp>&lsquo;params&rsquo;</samp> block is given to the plugin loader. So the engine doesn't
+know about that. Everything that is outside <samp>&lsquo;params&rsquo;</samp> is handled by
+the engine itself. The first thing that has to be said in the <samp>&lsquo;meshobj&rsquo;</samp>
+block is which plugin is going to be used for loading this object. In this
+case we use the <samp>&lsquo;genmesh&rsquo;</samp> plugin. Then we tell the engine that we would
+like to use <samp>&lsquo;ZFILL&rsquo;</samp> mode for rendering this object. This means that
+the Z-buffer will be filled but not read. This is usually used for exterior
+walls because Crystal Space does not clear the Z-buffer at the start of
+every frame (by default). See section <a href="HOWTO-Render-Priorities.html#0">Render Priorities and Objects in Sectors</a>.
+</p>
+<p>The rest of the mesh object is defined inside the <samp>&lsquo;params&rsquo;</samp> block and
+this is what will be parsed by the genmesh loader plugin. Keep in mind that
+different types of plugins will have different syntax. So the discussion
+following here is only relevant for <samp>&lsquo;genmesh&rsquo;</samp> mesh objects.
+</p>
+<p>First we define all vertices that we are going to use in this mesh object.
+In this case we use eight vertices for the eight corners of the room that
+we are creating. Then we say that all following polygons will use the
+<samp>&lsquo;wood&rsquo;</samp> material. The <samp>&lsquo;texlen&rsquo;</samp> command is a bit more complicated
+to explain. Basically if we had a polygon that was 4x4 units big, then
+a texture using <samp>&lsquo;texlen(4)&rsquo;</samp> would be tiled exactly one time on that
+polygon. So the <samp>&lsquo;texlen&rsquo;</samp> command directly specifies the texture density
+or the amount of times a texture is tiled. For more information about this
+see see section <a href="Texture-Mapping.html#0">Texture Mapping</a>.
+</p>
+<p>Finally we define the six polygons that form the walls of our room.
+Polygons don't have to have names but in this case we use names to make
+it clearer what they are. For every polygon we indicate what vertices (from
+0 to 7) it uses. Keep in mind that a polygon is only visible from one side.
+The vertices should be oriented in clock-wise direction from the viewpoint
+where you want the polygon to be visible. So in this case we make a room
+which means that all polygons have to be visible from the inside. If we
+were to make a box then you can do this by reversing the order of all vertices
+of all polygons.
+</p>
+<p>Much more is possible in map files. This howto only shows the very basic
+stuff.
+</p>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Map-Creation-Tips.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Map-Format-Reference.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Internals.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

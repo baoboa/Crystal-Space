@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Copyright (C) 2007 by Frank Richter
+	    (C) 2007 by Jorrit Tyberghein
+            (C) 2012 by Matthieu Kraus
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Library General Public
+  License as published by the Free Software Foundation; either
+  version 2 of the License, or (at your option) any later version.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  Library General Public License for more details.
+
+  You should have received a copy of the GNU Library General Public
+  License along with this library; if not, write to the Free
+  Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+-->
+<snippet>
+  <technique priority="100">
+    <combiner name="cg" plugin="crystalspace.graphics3d.shader.combiner.glcg" />
+    <combiner name="glsl" plugin="crystalspace.graphics3d.shader.combiner.glsl" />
+
+    <input name="texAccum0" type="tex2d" default="complex">
+      <block location="cg:pass">
+        <texture name="tex accumulation 0" destination="fragmentIn.Accum0" />
+      </block>
+      <block location="glsl:pass">
+        <texture name="tex accumulation 0" destination="in_texAccum0" />
+      </block>
+      
+      <block location="cg:fragmentIn">
+        <uniform type="tex2d" name="texAccum0" />
+      </block>
+      <block location="glsl:inputs">
+        <uniform type="tex2d" name="in_texAccum0" />
+      </block>
+      
+      <block location="cg:fragmentMain">
+        texAccum0 = fragmentIn.texAccum0;
+      </block>
+      <block location="glsl:fragmentMain">
+        #sampler_assign texAccum0 in_texAccum0
+      </block>
+    </input>
+
+    <input file="/shader-snippets/lightScale.inp" private="yes" />
+
+    <input name="texCoord" type="texcoord2" />
+    <input name="surfaceDiffuse" type="rgba" />
+    <input name="staticDiffuse" type="rgb" />
+    <input name="surfaceSpecular" type="rgb" />
+    <input name="staticSpecular" type="rgb" />
+    <input name="glow" type="rgb" />
+
+    <block location="cg:vertexMain">
+      result = float4(0.0);
+    </block>
+    <block location="glsl:vertexMain">
+      result = vec4(0.0);
+    </block>
+
+    <block location="cg:fragmentMain">
+      result = tex2D(texAccum0, texCoord);
+      result += surfaceDiffuse * float4(lightScale.y * staticDiffuse,1.0);
+      result.rgb += surfaceSpecular * lightScale.y * staticSpecular;
+      result.rgb += glow;
+      result_attr_perfragment = true;
+    </block>
+    <block location="glsl:fragmentMain">
+      result = texture2D(texAccum0, texCoord);
+      result += surfaceDiffuse * vec4(lightScale.y * staticDiffuse,1.0);
+      result.rgb += surfaceSpecular * lightScale.y * staticSpecular;
+      result.rgb += glow;
+      result_attr_perfragment = true;
+    </block>
+    
+    <output name="result" type="rgba">
+      <attribute name="perfragment" type="bool" />
+    </output>
+  </technique>
+</snippet>

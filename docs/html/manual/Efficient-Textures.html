@@ -1,0 +1,211 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.12.4 Efficient Textures</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.12.4 Efficient Textures">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.12.4 Efficient Textures">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Efficient-Textures"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Texture-Mapping-Animations.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="3D-Renderer.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Materials.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 4.12.4 Efficient Textures </h3>
+
+<p>This section contains information on how to create efficient textures and 
+explains how to control aspects of texture rendering, like the format they are 
+uploaded to the graphics hardware.
+</p>
+<a name="1"></a>
+<h4 class="subsubheading"> Texture dimensions </h4>
+<p>3D hardware can render textures more efficiently if the 
+dimensions are powers of two (abbreviated as &quot;PO2&quot;) (e.g. 256x256, 512x128...), 
+to the extent that hardware and graphics APIs (e.g. OpenGL) require textures 
+to have PO2 dimensions. So does CrystalSpace for all textures, 2D and 3D. 
+While you can feed non-PO2 textures into CS, they will be resized internally 
+to a PO2 size (e.g. 640x480 will become 512x512). The resizing isn't very good, 
+though: the texture will end up looking rather ugly when rendered.
+</p>
+<p>Although most modern hardware supports non-PO2 textures, there is still 
+hardware that doesn't, and non-PO2 textures have limitations (e.g. no 
+mipmapping, no wrapping around on edges) on all but high-end (as of time of
+this writing - e.g. NVidia GeForce 6800) hardware. 
+</p>
+<p>Bottom line: Use power-of-two sized textures.
+</p>
+<p>Another facet is what size actually to use; it all depends on the content, of 
+course. Some points to consider:
+</p><ul>
+<li> The days were certain hardware was limited to 256x256 textures are long 
+gone; nowadays, the limit is 2048x2048 or 4096x4096. Texture compression also 
+allows for performant high-resolution textures; so use them.
+
+</li><li> You can easily downsize a texture when you find it is too large in a case. 
+Upsizing a texture you find looks ugly or too blurry won't help - you cannot 
+get information that's just not there. Means, better start off with textures 
+too large than textures too small.
+
+</li><li> The OpenGL renderer allows user-configurable use of lower-resolution 
+versions of textures through the <samp>&lsquo;Video.OpenGL.TextureDownsample&rsquo;</samp> 
+configuration setting - so you don't need to worry that much about users with 
+low video memory as they can get a performance increase by changing this 
+setting to a value greater than 0.
+</li></ul>
+
+<a name="2"></a>
+<h4 class="subsubheading"> Texture file format </h4>
+<p>A texture has to be physically stored somewhere. CrystalSpace supports a 
+number of image formats to load textures from, common ones such as <small>PNG</small>, 
+<small>TGA</small>, <small>BMP</small>, <small>JPG</small>, <small>DDS</small>, <small>GIF</small>, and less common to exotic 
+ones like <small>MNG</small> and <small>JNG</small>. 
+</p>
+<p>What format you want depends on considerations like whether you need an alpha 
+channel or not, can accept lossy compression, and the disk space taken up. 
+The color depth is pretty much unimportant, CS uses truecolor textures when 
+rendering with OpenGL, so at runtime e.g. using paletted textures gains you exactly 
+nothing over truecolor images.
+</p>
+<p>Alpha is supported by <small>PNG</small>, <small>TGA</small>, <small>BMP</small>, <small>DDS</small>, <small>MNG</small>, 
+<small>JNG</small>, the compression is lossless for <small>PNG</small>, <small>GIF</small>, <small>TGA</small>, 
+<small>BMP</small>, and can be lossless or lossy for <small>MNG</small> and <small>DDS</small>. <small>MNG</small> is
+a bit special as it is an animation format and hence is usually used if you 
+want animated textures.
+</p>
+<p>Commonly, <small>PNG</small>, <small>TGA</small> are used for textures with alpha and JPG for 
+textures without. Those formats are commonly perceived as the best options,
+as they cover the commonly needed features and offer decent compression.
+However, the best format you can use is actually <small>DDS</small>.
+</p>
+<p>To determine why, take a look at what happens if e.g. a PNG texture is loaded 
+into CS:
+</p><ol>
+<li> The texture is uncompressed.
+</li><li> Mipmaps are created.
+</li><li> The textures are uploaded to the hardware.
+</li></ol>
+
+<p>Unobviously, step 3 actually contains a recompression. That is due the fact 
+that CrystalSpace uses texture compression (which has a positive effect 
+performance-wise), but the texture data is sent to OpenGL in RGB(A) format, 
+which means that the driver needs to compress the texture - this costs some 
+time.
+</p>
+<p><small>DDS</small> offers an advantage here, as, in <small>DDS</small> files, 
+</p><ul>
+<li> image data can be stored in the same compression format(s) that hardware 
+nowaday uses (<small>DXT1</small>, <small>DXT3</small>, <small>DXT5</small>) 
+</li><li> the mipmaps of a texture can be stored. 
+</li></ul>
+<p>That means that the steps 1 and 2 above are basically not needed, and so is the 
+recompression in step 3, as the data that needs to be uploaded is precompressed. 
+Getting rid of all that processing greatly improves load time.
+</p>
+<p>Without alpha (<small>DXT1</small> compression), 4 bits per pixel are needed, with 
+alpha (<small>DXT3</small>, <small>DXT5</small>), 8 bits per pixel are needed. That is before any 
+zip compression, though; the gross file size of a <small>DDS</small> file can rival 
+those of <small>PNG</small> and <small>JPG</small> files.
+</p>
+<p><small>DDS</small> files can be created with e.g. a Photoshop plugin to export DDS files 
+which is available from NVidia 
+(<a href="http://developer.nvidia.com/object/nv_texture_tools.html">http://developer.nvidia.com/object/nv_texture_tools.html</a>) or GIMP 
+<small>DDS</small> plugins which are also available on the web 
+(<a href="http://nifelheim.dyndns.org/~cocidius/dds/">http://nifelheim.dyndns.org/~cocidius/dds/</a>). Last but not least, CS'
+<small>DDS</small> plugin is also able to save <small>DDS</small> files, in conjunction with the
+<tt>&lsquo;csimagetool&rsquo;</tt> app you can have a simple <small>DDS</small> converter.
+</p>
+<a name="3"></a>
+<h4 class="subsubheading"> Texture quality control </h4>
+<p>As mentioned above, textures in CS are compressed before being uploaded to the 
+graphics hardware; while compressed textures are fast, they are sometimes 
+undesirable (e.g. for normal maps - see 
+<a href="http://developer.nvidia.com/object/bump_map_compression.html">http://developer.nvidia.com/object/bump_map_compression.html</a> for an 
+illustration of the problems). 
+</p>
+<p>CrystalSpace allows quality control here on a per-texture base through 
+<em>texture classes</em>. Basically, a texture class is a collection of certain 
+settings that control how a texture is uploaded to the graphics hardware. 
+E.g. the <samp>&lsquo;lookup&rsquo;</samp>, <samp>&lsquo;normalmap&rsquo;</samp> and <samp>&lsquo;nocompress&rsquo;</samp> cause textures 
+to be stored uncompressed on the hardware. 
+</p>
+<p>Additionally, texture classes also attach some &quot;semantics&quot; to textures - 
+useful for tools or humans that read the raw world file. The class of a 
+texture can be set by adding <code>&lt;class&gt;normalmap&lt;/class&gt;</code> or similar 
+to the <code>&lt;texture&gt;</code> block.
+</p>
+
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Texture-Mapping-Animations.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="3D-Renderer.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Materials.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

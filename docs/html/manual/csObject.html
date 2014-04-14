@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.8.1 csObject and iObject</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.8.1 csObject and iObject">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.8.1 csObject and iObject">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="csObject"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Game-Data.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="User-Objects.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Game-Data.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 4.8.1 csObject and iObject </h3>
+
+<p>The <samp>&lsquo;csObject&rsquo;</samp> class can be used to build object hierarchies. It supports
+building a simple tree structure. To use this functionality, you should derive
+your classes from <samp>&lsquo;csObject&rsquo;</samp>. <samp>&lsquo;csObject&rsquo;</samp> implements the
+<samp>&lsquo;iObject&rsquo;</samp> interface and can store any number of <samp>&lsquo;iObject&rsquo;</samp> children.
+Furthermore, every <samp>&lsquo;csObject&rsquo;</samp> may have a name.
+</p>
+<p>All child objects are <code>IncRef()</code>'ed when added and <code>DecRef()</code>'ed when
+removed. An object also stores a pointer to its parent (which is not
+reference-counted to avoid circular references). Note that this pointer will
+always point to the last parent if the object is added to more than one
+parent. When the object is removed from a parent, the pointer is set to
+null, even if the object is still a child of another parent!
+</p>
+<p>Although the children of an object are only available as <samp>&lsquo;iObject&rsquo;</samp>
+instances, you can use <code>scfQueryInterface</code> to query other interfaces
+from them.  Some convenience macros are also available:
+</p>
+<dl compact="compact">
+<dt> <code>CS_GET_CHILD_OBJECT(object,Interface)</code></dt>
+<dd><p>Get the first child object that implements the given interface.
+</p>
+</dd>
+<dt> <code>CS_GET_NAMED_CHILD_OBJECT(object,Interface,name)</code></dt>
+<dd><p>Get the first child object with the given name that implements the given
+interface. This will continue to search through the objects if an object
+with the right name but not the right interface was found, i.e. it handles
+multiple objects with the same name correctly.
+</p>
+</dd>
+<dt> <code>CS_GET_FIRST_NAMED_CHILD_OBJECT(object,Interface,name)</code></dt>
+<dd><p>Same as the above but stops at the first object with the given name, even if
+it does not implement the requested interface (in that case, <code>0</code> is
+returned). This is slightly faster.
+</p></dd>
+</dl>
+
+<p>Note that all these macros increase the reference count of the returned
+object by 1.
+</p>
+<p>Note that there are a few HOWTO's describing possible uses for the
+<samp>&lsquo;csObject&rsquo;</samp> system (see section <a href="User-Objects.html#0">Attaching User Objects to CS Objects</a> and
+see section <a href="User-Objects-in-Maps.html#0">Attaching User Objects to CS Objects in a map file</a>).
+</p>
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Game-Data.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="User-Objects.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Game-Data.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

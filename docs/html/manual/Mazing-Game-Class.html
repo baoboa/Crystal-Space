@@ -1,0 +1,555 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.2.4.10 Game Class</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.2.4.10 Game Class">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.2.4.10 Game Class">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Mazing-Game-Class"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Mazing-Laser-Class.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Mazing-AppMazing-Class.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Tutorial-Mazing.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h4 class="subsubsection"> 4.2.4.10 Game Class </h4>
+
+<p><code>Game</code> is the main class controlling the game logic.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">class Game
+{
+private:
+  AppMazing* app;
+
+  /**
+   * The factory for our adversary.
+   */
+  csRef&lt;iMeshFactoryWrapper&gt; adversary_factory;
+
+  /**
+   * The factory for our laser beam.
+   */
+  csRef&lt;iMeshFactoryWrapper&gt; laserbeam_factory;
+
+  /**
+   * The factory for our explosion.
+   */
+  csRef&lt;iMeshFactoryWrapper&gt; explosion_factory;
+
+  //--- Game Data ------------------------------------------------------
+
+  Player player;
+  Maze maze;
+  Laser laser;
+  /// A list of all adversaries.
+  csRefArray&lt;Adversary&gt; adversaries;
+
+  /// A list of all explosions in progress.
+  csArray&lt;Explosion&gt; explosions;
+
+  /// Start an explosion.
+  void StartExplosion (iSector* sector, const csVector3&amp; pos);
+  /// Handle all explosions.
+  void HandleExplosions (csTicks elapsed_ticks);
+
+  //--- Setup of Game --------------------------------------------------
+  bool CreateFactories ();
+  bool CreateAdversary (int x, int y, int z);
+
+  bool InitCollisionDetection ();
+
+public:
+  /**
+   * Constructor.
+   */
+  Game(AppMazing* app);
+
+  /**
+   * Setup the game.
+   */
+  bool SetupGame ();
+
+  Maze* GetMaze () { return &amp;maze; }
+
+  /**
+   * Explode an adversary.
+   */
+  void ExplodeAdversary (Adversary* adv);
+
+  /**
+   * Handle a frame in the game.
+   */
+  void Handle (csTicks elapsed_ticks);
+
+  /**
+   * Handle game keyboard event.
+   */
+  bool OnKeyboard (iEvent&amp; ev);
+};
+</pre></td></tr></table>
+<p>The important data structures used here are:
+</p>
+<ul>
+<li>
+<samp>&lsquo;player&rsquo;</samp>: this is an instance of <code>Player</code>.
+</li><li>
+<samp>&lsquo;maze&rsquo;</samp>: this is an instance of <code>Maze</code>.
+</li><li>
+<samp>&lsquo;Laser&rsquo;</samp>: our laserbeam (instance of <code>Laser</code>).
+</li><li>
+<samp>&lsquo;adversaries&rsquo;</samp>: this is a reference counted array containing all
+adversaries that are currently still active. Because <code>Adversary</code> is
+a ref counted class (uses <small>SCF</small>) it is best to use <code>csRefArray</code> here.
+</li><li>
+<samp>&lsquo;explosions&rsquo;</samp>: all active explosions (instances of <code>Explosion</code>)
+are in this array.
+</li><li>
+<samp>&lsquo;adversary_factory&rsquo;</samp>, <samp>&lsquo;laserbeam_factory&rsquo;</samp>, and <samp>&lsquo;explosion_factory&rsquo;</samp>:
+these are mesh object factories for the adversary, laserbeam, and explosion
+objects.
+</li></ul>
+
+<p>The important functions used in this class are:
+</p>
+<ul>
+<li>
+<code>CreateFactories()</code>: this function will create the three factories
+used for the geometry. It will also create the laserbeam mesh since there
+is only one of those.
+</li><li>
+<code>CreateAdversary()</code>: this will create a single adversary and place
+it somewhere in the game.
+</li><li>
+<code>InitCollisionDetection()</code>: initialize collision detection for the loaded
+world.
+</li><li>
+<code>SetupGame()</code>: this is the main entry point to setup the game. It will
+call the functions above.
+</li><li>
+<code>StartExplosion()</code>: start an explosion at some position.
+</li><li>
+<code>HandleExplosions()</code>: handle all explosions (lifetime).
+</li><li>
+<code>ExplodeAdversary()</code>: remove an adversary and replace it with an
+explosion.
+</li><li>
+<code>Handle()</code>: this function handles game logic every frame.
+</li><li>
+<code>OnKeyboard()</code>: this function handles keyboard events for the game.
+</li></ul>
+
+<table><tr><td>&nbsp;</td><td><pre class="example">Game::Game() :
+  	app (app),
+	player (app),
+	maze (app),
+	laser (app)
+{
+}
+</pre></td></tr></table>
+<p>Just the constructor.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">bool Game::CreateFactories ()
+{
+  csRef&lt;iGeneralFactoryState&gt; fstate;
+  iEngine* engine = app-&gt;GetEngine ();
+  iLoader* loader = app-&gt;GetLoader ();
+
+  //---------------------------------------------------------------------
+  // Adversary factory.
+  adversary_factory = engine-&gt;CreateMeshFactory (
+  	&quot;crystalspace.mesh.object.genmesh&quot;, &quot;adversary&quot;);
+  if (!adversary_factory) return false;
+
+  fstate = scfQueryInterface&lt;iGeneralFactoryState&gt; (
+  	adversary_factory-&gt;GetMeshObjectFactory ());
+  csEllipsoid ellips (
+  	csVector3 (0, 0, 0),
+	csVector3 (ADVERSARY_DIMENSION, ADVERSARY_DIMENSION,
+		ADVERSARY_DIMENSION));
+  fstate-&gt;GenerateSphere (ellips, 10);
+
+  if (!loader-&gt;LoadTexture (&quot;adversary_texture&quot;, &quot;/lib/stdtex/misty.jpg&quot;))
+    return app-&gt;ReportError (&quot;Error loading 'misty' texture!&quot;);
+  iMaterialWrapper* adversary_material = engine-&gt;GetMaterialList ()
+  	-&gt;FindByName (&quot;adversary_texture&quot;);
+  adversary_factory-&gt;GetMeshObjectFactory ()
+    -&gt;SetMaterialWrapper (adversary_material);
+
+  //---------------------------------------------------------------------
+  // Beam factory.
+  laserbeam_factory = engine-&gt;CreateMeshFactory (
+  	&quot;crystalspace.mesh.object.genmesh&quot;, &quot;laserbeam&quot;);
+  if (!laserbeam_factory) return false;
+
+  fstate = scfQueryInterface&lt;iGeneralFactoryState&gt; (
+  	laserbeam_factory-&gt;GetMeshObjectFactory ());
+  csBox3 laser_box (
+  	csVector3 (-LASER_WIDTH, -LASER_WIDTH, 0),
+  	csVector3 (LASER_WIDTH, LASER_WIDTH, LASER_LENGTH));
+  fstate-&gt;GenerateBox (laser_box);
+  fstate-&gt;SetLighting (false);
+  fstate-&gt;SetColor (csColor (1.0, 1.0, 1.0));
+  // We don't want to hit the player against the laserbeam when it is
+  // visible so we disable the collision detection mesh here.
+  csStringID colldet_id = app-&gt;GetStrings ()-&gt;Request (&quot;colldet&quot;);
+  laserbeam_factory-&gt;GetMeshObjectFactory ()-&gt;GetObjectModel ()
+  	-&gt;SetTriangleData (colldet_id, 0);
+
+  if (!loader-&gt;LoadTexture (&quot;laserbeam_texture&quot;, &quot;/lib/stdtex/blobby.jpg&quot;))
+    return app-&gt;ReportError (&quot;Error loading 'blobby' texture!&quot;);
+  iMaterialWrapper* laserbeam_material = engine-&gt;GetMaterialList ()
+  	-&gt;FindByName (&quot;laserbeam_texture&quot;);
+  laserbeam_factory-&gt;GetMeshObjectFactory ()
+    -&gt;SetMaterialWrapper (laserbeam_material);
+
+  //---------------------------------------------------------------------
+  // Beam object.
+  csRef&lt;iMeshWrapper&gt; laserbeam = engine-&gt;CreateMeshWrapper (
+  	laserbeam_factory, &quot;laserbeam&quot;);
+  if (!laserbeam)
+    return app-&gt;ReportError (&quot;Error creating laserbeam mesh!&quot;);
+  // Set our laser beam to NOHITBEAM so that we can use HitBeam() methods
+  // to find out what our laser hits without HitBeam() returning the
+  // laser itself.
+  laserbeam-&gt;GetFlags ().Set (CS_ENTITY_NOHITBEAM);
+  laser.SetMeshWrapper (laserbeam);
+
+  //---------------------------------------------------------------------
+  // Explosion factory.
+  explosion_factory = engine-&gt;CreateMeshFactory (
+  	&quot;crystalspace.mesh.object.particles&quot;, &quot;explosion&quot;);
+  if (!explosion_factory) return false;
+
+  csRef&lt;iParticleSystemFactory&gt; pbase = scfQueryInterface&lt;
+  	iParticleSystemFactory&gt; (explosion_factory-&gt;GetMeshObjectFactory ());
+
+  if (!loader-&gt;LoadTexture (&quot;explosion_texture&quot;, &quot;/lib/std/spark.png&quot;))
+    return app-&gt;ReportError (&quot;Error loading 'spark' texture!&quot;);
+  iMaterialWrapper* explosion_material = engine-&gt;GetMaterialList ()
+  	-&gt;FindByName (&quot;explosion_texture&quot;);
+  
+  explosion_factory-&gt;GetMeshObjectFactory ()-&gt;SetMaterialWrapper (explosion_material);
+  explosion_factory-&gt;GetMeshObjectFactory ()-&gt;SetMixMode (CS_FX_ADD);
+
+  pbase-&gt;SetParticleSize (csVector2 (0.2f, 0.2f));
+  pbase-&gt;SetParticleRenderOrientation (CS_PARTICLE_CAMERAFACE_APPROX);
+//  pbase-&gt;SetDeepCreation (true);
+
+  csRef&lt;iParticleBuiltinEmitterFactory&gt; emitter_factory = 
+    csLoadPluginCheck&lt;iParticleBuiltinEmitterFactory&gt; (app-&gt;GetObjectRegistry (),
+    &quot;crystalspace.mesh.object.particles.emitter&quot;);
+  
+  csRef&lt;iParticleBuiltinEmitterSphere&gt; emitter = emitter_factory-&gt;CreateSphere ();
+  emitter-&gt;SetRadius (0);
+  emitter-&gt;SetParticlePlacement (CS_PARTICLE_BUILTIN_CENTER);
+  emitter-&gt;SetDuration (EXPLOSION_EMITTIME / 1000.0f);
+  emitter-&gt;SetInitialTTL (EXPLOSION_PARTTIMELOW / 1000.0f, EXPLOSION_PARTTIMEHIGH / 1000.0f);
+  emitter-&gt;SetUniformVelocity (false);
+  emitter-&gt;SetInitialVelocity (csVector3 (3.0f,0,0), csVector3 (0.0f));
+  emitter-&gt;SetEmissionRate (50);
+
+  pbase-&gt;AddEmitter (emitter);
+
+  return true;
+}
+</pre></td></tr></table>
+<p>We use a genmesh for both the laserbeam and the adversary sphere
+(see section <a href="MeshObject-Genmesh.html#0">Genmesh Mesh Object</a>).The laserbeam is created in such a way that
+we can orient it easily along the camera transformation. That means that
+it is a long beam oriented in the <small>Z</small> direction.
+</p>
+<p>For the explosion we use a particles mesh (see section <a href="MeshObject-Particles.html#0">Particles Mesh Object</a>).
+With a bit of effort we're confident that you can make a better explosion
+by tweaking the parameters and using a better texture.
+</p>
+<p>A few special remarks about the geometry above. On the laserbeam factory
+we use <code>iObjectModel::SetTriangleData()</code> to clear the collision
+detection mesh. The laserbeam mesh is generated at roughly the same spot
+as the camera. We don't want the collision detection system to detect hits
+with it (we use other methods to detect hits of the laserbeam with adversary).
+</p>
+<p>The laserbeam mesh is also special. In the <code>Laser::Check()</code> function we
+used <code>iSector::HitBeamPortals()</code> to detect if the laser hits anything.
+We don't want that function to detect the laserbeam mesh itself (which happens
+to be at that same spot) so that's why we set the <samp>&lsquo;CS_ENTITY_NOHITBEAM&rsquo;</samp>
+flag on the mesh.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">bool Game::CreateAdversary (int x, int y, int z)
+{
+  float sx = float (x) * ROOM_DIMENSION;
+  float sy = float (y) * ROOM_DIMENSION;
+  float sz = float (z) * ROOM_DIMENSION;
+  csRef&lt;iMeshWrapper&gt; adversary = app-&gt;GetEngine ()-&gt;CreateMeshWrapper (
+  	adversary_factory, &quot;adversary&quot;,
+	maze.GetSector (x, y, z), csVector3 (sx, sy, sz));
+  if (!adversary)
+    return app-&gt;ReportError (&quot;Couldn't create adversary mesh!&quot;);
+
+  RoomCoordinate rc (x, y, z);
+  Adversary* adv = new Adversary (app, adversary, rc);
+  adversaries.Push (adv);
+  adversary-&gt;QueryObject ()-&gt;ObjAdd ((iObject*)adv);
+  adv-&gt;DecRef ();
+  
+  return true;
+}
+</pre></td></tr></table>
+<p>Here we create an adversary. Note how we first make a new instance of
+<code>Adversary</code>, then we push it on the <samp>&lsquo;adversaries&rsquo;</samp> table and
+finally we call <code>DecRef()</code>. This is very important. The <samp>&lsquo;adversaries&rsquo;</samp>
+is a ref counting array (<code>csRefArray</code>). That means that it will increase
+the reference count of all objects that you push on it. Also note that new
+objects automatically start with a reference count of 1. So that means that
+after pushing the object on <samp>&lsquo;adversaries&rsquo;</samp> the reference count will be 2.
+We must therefor release our own reference at the end by using <code>DecRef()</code>.
+</p>
+<p>In this function we also add our adversary instance as a child of the
+adversary mesh. This is possible because both the mesh and the adversary
+implement <code>iObject</code>. Note that adding our adversary to the mesh as
+a child will also increase the reference count. So finally there will be
+two references to every adversary.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">bool Game::InitCollisionDetection ()
+{
+  csColliderHelper::InitializeCollisionWrappers (
+      app-&gt;GetCollisionDetectionSystem (), app-&gt;GetEngine (), 0);
+  return player.InitCollisionDetection ();
+}
+
+bool Game::SetupGame ()
+{
+  if (!maze.CreateGeometry ())
+    return app-&gt;ReportError(&quot;Error creating the geometry!&quot;);
+
+  if (!CreateFactories ())
+    return app-&gt;ReportError (&quot;Error creating mesh factories!&quot;);
+
+  iEngine* engine = app-&gt;GetEngine ();
+  engine-&gt;Prepare ();
+
+  if (!InitCollisionDetection ())
+    return false;
+
+  if (!CreateAdversary (0, 0, 2)) return false;
+  if (!CreateAdversary (1, 1, 1)) return false;
+  if (!CreateAdversary (1, 0, 2)) return false;
+  if (!CreateAdversary (2, 2, 2)) return false;
+  return true;
+}
+</pre></td></tr></table>
+<p>Here we setup the game by creating the maze (<code>Maze::CreateGeometry()</code>)
+and then creating all factories (<code>CreateFactories()</code>). After that
+we create <code>iEngine::Prepare()</code>.
+</p>
+<p>After that setup collision detection.
+</p>
+<p>And at the end we create four adversaries that will roam the game.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">void Game::ExplodeAdversary (Adversary* adv)
+{
+  iMeshWrapper* mesh = adv-&gt;GetMesh ();
+  StartExplosion (mesh-&gt;GetMovable ()-&gt;GetSectors ()-&gt;Get (0),
+      	mesh-&gt;GetMovable ()-&gt;GetTransform ().GetOrigin ());
+  app-&gt;GetEngine ()-&gt;RemoveObject (mesh);
+  adversaries.Delete (adv);
+}
+
+void Game::StartExplosion (iSector* sector, const csVector3&amp; pos)
+{
+  csRef&lt;iMeshWrapper&gt; explo = app-&gt;GetEngine ()-&gt;CreateMeshWrapper (
+  	explosion_factory, &quot;explosion&quot;, sector, pos);
+  if (!explo)
+  {
+    app-&gt;ReportError (&quot;Error creating explosion mesh!&quot;);
+    return;
+  }
+  explo-&gt;SetZBufMode (CS_ZBUF_TEST);
+  Explosion exp (explo, EXPLOSION_TIME);
+  explosions.Push (exp);
+}
+
+void Game::HandleExplosions (csTicks elapsed_ticks)
+{
+  size_t i = 0;
+  while (i &lt; explosions.Length ())
+  {
+    if (explosions[i].Handle (elapsed_ticks)) i++;
+    else
+    {
+      app-&gt;GetEngine ()-&gt;RemoveObject (explosions[i].GetMesh ());
+      explosions.DeleteIndex (i);
+    }
+  }
+}
+</pre></td></tr></table>
+<p>The <code>ExplodeAdversary()</code> function is called from the <code>Laser::Check()</code>
+function whenever an adversary needs to be exploded. To start the actual
+explosion mesh the <code>StartExplosion()</code> function is used. This function
+will just remove the adversary mesh from the engine (using
+<code>iEngine::RemoveObject()</code>) and then it will delete the adversary from
+the <samp>&lsquo;adversaries&rsquo;</samp> array. Note that these two operations will cause the
+reference count of the adversary to become 0. i.e. deleting the adversary
+from the <samp>&lsquo;adversaries&rsquo;</samp> array will decrease one reference and then
+removing the mesh from the engine will remove the other since when the mesh
+is deleted it will also release the reference to its children.
+</p>
+<p>The <code>StartExplosion()</code> function will create an explosion mesh out of
+the explosion factory at the given sector and position. The explosion mesh
+factory is created using <samp>&lsquo;CS_FX_ADD&rsquo;</samp> mixmode. That means that every
+particle will be added to the background. This is a kind of transparency.
+The advantage of this transparency is that you don't have to sort the particles
+from back to front (<samp>&lsquo;add&rsquo;</samp> mixmode can be done in any order). We use
+<samp>&lsquo;CS_ZBUF_TEST&rsquo;</samp> z-buffer mode for the explosion mesh because we don't
+want the particles to update the z-buffer but just test against it (so
+particles will appear correctly clipped against walls that are near the camera).
+</p>
+<p><code>HandleExplosions()</code> is called every frame and will go over all active
+explosions to check if they should be deleted.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">void Game::Handle (csTicks elapsed_ticks)
+{
+  float elapsed_seconds = float (elapsed_ticks) / 1000.0;
+
+  // Handle the laser.
+  laser.Handle (elapsed_ticks);
+
+  // Handle explosions.
+  HandleExplosions (elapsed_ticks);
+
+  // Move the camera.
+  player.MoveAndRotateCamera (elapsed_seconds);
+
+  // Let all the adversaries think about what to do.
+  size_t i;
+  for (i = 0 ; i &lt; adversaries.Length () ; i++)
+    adversaries[i]-&gt;ThinkAndMove (elapsed_seconds);
+}
+</pre></td></tr></table>
+<p><code>Handle()</code> will be automatically called every frame. In this function
+we will handle all game logic. Handling the game logic basically means we just
+call code in <code>Laser</code>, <code>Explosion</code>, <code>Adversary</code>, and <code>Player</code>
+to calculate the logic based on the number of seconds that have ellapsed since
+the previous frame.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">bool Game::OnKeyboard(iEvent&amp; ev)
+{
+  // We got a keyboard event.
+  if (csKeyEventHelper::GetEventType(&amp;ev) == csKeyEventTypeDown)
+  {
+    // The user pressed a key (as opposed to releasing it).
+    utf32_char code = csKeyEventHelper::GetCookedCode(&amp;ev);
+    switch (code)
+    {
+      case 'e':
+	player.StartMovement (csVector3 (0, 1, 0));
+	return true;
+      case 'q':
+	player.StartMovement (csVector3 (0, -1, 0));
+	return true;
+      case 'a':
+	player.StartMovement (csVector3 (-1, 0, 0));
+	return true;
+      case 'd':
+	player.StartMovement (csVector3 (1, 0, 0));
+	return true;
+      case 'w':
+	player.StartMovement (csVector3 (0, 0, 1));
+	return true;
+      case 's':
+	player.StartMovement (csVector3 (0, 0, -1));
+	return true;
+      case CSKEY_UP:
+	player.StartRotation (csVector3 (-1, 0, 0));
+	return true;
+      case CSKEY_DOWN:
+	player.StartRotation (csVector3 (1, 0, 0));
+	return true;
+      case CSKEY_LEFT:
+	player.StartRotation (csVector3 (0, -1, 0));
+	return true;
+      case CSKEY_RIGHT:
+	player.StartRotation (csVector3 (0, 1, 0));
+	return true;
+      case ' ':
+	laser.Start ();
+	return true;
+    }
+  }
+  return false;
+}
+</pre></td></tr></table>
+<p>In this function we handle all keyboard events for the game.
+</p>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Mazing-Laser-Class.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Mazing-AppMazing-Class.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Tutorial-Mazing.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

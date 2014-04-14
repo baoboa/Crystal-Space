@@ -1,0 +1,4 @@
+version=3
+opts=dversionmangle=s/\+debian// \
+http://www.crystalspace3d.org/main/Download \
+  http://www.crystalspace3d.org/downloads/release/crystalspace-src-([\d.]+)\.tar\.gz

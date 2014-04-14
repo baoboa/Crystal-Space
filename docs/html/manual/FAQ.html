@@ -1,0 +1,493 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: B. Frequently Asked Questions (FAQ)</title>
+
+<meta name="description" content="Crystal Space 2.1.0: B. Frequently Asked Questions (FAQ)">
+<meta name="keywords" content="Crystal Space 2.1.0: B. Frequently Asked Questions (FAQ)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="FAQ"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Glossary.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Glossary.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h1 class="appendix"> B. Frequently Asked Questions (<small>FAQ</small>) </h1>
+
+<p>This is a list of frequently asked questions and their answers.  If you have
+some questions about Crystal Space, try consulting this list first.
+</p>
+<p>The first section contains practical questions and answers.  The second
+section (see later) contains more technical questions.
+</p>
+<p>More <small>FAQ</small>s can also be found online in the Crystal Space Wiki:<br>
+</p>
+
+<p><a href="http://www.crystalspace3d.org/main/FAQ">http://www.crystalspace3d.org/main/FAQ</a>
+</p>
+<ul>
+<li>
+<strong>Q</strong>: From where can I download Crystal Space?
+
+<p><strong>A</strong>: The latest release of Crystal Space is always available from the
+Crystal Space home page, and from the Crystal Space download site:
+</p>
+
+<p><a href="http://www.crystalspace3d.org/downloads/release/">http://www.crystalspace3d.org/downloads/release/</a>
+</p>
+
+<p>You can also access the bleeding-edge developmental version.
+See section <a href="Where-to-Get.html#0">Where to Get Crystal Space</a>.
+</p>
+</li><li>
+<strong>Q</strong>: What do I need to compile Crystal Space?
+
+<p><strong>A</strong>: You need the source code, which you can obtain in a variety of
+ways.  See section <a href="Where-to-Get.html#0">Where to Get Crystal Space</a>.  You also need a compiler and development system
+for the platform which you are using.  Some of the supported compilers are
+<small>GCC</small> (including MingW and Cygwin), <small>MSVC</small> and Code Warrior.
+</p>
+</li><li>
+<strong>Q</strong>: What do you need to run Crystal Space?
+
+<p><strong>A</strong>: You need the following items:
+</p>
+<ul class="toc">
+<li>-
+A compiled executable program such as <tt>&lsquo;walktest&rsquo;</tt> or <tt>&lsquo;csdemo&rsquo;</tt>, for
+example.  These are demo programs included in the main source archive.
+
+<p>Note that there exist two types of executables: statically linked and
+dynamically linked.  If you have a statically linked executable then you don't
+need any of the following drivers.  Otherwise you will need the remaining
+items.
+</p>
+</li><li>-
+Several plugins for those applications.  On and Windows (32 bit) plugins
+will be <tt>&lsquo;.DLL&rsquo;</tt> files.  On most Unix systems they will be <tt>&lsquo;.so&rsquo;</tt> files.
+ If Crystal Space compiled successfully then you will have a great deal of
+those plugins in the Crystal Space directory.
+
+</li><li>-
+You should also have the data directory which is included with Crystal
+Space.  This directory contains various texture and data libraries (like
+<tt>&lsquo;standard.zip&rsquo;</tt>), data files for some of the applications (like
+the <samp>&lsquo;castle&rsquo;</samp> world file for <tt>&lsquo;walktest&rsquo;</tt>), 
+shader definitions, configuration files for various plugins in Crystal Space
+and a lot more.
+
+</li><li>-
+Crystal Space applications also require a <tt>&lsquo;vfs.cfg&rsquo;</tt> configuration file
+which tells the virtual file system (<small>VFS</small>) where everything is located.
+
+</li><li>-
+In addition to maps that are included in the data folder of Crystal Space
+itself (<samp>&lsquo;castle&rsquo;</samp>, <samp>&lsquo;flarge&rsquo;</samp>, <samp>&lsquo;partsys&rsquo;</samp>, <samp>&lsquo;terrainf&rsquo;</samp>, <small class="dots">...</small>)
+you can also download additional maps for <tt>&lsquo;walktest&rsquo;</tt>.  The map files
+included with Crystal Space are normal directories but Crystal Space can
+also read directly from <small>ZIP</small> archives.
+</li></ul>
+
+</li><li>
+<strong>Q</strong>: I downloaded Crystal Space but it won't run.  What could be the
+cause?
+
+<p><strong>A1</strong>: Are you sure that you have downloaded all the necessary
+components, as explained by the previous section? If not, then download the
+missing components.
+</p>
+<p><strong>A2</strong>: In general, Crystal Space requires a 15, 16, or 32-bit
+display and will not work with other displays modes.  Note, however, that the
+Mac OS X Server, OpenStep, and NextStep ports of Crystal Space are not subject
+to this limitation.
+</p>
+<p><strong>A3</strong>: If you are using a dynamically linked executable then the required
+plug-in modules, such as 3D renderer, 2D driver, etc., usually must reside in
+the same directory.  On Mac OS X, the plug-in modules can reside in a
+<tt>&lsquo;components&rsquo;</tt> subdirectory.  Most ports of Crystal Space use plug-in
+modules by default.
+</p>
+<p><strong>A4</strong>: Are you certain that you are trying to load the correct map file?
+If you are running the application from the command-line, then you can try
+specifying the map file on on the command-line, like this:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">% walktest flarge
+</pre></td></tr></table>
+<p>Where <samp>&lsquo;flarge&rsquo;</samp> is the name of the map file you wish to use.  In this case,
+<samp>&lsquo;flarge&rsquo;</samp> corresponds to the <tt>&lsquo;flarge&rsquo;</tt> directory which is included
+with <samp>&lsquo;cs&rsquo;</samp>.  Also note that <samp>&lsquo;flarge&rsquo;</samp> itself requires the file
+<tt>&lsquo;standard.zip&rsquo;</tt> which contains all the textures.
+</p>
+<p>Alternately, for WalkTest, you can change the <samp>&lsquo;WorldFile&rsquo;</samp> setting in its
+configuration file <tt>&lsquo;CS/data/config-apps/walktest.cfg&rsquo;</tt>.  For example:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">Walktest.Settings.WorldFile = flarge
+</pre></td></tr></table>
+<p><strong>A5</strong>: If all else fails ask a question on the Crystal Space mailing
+list.  See section <a href="Mailing-Lists.html#0">Mailing Lists</a>.
+</p>
+</li><li>
+<strong>Q</strong>: What documentation is available?  Where can I find it?
+
+<p><strong>A</strong>: There is a lot of documentation available.  Not all of it is
+completely up-to-date but we try to do our best in keeping it as up-to-date as
+possible.  Refer to the section in the Crystal Space manual which discusses
+documentation resources.  See <a href="Where-to-Get.html#Documentation-Resources">Documentation Resources</a>.
+</p>
+</li><li>
+<strong>Q</strong>: I'm using OpenGL with Crystal Space (via the <samp>&lsquo;-video=opengl&rsquo;</samp>
+command-line option, for example) and the animation is extremely slow.  What's
+wrong?
+
+<p><strong>A1</strong>: When this happens this usually means that your OpenGL renderer
+is not using hardware acceleration. If you are sure that you actually have
+a 3D card that is supported by OpenGL then you should make sure you have
+recent drivers for that card and that they are properly configured.
+</p>
+<p><strong>A2</strong>: Note that some operations in Crystal Space require the
+existence of a stencil buffer. If there is no hardware stencil available
+OpenGL will revert to using software which is very slow. Some 3D cards
+only have hardware stencil in some display modes. For example ATI and
+nVidia cards only have accelerated stencil in 24/32-bit color mode and
+not in 16-bit mode.
+</p>
+</li><li>
+<strong>Q</strong>: I want to create textures for Crystal Space.  What palette should I
+use?  How big should I create the textures?  What format can I use?
+
+<p><strong>A1</strong>: The palette does not really matter because Crystal Space
+calculates its own optimal palette given a set of input textures.  But there
+are some things to keep in mind.  Try to get the number of different colours as
+low as possible without sacrificing for quality and if you design a set of
+textures that are meant to be used together it is always best to let them use
+a similar palette.  This will make it easier for Crystal Space to calculate a
+good palette.
+</p>
+<p><strong>A2</strong>: The width and height of a texture must be a power of 2 (such as
+8, 16, 32, 64, <small class="dots">...</small>).  That's about the only restriction.  Textures need
+not be square.  You can have textures with sizes like 16x256. If a texture
+does not conform to the above mentioned limitations then it will be scaled.
+This may mean that there is quality degradation though!
+</p>
+<p><strong>A3</strong>: Crystal Space textures may be in any of the supported image
+formats, such as <small>PNG</small>, <small>TGA</small>, <small>BMP</small>, <small>JPG</small>, <small>MNG</small> and <small>GIF</small>.
+</p>
+<p><strong>A4</strong>: Unless a texture is not meant for tiling you should make sure
+that it can be tiled.  This means that if you put a number of textures next to
+each other or above each other the boundaries should seamlessly integrate with
+each other.  Of course, it is entirely possible to create textures that are
+specifically drawn for untiled usage.  An example would be a texture
+representing a computer keyboard.
+</p>
+</li><li>
+<strong>Q</strong>: How can I actually make 3D models and maps for use in Crystal
+Space?
+
+<p><strong>A1</strong>: You can use Blender (<a href="http://www.blender3d.org/">http://www.blender3d.org/</a>)
+together with blender2crystal
+(aka. b2cs, <a href="http://b2cs.delcorp.org/">http://b2cs.delcorp.org/</a>).  blender2crystal works
+very well and is fully supported by the Crystal Space project.  Using this
+convertor you can make complete maps with support for portals and much more.
+It also supports <samp>&lsquo;AniMesh&rsquo;</samp> models.
+</p>
+<p><strong>A2</strong>: For animated models using Cal3D (see section <a href="MeshObject-SprCal3D.html#0">SpriteCal3D Mesh Object</a>)
+you can also use Blender, which has support for Cal3D objects.
+There is a tutorial on this subject at:
+</p>
+
+<p><a href="http://www.cs.indiana.edu/~joellis/CSIntro.html">http://www.cs.indiana.edu/~joellis/CSIntro.html</a>
+</p>
+<p><strong>A3</strong>: For maps and objects using <samp>&lsquo;genmesh&rsquo;</samp>
+you can also use 3dsMax.  There is a 3dsMax exporter plugin
+included with Crystal Space (<tt>&lsquo;CS/scripts/max&rsquo;</tt>) with associated
+documentation which works very well.  This script is made and used by the 
+PlaneShift project (<a href="http://www.planeshift.it">http://www.planeshift.it</a>). There is a tutorial
+on this exporter at:
+</p>
+
+<p><a href="http://www.crystalspace3d.org/docs/online/maxexporter/">http://www.crystalspace3d.org/docs/online/maxexporter/</a>
+</p>
+<p><strong>A4</strong>: For animated models using Cal3D you can also use
+3dsMax.  There is a tutorial on this subject at:
+</p>
+
+<p><a href="http://cal3d.sourceforge.net/modeling/tutorial.html">http://cal3d.sourceforge.net/modeling/tutorial.html</a>
+</p>
+<p><strong>A5</strong>: There is a tool to convert map files (from tools like
+Q3Radiant, Hammer, or QuArK) to <small>CS</small>. You can find this tool at:
+</p>
+
+<p><a href="http://www-poleia.lip6.fr/~degris/converter/">http://www-poleia.lip6.fr/~degris/converter/</a>
+</p>
+<p><strong>A6</strong>: There is a <tt>&lsquo;Maya2Spr&rsquo;</tt> utility included with Crystal Space
+which can convert Maya files to 3D sprites. Not for maps, though.
+</p>
+<p><strong>A7</strong>: There is a <tt>&lsquo;3ds2lev&rsquo;</tt> utility to convert <tt>&lsquo;.3ds&rsquo;</tt> files
+to either a level or a 3D sprite model.  This tool is very limited though
+and the generated maps usually require hand-editing.
+</p>
+<p><strong>A8</strong>: There is <tt>&lsquo;md22spr&rsquo;</tt> utility which can convert Quake <small>MD2</small>
+and <small>MDL</small> models to Crystal Space 3D sprites. The animation frames are also
+properly converted.  This will not generate Cal3D models!
+</p>
+<p><strong>A9</strong>: There is md32spr utility which can convert Quake <small>MD3</small> models.
+</p>
+</li><li>
+<strong>Q</strong>: I would like to contribute to Crystal Space.  What can I do?
+
+<p><strong>A</strong>: Have a look at the section of this manual about contributing
+to the project (see section <a href="Contributing.html#0">Contributing to Crystal Space</a>), and take a look at the To-Do and
+Bug lists on the Developer's Project page at SourceForge:
+</p>
+
+<p><a href="http://sourceforge.net/projects/crystal/">http://sourceforge.net/projects/crystal/</a>
+</p>
+<p>You can also contact the mailing list (see section <a href="Mailing-Lists.html#0">Mailing Lists</a>) in
+order to coordinate your efforts with those of other people.
+</p>
+</li><li>
+<strong>Q</strong>: How does Crystal Space work?
+
+<p><strong>A1</strong> If you want to know how you can use <small>CS</small>, you can look at the
+See section <a href="Using-Crystal-Space.html#0">Using Crystal Space</a>. If you want to know how
+it works internally, See section <a href="Internals.html#0">Internal Project Structure</a>.
+</p>
+<p><strong>A2</strong>: Read any other documentation related to this project as mentioned
+earlier in this <small>FAQ</small>.
+</p>
+<p><strong>A3</strong>: If you need more information, you should consider posting your
+queries to the Crystal Space mailing list, <a href="Mailing-Lists.html#0">Mailing Lists</a>.
+</p>
+</li><li>
+<strong>Q</strong>: I want to write a game with Crystal Space.  Can I do this?
+
+<p><strong>A1</strong>: The ultimate purpose of Crystal Space is that it will become a
+usable and powerful engine for writing games and other graphics visualization
+programs.  As a project which is still under development, it may be simple or
+difficult to build your particular game, depending upon your specific
+requirements.  One way to improve the state of Crystal Space so that it better
+fits your needs is to contribute to the project yourself.
+</p>
+<p><strong>A2</strong>: Crystal Space is under the <small>LGPL</small> licensing policy so you can
+make commercial or shareware products using it.  For more details about what
+you can and cannot do, see the license, <a href="Licenses.html#0">Licenses</a>.
+</p>
+</li><li>
+<strong>Q</strong>: How stable is the <small>API</small> for Crystal Space?
+
+<p><strong>A</strong>: Between every subsequence stable release (for example, from 1.0
+to 1.2 or from 1.2 to 1.4) we always try to guarantee backwards compatibility.
+If we want to remove some feature we will <samp>&lsquo;deprecate&rsquo;</samp> it. When something
+is deprecated in version 1.2 (for example) then it means that it will probably
+be removed in 1.4. So make sure to change your applications to avoid using
+the deprecated stuff.
+</p>
+<p>In the future 2.0 release we plan more significant changes for which we will no
+longer be able to guarantee backwards compatibility.
+</p></li></ul>
+
+<p>The following section lists some more technical questions.
+</p>
+<ul>
+<li>
+<strong>Q</strong>: I have some objects but collision detection is not working on
+them. What is wrong?
+
+<p><strong>A</strong>: One of the most common errors is to scale an object using
+the transform in the movable. Unfortunately various subsystems in Crystal
+Space (like collision detection and visibility culling) don't work on
+scaled objects. If you want to scale your object you should do it
+with <code>HardTransform</code> or <code>&lt;hardmove&gt;</code> instead. Note that for
+some types of mesh objects (like 3D sprites) you must do this on the factory.
+</p>
+</li><li>
+<strong>Q</strong>: I have some objects that seem to be culled wrong. What can cause
+this?
+
+<p><strong>A1</strong>: See the question about collision detection not working with
+scaled objects. Don't scale your objects using the movable. Instead scale
+them with <code>HardTransform</code>.
+</p>
+<p><strong>A2</strong>: Another common error is forgetting to call
+<code>movable-&gt;UpdateMove()</code> after moving a model. If you don't call that
+function then the visibility culler doesn't know the object has moved.
+</p>
+</li><li>
+<strong>Q</strong>: I'm confused by the Crystal Space coordinate system.  The 3D
+renderer seems to work in reverse y.  What's up?
+
+<p><strong>A</strong>: When talking in 3D, Crystal Space defines the positive X axis
+as pointing to the right, the positive Y axis as pointing upwards, and
+the positive Z axis pointing forwards.  2D operations in the 3D renderer
+(like when drawing polygons using coordinates perspective projected by
+the engine) work with positive X axis to the right (as usual), and positive
+Y axis pointing upwards (so (0,0) is in the bottom-left corner).  This is the
+exact reverse of how screen coordinates are usually defined but corresponds
+better with the Y axis pointing upwards in 3D coordinates).
+However, when getting mouse events the normal screen
+space coordinate system is used with (0,0) in the top-left corner.
+</p>
+</li><li>
+<strong>Q</strong>: Why can't I get the
+<code>iGeneralMeshState</code> / <code>iSprite3DState</code> / <small class="dots">...</small> from my mesh wrapper?  I
+do <code>scfQueryInterface</code> from the mesh and it returns <samp>&lsquo;0&rsquo;</samp>.
+
+<p><strong>A</strong>: A common error is to try to query the state interface for
+a mesh object from the <code>iMeshWrapper</code> instance.  However it is not
+<code>iMeshWrapper</code> that represents the mesh object.  <code>iMeshWrapper</code> is
+only a stub in the engine to wrap a mesh object so the engine can use
+it.  To get the state interface you must query from the <code>iMeshObject</code>
+instance instead.  You can get this instance with <code>mesh-&gt;GetMeshObject()</code>.
+</p>
+</li><li>
+<strong>Q</strong>: I do not understand when I have to use <code>DecRef()</code> and when
+not.  Can you explain this reference counting to me?
+
+<p><strong>A</strong>: In recent versions of Crystal Space we now have a new
+<code>csRef</code> class which implements a kind of smart pointer.  Smart pointers
+make it easier for you to keep track of references.  They will automatically
+<code>DecRef()</code> when they are ready.  Here is an example of their usage:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">csRef&lt;iGeneralMeshState&gt; st =
+  scfQueryInterface&lt;iGeneralMeshState&gt; (mesh-&gt;GetMeshObject());
+if (st)
+{
+  st-&gt;blabla ...;
+}
+</pre></td></tr></table>
+<p>You can use the <samp>&lsquo;st&rsquo;</samp> variable just like you would use the normal
+<code>iGeneralMeshState</code> reference. The only difference with code that doesn't use
+smart pointers is that you don't have to take care of calling
+<code>DecRef</code>.  See section <a href="Smart-Pointers.html#0">Correctly Using Smart Pointers</a>.
+</p>
+</li><li>
+<strong>Q</strong>: My objects are rendered incorrectly.  It seems as if parts of it
+sometimes appear and sometimes disappear.
+
+<p><strong>A</strong>: Incorrect rendering of objects can be caused by bugs but there
+is one common cause of this problem which is Z-buffer related.  It is
+important to realize that Crystal Space does <small>NOT</small> clear the Z-buffer
+every frame (nor does it clear the screen).  By default Crystal Space depends
+on the geometry itself to clear the Z-buffer.  For example, if you have a
+room with a single object in it then you should use <samp>&lsquo;ZFILL&rsquo;</samp> mode for
+the room polygons (so that the Z-buffer will be filled but not read) and
+<samp>&lsquo;ZUSE&rsquo;</samp> for the object (so that the Z-buffer will be both
+updated and read).
+</p>
+<p>In many cases levels are closed (meaning that there is some exterior object
+which blocks the view into infinity). If you have such a convex closed
+object at the boundary of your level you can use <samp>&lsquo;ZFILL&rsquo;</samp> for that.
+However, there are occasions when this is not possible.  Either because there
+is no exterior object, the exterior object is not closed, or the exterior
+object is not convex.  In that case you better use <samp>&lsquo;ZUSE&rsquo;</samp> for all objects
+and enable Z-clearing every frame. In world files you can do this by
+using the <samp>&lsquo;settings&rsquo;</samp> block and enabling the <samp>&lsquo;clearzbuf&rsquo;</samp> option.
+</p>
+<p>Note that you should invoke the method <code>engine-&gt;GetBeginDrawFlags()</code> in
+your call to <code>g3d-&gt;BeginDraw()</code> to ensure that this Z-buffer clearing will
+actually work (in fact you should <em>always</em> use
+<code>GetBeginDrawFlags()</code>).
+</p>
+</li><li>
+<strong>Q</strong>: I'm trying to use some plugin but it says that it cannot find it
+(i.e. <code>csQueryRegistry</code> returns null).
+
+<p><strong>A</strong>: It is important to realize that <code>csQueryRegistry</code>
+does <samp>&lsquo;not&rsquo;</samp> load a plugin.  It only looks for some component in the object
+registry.  There are two basic ways to load a plugin: the first is to use
+<code>csInitializer::RequestPlugins()</code> and the second is to manually
+load the plugin using <code>csLoadPlugin</code>.  <code>RequestPlugins()</code> is
+best because it actually registers the plugin with the object
+registry and it also correctly manages config file, command-line and
+request plugins (so you can override a plugin on command-line/config file).
+</p>
+</li><li>
+<strong>Q</strong>: How can I show <small>FPS</small> (Frames Per Second) in my Crystal Space
+application?
+
+<p><strong>A</strong>: Add the following entry to the user-specific application-neutral
+or application-specific domain (see section <a href="Configuration-File.html#0">Configuration File</a>):
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">Global.System.Plugins.iBugPlug = crystalspace.utilities.bugplug
+</pre></td></tr></table>
+<p>This will make sure that the BugPlug plugin runs in either you or any 
+Crystal Space application (dependent on the config domain you chose). 
+BugPlug shows <small>FPS</small> (among other things) and is otherwise not harmful.  You
+can also use BugPlug to make screen-shots (press <kbd>Ctrl-d</kbd> followed by
+<kbd>F12</kbd>). See section <a href="BugPlug.html#0">Using the BugPlug Debugging Plugin</a>.
+</p>
+</li></ul>
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Glossary.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Glossary.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

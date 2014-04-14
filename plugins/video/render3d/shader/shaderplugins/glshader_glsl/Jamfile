@@ -1,0 +1,12 @@
+SubDir TOP plugins video render3d shader shaderplugins glshader_glsl ;
+
+if $(GL.AVAILABLE) = "yes"
+{
+Description glshader_glsl : "GLSL program" ;
+Plugin glshader_glsl : [ Wildcard *.cpp *.h ] ;
+Includes glshader_glslprogram.h : $(SUBDIR)/glshader_glsl.tok ;
+MsvcExtraFile glshader_glsl : $(SUBDIR)/glshader_glsl.tok ;
+LinkWith glshader_glsl : crystalspace ;
+ExternalLibs glshader_glsl : GL ;
+CompileGroups glshader_glsl : shaders renderers renderall openglrenderer ;
+}

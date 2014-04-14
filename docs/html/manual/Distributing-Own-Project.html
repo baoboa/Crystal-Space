@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.21 Distributing your Crystal Space Application</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.21 Distributing your Crystal Space Application">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.21 Distributing your Crystal Space Application">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Distributing-Own-Project"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="HOWTO-Setting-the-CRYSTAL-environment-variable.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="BugPlug.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h2 class="section"> 4.21 Distributing your Crystal Space Application </h2>
+
+<p>At some point, you'll probably want to distribute your application,
+including people without the Crystal Space development environment.
+</p>
+<p>This page is focusing on binary distribution. However, if you're distributing
+the source code as well, having a build system like the one created by the
+Jamtemplate's <em>createproject.sh</em> script is recommended
+(see section <a href="HOWTO-CS-Project.html#0">Creating an External Crystal Space Application</a>).
+</p>
+<a name="1"></a>
+<h4 class="subsubheading"> Required set of components </h4>
+<dl compact="compact">
+<dt> Your application files</dt>
+<dd><p>That is: any executable, data and configuration file specific to your
+application.
+</p></dd>
+<dt> Crystal Space libraries</dt>
+<dd><p>Files like <tt>&lsquo;libcrystalspace-X.Y.so&rsquo;</tt> and
+<tt>&lsquo;libcrystalspace_opengl-X.Y.so&rsquo;</tt> (check for <em>.dll</em> instead of
+<em>.so</em> on Windows platform) provide the base for Crystal Space support.
+</p></dd>
+<dt> Crystal Space plugins</dt>
+<dd><p>Your application uses a number of them. You'll have to identify which ones, or
+provide them all if in doubt. Note that bugplug's <kbd>Ctrl-Alt-l</kbd> can help
+to check which CS plugins are loaded.
+</p></dd>
+<dt> Crystal Space configuration files</dt>
+<dd>
+<ul>
+<li> <tt>&lsquo;vfs.cfg&rsquo;</tt>
+
+<p>Also found in the root crystalspace build directory, this tells the VFS system
+how to map virtual to real directories. You will often want to replace the
+default with your own version that includes VFS mappings for your application.
+See section <a href="VFS.html#0">Virtual File System (<small>VFS</small>)</a>.
+</p>
+</li><li> <tt>&lsquo;CS/data/config/&rsquo;</tt>
+
+<p>This directory contains configuration files for Crystal Space. Some of these,
+like application-specific files, are not necessary.
+Note that Crystal Space generally expects to find them in <tt>&lsquo;/config/&rsquo;</tt>
+VFS mount point.
+</p>
+</li></ul>
+</dd>
+<dt> Crystal Space shaders</dt>
+<dd>
+<p>Your application most certainly uses some of the shaders provided with
+Crystal Space. The easiest is to copy them all in your application's package.
+They are located in <tt>&lsquo;CS/data/shader/&rsquo;</tt>.
+Note that Crystal Space generally expects to find them in <tt>&lsquo;/shader/&rsquo;</tt>
+VFS mount point. 
+</p></dd>
+</dl>
+
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="HOWTO-Setting-the-CRYSTAL-environment-variable.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="BugPlug.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

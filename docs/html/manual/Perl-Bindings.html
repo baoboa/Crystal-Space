@@ -1,0 +1,419 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.18.3 Perl Bindings</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.18.3 Perl Bindings">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.18.3 Perl Bindings">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Perl-Bindings"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Java-Bindings.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Python-Bindings.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Scripting-Languages.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 4.18.3 Perl Bindings </h3>
+
+<p>Crystal Space is accessible from Perl in two ways: (1) as a Crystal Space
+plugin module in which C++ code can call upon Perl code, and in which Perl code
+can call upon Crystal Space; (2) as a pure Perl module named <tt>&lsquo;cspace&rsquo;</tt>
+which one can <samp>&lsquo;use&rsquo;</samp> from within Perl programs.  To use the first option,
+load the <tt>&lsquo;csperl5&rsquo;</tt> plugin as you would load any other Crystal Space
+plugin, and interact with it via the <small>SCF</small> interface <samp>&lsquo;iScript&rsquo;</samp>
+(see section <a href="iScript-Interface.html#0">The iScript Interface</a>).  The second approach allows you to write Crystal
+Space applications entirely in Perl, without any C++ coding.  The rest of this
+document pertains to the second method of using Crystal Space from Perl, though
+much of the discussion is meaningful to both methods.
+</p>
+<p>As well as this document, there also exists an example Perl script located at
+<tt>&lsquo;scripts/perl5/perlsimp.pl&rsquo;</tt>. It is basically the tutorial application
+<samp>&lsquo;simple1&rsquo;</samp> re-written in Perl, and it demonstrates many of the features
+discussed in this document.
+</p>
+<p>To make use of Crystal Space classes from a pure Perl script, first make sure
+that the file <samp>&lsquo;cspace.pm&rsquo;</samp> is available to Perl.  This file is installed
+at:
+</p>
+
+<p><code>${prefix}/share/crystalspace/bindings/perl5/cspace.pm</code>
+</p>
+
+<p>where <tt>&lsquo;${prefix}&rsquo;</tt> is the location at which Crystal Space was installed
+(typically, <tt>&lsquo;/usr/local&rsquo;</tt>). If you have not installed Crystal Space, then
+you can find this file in the top level build directory after building the
+project (the <tt>&lsquo;CS&rsquo;</tt> directory if you built and configured there).  There are
+several ways to tell Perl where this file resides. One way is to use the
+<samp>&lsquo;lib&rsquo;</samp> pragma within your Perl code:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">use lib &quot;$ENV{CRYSTAL}/share/crystalspace/bindings/perl5&quot;;
+</pre></td></tr></table>
+
+<p>You can also use Perl's <samp>&lsquo;-I&rsquo;</samp> command-line option to tell it the location
+of this file. Finally, you can set the <samp>&lsquo;PERL5LIB&rsquo;</samp> environment variable so
+that it mentions the directory containing <tt>&lsquo;cspace.pm&rsquo;</tt>. If you are using
+the Perl <small>SCF</small> plugin, then the correct directory will already be in the
+include list, so you need only call <code>iScript::LoadModule(&quot;cspace&quot;)</code>.
+</p>
+<p>In addition to the <samp>&lsquo;.pm&rsquo;</samp> file, there is also a shared library,
+<tt>&lsquo;cspace&rsquo;</tt>, which contains the low-level bindings between Perl and Crystal
+Space. On Unix and MacOS/X, this file is named <tt>&lsquo;cspace.so&rsquo;</tt>; on Windows it
+is named <tt>&lsquo;cspace.dll&rsquo;</tt>. The shared library file should reside in the same
+directory as the <tt>&lsquo;cspace.pm&rsquo;</tt> file. This happens automatically when you
+install Crystal Space (via <samp>&lsquo;make install&rsquo;</samp> or <samp>&lsquo;jam install&rsquo;</samp>). If you
+have not installed Crystal Space, then the shared library will be put in the
+top-level build directory, along with <tt>&lsquo;cspace.pm&rsquo;</tt>. The preferred location
+is <tt>&lsquo;scripts/perl5/&rsquo;</tt>, and <tt>&lsquo;cspace.pm&rsquo;</tt> and <tt>&lsquo;cspace.so&rsquo;</tt> can be
+copied there by doing <samp>&lsquo;jam perl5freeze&rsquo;</samp> and <samp>&lsquo;perl5freezeobj&rsquo;</samp>
+respectively.
+</p>
+<p>To actually utilize Crystal Space from within your script, begin with:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">use cspace;
+</pre></td></tr></table>
+<p>You may also import symbols and classes from the cspace module using the
+standard Perl syntax, for example:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">use cspace qw(csVector3 csMatrix3 CS_QUERY_REGISTRY SCF_QUERY_INTERFACE);
+</pre></td></tr></table>
+<p>Classes will be imported into the <code>main::</code> namespace, while other symbols
+will be imported into the namespace of the current package. This will enable
+you to use these symbols and classes without using the <code>cspace::</code> prefix.
+</p>
+<a name="1"></a>
+<h3 class="subheading"> Getting Started </h3>
+
+<p>To get started with pure Perl scripts, you probably want to know how to
+initialize Crystal Space and obtain an <samp>&lsquo;iObjectRegistry&rsquo;</samp> pointer:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">my $object_reg = cspace::csInitializer::CreateEnvironment([$0, @ARGV]);
+</pre></td></tr></table>
+<p>If you are utilizing the Crystal Space Perl bindings module from within the
+Perl scripting plugin <samp>&lsquo;iScript&rsquo;</samp> implementation, and
+<code>CreateEnvironment()</code> has already been called by C++ code, then the
+<samp>&lsquo;iObjectRegistry&rsquo;</samp> will already be accessible to Perl code through
+<code>$cspace::object_reg</code>.
+</p>
+<a name="2"></a>
+<h3 class="subheading"> Objects </h3>
+
+<p>To create an object instance, use the <samp>&lsquo;new&rsquo;</samp> method:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">my $vect = new cspace::csVector3(1, 2, 3);
+</pre></td></tr></table>
+<p>The object will be deleted automatically when it goes out of scope.  Perl also
+has built-in reference counting, so if the object is still referenced in some
+other Perl code when one reference goes out of scope, it will continue to exist
+until there are no more references to it in Perl.
+</p>
+<p>There are three ways to access object properties:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">print $vect-&gt;x;			# Preferred way, conforms to Perl convention
+print $vect-&gt;{'x'};		# Swig default way
+print $vect-&gt;swig_x_get();	# Swig alternate way
+</pre></td></tr></table>
+
+<p>And, three ways to modify object properties:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">$vect-&gt;x(3.14);			# Preferred way, conforms to Perl convention
+$vect-&gt;{'x'} = 3.14;		# Swig default way
+$vect-&gt;swig_x_set(3.14);	# Swig alternate way
+</pre></td></tr></table>
+
+<p>Calling methods works as you might expect:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">$vect-&gt;Norm();
+</pre></td></tr></table>
+<a name="3"></a>
+<h3 class="subheading"> Arrays </h3>
+
+<p>Wherever an array is expected, and wherever an array is returned, in or from
+a Crystal Space C++ function, a Perl array reference is used.
+</p>
+<a name="4"></a>
+<h3 class="subheading"> Strings </h3>
+
+<p>Most of the methods of <samp>&lsquo;csString&rsquo;</samp> and <samp>&lsquo;iString&rsquo;</samp> are inaccessible
+from Perl code, but these classes can be converted into Perl strings very
+easily, using string interpolation:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">my $string_object = new cspace::csString ('This is a csString');
+
+print &quot;$string_object that has been interpolated in double-quotes.\n&quot;;
+
+# Output:
+# This is a csString that has been interpolated in double-quotes.
+</pre></td></tr></table>
+<p>This also applies to <samp>&lsquo;iDataBuffer&rsquo;</samp>.
+</p>
+<p>To pass the null pointer as a char* argument, use Perl's <code>undef</code> keyword.
+</p>
+<a name="5"></a>
+<h3 class="subheading"> Vectors, Matrices and Colors </h3>
+
+<p>By using the array dereference operator on a <samp>&lsquo;csVector2&rsquo;</samp> or
+<samp>&lsquo;csVector3&rsquo;</samp>, one will obtain a Perl array containing the components of
+the vector:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">my $vector = new cspace::csVector3 (1, 2, 3);
+
+print $vector-&gt;[0] . $vector-&gt;[1] . $vector-&gt;[2] . &quot;\n&quot;;
+
+my @reversed = reverse @$vector;
+print &quot;@reversed\n&quot;;
+
+# Output:
+# 123
+# 3 2 1
+</pre></td></tr></table>
+<p>Similarly, using the array dereference operator on a <samp>&lsquo;csColor&rsquo;</samp>,
+<samp>&lsquo;csColor4&rsquo;</samp>, <samp>&lsquo;csRGBcolor&rsquo;</samp> or <samp>&lsquo;csRGBpixel&rsquo;</samp> will yield a Perl
+array containing the red, green and blue components, and the alpha component
+if present.
+</p>
+<p>With a <samp>&lsquo;csMatrix2&rsquo;</samp> or <samp>&lsquo;csMatrix3&rsquo;</samp>, the array dereference will
+return a Perl two-dimensional array (&quot;array of arrays&quot;) holding the components
+of the matrix.
+</p>
+<a name="6"></a>
+<h3 class="subheading"> Operator Overloading </h3>
+
+<p>The Crystal Space Perl module supports the following overloaded operators for
+objects:
+<code>+ - * / % ++ -- == != &gt; &lt; &amp;&amp; ||</code>
+</p>
+<p>Those declared in C++ as friend functions will not be available.
+</p>
+<a name="7"></a>
+<h3 class="subheading"> Interface Pointers </h3>
+
+<p>Suppose you call a function that returns a pointer to some <small>SCF</small> interface.
+You can store the returned value in a variable, and use it similarly to how
+objects are used in Perl (see above). You can call methods in the same
+way, and pass them on to other functions as arguments where appropriate.
+</p>
+<p>The Perl bindings automatically and correctly handle <code>csRef&lt;&gt;</code> and
+<code>csPtr&lt;&gt;</code>.
+</p>
+<p>The null pointer is represented in Perl by the <code>undef</code> keyword.
+</p>
+<a name="8"></a>
+<h3 class="subheading"> Event Handling </h3>
+
+<p>In C++, the class method
+<code>csInitializer::SetupEventHandler(object_reg, func_ptr, event_types)</code>
+allows one to register a function pointer callback that will be called by the
+event queue when handling certain types of events. In Perl, a subroutine
+reference may be passed to this method in place of the function pointer.
+</p>
+<p>This subroutine, when called, will be passed a single parameter: an object of
+type <samp>&lsquo;iEvent&rsquo;</samp>. It is expected to return <code>true</code> if the event was
+handled, or <code>false</code> if it was not.
+</p>
+<p>The third parameter to <code>SetupEventHandler</code> is optional, and will be a
+reference to an array of strings specifying event types. These strings will
+automatically be translated into <samp>&lsquo;csStringID&rsquo;</samp> using the event name
+registry. If not specified, all types of event will be passed to the callback.
+</p>
+<a name="9"></a>
+<h3 class="subheading"> Implementing Interfaces </h3>
+
+<p>You can write your own Perl class and have it inherit from a Crystal Space
+interface, then use instances of that class wherever an implementation of that
+interface is expected. Currently this feature is supported for the interfaces
+<samp>&lsquo;iEventHandler&rsquo;</samp> and <samp>&lsquo;iEventPlug&rsquo;</samp> but it is easy to add support for
+more.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">package MyPerlEventHandler;
+@ISA = qw( cspace::iEventHandler );
+sub new
+{
+  my $x = {};
+  bless($x, &quot;MyPerlEventHandler&quot;);
+  return $x;
+}
+sub HandleEvent
+{
+  my ($self, $event) = @_;
+  # your event handler here...
+}
+
+package main;
+my $eventq = cspace::CS_QUERY_REGISTRY($object_reg, &quot;iEventQueue&quot;);
+my $handler = new MyPerlEventHandler ();
+$eventq-&gt;RegisterListener($handler);
+</pre></td></tr></table>
+<a name="10"></a>
+<h3 class="subheading"> Special Cases </h3>
+
+<p>Take note of the following special cases.
+</p>
+<a name="11"></a>
+<h4 class="subsubheading"> Macros Accepting Interfaces as Parameters </h4>
+
+<p>In Perl, Crystal Space macros that take interface names as parameters&mdash;for
+instance <code>CS_QUERY_REGISTRY()</code>&mdash;take interface names as strings:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">my $engine = cspace::CS_QUERY_REGISTRY($object_reg, 'iEngine');
+</pre></td></tr></table>
+
+<p>This differs from the <code>CS_QUERY_REGISTRY()</code> macro in C++ in which
+<samp>&lsquo;iEngine&rsquo;</samp> would not be quoted.
+</p>
+<a name="12"></a>
+<h4 class="subsubheading"> <code>csRGBpixel</code> </h4>
+
+<p>To convert a <samp>&lsquo;csRGBpixel&rsquo;</samp> to a <samp>&lsquo;csRGBcolor&rsquo;</samp>, use the
+<code>csRGBpixel::asRGBcolor()</code> method:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">my $color = $pixel-&gt;asRGBcolor();
+</pre></td></tr></table>
+<a name="13"></a>
+<h4 class="subsubheading"> <code>iSprite2DState</code> </h4>
+
+<p><samp>&lsquo;iSprite2DState&rsquo;</samp> has an extra method in Perl, <code>GetVertexByIndex()</code>,
+which accepts a single integer parameter (an array index) and returns a
+<samp>&lsquo;csSprite2DVertex&rsquo;</samp> from the sprite's array of vertices.
+</p>
+<a name="14"></a>
+<h4 class="subsubheading"> <code>iEvent</code> </h4>
+
+<p>The overloaded <code>iEvent::Add()</code> and <code>Retrieve()</code> methods are
+replaced in Perl with ones given names which explicitly specify the types
+of their parameters (since otherwise Perl would not know which C++ function to
+call):
+</p>
+<ul>
+<li>
+<code>AddInt8()</code>
+</li><li>
+<code>AddInt16()</code>
+</li><li>
+<code>AddInt32()</code>
+</li><li>
+<code>AddUInt8()</code>
+</li><li>
+<code>AddUInt16()</code>
+</li><li>
+<code>AddUInt32()</code>
+</li><li>
+<code>AddFloat()</code>
+</li><li>
+<code>AddDouble()</code>
+</li><li>
+<code>AddString()</code>
+</li><li>
+<code>AddBool()</code>
+</li><li>
+<code>AddVoidPtr()</code>
+</li><li>
+<code>RetrieveInt8()</code>
+</li><li>
+<code>RetrieveInt16()</code>
+</li><li>
+<code>RetrieveInt32()</code>
+</li><li>
+<code>RetrieveUInt8()</code>
+</li><li>
+<code>RetrieveUInt16()</code>
+</li><li>
+<code>RetrieveUInt32()</code>
+</li><li>
+<code>RetrieveFloat()</code>
+</li><li>
+<code>RetrieveDouble()</code>
+</li><li>
+<code>RetrieveString()</code>
+</li><li>
+<code>RetrieveBool()</code>
+</li><li>
+<code>RetrieveVoidPtr()</code>
+</li></ul>
+
+<a name="15"></a>
+<h4 class="subsubheading"> Renamed Methods </h4>
+
+<p>To workaround some shortcomings of Swig, a few methods from C++ have been
+renamed for Perl. These are:
+</p>
+<ul>
+<li>
+<code>Classify(const csPlane3&amp;, csVector3*, int)</code> becomes <code>ClassifyPolygon</code>
+</li><li>
+<code>ComputeNormal(csVector3*, int)</code> becomes <code>ComputePolygonNormal</code>
+</li><li>
+<code>ComputePlane(csVector3*, int)</code> becomes <code>ComputePolygonPlane</code>
+</li></ul>
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Java-Bindings.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Python-Bindings.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Scripting-Languages.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

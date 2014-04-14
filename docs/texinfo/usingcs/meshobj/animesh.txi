@@ -1,0 +1,252 @@
+@c -*-texinfo-*-
+@node MeshObject Animesh, MeshObject TerrFunc, MeshObject Genmesh, MeshObject
+@subsection Animesh Mesh Object
+@cindex AniMesh
+
+The Animesh is the main mesh of Crystal Space dedicated to skeletal animation.
+It can be animated by deforming its envelope, either by changing the pose of its
+skeleton, and through the morphing of its vertices. It is well suited for characters,
+but it can also be used in other contexts, e.g. for vehicles or animated objects
+such as simple doors or complex castle gates.
+
+@subsubheading Basic Structure
+
+The following @sc{scf} class names are used (for @code{csLoadPlugin}):
+
+@itemize @bullet
+@item
+Type plugin: @code{crystalspace.mesh.object.animesh}
+@item
+Loader plugin: @code{crystalspace.mesh.loader.animesh}
+@item
+Factory loader plugin: @code{crystalspace.mesh.loader.factory.animesh}
+@end itemize
+
+Objects in this plugin implement the following @sc{scf} interfaces, which you
+can retrieve with @code{scfQueryInterface}:
+
+@itemize @bullet
+@item
+@emph{MeshObject}
+@itemize @bullet
+@item
+Implements @samp{iMeshObject}
+@item
+Implements @samp{CS::Mesh::iAnimatedMesh}
+@end itemize
+@item
+@emph{MeshObjectFactory}
+@itemize @bullet
+@item
+Implements @samp{iMeshObjectFactory}
+@item
+Implements @samp{CS::Mesh::iAnimatedMeshFactory}
+@end itemize
+@item
+@emph{MeshObjectType}
+@itemize @bullet
+@item
+Implements @samp{iMeshObjectType}
+@end itemize
+@end itemize
+
+@menu
+* Animesh General:: General concepts of the Animesh
+* Animesh Tools:: The Animated Mesh Tools
+@end menu
+
+@node Animesh General, Animesh Tools, MeshObject Animesh, MeshObject Animesh
+@subsubsection General concepts of the Animesh
+
+This section presents the general concepts that are used to define an Animesh.
+
+@subsubheading The envelope
+
+An animesh is at first made of an envelope defining its shape, i.e. a set of vertices
+and triangles defining the shape of the mesh. Similarly to a @ref{MeshObject Genmesh, Genmesh},
+it will hold render buffers for the vertices, the triangles, the normals, the UV mapping,
+the colors, the tangents and the binormals.
+
+@subsubheading The animation packet
+
+The animation packets are defined by the classes @code{CS::Animation::iSkeletonAnimPacket}
+and @code{CS::Animation::iSkeletonAnimPacketFactory}.
+
+Animation packets are logical sets of animations, animation nodes, and skeletons that
+can be loaded or unloaded at once. Only one animation packet can be set per Animesh,
+but animations and animation nodes can link to some data in other animation packets,
+so several packets can coexist at the same time for a given Animesh.
+
+That's the animation packet of the Animesh that will define the skeleton in use, you
+must therefore pass by the animation packet if you want to get access to the skeleton
+of the Animesh.
+
+@subsubheading The skeleton
+
+The skeleton is defined by the classes @code{CS::Animation::iSkeleton} and
+@code{CS::Animation::iSkeletonFactory}.
+
+The skeleton of an Animesh is a tree of articulated bones that can be positioned
+separately. Changing the pose of the skeleton of an Animesh will affect the envelope
+of the mesh accordingly. Although the skeleton can be posed manually, it is generally
+animated through an @ref{Animation Blending Trees, animation blending tree}.
+
+Every bones of a skeleton must have one parent and can have any number of child bones.
+The root of the skeleton is an exception since it has a null parent (i.e. the ID of its
+parent is @code{CS::Animation::InvalidBoneID}).
+
+It is allowed to have several root bones in the skeleton, a skeleton is therefore a
+graph of bones of the @cite{forest} type, not only a tree of bones.
+
+If you want to iterate on all the bones of a skeleton, one of the better way to do it
+is to use the method @code{CS::Animation::iSkeletonFactory::GetBoneOrderList()}. This
+method will return the ordered list of all the bones, and will insure both that all the
+bones that you manipulate are created, and that for a given bone, all children and
+sub-children bones are treated after the bone (or before, depending on the direction
+that you use to iterate on the elements of the list). 
+
+@subsubheading Skeleton coordinate spaces
+
+Several coordinate spaces are defined regardless the skeleton and its bones. These are:
+
+@itemize @bullet
+@item
+@samp{Absolute space}: it is defined by the origin of the Animesh. A transform in
+absolute space is therefore relative to the transform of the mesh, whatever the pose of
+the skeleton.
+@item
+@samp{Bone space}: it is defined by the origin of the parent of a given bone in the
+skeleton factory. A transform in bone space is therefore relative to the transform of the
+parent of a bone when the skeleton is in its default pose.
+@item
+@samp{Bind space}: it is defined by the origin of a given bone when it is in its default
+pose. A transform in bind space is therefore relative to the transform of a bone when the
+skeleton is in its default pose.
+@end itemize
+
+The transform of the bones can be get or set using either of these coordinate spaces.
+
+@subsubheading Bone influences
+
+In order to deform the envelope of the mesh, i.e. to modify its vertices, normals and
+bitangents, one must define the bone influences over the vertices of the mesh. This defines
+in which proportion each vertex of the mesh should be moved regardless the motion of the
+bones of the skeleton.
+
+The bone influences are defined by selecting up to four bones for each vertex, and by
+attributing a weight to these bones in order to define in which proportion they affect the
+vertex. For each vertex, the total sum of each bone weight must be equal or inferior to one.
+If it is inferior to one, then the vertex will simply be mainly affected by the position of
+the mesh.
+
+@subsubheading Sub-meshes
+
+Similarly to a @ref{MeshObject Genmesh, Genmesh}, an Animesh can be split in several
+sub-meshes that can be displayed separately and with different materials and display properties.
+This allows to use several materials on a single Animesh, as well as to set up some Level of
+Detail management, e.g. by enabling or not the visibility of each sub-mesh.
+
+A sub-mesh is defined by the list of the triangles of the envelope of the mesh that are
+part of it.
+
+@subsubheading Morph targets
+
+The morph targets are defined by the class @code{CS::Mesh::iAnimatedMeshMorphTarget}.
+
+Along with the deformation of the envelope made when changing the pose of the skeleton, the
+envelope can also be deformed by morphing its vertices. In that goal, one can define morph
+targets (a.k.a. blend shapes) that are variations of the positions of the vertices of the
+Animesh. This is useful e.g. to animate the face of a character.
+
+Morph targets are activated by assigning them a weight different than zero. Weigths are
+generally supposed to be used in the range between zero and one, one being the morph target
+fully active, but there are no technical obstruction to use a very different value, even a
+negative one. Various morph targets can be activated at the same time in order to compose
+more complex deformations.
+
+In order to speed up the morphing process, as well as to reduce the amount of data needed
+to define a morph target, the vertices of an Animesh are split in several subsets, and the
+morph targets are defined against these subsets. This is not mandatory to provide manually
+these subsets, and Crystal Space will compute them internally if they are not provided,
+resulting mainly in a slower loading time.
+
+@subsubheading The skinning process
+
+Every time that the pose of the skeleton or the weight of a morph target is changed, the
+deformation of the envelope must be re-computed through a step called the skinning process.
+During that process, the position of the vertices, as well as the normals, tangents and
+binormals if they are used, are re-computed depending of the bones and morph targets
+affecting them. Crystal Space uses a higher quality dual quaternion skinning in order to
+preserve the volume of the envelope.
+
+The skinning process is computed by default on the CPU but can be delegated on the
+GPU using a dedicated skinning vertex shader, this is however not yet supported natively
+by Crystal Space.
+
+@subsubheading Bone bounding boxes
+
+In order to speed up the update of the global bounding box of the mesh, as well as the
+collisions and hit beam tests over an Animesh, separate bounding boxes are defined for each
+bone of the skeleton. Each of these bounding boxes should cover the whole part of the
+envelope linked to the given bone, i.e. all the vertices that are affected by this bone.
+
+Again, this is not mandatory to provide manually these bone bounding boxes, and Crystal Space
+will compute them internally if they are not provided, the main drawback being a slower
+loading time.
+
+@subsubheading Sockets
+
+The sockets are defined by the classes @code{CS::Mesh::iAnimatedMeshSocket} and
+@code{CS::Mesh::iAnimatedMeshSocketFactory}.
+
+Sockets can be defined on some bones of an Animesh. This allows to attach external meshes
+to an Animesh and to have them follow the motion of a given bone, e.g. for a hat, some
+clothes, or an object in the hands.
+
+@subsubheading Decals
+
+@ref{Decals} are images that are projected on top of the mesh, allowing to personalize it
+easily. They can be added on Animeshes just like on any other mesh types supporting them,
+and they will be updated automatically to match the deformations of the Animesh.
+
+An example of setting of decals can be found in the @samp{avatartest} application, in the
+@samp{Frankie} scene.
+
+@subsubheading Clothes and Props
+
+Clothes and props can be attached to an animesh, and be animated physically, either through
+rigid or soft bodies.
+
+To achieve this, you need to use the @samp{Ragdoll} animation node in order to create and
+manage the rigid bodies of the skeleton that will be used to attach your clothes or props.
+
+For soft bodies, you would need to use the dedicated Genmesh animation controller, that will
+deform the mesh depending on the physical simulation.
+
+An example of setting of clothes can be found in the @samp{avatartest} application, in the
+@samp{Krystal} scene.
+
+@subsubheading Hairs and Fur
+
+Hairs and fur can be added using the @ref{MeshObject Furmesh, fur mesh}.
+
+@subsubheading The Body Mesh
+
+The body mesh is defined by the classes @code{CS::Animation::iBodySkeleton} and associated.
+
+The body mesh holds the physical description of the skeleton of an animesh. For each relevant
+bone of the skeleton, one has to define a @code{CS::Animation::iBodyBone} that will hold the
+colliders, joint and other physical properties of the bone. Subtrees of the skeleton are
+defined through the @code{CS::Animation::iBodyChain} object. 
+
+The body mesh is used in several animation nodes such as the @samp{Ragdoll} and the
+@samp{LookAt}.
+
+@subsubheading Creating and importing Animesh meshes
+
+The main ways to import an Animesh into Crystal Space is either through the
+@ref{Blender, Blender} export script, or the @ref{Assimp importer, Assimp loader}.
+
+@subsubheading Animating Animesh meshes
+
+See the @ref{Animation Blending Trees, specific section on that topic}.

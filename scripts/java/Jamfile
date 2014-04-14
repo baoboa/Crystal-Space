@@ -1,0 +1,10 @@
+SubDir TOP scripts java ;
+
+if $(JAVA.AVAILABLE) = "yes"
+{
+  JAVA_DATAFILES = [ Wildcard *.java *.jar ] ;
+  if $(JAVA_DATAFILES)
+  {
+    InstallData $(JAVA_DATAFILES) : bindings java ;
+  }
+}

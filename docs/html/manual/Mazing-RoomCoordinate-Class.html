@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.2.4.4 RoomCoordinate Class</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.2.4.4 RoomCoordinate Class">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.2.4.4 RoomCoordinate Class">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Mazing-RoomCoordinate-Class"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Mazing-Constants.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Mazing-Maze-Class.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Tutorial-Mazing.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h4 class="subsubsection"> 4.2.4.4 RoomCoordinate Class </h4>
+
+<p>This is a very simple class that keeps track of a coordinate in the maze:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">class RoomCoordinate
+{
+public:
+  int x, y, z;
+  RoomCoordinate () : x (0), y (0), z (0) { }
+  RoomCoordinate (int x, int y, int z) : x (x), y (y), z (z) { }
+  RoomCoordinate (const RoomCoordinate&amp; rc) : x (rc.x), y (rc.y), z (rc.z) { }
+# ifdef CS_DEBUG
+  static bool IsValid (int x, int y, int z)
+  {
+    return (x &gt;= 0 &amp;&amp; x &lt; MAZE_DIMENSION &amp;&amp;
+	    y &gt;= 0 &amp;&amp; y &lt; MAZE_DIMENSION &amp;&amp;
+	    z &gt;= 0 &amp;&amp; z &lt; MAZE_DIMENSION);
+  }
+  bool IsValid () const
+  {
+    return IsValid (x, y, z);
+  }
+# endif
+};
+</pre></td></tr></table>
+<p>One special thing in this class is the usage of the <samp>&lsquo;CS_DEBUG&rsquo;</samp> define.
+When your application is compiled in debug mode this define will be set. This
+means that you can do additional checks in debug mode that will disappear
+in optimize/release mode. This is very useful during development.
+</p>
+<hr size="1">
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

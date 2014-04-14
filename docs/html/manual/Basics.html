@@ -1,0 +1,209 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.18.4.5 Basics</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.18.4.5 Basics">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.18.4.5 Basics">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Basics"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="General-Information.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="CEGUI.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Python-Bindings.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h4 class="subsubsection"> 4.18.4.5 Basics </h4>
+
+<p>This section instructs you on how &quot;the crystal way&quot; works from python. This is, how you can access interfaces, query object registry plugins, access engine lists and so on.
+</p>
+<a name="1"></a>
+<h3 class="subheading"> Accessing the object registry </h3>
+
+<p>In crystalspace there is a central registry that keeps track of loaded plugins. You will normally use it for just one thing: getting pointers to loaded plugins.
+</p>
+<p>So, the first thing you need will be to get the object registry handle (or at least know where it is).
+</p>
+<p>In situations when you didnt initialize crystalspace yourself, it will be stored in the cspace module as: cspace.object_reg.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example"># cs is already loaded.
+import cspace
+ObjectRegistry = cspace.object_reg
+</pre></td></tr></table>
+<p>If you created the cs environment from python, it will be the returned value from csInitializer.CreateEnvironment().
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">import cspace
+import sys
+ObjectRegistry = cspace.csInitializer.CreateEnvironment(sys.argv)
+
+if not ObjectRegistry:
+    print &quot;Fatal error! Couldn't create the environment&quot;
+
+# Note at this point you still have to initialize a lot of things to make
+# crystalspace load all its plugins, maybe load a world and so on, check
+# the tutorials for information about this.
+</pre></td></tr></table>
+<a name="2"></a>
+<h3 class="subheading"> Querying from the object registry </h3>
+
+<p>Once you have the object registry handle, you can query it by using its Get function.
+</p>
+<p>Here follows an example where object registry is used to query the engine:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">import cspace
+
+# Get a nice handle for the registry
+ObjectRegistry = cspace.object_reg # assumes environment was setup by cspython
+
+# Query the iEngine plugin
+engine = ObjectRegistry.Get(cspace.iEngine)
+
+</pre></td></tr></table>
+<p>If you are familiar with the c++ api, you know it's done with a special template for convenience. In python the original api becomes usable, plus the template syntax doesnt translate nicely, so you just use <code>ObjectRegistry.Get</code>.
+</p>
+<a name="3"></a>
+<h3 class="subheading"> Engine object lists </h3>
+<p>Normally, you will need to use the engine to query meshes, factories and so on.
+</p>
+<p>You do this by using its api to get the list, and then use the list as a python list that you can query by name, index, or iterate.
+</p>
+<p>Building on the previous example:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">from cspace import csVector3
+from random import random
+
+# iterate all meshes, and print their names
+meshes = engine.GetMeshes()
+for mesh in meshes:
+    print &quot; * a mesh&quot;,mesh.QueryObject().GetName()
+
+# get a certain mesh, and set its position.
+if &quot;Cube&quot; in meshes:
+    amesh = meshes[&quot;Cube&quot;]
+
+    # Set the mesh position to some random value
+    v = csVector3(random(),random(),random())
+    amesh.GetMovable().SetPosition(v)
+
+</pre></td></tr></table>
+
+<a name="4"></a>
+<h3 class="subheading"> Querying an interface from an object </h3>
+<p>Finally, cs objects usually implement many interfaces, and sometimes you need
+to access them in order to control specific functionality from a generic handle.
+</p>
+<p>This is done by using the QueryInterface function in the object:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">sub_obj = some_cs_obj.QueryInterface(iSomeInterface)
+</pre></td></tr></table>
+<p>Note in c++ this is done using a special template for convenience, but in python the original interface already works nicely.
+</p>
+<p>For example, a mesh from the engine mesh list can be a particle system, or a general mesh, both with very different capabilities, normally you get an <code>iMeshWrapper</code> from the engine list, which is a generic interface for all mesh types the engine handles.
+</p>
+<p>In this case, the mesh would implement <code>iGeneralMeshState</code> if it is a general mesh, or <code>iParticleSystem</code> for a particle system (or none of both if it belongs to neither group).
+</p>
+<p>The following is a example illustrating how to look through all meshes in the engine, check if they are particles or genmesh, and for each use a function from the api, note, again, we are reusing symbols from the previous examples, and only importing new ones, in order to keep the new ideas easier to see:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">from cspace import iParticleSystem, iGeneralMeshState
+
+for mesh in meshes:
+    # cant really be both, but favouring clarity over efficiency
+    # both queries are done anyways
+    partsys = mesh.QueryInterface(iParticleSystem)
+    genstate = mesh.QueryInterface(iGeneralMeshState)
+
+    # if its a particle system, get the first emitter, and sets its
+    # rate to 10000
+    if partsys:
+        if partsys.GetEmitterCount ():
+            emitter = partsys.GetEmitter(0)
+            emitter.SetEmissionRate(1000)
+    elif genstate:
+        genstate.SetLighting(False)
+    # this is advanced part for this example, you can ignore:
+    else:
+        print &quot;This is not a particle system or genmesh&quot;
+        print &quot;Supports the following interfaces:&quot;
+        for iface_metadata in mesh.GetInterfaceMetadata():
+            print &quot; * &quot;+iface_metadata.interfaceName
+
+</pre></td></tr></table>
+<p>Note how you can use iBase's GetInterfaceMetadata to find out interfaces an
+object supports, although you generally don't need to do this.
+</p>
+
+
+
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="General-Information.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="CEGUI.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Python-Bindings.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

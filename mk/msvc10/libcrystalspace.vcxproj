@@ -1,0 +1,1906 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="ReleaseWithStaticLibs|Win32">
+      <Configuration>ReleaseWithStaticLibs</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="ReleaseWithDlls|Win32">
+      <Configuration>ReleaseWithDlls</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="DebugWithStaticLibs|Win32">
+      <Configuration>DebugWithStaticLibs</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="DebugWithDlls|Win32">
+      <Configuration>DebugWithDlls</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MemoryTrackerWithStaticLibs|Win32">
+      <Configuration>MemoryTrackerWithStaticLibs</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MemoryTrackerWithDlls|Win32">
+      <Configuration>MemoryTrackerWithDlls</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RefTrackerWithStaticLibs|Win32">
+      <Configuration>RefTrackerWithStaticLibs</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RefTrackerWithDlls|Win32">
+      <Configuration>RefTrackerWithDlls</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="ThreadCheckerWithStaticLibs|Win32">
+      <Configuration>ThreadCheckerWithStaticLibs</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="ThreadCheckerWithDlls|Win32">
+      <Configuration>ThreadCheckerWithDlls</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="ReleaseWithStaticLibs|x64">
+      <Configuration>ReleaseWithStaticLibs</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="ReleaseWithDlls|x64">
+      <Configuration>ReleaseWithDlls</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="DebugWithStaticLibs|x64">
+      <Configuration>DebugWithStaticLibs</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="DebugWithDlls|x64">
+      <Configuration>DebugWithDlls</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MemoryTrackerWithStaticLibs|x64">
+      <Configuration>MemoryTrackerWithStaticLibs</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MemoryTrackerWithDlls|x64">
+      <Configuration>MemoryTrackerWithDlls</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RefTrackerWithStaticLibs|x64">
+      <Configuration>RefTrackerWithStaticLibs</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RefTrackerWithDlls|x64">
+      <Configuration>RefTrackerWithDlls</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="ThreadCheckerWithStaticLibs|x64">
+      <Configuration>ThreadCheckerWithStaticLibs</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="ThreadCheckerWithDlls|x64">
+      <Configuration>ThreadCheckerWithDlls</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{94434FE9-3277-7608-522B-0BEBB7690B41}</ProjectGuid>
+    <SccProjectName />
+    <SccLocalPath />
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)'=='ReleaseWithStaticLibs'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='ReleaseWithDlls'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='DebugWithStaticLibs'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='DebugWithDlls'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='MemoryTrackerWithStaticLibs'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='MemoryTrackerWithDlls'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='RefTrackerWithStaticLibs'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='RefTrackerWithDlls'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='ThreadCheckerWithStaticLibs'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='ThreadCheckerWithDlls'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Platform)'=='Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Platform)'=='x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='ReleaseWithStaticLibs|Win32'">false</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleaseWithStaticLibs|Win32'">..\..\out\release10\libs\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='ReleaseWithStaticLibs|Win32'">..\..\out\release10\build\libcrystalspace\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='ReleaseWithStaticLibs|Win32'">libcrystalspace</TargetName>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='ReleaseWithDlls|Win32'">false</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleaseWithDlls|Win32'">..\..\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='ReleaseWithDlls|Win32'">..\..\out\release10\build\libcrystalspace\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='ReleaseWithDlls|Win32'">crystalspace-2.1-vc10</TargetName>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='DebugWithStaticLibs|Win32'">true</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='DebugWithStaticLibs|Win32'">..\..\out\debug10\libs\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='DebugWithStaticLibs|Win32'">..\..\out\debug10\build\libcrystalspace\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='DebugWithStaticLibs|Win32'">libcrystalspace_d</TargetName>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='DebugWithDlls|Win32'">true</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='DebugWithDlls|Win32'">..\..\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='DebugWithDlls|Win32'">..\..\out\debug10\build\libcrystalspace\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='DebugWithDlls|Win32'">crystalspace-2.1-vc10_d</TargetName>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='MemoryTrackerWithStaticLibs|Win32'">true</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MemoryTrackerWithStaticLibs|Win32'">..\..\out\debug10\libs\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MemoryTrackerWithStaticLibs|Win32'">..\..\out\debug10\build\libcrystalspace\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='MemoryTrackerWithStaticLibs|Win32'">libcrystalspace_d</TargetName>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='MemoryTrackerWithDlls|Win32'">true</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MemoryTrackerWithDlls|Win32'">..\..\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MemoryTrackerWithDlls|Win32'">..\..\out\debug10\build\libcrystalspace\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='MemoryTrackerWithDlls|Win32'">crystalspace-2.1-vc10_d</TargetName>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='RefTrackerWithStaticLibs|Win32'">true</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RefTrackerWithStaticLibs|Win32'">..\..\out\debug10\libs\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RefTrackerWithStaticLibs|Win32'">..\..\out\debug10\build\libcrystalspace\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='RefTrackerWithStaticLibs|Win32'">libcrystalspace_d</TargetName>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='RefTrackerWithDlls|Win32'">true</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RefTrackerWithDlls|Win32'">..\..\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RefTrackerWithDlls|Win32'">..\..\out\debug10\build\libcrystalspace\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='RefTrackerWithDlls|Win32'">crystalspace-2.1-vc10_d</TargetName>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='ThreadCheckerWithStaticLibs|Win32'">true</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='ThreadCheckerWithStaticLibs|Win32'">..\..\out\debug10\libs\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='ThreadCheckerWithStaticLibs|Win32'">..\..\out\debug10\build\libcrystalspace\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='ThreadCheckerWithStaticLibs|Win32'">libcrystalspace_d</TargetName>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='ThreadCheckerWithDlls|Win32'">true</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='ThreadCheckerWithDlls|Win32'">..\..\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='ThreadCheckerWithDlls|Win32'">..\..\out\debug10\build\libcrystalspace\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='ThreadCheckerWithDlls|Win32'">crystalspace-2.1-vc10_d</TargetName>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='ReleaseWithStaticLibs|x64'">false</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleaseWithStaticLibs|x64'">..\..\out\release10-x64\libs\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='ReleaseWithStaticLibs|x64'">..\..\out\release10-x64\build\libcrystalspace\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='ReleaseWithStaticLibs|x64'">libcrystalspace</TargetName>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='ReleaseWithDlls|x64'">false</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleaseWithDlls|x64'">..\..\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='ReleaseWithDlls|x64'">..\..\out\release10-x64\build\libcrystalspace\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='ReleaseWithDlls|x64'">crystalspace-2.1-vc10-x64</TargetName>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='DebugWithStaticLibs|x64'">true</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='DebugWithStaticLibs|x64'">..\..\out\debug10-x64\libs\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='DebugWithStaticLibs|x64'">..\..\out\debug10-x64\build\libcrystalspace\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='DebugWithStaticLibs|x64'">libcrystalspace_d</TargetName>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='DebugWithDlls|x64'">true</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='DebugWithDlls|x64'">..\..\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='DebugWithDlls|x64'">..\..\out\debug10-x64\build\libcrystalspace\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='DebugWithDlls|x64'">crystalspace-2.1-vc10-x64_d</TargetName>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='MemoryTrackerWithStaticLibs|x64'">true</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MemoryTrackerWithStaticLibs|x64'">..\..\out\debug10-x64\libs\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MemoryTrackerWithStaticLibs|x64'">..\..\out\debug10-x64\build\libcrystalspace\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='MemoryTrackerWithStaticLibs|x64'">libcrystalspace_d</TargetName>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='MemoryTrackerWithDlls|x64'">true</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MemoryTrackerWithDlls|x64'">..\..\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MemoryTrackerWithDlls|x64'">..\..\out\debug10-x64\build\libcrystalspace\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='MemoryTrackerWithDlls|x64'">crystalspace-2.1-vc10-x64_d</TargetName>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='RefTrackerWithStaticLibs|x64'">true</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RefTrackerWithStaticLibs|x64'">..\..\out\debug10-x64\libs\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RefTrackerWithStaticLibs|x64'">..\..\out\debug10-x64\build\libcrystalspace\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='RefTrackerWithStaticLibs|x64'">libcrystalspace_d</TargetName>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='RefTrackerWithDlls|x64'">true</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RefTrackerWithDlls|x64'">..\..\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RefTrackerWithDlls|x64'">..\..\out\debug10-x64\build\libcrystalspace\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='RefTrackerWithDlls|x64'">crystalspace-2.1-vc10-x64_d</TargetName>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='ThreadCheckerWithStaticLibs|x64'">true</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='ThreadCheckerWithStaticLibs|x64'">..\..\out\debug10-x64\libs\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='ThreadCheckerWithStaticLibs|x64'">..\..\out\debug10-x64\build\libcrystalspace\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='ThreadCheckerWithStaticLibs|x64'">libcrystalspace_d</TargetName>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='ThreadCheckerWithDlls|x64'">true</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='ThreadCheckerWithDlls|x64'">..\..\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='ThreadCheckerWithDlls|x64'">..\..\out\debug10-x64\build\libcrystalspace\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='ThreadCheckerWithDlls|x64'">crystalspace-2.1-vc10-x64_d</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseWithStaticLibs|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <StringPooling>true</StringPooling>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <ProgramDataBaseFileName>..\..\out\release10\build\libcrystalspace\Win32\crystalspace.pdb</ProgramDataBaseFileName>
+      <PreprocessorDefinitions>NDEBUG;CS_WIN32_CSCONFIG;__CRYSTAL_SPACE__;CS_SUPPORTS_MMX;CS_CRYSTALSPACE_LIB;CS_COMPILER_NAME_AND_VERSION="VC_10";WIN32;CS_USE_STATIC_LIBS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions>/MP  %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>.;..\..\winlibs\x86\include;..\..\win32libs\include;..\..;..\..\include;..\..\libs\csutil\ptmalloc\sysdeps\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeaderOutputFile>..\..\out\release10\build\libcrystalspace\libcrystalspace.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>..\..\out\release10\build\libcrystalspace\</AssemblerListingLocation>
+      <ObjectFileName>..\..\out\release10\build\libcrystalspace\</ObjectFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <CompileAs>Default</CompileAs>
+    </ClCompile>
+    <Link>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>LIBC;LIBCD;LIBCMT;LIBCMTD;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <AdditionalOptions>  %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <AdditionalLibraryDirectories>..\..\winlibs\x86\lib;..\..\win32libs\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <TargetMachine>MachineX86</TargetMachine>
+      <LargeAddressAware>true</LargeAddressAware>
+    </Link>
+    <Lib>
+      <OutputFile>..\..\out\release10\libs\libcrystalspace.lib</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Lib>
+    <PostBuildEvent>
+      <Command>md ..\..\out\release10\bin 2&gt; nul
+copy /y "$(TargetPath)" ..\..\out\release10\bin\
+</Command>
+    </PostBuildEvent>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;CS_WIN32_CSCONFIG;__CRYSTAL_SPACE__;CS_SUPPORTS_MMX;CS_CRYSTALSPACE_LIB;CS_COMPILER_NAME_AND_VERSION="VC_10";PROJECTGEN_VERSION=10;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.;..\..\libs;..\..\winlibs\x86\include;..\..\win32libs\include;..\..;..\..\include;..\..\libs\csutil\ptmalloc\sysdeps\win32</AdditionalIncludeDirectories>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseWithDlls|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <StringPooling>true</StringPooling>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <ProgramDataBaseFileName>..\..\out\release10\build\libcrystalspace\Win32\crystalspace-2.1-vc10.pdb</ProgramDataBaseFileName>
+      <PreprocessorDefinitions>NDEBUG;CS_WIN32_CSCONFIG;__CRYSTAL_SPACE__;CS_SUPPORTS_MMX;_WINDOWS;CS_CRYSTALSPACE_LIB;CS_COMPILER_NAME_AND_VERSION="VC_10";WIN32;CS_USE_SHARED_LIBS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions>/MP  %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>.;..\..\winlibs\x86\include;..\..\win32libs\include;..\..;..\..\include;..\..\libs\csutil\ptmalloc\sysdeps\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeaderOutputFile>..\..\out\release10\build\libcrystalspace\libcrystalspace.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>..\..\out\release10\build\libcrystalspace\</AssemblerListingLocation>
+      <ObjectFileName>..\..\out\release10\build\libcrystalspace\</ObjectFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <CompileAs>Default</CompileAs>
+    </ClCompile>
+    <Link>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>LIBC;LIBCD;LIBCMT;LIBCMTD;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <OutputFile>..\..\crystalspace-2.1-vc10.dll</OutputFile>
+      <ImportLibrary>..\..\out\release10\libs\libcrystalspace.lib</ImportLibrary>
+      <ProgramDatabaseFile>..\..\out\release10\build\libcrystalspace\Win32\crystalspace-2.1-vc10.pdb</ProgramDatabaseFile>
+      <AdditionalOptions>  %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <AdditionalLibraryDirectories>..\..\winlibs\x86\lib;..\..\win32libs\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <TargetMachine>MachineX86</TargetMachine>
+      <LargeAddressAware>true</LargeAddressAware>
+    </Link>
+    <Lib>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Lib>
+    <PostBuildEvent>
+      <Command>md ..\..\out\release10\bin 2&gt; nul
+copy /y "$(TargetPath)" ..\..\out\release10\bin\
+</Command>
+    </PostBuildEvent>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;CS_WIN32_CSCONFIG;__CRYSTAL_SPACE__;CS_SUPPORTS_MMX;_WINDOWS;CS_CRYSTALSPACE_LIB;CS_COMPILER_NAME_AND_VERSION="VC_10";PROJECTGEN_VERSION=10;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.;..\..\libs;..\..\winlibs\x86\include;..\..\win32libs\include;..\..;..\..\include;..\..\libs\csutil\ptmalloc\sysdeps\win32</AdditionalIncludeDirectories>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugWithStaticLibs|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <MinimalRebuild>true</MinimalRebuild>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <ProgramDataBaseFileName>..\..\out\debug10\build\libcrystalspace\Win32\crystalspace.pdb</ProgramDataBaseFileName>
+      <PreprocessorDefinitions>_DEBUG;CS_DEBUG;CS_WIN32_CSCONFIG;__CRYSTAL_SPACE__;CS_SUPPORTS_MMX;CS_CRYSTALSPACE_LIB;CS_COMPILER_NAME_AND_VERSION="VC_10";WIN32;CS_USE_STATIC_LIBS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions>  %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>.;..\..\winlibs\x86\include;..\..\win32libs\include;..\..;..\..\include;..\..\libs\csutil\ptmalloc\sysdeps\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeaderOutputFile>..\..\out\debug10\build\libcrystalspace\libcrystalspace.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>..\..\out\debug10\build\libcrystalspace\</AssemblerListingLocation>
+      <ObjectFileName>..\..\out\debug10\build\libcrystalspace\</ObjectFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <CompileAs>Default</CompileAs>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>LIBC;LIBCD;LIBCMT;LIBCMTD;MSVCRT;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <AdditionalOptions>  %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <AdditionalLibraryDirectories>..\..\winlibs\x86\lib;..\..\win32libs\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <TargetMachine>MachineX86</TargetMachine>
+      <LargeAddressAware>true</LargeAddressAware>
+    </Link>
+    <Lib>
+      <OutputFile>..\..\out\debug10\libs\libcrystalspace_d.lib</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Lib>
+    <PostBuildEvent>
+      <Command>md ..\..\out\debug10\bin 2&gt; nul
+copy /y "$(TargetPath)" ..\..\out\debug10\bin\
+</Command>
+    </PostBuildEvent>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;CS_DEBUG;CS_WIN32_CSCONFIG;__CRYSTAL_SPACE__;CS_SUPPORTS_MMX;CS_CRYSTALSPACE_LIB;CS_COMPILER_NAME_AND_VERSION="VC_10";PROJECTGEN_VERSION=10;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.;..\..\libs;..\..\winlibs\x86\include;..\..\win32libs\include;..\..;..\..\include;..\..\libs\csutil\ptmalloc\sysdeps\win32</AdditionalIncludeDirectories>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugWithDlls|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <MinimalRebuild>true</MinimalRebuild>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <ProgramDataBaseFileName>..\..\out\debug10\build\libcrystalspace\Win32\crystalspace-2.1-vc10_d.pdb</ProgramDataBaseFileName>
+      <PreprocessorDefinitions>_DEBUG;CS_DEBUG;CS_WIN32_CSCONFIG;__CRYSTAL_SPACE__;CS_SUPPORTS_MMX;_WINDOWS;CS_CRYSTALSPACE_LIB;CS_COMPILER_NAME_AND_VERSION="VC_10";WIN32;CS_USE_SHARED_LIBS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions>  %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>.;..\..\winlibs\x86\include;..\..\win32libs\include;..\..;..\..\include;..\..\libs\csutil\ptmalloc\sysdeps\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeaderOutputFile>..\..\out\debug10\build\libcrystalspace\libcrystalspace.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>..\..\out\debug10\build\libcrystalspace\</AssemblerListingLocation>
+      <ObjectFileName>..\..\out\debug10\build\libcrystalspace\</ObjectFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <CompileAs>Default</CompileAs>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>LIBC;LIBCD;LIBCMT;LIBCMTD;MSVCRT;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <OutputFile>..\..\crystalspace-2.1-vc10_d.dll</OutputFile>
+      <ImportLibrary>..\..\out\debug10\libs\libcrystalspace_d.lib</ImportLibrary>
+      <ProgramDatabaseFile>..\..\out\debug10\build\libcrystalspace\Win32\crystalspace-2.1-vc10_d.pdb</ProgramDatabaseFile>
+      <AdditionalOptions>  %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <AdditionalLibraryDirectories>..\..\winlibs\x86\lib;..\..\win32libs\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <TargetMachine>MachineX86</TargetMachine>
+      <LargeAddressAware>true</LargeAddressAware>
+    </Link>
+    <Lib>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Lib>
+    <PostBuildEvent>
+      <Command>md ..\..\out\debug10\bin 2&gt; nul
+copy /y "$(TargetPath)" ..\..\out\debug10\bin\
+</Command>
+    </PostBuildEvent>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;CS_DEBUG;CS_WIN32_CSCONFIG;__CRYSTAL_SPACE__;CS_SUPPORTS_MMX;_WINDOWS;CS_CRYSTALSPACE_LIB;CS_COMPILER_NAME_AND_VERSION="VC_10";PROJECTGEN_VERSION=10;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.;..\..\libs;..\..\winlibs\x86\include;..\..\win32libs\include;..\..;..\..\include;..\..\libs\csutil\ptmalloc\sysdeps\win32</AdditionalIncludeDirectories>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MemoryTrackerWithStaticLibs|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <MinimalRebuild>true</MinimalRebuild>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <ProgramDataBaseFileName>..\..\out\debug10\build\libcrystalspace\Win32\crystalspace.pdb</ProgramDataBaseFileName>
+      <PreprocessorDefinitions>_DEBUG;CS_DEBUG;CS_WIN32_CSCONFIG;__CRYSTAL_SPACE__;CS_SUPPORTS_MMX;CS_MEMORY_TRACKER;CS_CRYSTALSPACE_LIB;CS_COMPILER_NAME_AND_VERSION="VC_10";WIN32;CS_USE_STATIC_LIBS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions>  %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>.;..\..\winlibs\x86\include;..\..\win32libs\include;..\..;..\..\include;..\..\libs\csutil\ptmalloc\sysdeps\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeaderOutputFile>..\..\out\debug10\build\libcrystalspace\libcrystalspace.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>..\..\out\debug10\build\libcrystalspace\</AssemblerListingLocation>
+      <ObjectFileName>..\..\out\debug10\build\libcrystalspace\</ObjectFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <CompileAs>Default</CompileAs>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>LIBC;LIBCD;LIBCMT;LIBCMTD;MSVCRT;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <AdditionalOptions>  %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <AdditionalLibraryDirectories>..\..\winlibs\x86\lib;..\..\win32libs\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <TargetMachine>MachineX86</TargetMachine>
+      <LargeAddressAware>true</LargeAddressAware>
+    </Link>
+    <Lib>
+      <OutputFile>..\..\out\debug10\libs\libcrystalspace_d.lib</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Lib>
+    <PostBuildEvent>
+      <Command>md ..\..\out\debug10\bin 2&gt; nul
+copy /y "$(TargetPath)" ..\..\out\debug10\bin\
+</Command>
+    </PostBuildEvent>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;CS_DEBUG;CS_WIN32_CSCONFIG;__CRYSTAL_SPACE__;CS_SUPPORTS_MMX;CS_MEMORY_TRACKER;CS_CRYSTALSPACE_LIB;CS_COMPILER_NAME_AND_VERSION="VC_10";PROJECTGEN_VERSION=10;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.;..\..\libs;..\..\winlibs\x86\include;..\..\win32libs\include;..\..;..\..\include;..\..\libs\csutil\ptmalloc\sysdeps\win32</AdditionalIncludeDirectories>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MemoryTrackerWithDlls|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <MinimalRebuild>true</MinimalRebuild>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <ProgramDataBaseFileName>..\..\out\debug10\build\libcrystalspace\Win32\crystalspace-2.1-vc10_d.pdb</ProgramDataBaseFileName>
+      <PreprocessorDefinitions>_DEBUG;CS_DEBUG;CS_WIN32_CSCONFIG;__CRYSTAL_SPACE__;CS_SUPPORTS_MMX;CS_MEMORY_TRACKER;_WINDOWS;CS_CRYSTALSPACE_LIB;CS_COMPILER_NAME_AND_VERSION="VC_10";WIN32;CS_USE_SHARED_LIBS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions>  %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>.;..\..\winlibs\x86\include;..\..\win32libs\include;..\..;..\..\include;..\..\libs\csutil\ptmalloc\sysdeps\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeaderOutputFile>..\..\out\debug10\build\libcrystalspace\libcrystalspace.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>..\..\out\debug10\build\libcrystalspace\</AssemblerListingLocation>
+      <ObjectFileName>..\..\out\debug10\build\libcrystalspace\</ObjectFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <CompileAs>Default</CompileAs>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>LIBC;LIBCD;LIBCMT;LIBCMTD;MSVCRT;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <OutputFile>..\..\crystalspace-2.1-vc10_d.dll</OutputFile>
+      <ImportLibrary>..\..\out\debug10\libs\libcrystalspace_d.lib</ImportLibrary>
+      <ProgramDatabaseFile>..\..\out\debug10\build\libcrystalspace\Win32\crystalspace-2.1-vc10_d.pdb</ProgramDatabaseFile>
+      <AdditionalOptions>  %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <AdditionalLibraryDirectories>..\..\winlibs\x86\lib;..\..\win32libs\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <TargetMachine>MachineX86</TargetMachine>
+      <LargeAddressAware>true</LargeAddressAware>
+    </Link>
+    <Lib>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Lib>
+    <PostBuildEvent>
+      <Command>md ..\..\out\debug10\bin 2&gt; nul
+copy /y "$(TargetPath)" ..\..\out\debug10\bin\
+</Command>
+    </PostBuildEvent>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;CS_DEBUG;CS_WIN32_CSCONFIG;__CRYSTAL_SPACE__;CS_SUPPORTS_MMX;CS_MEMORY_TRACKER;_WINDOWS;CS_CRYSTALSPACE_LIB;CS_COMPILER_NAME_AND_VERSION="VC_10";PROJECTGEN_VERSION=10;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.;..\..\libs;..\..\winlibs\x86\include;..\..\win32libs\include;..\..;..\..\include;..\..\libs\csutil\ptmalloc\sysdeps\win32</AdditionalIncludeDirectories>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RefTrackerWithStaticLibs|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <MinimalRebuild>true</MinimalRebuild>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <ProgramDataBaseFileName>..\..\out\debug10\build\libcrystalspace\Win32\crystalspace.pdb</ProgramDataBaseFileName>
+      <PreprocessorDefinitions>_DEBUG;CS_DEBUG;CS_WIN32_CSCONFIG;__CRYSTAL_SPACE__;CS_SUPPORTS_MMX;CS_REF_TRACKER;CS_CRYSTALSPACE_LIB;CS_COMPILER_NAME_AND_VERSION="VC_10";WIN32;CS_USE_STATIC_LIBS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions>  %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>.;..\..\winlibs\x86\include;..\..\win32libs\include;..\..;..\..\include;..\..\libs\csutil\ptmalloc\sysdeps\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeaderOutputFile>..\..\out\debug10\build\libcrystalspace\libcrystalspace.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>..\..\out\debug10\build\libcrystalspace\</AssemblerListingLocation>
+      <ObjectFileName>..\..\out\debug10\build\libcrystalspace\</ObjectFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <CompileAs>Default</CompileAs>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>LIBC;LIBCD;LIBCMT;LIBCMTD;MSVCRT;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <AdditionalOptions>  %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <AdditionalLibraryDirectories>..\..\winlibs\x86\lib;..\..\win32libs\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <TargetMachine>MachineX86</TargetMachine>
+      <LargeAddressAware>true</LargeAddressAware>
+    </Link>
+    <Lib>
+      <OutputFile>..\..\out\debug10\libs\libcrystalspace_d.lib</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Lib>
+    <PostBuildEvent>
+      <Command>md ..\..\out\debug10\bin 2&gt; nul
+copy /y "$(TargetPath)" ..\..\out\debug10\bin\
+</Command>
+    </PostBuildEvent>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;CS_DEBUG;CS_WIN32_CSCONFIG;__CRYSTAL_SPACE__;CS_SUPPORTS_MMX;CS_REF_TRACKER;CS_CRYSTALSPACE_LIB;CS_COMPILER_NAME_AND_VERSION="VC_10";PROJECTGEN_VERSION=10;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.;..\..\libs;..\..\winlibs\x86\include;..\..\win32libs\include;..\..;..\..\include;..\..\libs\csutil\ptmalloc\sysdeps\win32</AdditionalIncludeDirectories>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RefTrackerWithDlls|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <MinimalRebuild>true</MinimalRebuild>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <ProgramDataBaseFileName>..\..\out\debug10\build\libcrystalspace\Win32\crystalspace-2.1-vc10_d.pdb</ProgramDataBaseFileName>
+      <PreprocessorDefinitions>_DEBUG;CS_DEBUG;CS_WIN32_CSCONFIG;__CRYSTAL_SPACE__;CS_SUPPORTS_MMX;CS_REF_TRACKER;_WINDOWS;CS_CRYSTALSPACE_LIB;CS_COMPILER_NAME_AND_VERSION="VC_10";WIN32;CS_USE_SHARED_LIBS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions>  %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>.;..\..\winlibs\x86\include;..\..\win32libs\include;..\..;..\..\include;..\..\libs\csutil\ptmalloc\sysdeps\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeaderOutputFile>..\..\out\debug10\build\libcrystalspace\libcrystalspace.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>..\..\out\debug10\build\libcrystalspace\</AssemblerListingLocation>
+      <ObjectFileName>..\..\out\debug10\build\libcrystalspace\</ObjectFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <CompileAs>Default</CompileAs>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>LIBC;LIBCD;LIBCMT;LIBCMTD;MSVCRT;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <OutputFile>..\..\crystalspace-2.1-vc10_d.dll</OutputFile>
+      <ImportLibrary>..\..\out\debug10\libs\libcrystalspace_d.lib</ImportLibrary>
+      <ProgramDatabaseFile>..\..\out\debug10\build\libcrystalspace\Win32\crystalspace-2.1-vc10_d.pdb</ProgramDatabaseFile>
+      <AdditionalOptions>  %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <AdditionalLibraryDirectories>..\..\winlibs\x86\lib;..\..\win32libs\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <TargetMachine>MachineX86</TargetMachine>
+      <LargeAddressAware>true</LargeAddressAware>
+    </Link>
+    <Lib>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Lib>
+    <PostBuildEvent>
+      <Command>md ..\..\out\debug10\bin 2&gt; nul
+copy /y "$(TargetPath)" ..\..\out\debug10\bin\
+</Command>
+    </PostBuildEvent>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;CS_DEBUG;CS_WIN32_CSCONFIG;__CRYSTAL_SPACE__;CS_SUPPORTS_MMX;CS_REF_TRACKER;_WINDOWS;CS_CRYSTALSPACE_LIB;CS_COMPILER_NAME_AND_VERSION="VC_10";PROJECTGEN_VERSION=10;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.;..\..\libs;..\..\winlibs\x86\include;..\..\win32libs\include;..\..;..\..\include;..\..\libs\csutil\ptmalloc\sysdeps\win32</AdditionalIncludeDirectories>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ThreadCheckerWithStaticLibs|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <MinimalRebuild>true</MinimalRebuild>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <ProgramDataBaseFileName>..\..\out\debug10\build\libcrystalspace\Win32\crystalspace.pdb</ProgramDataBaseFileName>
+      <PreprocessorDefinitions>_DEBUG;CS_DEBUG;CS_WIN32_CSCONFIG;__CRYSTAL_SPACE__;CS_SUPPORTS_MMX;CS_THREAD_CHECKER;CS_CRYSTALSPACE_LIB;CS_COMPILER_NAME_AND_VERSION="VC_10";WIN32;CS_USE_STATIC_LIBS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions>  %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>.;..\..\winlibs\x86\include;..\..\win32libs\include;..\..;..\..\include;..\..\libs\csutil\ptmalloc\sysdeps\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeaderOutputFile>..\..\out\debug10\build\libcrystalspace\libcrystalspace.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>..\..\out\debug10\build\libcrystalspace\</AssemblerListingLocation>
+      <ObjectFileName>..\..\out\debug10\build\libcrystalspace\</ObjectFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <CompileAs>Default</CompileAs>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>LIBC;LIBCD;LIBCMT;LIBCMTD;MSVCRT;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <AdditionalOptions>  %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <AdditionalLibraryDirectories>..\..\winlibs\x86\lib;..\..\win32libs\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <TargetMachine>MachineX86</TargetMachine>
+      <LargeAddressAware>true</LargeAddressAware>
+    </Link>
+    <Lib>
+      <OutputFile>..\..\out\debug10\libs\libcrystalspace_d.lib</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Lib>
+    <PostBuildEvent>
+      <Command>md ..\..\out\debug10\bin 2&gt; nul
+copy /y "$(TargetPath)" ..\..\out\debug10\bin\
+</Command>
+    </PostBuildEvent>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;CS_DEBUG;CS_WIN32_CSCONFIG;__CRYSTAL_SPACE__;CS_SUPPORTS_MMX;CS_THREAD_CHECKER;CS_CRYSTALSPACE_LIB;CS_COMPILER_NAME_AND_VERSION="VC_10";PROJECTGEN_VERSION=10;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.;..\..\libs;..\..\winlibs\x86\include;..\..\win32libs\include;..\..;..\..\include;..\..\libs\csutil\ptmalloc\sysdeps\win32</AdditionalIncludeDirectories>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ThreadCheckerWithDlls|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <MinimalRebuild>true</MinimalRebuild>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <ProgramDataBaseFileName>..\..\out\debug10\build\libcrystalspace\Win32\crystalspace-2.1-vc10_d.pdb</ProgramDataBaseFileName>
+      <PreprocessorDefinitions>_DEBUG;CS_DEBUG;CS_WIN32_CSCONFIG;__CRYSTAL_SPACE__;CS_SUPPORTS_MMX;CS_THREAD_CHECKER;_WINDOWS;CS_CRYSTALSPACE_LIB;CS_COMPILER_NAME_AND_VERSION="VC_10";WIN32;CS_USE_SHARED_LIBS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions>  %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>.;..\..\winlibs\x86\include;..\..\win32libs\include;..\..;..\..\include;..\..\libs\csutil\ptmalloc\sysdeps\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeaderOutputFile>..\..\out\debug10\build\libcrystalspace\libcrystalspace.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>..\..\out\debug10\build\libcrystalspace\</AssemblerListingLocation>
+      <ObjectFileName>..\..\out\debug10\build\libcrystalspace\</ObjectFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <CompileAs>Default</CompileAs>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>LIBC;LIBCD;LIBCMT;LIBCMTD;MSVCRT;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <OutputFile>..\..\crystalspace-2.1-vc10_d.dll</OutputFile>
+      <ImportLibrary>..\..\out\debug10\libs\libcrystalspace_d.lib</ImportLibrary>
+      <ProgramDatabaseFile>..\..\out\debug10\build\libcrystalspace\Win32\crystalspace-2.1-vc10_d.pdb</ProgramDatabaseFile>
+      <AdditionalOptions>  %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <AdditionalLibraryDirectories>..\..\winlibs\x86\lib;..\..\win32libs\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <TargetMachine>MachineX86</TargetMachine>
+      <LargeAddressAware>true</LargeAddressAware>
+    </Link>
+    <Lib>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Lib>
+    <PostBuildEvent>
+      <Command>md ..\..\out\debug10\bin 2&gt; nul
+copy /y "$(TargetPath)" ..\..\out\debug10\bin\
+</Command>
+    </PostBuildEvent>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;CS_DEBUG;CS_WIN32_CSCONFIG;__CRYSTAL_SPACE__;CS_SUPPORTS_MMX;CS_THREAD_CHECKER;_WINDOWS;CS_CRYSTALSPACE_LIB;CS_COMPILER_NAME_AND_VERSION="VC_10";PROJECTGEN_VERSION=10;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.;..\..\libs;..\..\winlibs\x86\include;..\..\win32libs\include;..\..;..\..\include;..\..\libs\csutil\ptmalloc\sysdeps\win32</AdditionalIncludeDirectories>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseWithStaticLibs|x64'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <StringPooling>true</StringPooling>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <ProgramDataBaseFileName>..\..\out\release10-x64\build\libcrystalspace\x64\crystalspace.pdb</ProgramDataBaseFileName>
+      <PreprocessorDefinitions>NDEBUG;CS_WIN32_CSCONFIG;__CRYSTAL_SPACE__;CS_SUPPORTS_MMX;CS_CRYSTALSPACE_LIB;CS_COMPILER_NAME_AND_VERSION="VC_10";WIN32;CS_USE_STATIC_LIBS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions>/MP  %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>.;..\..\winlibs\x64\include;..\..\win32libs\include;..\..;..\..\include;..\..\libs\csutil\ptmalloc\sysdeps\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeaderOutputFile>..\..\out\release10-x64\build\libcrystalspace\libcrystalspace.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>..\..\out\release10-x64\build\libcrystalspace\</AssemblerListingLocation>
+      <ObjectFileName>..\..\out\release10-x64\build\libcrystalspace\</ObjectFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <CompileAs>Default</CompileAs>
+    </ClCompile>
+    <Link>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>LIBC;LIBCD;LIBCMT;LIBCMTD;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <AdditionalOptions>  %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <AdditionalLibraryDirectories>..\..\winlibs\x64\lib;..\..\win32libs\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <TargetMachine>MachineX64</TargetMachine>
+      <LargeAddressAware>true</LargeAddressAware>
+    </Link>
+    <Lib>
+      <OutputFile>..\..\out\release10-x64\libs\libcrystalspace.lib</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Lib>
+    <PostBuildEvent>
+      <Command>md ..\..\out\release10-x64\bin 2&gt; nul
+copy /y "$(TargetPath)" ..\..\out\release10-x64\bin\
+</Command>
+    </PostBuildEvent>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;CS_WIN32_CSCONFIG;__CRYSTAL_SPACE__;CS_SUPPORTS_MMX;CS_CRYSTALSPACE_LIB;CS_COMPILER_NAME_AND_VERSION="VC_10";_WIN64;PROJECTGEN_VERSION=10;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.;..\..\libs;..\..\winlibs\x64\include;..\..\win32libs\include;..\..;..\..\include;..\..\libs\csutil\ptmalloc\sysdeps\win32</AdditionalIncludeDirectories>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseWithDlls|x64'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <StringPooling>true</StringPooling>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <ProgramDataBaseFileName>..\..\out\release10-x64\build\libcrystalspace\x64\crystalspace-2.1-vc10-x64.pdb</ProgramDataBaseFileName>
+      <PreprocessorDefinitions>NDEBUG;CS_WIN32_CSCONFIG;__CRYSTAL_SPACE__;CS_SUPPORTS_MMX;_WINDOWS;CS_CRYSTALSPACE_LIB;CS_COMPILER_NAME_AND_VERSION="VC_10";WIN32;CS_USE_SHARED_LIBS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions>/MP  %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>.;..\..\winlibs\x64\include;..\..\win32libs\include;..\..;..\..\include;..\..\libs\csutil\ptmalloc\sysdeps\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeaderOutputFile>..\..\out\release10-x64\build\libcrystalspace\libcrystalspace.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>..\..\out\release10-x64\build\libcrystalspace\</AssemblerListingLocation>
+      <ObjectFileName>..\..\out\release10-x64\build\libcrystalspace\</ObjectFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <CompileAs>Default</CompileAs>
+    </ClCompile>
+    <Link>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>LIBC;LIBCD;LIBCMT;LIBCMTD;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <OutputFile>..\..\crystalspace-2.1-vc10-x64.dll</OutputFile>
+      <ImportLibrary>..\..\out\release10-x64\libs\libcrystalspace.lib</ImportLibrary>
+      <ProgramDatabaseFile>..\..\out\release10-x64\build\libcrystalspace\x64\crystalspace-2.1-vc10-x64.pdb</ProgramDatabaseFile>
+      <AdditionalOptions>  %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <AdditionalLibraryDirectories>..\..\winlibs\x64\lib;..\..\win32libs\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <TargetMachine>MachineX64</TargetMachine>
+      <LargeAddressAware>true</LargeAddressAware>
+    </Link>
+    <Lib>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Lib>
+    <PostBuildEvent>
+      <Command>md ..\..\out\release10-x64\bin 2&gt; nul
+copy /y "$(TargetPath)" ..\..\out\release10-x64\bin\
+</Command>
+    </PostBuildEvent>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;CS_WIN32_CSCONFIG;__CRYSTAL_SPACE__;CS_SUPPORTS_MMX;_WINDOWS;CS_CRYSTALSPACE_LIB;CS_COMPILER_NAME_AND_VERSION="VC_10";_WIN64;PROJECTGEN_VERSION=10;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.;..\..\libs;..\..\winlibs\x64\include;..\..\win32libs\include;..\..;..\..\include;..\..\libs\csutil\ptmalloc\sysdeps\win32</AdditionalIncludeDirectories>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugWithStaticLibs|x64'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <MinimalRebuild>true</MinimalRebuild>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <ProgramDataBaseFileName>..\..\out\debug10-x64\build\libcrystalspace\x64\crystalspace.pdb</ProgramDataBaseFileName>
+      <PreprocessorDefinitions>_DEBUG;CS_DEBUG;CS_WIN32_CSCONFIG;__CRYSTAL_SPACE__;CS_SUPPORTS_MMX;CS_CRYSTALSPACE_LIB;CS_COMPILER_NAME_AND_VERSION="VC_10";WIN32;CS_USE_STATIC_LIBS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions>  %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>.;..\..\winlibs\x64\include;..\..\win32libs\include;..\..;..\..\include;..\..\libs\csutil\ptmalloc\sysdeps\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeaderOutputFile>..\..\out\debug10-x64\build\libcrystalspace\libcrystalspace.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>..\..\out\debug10-x64\build\libcrystalspace\</AssemblerListingLocation>
+      <ObjectFileName>..\..\out\debug10-x64\build\libcrystalspace\</ObjectFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <CompileAs>Default</CompileAs>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>LIBC;LIBCD;LIBCMT;LIBCMTD;MSVCRT;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <AdditionalOptions>  %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <AdditionalLibraryDirectories>..\..\winlibs\x64\lib;..\..\win32libs\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <TargetMachine>MachineX64</TargetMachine>
+      <LargeAddressAware>true</LargeAddressAware>
+    </Link>
+    <Lib>
+      <OutputFile>..\..\out\debug10-x64\libs\libcrystalspace_d.lib</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Lib>
+    <PostBuildEvent>
+      <Command>md ..\..\out\debug10-x64\bin 2&gt; nul
+copy /y "$(TargetPath)" ..\..\out\debug10-x64\bin\
+</Command>
+    </PostBuildEvent>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;CS_DEBUG;CS_WIN32_CSCONFIG;__CRYSTAL_SPACE__;CS_SUPPORTS_MMX;CS_CRYSTALSPACE_LIB;CS_COMPILER_NAME_AND_VERSION="VC_10";_WIN64;PROJECTGEN_VERSION=10;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.;..\..\libs;..\..\winlibs\x64\include;..\..\win32libs\include;..\..;..\..\include;..\..\libs\csutil\ptmalloc\sysdeps\win32</AdditionalIncludeDirectories>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugWithDlls|x64'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <MinimalRebuild>true</MinimalRebuild>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <ProgramDataBaseFileName>..\..\out\debug10-x64\build\libcrystalspace\x64\crystalspace-2.1-vc10-x64_d.pdb</ProgramDataBaseFileName>
+      <PreprocessorDefinitions>_DEBUG;CS_DEBUG;CS_WIN32_CSCONFIG;__CRYSTAL_SPACE__;CS_SUPPORTS_MMX;_WINDOWS;CS_CRYSTALSPACE_LIB;CS_COMPILER_NAME_AND_VERSION="VC_10";WIN32;CS_USE_SHARED_LIBS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions>  %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>.;..\..\winlibs\x64\include;..\..\win32libs\include;..\..;..\..\include;..\..\libs\csutil\ptmalloc\sysdeps\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeaderOutputFile>..\..\out\debug10-x64\build\libcrystalspace\libcrystalspace.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>..\..\out\debug10-x64\build\libcrystalspace\</AssemblerListingLocation>
+      <ObjectFileName>..\..\out\debug10-x64\build\libcrystalspace\</ObjectFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <CompileAs>Default</CompileAs>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>LIBC;LIBCD;LIBCMT;LIBCMTD;MSVCRT;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <OutputFile>..\..\crystalspace-2.1-vc10-x64_d.dll</OutputFile>
+      <ImportLibrary>..\..\out\debug10-x64\libs\libcrystalspace_d.lib</ImportLibrary>
+      <ProgramDatabaseFile>..\..\out\debug10-x64\build\libcrystalspace\x64\crystalspace-2.1-vc10-x64_d.pdb</ProgramDatabaseFile>
+      <AdditionalOptions>  %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <AdditionalLibraryDirectories>..\..\winlibs\x64\lib;..\..\win32libs\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <TargetMachine>MachineX64</TargetMachine>
+      <LargeAddressAware>true</LargeAddressAware>
+    </Link>
+    <Lib>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Lib>
+    <PostBuildEvent>
+      <Command>md ..\..\out\debug10-x64\bin 2&gt; nul
+copy /y "$(TargetPath)" ..\..\out\debug10-x64\bin\
+</Command>
+    </PostBuildEvent>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;CS_DEBUG;CS_WIN32_CSCONFIG;__CRYSTAL_SPACE__;CS_SUPPORTS_MMX;_WINDOWS;CS_CRYSTALSPACE_LIB;CS_COMPILER_NAME_AND_VERSION="VC_10";_WIN64;PROJECTGEN_VERSION=10;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.;..\..\libs;..\..\winlibs\x64\include;..\..\win32libs\include;..\..;..\..\include;..\..\libs\csutil\ptmalloc\sysdeps\win32</AdditionalIncludeDirectories>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MemoryTrackerWithStaticLibs|x64'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <MinimalRebuild>true</MinimalRebuild>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <ProgramDataBaseFileName>..\..\out\debug10-x64\build\libcrystalspace\x64\crystalspace.pdb</ProgramDataBaseFileName>
+      <PreprocessorDefinitions>_DEBUG;CS_DEBUG;CS_WIN32_CSCONFIG;__CRYSTAL_SPACE__;CS_SUPPORTS_MMX;CS_MEMORY_TRACKER;CS_CRYSTALSPACE_LIB;CS_COMPILER_NAME_AND_VERSION="VC_10";WIN32;CS_USE_STATIC_LIBS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions>  %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>.;..\..\winlibs\x64\include;..\..\win32libs\include;..\..;..\..\include;..\..\libs\csutil\ptmalloc\sysdeps\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeaderOutputFile>..\..\out\debug10-x64\build\libcrystalspace\libcrystalspace.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>..\..\out\debug10-x64\build\libcrystalspace\</AssemblerListingLocation>
+      <ObjectFileName>..\..\out\debug10-x64\build\libcrystalspace\</ObjectFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <CompileAs>Default</CompileAs>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>LIBC;LIBCD;LIBCMT;LIBCMTD;MSVCRT;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <AdditionalOptions>  %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <AdditionalLibraryDirectories>..\..\winlibs\x64\lib;..\..\win32libs\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <TargetMachine>MachineX64</TargetMachine>
+      <LargeAddressAware>true</LargeAddressAware>
+    </Link>
+    <Lib>
+      <OutputFile>..\..\out\debug10-x64\libs\libcrystalspace_d.lib</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Lib>
+    <PostBuildEvent>
+      <Command>md ..\..\out\debug10-x64\bin 2&gt; nul
+copy /y "$(TargetPath)" ..\..\out\debug10-x64\bin\
+</Command>
+    </PostBuildEvent>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;CS_DEBUG;CS_WIN32_CSCONFIG;__CRYSTAL_SPACE__;CS_SUPPORTS_MMX;CS_MEMORY_TRACKER;CS_CRYSTALSPACE_LIB;CS_COMPILER_NAME_AND_VERSION="VC_10";_WIN64;PROJECTGEN_VERSION=10;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.;..\..\libs;..\..\winlibs\x64\include;..\..\win32libs\include;..\..;..\..\include;..\..\libs\csutil\ptmalloc\sysdeps\win32</AdditionalIncludeDirectories>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MemoryTrackerWithDlls|x64'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <MinimalRebuild>true</MinimalRebuild>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <ProgramDataBaseFileName>..\..\out\debug10-x64\build\libcrystalspace\x64\crystalspace-2.1-vc10-x64_d.pdb</ProgramDataBaseFileName>
+      <PreprocessorDefinitions>_DEBUG;CS_DEBUG;CS_WIN32_CSCONFIG;__CRYSTAL_SPACE__;CS_SUPPORTS_MMX;CS_MEMORY_TRACKER;_WINDOWS;CS_CRYSTALSPACE_LIB;CS_COMPILER_NAME_AND_VERSION="VC_10";WIN32;CS_USE_SHARED_LIBS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions>  %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>.;..\..\winlibs\x64\include;..\..\win32libs\include;..\..;..\..\include;..\..\libs\csutil\ptmalloc\sysdeps\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeaderOutputFile>..\..\out\debug10-x64\build\libcrystalspace\libcrystalspace.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>..\..\out\debug10-x64\build\libcrystalspace\</AssemblerListingLocation>
+      <ObjectFileName>..\..\out\debug10-x64\build\libcrystalspace\</ObjectFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <CompileAs>Default</CompileAs>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>LIBC;LIBCD;LIBCMT;LIBCMTD;MSVCRT;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <OutputFile>..\..\crystalspace-2.1-vc10-x64_d.dll</OutputFile>
+      <ImportLibrary>..\..\out\debug10-x64\libs\libcrystalspace_d.lib</ImportLibrary>
+      <ProgramDatabaseFile>..\..\out\debug10-x64\build\libcrystalspace\x64\crystalspace-2.1-vc10-x64_d.pdb</ProgramDatabaseFile>
+      <AdditionalOptions>  %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <AdditionalLibraryDirectories>..\..\winlibs\x64\lib;..\..\win32libs\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <TargetMachine>MachineX64</TargetMachine>
+      <LargeAddressAware>true</LargeAddressAware>
+    </Link>
+    <Lib>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Lib>
+    <PostBuildEvent>
+      <Command>md ..\..\out\debug10-x64\bin 2&gt; nul
+copy /y "$(TargetPath)" ..\..\out\debug10-x64\bin\
+</Command>
+    </PostBuildEvent>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;CS_DEBUG;CS_WIN32_CSCONFIG;__CRYSTAL_SPACE__;CS_SUPPORTS_MMX;CS_MEMORY_TRACKER;_WINDOWS;CS_CRYSTALSPACE_LIB;CS_COMPILER_NAME_AND_VERSION="VC_10";_WIN64;PROJECTGEN_VERSION=10;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.;..\..\libs;..\..\winlibs\x64\include;..\..\win32libs\include;..\..;..\..\include;..\..\libs\csutil\ptmalloc\sysdeps\win32</AdditionalIncludeDirectories>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RefTrackerWithStaticLibs|x64'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <MinimalRebuild>true</MinimalRebuild>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <ProgramDataBaseFileName>..\..\out\debug10-x64\build\libcrystalspace\x64\crystalspace.pdb</ProgramDataBaseFileName>
+      <PreprocessorDefinitions>_DEBUG;CS_DEBUG;CS_WIN32_CSCONFIG;__CRYSTAL_SPACE__;CS_SUPPORTS_MMX;CS_REF_TRACKER;CS_CRYSTALSPACE_LIB;CS_COMPILER_NAME_AND_VERSION="VC_10";WIN32;CS_USE_STATIC_LIBS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions>  %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>.;..\..\winlibs\x64\include;..\..\win32libs\include;..\..;..\..\include;..\..\libs\csutil\ptmalloc\sysdeps\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeaderOutputFile>..\..\out\debug10-x64\build\libcrystalspace\libcrystalspace.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>..\..\out\debug10-x64\build\libcrystalspace\</AssemblerListingLocation>
+      <ObjectFileName>..\..\out\debug10-x64\build\libcrystalspace\</ObjectFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <CompileAs>Default</CompileAs>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>LIBC;LIBCD;LIBCMT;LIBCMTD;MSVCRT;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <AdditionalOptions>  %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <AdditionalLibraryDirectories>..\..\winlibs\x64\lib;..\..\win32libs\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <TargetMachine>MachineX64</TargetMachine>
+      <LargeAddressAware>true</LargeAddressAware>
+    </Link>
+    <Lib>
+      <OutputFile>..\..\out\debug10-x64\libs\libcrystalspace_d.lib</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Lib>
+    <PostBuildEvent>
+      <Command>md ..\..\out\debug10-x64\bin 2&gt; nul
+copy /y "$(TargetPath)" ..\..\out\debug10-x64\bin\
+</Command>
+    </PostBuildEvent>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;CS_DEBUG;CS_WIN32_CSCONFIG;__CRYSTAL_SPACE__;CS_SUPPORTS_MMX;CS_REF_TRACKER;CS_CRYSTALSPACE_LIB;CS_COMPILER_NAME_AND_VERSION="VC_10";_WIN64;PROJECTGEN_VERSION=10;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.;..\..\libs;..\..\winlibs\x64\include;..\..\win32libs\include;..\..;..\..\include;..\..\libs\csutil\ptmalloc\sysdeps\win32</AdditionalIncludeDirectories>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RefTrackerWithDlls|x64'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <MinimalRebuild>true</MinimalRebuild>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <ProgramDataBaseFileName>..\..\out\debug10-x64\build\libcrystalspace\x64\crystalspace-2.1-vc10-x64_d.pdb</ProgramDataBaseFileName>
+      <PreprocessorDefinitions>_DEBUG;CS_DEBUG;CS_WIN32_CSCONFIG;__CRYSTAL_SPACE__;CS_SUPPORTS_MMX;CS_REF_TRACKER;_WINDOWS;CS_CRYSTALSPACE_LIB;CS_COMPILER_NAME_AND_VERSION="VC_10";WIN32;CS_USE_SHARED_LIBS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions>  %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>.;..\..\winlibs\x64\include;..\..\win32libs\include;..\..;..\..\include;..\..\libs\csutil\ptmalloc\sysdeps\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeaderOutputFile>..\..\out\debug10-x64\build\libcrystalspace\libcrystalspace.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>..\..\out\debug10-x64\build\libcrystalspace\</AssemblerListingLocation>
+      <ObjectFileName>..\..\out\debug10-x64\build\libcrystalspace\</ObjectFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <CompileAs>Default</CompileAs>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>LIBC;LIBCD;LIBCMT;LIBCMTD;MSVCRT;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <OutputFile>..\..\crystalspace-2.1-vc10-x64_d.dll</OutputFile>
+      <ImportLibrary>..\..\out\debug10-x64\libs\libcrystalspace_d.lib</ImportLibrary>
+      <ProgramDatabaseFile>..\..\out\debug10-x64\build\libcrystalspace\x64\crystalspace-2.1-vc10-x64_d.pdb</ProgramDatabaseFile>
+      <AdditionalOptions>  %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <AdditionalLibraryDirectories>..\..\winlibs\x64\lib;..\..\win32libs\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <TargetMachine>MachineX64</TargetMachine>
+      <LargeAddressAware>true</LargeAddressAware>
+    </Link>
+    <Lib>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Lib>
+    <PostBuildEvent>
+      <Command>md ..\..\out\debug10-x64\bin 2&gt; nul
+copy /y "$(TargetPath)" ..\..\out\debug10-x64\bin\
+</Command>
+    </PostBuildEvent>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;CS_DEBUG;CS_WIN32_CSCONFIG;__CRYSTAL_SPACE__;CS_SUPPORTS_MMX;CS_REF_TRACKER;_WINDOWS;CS_CRYSTALSPACE_LIB;CS_COMPILER_NAME_AND_VERSION="VC_10";_WIN64;PROJECTGEN_VERSION=10;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.;..\..\libs;..\..\winlibs\x64\include;..\..\win32libs\include;..\..;..\..\include;..\..\libs\csutil\ptmalloc\sysdeps\win32</AdditionalIncludeDirectories>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ThreadCheckerWithStaticLibs|x64'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <MinimalRebuild>true</MinimalRebuild>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <ProgramDataBaseFileName>..\..\out\debug10-x64\build\libcrystalspace\x64\crystalspace.pdb</ProgramDataBaseFileName>
+      <PreprocessorDefinitions>_DEBUG;CS_DEBUG;CS_WIN32_CSCONFIG;__CRYSTAL_SPACE__;CS_SUPPORTS_MMX;CS_THREAD_CHECKER;CS_CRYSTALSPACE_LIB;CS_COMPILER_NAME_AND_VERSION="VC_10";WIN32;CS_USE_STATIC_LIBS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions>  %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>.;..\..\winlibs\x64\include;..\..\win32libs\include;..\..;..\..\include;..\..\libs\csutil\ptmalloc\sysdeps\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeaderOutputFile>..\..\out\debug10-x64\build\libcrystalspace\libcrystalspace.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>..\..\out\debug10-x64\build\libcrystalspace\</AssemblerListingLocation>
+      <ObjectFileName>..\..\out\debug10-x64\build\libcrystalspace\</ObjectFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <CompileAs>Default</CompileAs>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>LIBC;LIBCD;LIBCMT;LIBCMTD;MSVCRT;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <AdditionalOptions>  %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <AdditionalLibraryDirectories>..\..\winlibs\x64\lib;..\..\win32libs\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <TargetMachine>MachineX64</TargetMachine>
+      <LargeAddressAware>true</LargeAddressAware>
+    </Link>
+    <Lib>
+      <OutputFile>..\..\out\debug10-x64\libs\libcrystalspace_d.lib</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Lib>
+    <PostBuildEvent>
+      <Command>md ..\..\out\debug10-x64\bin 2&gt; nul
+copy /y "$(TargetPath)" ..\..\out\debug10-x64\bin\
+</Command>
+    </PostBuildEvent>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;CS_DEBUG;CS_WIN32_CSCONFIG;__CRYSTAL_SPACE__;CS_SUPPORTS_MMX;CS_THREAD_CHECKER;CS_CRYSTALSPACE_LIB;CS_COMPILER_NAME_AND_VERSION="VC_10";_WIN64;PROJECTGEN_VERSION=10;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.;..\..\libs;..\..\winlibs\x64\include;..\..\win32libs\include;..\..;..\..\include;..\..\libs\csutil\ptmalloc\sysdeps\win32</AdditionalIncludeDirectories>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ThreadCheckerWithDlls|x64'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <MinimalRebuild>true</MinimalRebuild>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <ProgramDataBaseFileName>..\..\out\debug10-x64\build\libcrystalspace\x64\crystalspace-2.1-vc10-x64_d.pdb</ProgramDataBaseFileName>
+      <PreprocessorDefinitions>_DEBUG;CS_DEBUG;CS_WIN32_CSCONFIG;__CRYSTAL_SPACE__;CS_SUPPORTS_MMX;CS_THREAD_CHECKER;_WINDOWS;CS_CRYSTALSPACE_LIB;CS_COMPILER_NAME_AND_VERSION="VC_10";WIN32;CS_USE_SHARED_LIBS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions>  %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>.;..\..\winlibs\x64\include;..\..\win32libs\include;..\..;..\..\include;..\..\libs\csutil\ptmalloc\sysdeps\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeaderOutputFile>..\..\out\debug10-x64\build\libcrystalspace\libcrystalspace.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>..\..\out\debug10-x64\build\libcrystalspace\</AssemblerListingLocation>
+      <ObjectFileName>..\..\out\debug10-x64\build\libcrystalspace\</ObjectFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <CompileAs>Default</CompileAs>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>LIBC;LIBCD;LIBCMT;LIBCMTD;MSVCRT;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <OutputFile>..\..\crystalspace-2.1-vc10-x64_d.dll</OutputFile>
+      <ImportLibrary>..\..\out\debug10-x64\libs\libcrystalspace_d.lib</ImportLibrary>
+      <ProgramDatabaseFile>..\..\out\debug10-x64\build\libcrystalspace\x64\crystalspace-2.1-vc10-x64_d.pdb</ProgramDatabaseFile>
+      <AdditionalOptions>  %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <AdditionalLibraryDirectories>..\..\winlibs\x64\lib;..\..\win32libs\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <TargetMachine>MachineX64</TargetMachine>
+      <LargeAddressAware>true</LargeAddressAware>
+    </Link>
+    <Lib>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Lib>
+    <PostBuildEvent>
+      <Command>md ..\..\out\debug10-x64\bin 2&gt; nul
+copy /y "$(TargetPath)" ..\..\out\debug10-x64\bin\
+</Command>
+    </PostBuildEvent>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;CS_DEBUG;CS_WIN32_CSCONFIG;__CRYSTAL_SPACE__;CS_SUPPORTS_MMX;CS_THREAD_CHECKER;_WINDOWS;CS_CRYSTALSPACE_LIB;CS_COMPILER_NAME_AND_VERSION="VC_10";_WIN64;PROJECTGEN_VERSION=10;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.;..\..\libs;..\..\winlibs\x64\include;..\..\win32libs\include;..\..;..\..\include;..\..\libs\csutil\ptmalloc\sysdeps\win32</AdditionalIncludeDirectories>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\libs\csgeom\box.cpp" />
+    <ClCompile Include="..\..\libs\csgeom\bsptree.cpp" />
+    <ClCompile Include="..\..\libs\csgeom\chainhull2d.cpp" />
+    <ClCompile Include="..\..\libs\csgeom\csrect.cpp" />
+    <ClCompile Include="..\..\libs\csgeom\csrectrg.cpp" />
+    <ClCompile Include="..\..\libs\csgeom\frustum.cpp" />
+    <ClCompile Include="..\..\libs\csgeom\kdtree.cpp" />
+    <ClCompile Include="..\..\libs\csgeom\kdtreex.cpp" />
+    <ClCompile Include="..\..\libs\csgeom\math.cpp" />
+    <ClCompile Include="..\..\libs\csgeom\math2d.cpp" />
+    <ClCompile Include="..\..\libs\csgeom\math3d.cpp" />
+    <ClCompile Include="..\..\libs\csgeom\math3d_d.cpp" />
+    <ClCompile Include="..\..\libs\csgeom\matrix3.cpp" />
+    <ClCompile Include="..\..\libs\csgeom\matrix4.cpp" />
+    <ClCompile Include="..\..\libs\csgeom\obb.cpp" />
+    <ClCompile Include="..\..\libs\csgeom\plane3.cpp" />
+    <ClCompile Include="..\..\libs\csgeom\poly2d.cpp" />
+    <ClCompile Include="..\..\libs\csgeom\poly3d.cpp" />
+    <ClCompile Include="..\..\libs\csgeom\polyclip.cpp" />
+    <ClCompile Include="..\..\libs\csgeom\polyidx.cpp" />
+    <ClCompile Include="..\..\libs\csgeom\quaterni.cpp" />
+    <ClCompile Include="..\..\libs\csgeom\solidspace.cpp" />
+    <ClCompile Include="..\..\libs\csgeom\sphere.cpp" />
+    <ClCompile Include="..\..\libs\csgeom\spline.cpp" />
+    <ClCompile Include="..\..\libs\csgeom\subrec2.cpp" />
+    <ClCompile Include="..\..\libs\csgeom\tcovbuf.cpp" />
+    <ClCompile Include="..\..\libs\csgeom\transfrm.cpp" />
+    <ClCompile Include="..\..\libs\csgeom\triangulate.cpp" />
+    <ClCompile Include="..\..\libs\csgeom\triangulate3d.cpp" />
+    <ClCompile Include="..\..\libs\csgeom\trimesh.cpp" />
+    <ClCompile Include="..\..\libs\csgeom\trimeshlod.cpp" />
+    <ClCompile Include="..\..\libs\csgeom\trimeshtools.cpp" />
+    <ClCompile Include="..\..\libs\csgeom\tritri.cpp" />
+    <ClCompile Include="..\..\libs\csgeom\vector2.cpp" />
+    <ClCompile Include="..\..\libs\csgeom\vector3.cpp" />
+    <ClCompile Include="..\..\libs\csgfx\bakekeycolor.cpp" />
+    <ClCompile Include="..\..\libs\csgfx\gradient.cpp" />
+    <ClCompile Include="..\..\libs\csgfx\imagecubemapmaker.cpp" />
+    <ClCompile Include="..\..\libs\csgfx\imagemanipulate.cpp" />
+    <ClCompile Include="..\..\libs\csgfx\imagememory.cpp" />
+    <ClCompile Include="..\..\libs\csgfx\imagetools.cpp" />
+    <ClCompile Include="..\..\libs\csgfx\imagevolumemaker.cpp" />
+    <ClCompile Include="..\..\libs\csgfx\inv_cmap.cpp" />
+    <ClCompile Include="..\..\libs\csgfx\lightsvcache.cpp" />
+    <ClCompile Include="..\..\libs\csgfx\normalmaptools.cpp" />
+    <ClCompile Include="..\..\libs\csgfx\quantize.cpp" />
+    <ClCompile Include="..\..\libs\csgfx\renderbuffer.cpp" />
+    <ClCompile Include="..\..\libs\csgfx\shaderexp.cpp" />
+    <ClCompile Include="..\..\libs\csgfx\shaderexpaccessor.cpp" />
+    <ClCompile Include="..\..\libs\csgfx\shadervar.cpp" />
+    <ClCompile Include="..\..\libs\csgfx\shadervararrayhelper.cpp" />
+    <ClCompile Include="..\..\libs\csgfx\shadervarcontext.cpp" />
+    <ClCompile Include="..\..\libs\csgfx\shadervarframeholder.cpp" />
+    <ClCompile Include="..\..\libs\csgfx\shadervarnameparser.cpp" />
+    <ClCompile Include="..\..\libs\csgfx\textureformatstrings.cpp" />
+    <ClCompile Include="..\..\libs\csgfx\xorpat.cpp" />
+    <ClCompile Include="..\..\libs\csplugincommon\canvas\canvascommon.cpp" />
+    <ClCompile Include="..\..\libs\csplugincommon\canvas\cursorconvert.cpp" />
+    <ClCompile Include="..\..\libs\csplugincommon\canvas\fontcache.cpp" />
+    <ClCompile Include="..\..\libs\csplugincommon\canvas\graph2d.cpp" />
+    <ClCompile Include="..\..\libs\csplugincommon\imageloader\commonimagefile.cpp" />
+    <ClCompile Include="..\..\libs\csplugincommon\imageloader\optionsparser.cpp" />
+    <ClCompile Include="..\..\libs\csplugincommon\render3d\normalizationcube.cpp" />
+    <ClCompile Include="..\..\libs\csplugincommon\rendermanager\autofx_framebuffertex.cpp" />
+    <ClCompile Include="..\..\libs\csplugincommon\rendermanager\autofx_reflrefr.cpp" />
+    <ClCompile Include="..\..\libs\csplugincommon\rendermanager\debugcommon.cpp" />
+    <ClCompile Include="..\..\libs\csplugincommon\rendermanager\hdrexposure.cpp" />
+    <ClCompile Include="..\..\libs\csplugincommon\rendermanager\hdrexposure_luminance.cpp" />
+    <ClCompile Include="..\..\libs\csplugincommon\rendermanager\hdrhelper.cpp" />
+    <ClCompile Include="..\..\libs\csplugincommon\rendermanager\lightsetup.cpp" />
+    <ClCompile Include="..\..\libs\csplugincommon\rendermanager\occluvis.cpp" />
+    <ClCompile Include="..\..\libs\csplugincommon\rendermanager\portalsetup.cpp" />
+    <ClCompile Include="..\..\libs\csplugincommon\rendermanager\posteffects.cpp" />
+    <ClCompile Include="..\..\libs\csplugincommon\rendermanager\posteffectssupport.cpp" />
+    <ClCompile Include="..\..\libs\csplugincommon\rendermanager\renderlayers.cpp" />
+    <ClCompile Include="..\..\libs\csplugincommon\rendermanager\rendertree.cpp" />
+    <ClCompile Include="..\..\libs\csplugincommon\rendermanager\renderview.cpp" />
+    <ClCompile Include="..\..\libs\csplugincommon\rendermanager\shadow_common.cpp" />
+    <ClCompile Include="..\..\libs\csplugincommon\rendermanager\viscullcommon.cpp" />
+    <ClCompile Include="..\..\libs\csplugincommon\script\scriptcommon.cpp" />
+    <ClCompile Include="..\..\libs\csplugincommon\shader\shadercachehelper.cpp" />
+    <ClCompile Include="..\..\libs\csplugincommon\shader\shaderprogram.cpp" />
+    <ClCompile Include="..\..\libs\csplugincommon\shader\weavertypes.cpp" />
+    <ClCompile Include="..\..\libs\csplugincommon\sndsys\convert.cpp" />
+    <ClCompile Include="..\..\libs\csplugincommon\sndsys\cyclicbuf.cpp" />
+    <ClCompile Include="..\..\libs\csplugincommon\sndsys\snddata.cpp" />
+    <ClCompile Include="..\..\libs\csplugincommon\sndsys\sndstream.cpp" />
+    <ClCompile Include="..\..\libs\cstool\animeshtools.cpp" />
+    <ClCompile Include="..\..\libs\cstool\animnodetmpl.cpp" />
+    <ClCompile Include="..\..\libs\cstool\basetexfact.cpp" />
+    <ClCompile Include="..\..\libs\cstool\bitmasktostr.cpp" />
+    <ClCompile Include="..\..\libs\cstool\bvhmocapparser.cpp" />
+    <ClCompile Include="..\..\libs\cstool\collider.cpp" />
+    <ClCompile Include="..\..\libs\cstool\csanim2d.cpp" />
+    <ClCompile Include="..\..\libs\cstool\csapplicationframework.cpp" />
+    <ClCompile Include="..\..\libs\cstool\csfxscr.cpp" />
+    <ClCompile Include="..\..\libs\cstool\cspixmap.cpp" />
+    <ClCompile Include="..\..\libs\cstool\csview.cpp" />
+    <ClCompile Include="..\..\libs\cstool\demoapplication.cpp" />
+    <ClCompile Include="..\..\libs\cstool\enginetools.cpp" />
+    <ClCompile Include="..\..\libs\cstool\genmeshbuilder.cpp" />
+    <ClCompile Include="..\..\libs\cstool\importkit.cpp" />
+    <ClCompile Include="..\..\libs\cstool\importkit_glue.cpp" />
+    <ClCompile Include="..\..\libs\cstool\initapp.cpp" />
+    <ClCompile Include="..\..\libs\cstool\keyval.cpp" />
+    <ClCompile Include="..\..\libs\cstool\mapnode.cpp" />
+    <ClCompile Include="..\..\libs\cstool\materialbuilder.cpp" />
+    <ClCompile Include="..\..\libs\cstool\meshfilter.cpp" />
+    <ClCompile Include="..\..\libs\cstool\meshobjtmpl.cpp" />
+    <ClCompile Include="..\..\libs\cstool\noise\latlon.cpp" />
+    <ClCompile Include="..\..\libs\cstool\noise\model\cylinder.cpp" />
+    <ClCompile Include="..\..\libs\cstool\noise\model\line.cpp" />
+    <ClCompile Include="..\..\libs\cstool\noise\model\noise_sphere.cpp" />
+    <ClCompile Include="..\..\libs\cstool\noise\model\plane.cpp" />
+    <ClCompile Include="..\..\libs\cstool\noise\module\abs.cpp" />
+    <ClCompile Include="..\..\libs\cstool\noise\module\add.cpp" />
+    <ClCompile Include="..\..\libs\cstool\noise\module\billow.cpp" />
+    <ClCompile Include="..\..\libs\cstool\noise\module\blend.cpp" />
+    <ClCompile Include="..\..\libs\cstool\noise\module\cache.cpp" />
+    <ClCompile Include="..\..\libs\cstool\noise\module\checkerboard.cpp" />
+    <ClCompile Include="..\..\libs\cstool\noise\module\clamp.cpp" />
+    <ClCompile Include="..\..\libs\cstool\noise\module\const.cpp" />
+    <ClCompile Include="..\..\libs\cstool\noise\module\curve.cpp" />
+    <ClCompile Include="..\..\libs\cstool\noise\module\cylinders.cpp" />
+    <ClCompile Include="..\..\libs\cstool\noise\module\displace.cpp" />
+    <ClCompile Include="..\..\libs\cstool\noise\module\exponent.cpp" />
+    <ClCompile Include="..\..\libs\cstool\noise\module\invert.cpp" />
+    <ClCompile Include="..\..\libs\cstool\noise\module\max.cpp" />
+    <ClCompile Include="..\..\libs\cstool\noise\module\min.cpp" />
+    <ClCompile Include="..\..\libs\cstool\noise\module\modulebase.cpp" />
+    <ClCompile Include="..\..\libs\cstool\noise\module\multiply.cpp" />
+    <ClCompile Include="..\..\libs\cstool\noise\module\perlin.cpp" />
+    <ClCompile Include="..\..\libs\cstool\noise\module\power.cpp" />
+    <ClCompile Include="..\..\libs\cstool\noise\module\ridgedmulti.cpp" />
+    <ClCompile Include="..\..\libs\cstool\noise\module\rotatepoint.cpp" />
+    <ClCompile Include="..\..\libs\cstool\noise\module\scalebias.cpp" />
+    <ClCompile Include="..\..\libs\cstool\noise\module\scalepoint.cpp" />
+    <ClCompile Include="..\..\libs\cstool\noise\module\select.cpp" />
+    <ClCompile Include="..\..\libs\cstool\noise\module\spheres.cpp" />
+    <ClCompile Include="..\..\libs\cstool\noise\module\terrace.cpp" />
+    <ClCompile Include="..\..\libs\cstool\noise\module\translatepoint.cpp" />
+    <ClCompile Include="..\..\libs\cstool\noise\module\turbulence.cpp" />
+    <ClCompile Include="..\..\libs\cstool\noise\module\voronoi.cpp" />
+    <ClCompile Include="..\..\libs\cstool\noise\noisegen.cpp" />
+    <ClCompile Include="..\..\libs\cstool\normalcalc.cpp" />
+    <ClCompile Include="..\..\libs\cstool\numberedfilename.cpp" />
+    <ClCompile Include="..\..\libs\cstool\objmodel.cpp" />
+    <ClCompile Include="..\..\libs\cstool\pen.cpp" />
+    <ClCompile Include="..\..\libs\cstool\primitives.cpp" />
+    <ClCompile Include="..\..\libs\cstool\procmesh.cpp" />
+    <ClCompile Include="..\..\libs\cstool\proctex.cpp" />
+    <ClCompile Include="..\..\libs\cstool\proctxtanim.cpp" />
+    <ClCompile Include="..\..\libs\cstool\rendermeshholder.cpp" />
+    <ClCompile Include="..\..\libs\cstool\rendermeshlist.cpp" />
+    <ClCompile Include="..\..\libs\cstool\rviewclipper.cpp" />
+    <ClCompile Include="..\..\libs\cstool\saverfile.cpp" />
+    <ClCompile Include="..\..\libs\cstool\saverref.cpp" />
+    <ClCompile Include="..\..\libs\cstool\simplestaticlighter.cpp" />
+    <ClCompile Include="..\..\libs\cstool\smartfileopen.cpp" />
+    <ClCompile Include="..\..\libs\cstool\uberscreenshot.cpp" />
+    <ClCompile Include="..\..\libs\cstool\unusedresourcehelper.cpp" />
+    <ClCompile Include="..\..\libs\cstool\userrndbuf.cpp" />
+    <ClCompile Include="..\..\libs\cstool\vertexcompress.cpp" />
+    <ClCompile Include="..\..\libs\csutil\alignedalloc.cpp" />
+    <ClCompile Include="..\..\libs\csutil\ansiparse.cpp" />
+    <ClCompile Include="..\..\libs\csutil\archive.cpp" />
+    <ClCompile Include="..\..\libs\csutil\base64.cpp" />
+    <ClCompile Include="..\..\libs\csutil\binder.cpp" />
+    <ClCompile Include="..\..\libs\csutil\callstack.cpp" />
+    <ClCompile Include="..\..\libs\csutil\cfgacc.cpp" />
+    <ClCompile Include="..\..\libs\csutil\cfgdoc.cpp" />
+    <ClCompile Include="..\..\libs\csutil\cfgfile.cpp" />
+    <ClCompile Include="..\..\libs\csutil\cfgmgr.cpp" />
+    <ClCompile Include="..\..\libs\csutil\cfgnotifier.cpp" />
+    <ClCompile Include="..\..\libs\csutil\checksum.cpp" />
+    <ClCompile Include="..\..\libs\csutil\cmdhelp.cpp" />
+    <ClCompile Include="..\..\libs\csutil\cmdline.cpp" />
+    <ClCompile Include="..\..\libs\csutil\common_handlers.cpp" />
+    <ClCompile Include="..\..\libs\csutil\csassert.cpp" />
+    <ClCompile Include="..\..\libs\csutil\csbaseeventh.cpp" />
+    <ClCompile Include="..\..\libs\csutil\csevcord.cpp" />
+    <ClCompile Include="..\..\libs\csutil\csevent.cpp" />
+    <ClCompile Include="..\..\libs\csutil\cseventflattener.cpp" />
+    <ClCompile Include="..\..\libs\csutil\cseventq.cpp" />
+    <ClCompile Include="..\..\libs\csutil\csinput.cpp" />
+    <ClCompile Include="..\..\libs\csutil\csobject.cpp" />
+    <ClCompile Include="..\..\libs\csutil\cspmeter.cpp" />
+    <ClCompile Include="..\..\libs\csutil\csppulse.cpp" />
+    <ClCompile Include="..\..\libs\csutil\csstring.cpp" />
+    <ClCompile Include="..\..\libs\csutil\cssubscription.cpp" />
+    <ClCompile Include="..\..\libs\csutil\csuctransform.cpp" />
+    <ClCompile Include="..\..\libs\csutil\deprecated_macros.cpp" />
+    <ClCompile Include="..\..\libs\csutil\digest.cpp" />
+    <ClCompile Include="..\..\libs\csutil\dlmalloc.c" />
+    <ClCompile Include="..\..\libs\csutil\documentcommon.cpp" />
+    <ClCompile Include="..\..\libs\csutil\documenthelper.cpp" />
+    <ClCompile Include="..\..\libs\csutil\event.cpp" />
+    <ClCompile Include="..\..\libs\csutil\eventhandlers.cpp" />
+    <ClCompile Include="..\..\libs\csutil\eventnames.cpp" />
+    <ClCompile Include="..\..\libs\csutil\evoutlet.cpp" />
+    <ClCompile Include="..\..\libs\csutil\filereadhelper.cpp" />
+    <ClCompile Include="..\..\libs\csutil\floatrand.cpp" />
+    <ClCompile Include="..\..\libs\csutil\generic\appdir.cpp" />
+    <ClCompile Include="..\..\libs\csutil\generic\findlib.cpp" />
+    <ClCompile Include="..\..\libs\csutil\generic\getopt.cpp" />
+    <ClCompile Include="..\..\libs\csutil\generic\pluginpaths.cpp" />
+    <ClCompile Include="..\..\libs\csutil\generic\regex.c" />
+    <ClCompile Include="..\..\libs\csutil\generic\resdir.cpp" />
+    <ClCompile Include="..\..\libs\csutil\generic\runloop.cpp" />
+    <ClCompile Include="..\..\libs\csutil\graphalg.cpp" />
+    <ClCompile Include="..\..\libs\csutil\hash.cpp" />
+    <ClCompile Include="..\..\libs\csutil\inputdef.cpp" />
+    <ClCompile Include="..\..\libs\csutil\md5.cpp" />
+    <ClCompile Include="..\..\libs\csutil\measuretime.cpp" />
+    <ClCompile Include="..\..\libs\csutil\memdebug.cpp" />
+    <ClCompile Include="..\..\libs\csutil\memfile.cpp" />
+    <ClCompile Include="..\..\libs\csutil\memheap.cpp" />
+    <ClCompile Include="..\..\libs\csutil\mempool.cpp" />
+    <ClCompile Include="..\..\libs\csutil\memutil.cpp" />
+    <ClCompile Include="..\..\libs\csutil\mmapio.cpp" />
+    <ClCompile Include="..\..\libs\csutil\nulcache.cpp" />
+    <ClCompile Include="..\..\libs\csutil\objreg.cpp" />
+    <ClCompile Include="..\..\libs\csutil\physfile.cpp" />
+    <ClCompile Include="..\..\libs\csutil\plugldr.cpp" />
+    <ClCompile Include="..\..\libs\csutil\plugmgr.cpp" />
+    <ClCompile Include="..\..\libs\csutil\prfxcfg.cpp" />
+    <ClCompile Include="..\..\libs\csutil\processor\processorspecdetection_gcc_ppc.cpp" />
+    <ClCompile Include="..\..\libs\csutil\processor\processorspecdetection_nonwin_gcc_arm.cpp" />
+    <ClCompile Include="..\..\libs\csutil\processor\processorspecdetection_nonwin_gcc_x86.cpp" />
+    <ClCompile Include="..\..\libs\csutil\processorcount.cpp" />
+    <ClCompile Include="..\..\libs\csutil\ptmalloc\ptmalloc3.c" />
+    <ClCompile Include="..\..\libs\csutil\ptmalloc_wrap.cpp" />
+    <ClCompile Include="..\..\libs\csutil\radixsort.cpp" />
+    <ClCompile Include="..\..\libs\csutil\randomgen.cpp" />
+    <ClCompile Include="..\..\libs\csutil\reftrack.cpp" />
+    <ClCompile Include="..\..\libs\csutil\reftrackeraccess.cpp" />
+    <ClCompile Include="..\..\libs\csutil\regexp.cpp" />
+    <ClCompile Include="..\..\libs\csutil\rootedhiercache.cpp" />
+    <ClCompile Include="..\..\libs\csutil\scanstr.cpp" />
+    <ClCompile Include="..\..\libs\csutil\scf.cpp" />
+    <ClCompile Include="..\..\libs\csutil\scfimp.cpp" />
+    <ClCompile Include="..\..\libs\csutil\scfimplhelper.cpp" />
+    <ClCompile Include="..\..\libs\csutil\scfstr.cpp" />
+    <ClCompile Include="..\..\libs\csutil\schedule.cpp" />
+    <ClCompile Include="..\..\libs\csutil\sha256.cpp" />
+    <ClCompile Include="..\..\libs\csutil\simplejobqueue.cpp" />
+    <ClCompile Include="..\..\libs\csutil\snprintf.cpp" />
+    <ClCompile Include="..\..\libs\csutil\sparse3d.cpp" />
+    <ClCompile Include="..\..\libs\csutil\stat_common.cpp" />
+    <ClCompile Include="..\..\libs\csutil\staticvarcleanup.cpp" />
+    <ClCompile Include="..\..\libs\csutil\strcasestr.cpp" />
+    <ClCompile Include="..\..\libs\csutil\strhashr.cpp" />
+    <ClCompile Include="..\..\libs\csutil\stringconv.cpp" />
+    <ClCompile Include="..\..\libs\csutil\stringquote.cpp" />
+    <ClCompile Include="..\..\libs\csutil\stringreader.cpp" />
+    <ClCompile Include="..\..\libs\csutil\syspath.cpp" />
+    <ClCompile Include="..\..\libs\csutil\systemopenmanager.cpp" />
+    <ClCompile Include="..\..\libs\csutil\threading\win32_thread.cpp" />
+    <ClCompile Include="..\..\libs\csutil\threadjobqueue.cpp" />
+    <ClCompile Include="..\..\libs\csutil\threadmanager.cpp" />
+    <ClCompile Include="..\..\libs\csutil\timer.cpp" />
+    <ClCompile Include="..\..\libs\csutil\tinypars.cpp" />
+    <ClCompile Include="..\..\libs\csutil\tinystr.cpp" />
+    <ClCompile Include="..\..\libs\csutil\tinyxml.cpp" />
+    <ClCompile Include="..\..\libs\csutil\util.cpp" />
+    <ClCompile Include="..\..\libs\csutil\verbosity.cpp" />
+    <ClCompile Include="..\..\libs\csutil\vfscache.cpp" />
+    <ClCompile Include="..\..\libs\csutil\vfshiercache.cpp" />
+    <ClCompile Include="..\..\libs\csutil\virtclk.cpp" />
+    <ClCompile Include="..\..\libs\csutil\win32\callstack-dbghelp.cpp" />
+    <ClCompile Include="..\..\libs\csutil\win32\DbgHelpAPI.cpp" />
+    <ClCompile Include="..\..\libs\csutil\win32\dir.cpp" />
+    <ClCompile Include="..\..\libs\csutil\win32\expandname.cpp" />
+    <ClCompile Include="..\..\libs\csutil\win32\filesysconfig.cpp" />
+    <ClCompile Include="..\..\libs\csutil\win32\instpath.cpp" />
+    <ClCompile Include="..\..\libs\csutil\win32\loadlib.cpp" />
+    <ClCompile Include="..\..\libs\csutil\win32\memutil_impl.cpp" />
+    <ClCompile Include="..\..\libs\csutil\win32\mkdir.cpp" />
+    <ClCompile Include="..\..\libs\csutil\win32\mmap.cpp" />
+    <ClCompile Include="..\..\libs\csutil\win32\platformfile.cpp" />
+    <ClCompile Include="..\..\libs\csutil\win32\processorcount_impl.cpp" />
+    <ClCompile Include="..\..\libs\csutil\win32\registrycfg.cpp" />
+    <ClCompile Include="..\..\libs\csutil\win32\setenv.cpp" />
+    <ClCompile Include="..\..\libs\csutil\win32\stat.cpp" />
+    <ClCompile Include="..\..\libs\csutil\win32\syminit.cpp" />
+    <ClCompile Include="..\..\libs\csutil\win32\sysroot.cpp" />
+    <ClCompile Include="..\..\libs\csutil\win32\timing32.cpp" />
+    <ClCompile Include="..\..\libs\csutil\win32\username.cpp" />
+    <ClCompile Include="..\..\libs\csutil\win32\vfsplat.cpp" />
+    <ClCompile Include="..\..\libs\csutil\win32\win32.cpp" />
+    <ClCompile Include="..\..\libs\csutil\win32\win32kbd.cpp" />
+    <ClCompile Include="..\..\libs\csutil\win32\winprintf.cpp" />
+    <ClCompile Include="..\..\libs\csutil\win32\winsyspath.cpp" />
+    <ClCompile Include="..\..\libs\csutil\win32\wintools.cpp" />
+    <ClCompile Include="..\..\libs\csutil\xmltiny.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\libs\..\include\csgeom\aabbtree.h" />
+    <ClInclude Include="..\..\libs\..\include\csgeom\box.h" />
+    <ClInclude Include="..\..\libs\..\include\csgeom\bsptree.h" />
+    <ClInclude Include="..\..\libs\..\include\csgeom\chainhull2d.h" />
+    <ClInclude Include="..\..\libs\..\include\csgeom\csrect.h" />
+    <ClInclude Include="..\..\libs\..\include\csgeom\csrectrg.h" />
+    <ClInclude Include="..\..\libs\..\include\csgeom\dualquaternion.h" />
+    <ClInclude Include="..\..\libs\..\include\csgeom\fixed.h" />
+    <ClInclude Include="..\..\libs\..\include\csgeom\frustum.h" />
+    <ClInclude Include="..\..\libs\..\include\csgeom\kdtree.h" />
+    <ClInclude Include="..\..\libs\..\include\csgeom\kdtreex.h" />
+    <ClInclude Include="..\..\libs\..\include\csgeom\math.h" />
+    <ClInclude Include="..\..\libs\..\include\csgeom\math2d.h" />
+    <ClInclude Include="..\..\libs\..\include\csgeom\math3d.h" />
+    <ClInclude Include="..\..\libs\..\include\csgeom\math3d_d.h" />
+    <ClInclude Include="..\..\libs\..\include\csgeom\matrix2.h" />
+    <ClInclude Include="..\..\libs\..\include\csgeom\matrix3.h" />
+    <ClInclude Include="..\..\libs\..\include\csgeom\matrix4.h" />
+    <ClInclude Include="..\..\libs\..\include\csgeom\obb.h" />
+    <ClInclude Include="..\..\libs\..\include\csgeom\odesolver.h" />
+    <ClInclude Include="..\..\libs\..\include\csgeom\path.h" />
+    <ClInclude Include="..\..\libs\..\include\csgeom\plane2.h" />
+    <ClInclude Include="..\..\libs\..\include\csgeom\plane3.h" />
+    <ClInclude Include="..\..\libs\..\include\csgeom\poly2d.h" />
+    <ClInclude Include="..\..\libs\..\include\csgeom\poly3d.h" />
+    <ClInclude Include="..\..\libs\..\include\csgeom\polyidx.h" />
+    <ClInclude Include="..\..\libs\..\include\csgeom\polypool.h" />
+    <ClInclude Include="..\..\libs\..\include\csgeom\projections.h" />
+    <ClInclude Include="..\..\libs\..\include\csgeom\quaternion.h" />
+    <ClInclude Include="..\..\libs\..\include\csgeom\segment.h" />
+    <ClInclude Include="..\..\libs\..\include\csgeom\solidspace.h" />
+    <ClInclude Include="..\..\libs\..\include\csgeom\sphere.h" />
+    <ClInclude Include="..\..\libs\..\include\csgeom\spline.h" />
+    <ClInclude Include="..\..\libs\..\include\csgeom\subrec.h" />
+    <ClInclude Include="..\..\libs\..\include\csgeom\tcovbuf.h" />
+    <ClInclude Include="..\..\libs\..\include\csgeom\transfrm.h" />
+    <ClInclude Include="..\..\libs\..\include\csgeom\tri.h" />
+    <ClInclude Include="..\..\libs\..\include\csgeom\triangulate.h" />
+    <ClInclude Include="..\..\libs\..\include\csgeom\triangulate3d.h" />
+    <ClInclude Include="..\..\libs\..\include\csgeom\trimesh.h" />
+    <ClInclude Include="..\..\libs\..\include\csgeom\trimeshlod.h" />
+    <ClInclude Include="..\..\libs\..\include\csgeom\trimeshtools.h" />
+    <ClInclude Include="..\..\libs\..\include\csgeom\vector2.h" />
+    <ClInclude Include="..\..\libs\..\include\csgeom\vector3.h" />
+    <ClInclude Include="..\..\libs\..\include\csgeom\vector4.h" />
+    <ClInclude Include="..\..\libs\..\include\csgfx\bakekeycolor.h" />
+    <ClInclude Include="..\..\libs\..\include\csgfx\gradient.h" />
+    <ClInclude Include="..\..\libs\..\include\csgfx\imageautoconvert.h" />
+    <ClInclude Include="..\..\libs\..\include\csgfx\imagebase.h" />
+    <ClInclude Include="..\..\libs\..\include\csgfx\imagecubemapmaker.h" />
+    <ClInclude Include="..\..\libs\..\include\csgfx\imagemanipulate.h" />
+    <ClInclude Include="..\..\libs\..\include\csgfx\imagememory.h" />
+    <ClInclude Include="..\..\libs\..\include\csgfx\imagetools.h" />
+    <ClInclude Include="..\..\libs\..\include\csgfx\imagevolumemaker.h" />
+    <ClInclude Include="..\..\libs\..\include\csgfx\inv_cmap.h" />
+    <ClInclude Include="..\..\libs\..\include\csgfx\lightsvcache.h" />
+    <ClInclude Include="..\..\libs\..\include\csgfx\normalmaptools.h" />
+    <ClInclude Include="..\..\libs\..\include\csgfx\packrgb.h" />
+    <ClInclude Include="..\..\libs\..\include\csgfx\quantize.h" />
+    <ClInclude Include="..\..\libs\..\include\csgfx\renderbuffer.h" />
+    <ClInclude Include="..\..\libs\..\include\csgfx\rgbpixel.h" />
+    <ClInclude Include="..\..\libs\..\include\csgfx\shaderexp.h" />
+    <ClInclude Include="..\..\libs\..\include\csgfx\shaderexpaccessor.h" />
+    <ClInclude Include="..\..\libs\..\include\csgfx\shadervar.h" />
+    <ClInclude Include="..\..\libs\..\include\csgfx\shadervararrayhelper.h" />
+    <ClInclude Include="..\..\libs\..\include\csgfx\shadervarblockalloc.h" />
+    <ClInclude Include="..\..\libs\..\include\csgfx\shadervarcontext.h" />
+    <ClInclude Include="..\..\libs\..\include\csgfx\shadervarframeholder.h" />
+    <ClInclude Include="..\..\libs\..\include\csgfx\shadervarnameparser.h" />
+    <ClInclude Include="..\..\libs\..\include\csgfx\textureformatstrings.h" />
+    <ClInclude Include="..\..\libs\..\include\csgfx\trianglestream.h" />
+    <ClInclude Include="..\..\libs\..\include\csgfx\vertexlight.h" />
+    <ClInclude Include="..\..\libs\..\include\csgfx\vertexlistwalker.h" />
+    <ClInclude Include="..\..\libs\..\include\csgfx\xorpat.h" />
+    <ClInclude Include="..\..\libs\..\include\csplugincommon\canvas\canvascommon.h" />
+    <ClInclude Include="..\..\libs\..\include\csplugincommon\canvas\cursorconvert.h" />
+    <ClInclude Include="..\..\libs\..\include\csplugincommon\canvas\fontcache.h" />
+    <ClInclude Include="..\..\libs\..\include\csplugincommon\canvas\graph2d.h" />
+    <ClInclude Include="..\..\libs\..\include\csplugincommon\imageloader\commonimagefile.h" />
+    <ClInclude Include="..\..\libs\..\include\csplugincommon\imageloader\optionsparser.h" />
+    <ClInclude Include="..\..\libs\..\include\csplugincommon\render3d\normalizationcube.h" />
+    <ClInclude Include="..\..\libs\..\include\csplugincommon\rendermanager\autofx_framebuffertex.h" />
+    <ClInclude Include="..\..\libs\..\include\csplugincommon\rendermanager\autofx_reflrefr.h" />
+    <ClInclude Include="..\..\libs\..\include\csplugincommon\rendermanager\debugcommon.h" />
+    <ClInclude Include="..\..\libs\..\include\csplugincommon\rendermanager\dependenttarget.h" />
+    <ClInclude Include="..\..\libs\..\include\csplugincommon\rendermanager\hdrexposure.h" />
+    <ClInclude Include="..\..\libs\..\include\csplugincommon\rendermanager\hdrexposure_luminance.h" />
+    <ClInclude Include="..\..\libs\..\include\csplugincommon\rendermanager\hdrhelper.h" />
+    <ClInclude Include="..\..\libs\..\include\csplugincommon\rendermanager\lightsetup.h" />
+    <ClInclude Include="..\..\libs\..\include\csplugincommon\rendermanager\occluvis.h" />
+    <ClInclude Include="..\..\libs\..\include\csplugincommon\rendermanager\operations.h" />
+    <ClInclude Include="..\..\libs\..\include\csplugincommon\rendermanager\portalsetup.h" />
+    <ClInclude Include="..\..\libs\..\include\csplugincommon\rendermanager\posteffects.h" />
+    <ClInclude Include="..\..\libs\..\include\csplugincommon\rendermanager\posteffectssupport.h" />
+    <ClInclude Include="..\..\libs\..\include\csplugincommon\rendermanager\render.h" />
+    <ClInclude Include="..\..\libs\..\include\csplugincommon\rendermanager\rendergroupinghandler.h" />
+    <ClInclude Include="..\..\libs\..\include\csplugincommon\rendermanager\renderlayers.h" />
+    <ClInclude Include="..\..\libs\..\include\csplugincommon\rendermanager\rendertree.h" />
+    <ClInclude Include="..\..\libs\..\include\csplugincommon\rendermanager\renderview.h" />
+    <ClInclude Include="..\..\libs\..\include\csplugincommon\rendermanager\shadersetup.h" />
+    <ClInclude Include="..\..\libs\..\include\csplugincommon\rendermanager\shadow_common.h" />
+    <ClInclude Include="..\..\libs\..\include\csplugincommon\rendermanager\shadow_pssm.h" />
+    <ClInclude Include="..\..\libs\..\include\csplugincommon\rendermanager\standardsorter.h" />
+    <ClInclude Include="..\..\libs\..\include\csplugincommon\rendermanager\standardtreetraits.h" />
+    <ClInclude Include="..\..\libs\..\include\csplugincommon\rendermanager\svarrayholder.h" />
+    <ClInclude Include="..\..\libs\..\include\csplugincommon\rendermanager\svsetup.h" />
+    <ClInclude Include="..\..\libs\..\include\csplugincommon\rendermanager\svtraverse.h" />
+    <ClInclude Include="..\..\libs\..\include\csplugincommon\rendermanager\texturecache.h" />
+    <ClInclude Include="..\..\libs\..\include\csplugincommon\rendermanager\viscull.h" />
+    <ClInclude Include="..\..\libs\..\include\csplugincommon\rendermanager\viscullcommon.h" />
+    <ClInclude Include="..\..\libs\..\include\csplugincommon\script\scriptcommon.h" />
+    <ClInclude Include="..\..\libs\..\include\csplugincommon\shader\shadercachehelper.h" />
+    <ClInclude Include="..\..\libs\..\include\csplugincommon\shader\shaderplugin.h" />
+    <ClInclude Include="..\..\libs\..\include\csplugincommon\shader\shaderprogram.h" />
+    <ClInclude Include="..\..\libs\..\include\csplugincommon\shader\weavercombiner.h" />
+    <ClInclude Include="..\..\libs\..\include\csplugincommon\shader\weavertypes.h" />
+    <ClInclude Include="..\..\libs\..\include\csplugincommon\sndsys\convert.h" />
+    <ClInclude Include="..\..\libs\..\include\csplugincommon\sndsys\cyclicbuf.h" />
+    <ClInclude Include="..\..\libs\..\include\csplugincommon\sndsys\queue.h" />
+    <ClInclude Include="..\..\libs\..\include\csplugincommon\sndsys\snddata.h" />
+    <ClInclude Include="..\..\libs\..\include\csplugincommon\sndsys\sndstream.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\animeshtools.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\animnodetmpl.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\basetexfact.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\bitmasktostr.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\collider.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\csanim2d.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\csapplicationframework.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\csfxscr.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\cspixmap.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\csview.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\debugimagewriter.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\demoapplication.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\enginetools.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\fogmath.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\framedataholder.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\genmeshbuilder.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\identstrings.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\importkit.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\initapp.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\keyval.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\mapnode.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\materialbuilder.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\meshfilter.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\meshobjtmpl.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\mocapparser.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\noise\basictypes.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\noise\exception.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\noise\interp.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\noise\latlon.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\noise\mathconsts.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\noise\misc.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\noise\model\cylinder.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\noise\model\line.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\noise\model\model.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\noise\model\plane.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\noise\module\abs.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\noise\module\add.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\noise\module\billow.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\noise\module\blend.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\noise\module\cache.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\noise\module\checkerboard.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\noise\module\clamp.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\noise\module\const.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\noise\module\curve.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\noise\module\cylinders.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\noise\module\displace.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\noise\module\exponent.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\noise\module\invert.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\noise\module\max.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\noise\module\min.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\noise\module\module.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\noise\module\modulebase.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\noise\module\multiply.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\noise\module\perlin.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\noise\module\power.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\noise\module\ridgedmulti.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\noise\module\rotatepoint.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\noise\module\scalebias.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\noise\module\scalepoint.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\noise\module\select.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\noise\module\spheres.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\noise\module\terrace.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\noise\module\translatepoint.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\noise\module\turbulence.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\noise\module\voronoi.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\noise\noise.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\noise\noisegen.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\noise\vectortable.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\normalcalc.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\numberedfilenamehelper.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\objectcomment.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\objmodel.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\pen.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\primitives.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\procmesh.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\proctex.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\proctxtanim.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\rbuflock.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\rendermeshholder.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\rendermeshlist.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\rviewclipper.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\saverfile.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\saverref.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\simplestaticlighter.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\smartfileopen.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\tokenlist.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\uberscreenshot.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\unusedresourcehelper.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\userrndbuf.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\vertexcompress.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\vfsdirchange.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\algorithms.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\alignedalloc.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\allocator.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\allocatorimpl.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\ansicommand.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\ansiparse.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\archive.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\array.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\base64.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\binder.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\bitarray.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\bitops.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\blockallocator.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\cfgacc.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\cfgdoc.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\cfgfile.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\cfgmgr.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\cfgnotifier.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\checksum.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\cmdhelp.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\cmdline.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\common_handlers.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\comparator.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\compileassert.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\compositefunctor.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\cowwrapper.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\csbaseeventh.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\cscolor.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\csendian.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\csevcord.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\csevent.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\cseventflattener.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\cseventq.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\csinput.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\csmd5.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\csobject.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\csosdefs.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\cspmeter.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\csppulse.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\csshlib.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\csstring.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\cssubscription.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\csuctransform.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\csunicode.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\custom_new_disable.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\custom_new_enable.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\customallocated.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\databuf.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\deprecated_warn_off.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\deprecated_warn_on.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\digest.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\dirtyaccessarray.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\documentcommon.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\documenthelper.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\event.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\eventhandlers.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\eventnames.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\evoutlet.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\fifo.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\filereadhelper.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\fixedsizeallocator.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\fixedsizecache.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\flags.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\floatrand.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\formatter.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\fpu80x86.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\frameeventsignpost.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\genericresourcecache.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\getopt.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\graphalg.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\hash.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\hashcomputer.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\hashr.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\inputdef.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\leakguard.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\list.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\md5.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\measuretime.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\memdebug.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\memfile.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\memheap.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\mempool.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\metautils.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\mmap_dummy.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\mmap_posix.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\mmapio.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\nobjvec.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\noncopyable.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\nulcache.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\nullptr.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\objiter.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\objreg.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\parasiticdatabuffer.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\parray.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\partialorder.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\physfile.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\platform.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\platformfile.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\plugldr.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\plugmgr.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\pooledscfclass.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\prfxcfg.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\priorityqueue.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\processor\processorspecdetection_gcc_ppc.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\processor\processorspecdetection_nonwin_gcc_arm.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\processor\processorspecdetection_nonwin_gcc_x86.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\processor\processorspecdetection_win.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\processorspecdetection.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\ptrwrap.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\radixsort.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\randomgen.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\redblacktree.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\ref.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\refarr.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\refcount.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\reftrackeraccess.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\regexp.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\rootedhiercache.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\scanstr.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\scf.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\scf_impl.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\scf_implementation.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\scf_implgen.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\scf_implgen_p.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\scf_implgen_p_template.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\scf_interface.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\scfarray.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\scfstr.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\scfstringarray.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\scfstrset.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\schedule.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\scopeddelete.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\scopedlock.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\scopedmutexlock.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\scopedpointer.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\set.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\setenv.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\sha256.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\simplejobqueue.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\snprintf.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\sparse3d.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\spinlock.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\strhash.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\strhashr.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\stringarray.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\stringconv.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\stringquote.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\stringreader.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\strset.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\sysfunc.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\syspath.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\systemopenmanager.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\threadevent.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\threading\atomicops.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\threading\atomicops_gcc_arm.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\threading\atomicops_gcc_generic.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\threading\atomicops_gcc_ppc.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\threading\atomicops_gcc_x86.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\threading\atomicops_msvc.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\threading\atomicops_sparc.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\threading\barrier.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\threading\condition.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\threading\mutex.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\threading\pthread_tls.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\threading\rwmutex.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\threading\thread.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\threading\tls.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\threading\win32_apifuncs.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\threading\win32_condition.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\threading\win32_mutex.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\threading\win32_thread.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\threading\win32_tls.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\threadjobqueue.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\threadmanager.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\timer.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\tree.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\tuple.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\typetraits.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\util.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\verbosity.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\vfscache.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\vfshiercache.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\vfsplat.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\virtclk.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\weakkeyedhash.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\weakref.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\weakrefarr.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\weakreferenced.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\weakrefhash.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\win32\cachedll.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\win32\csconfig-msvc.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\win32\DbgHelpAPI.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\win32\mmap.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\win32\msvc_deprecated_warn_off.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\win32\msvc_deprecated_warn_on.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\win32\psdk-compat.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\win32\registrycfg.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\win32\win32.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\win32\wintools.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\xmltiny.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\zip.h" />
+    <ClInclude Include="..\..\libs\csgeom\boxclip.h" />
+    <ClInclude Include="..\..\libs\csgeom\edgeclip.h" />
+    <ClInclude Include="..\..\libs\csgeom\obb_priv.h" />
+    <ClInclude Include="..\..\libs\csgeom\polyclip.h" />
+    <ClInclude Include="..\..\libs\cstool\importkit_glue.h" />
+    <ClInclude Include="..\..\libs\csutil\callstack.h" />
+    <ClInclude Include="..\..\libs\csutil\cskey_identstrs.h" />
+    <ClInclude Include="..\..\libs\csutil\csucmappings.h" />
+    <ClInclude Include="..\..\libs\csutil\demangle.h" />
+    <ClInclude Include="..\..\libs\csutil\dlmalloc-settings.h" />
+    <ClInclude Include="..\..\libs\csutil\memutil.h" />
+    <ClInclude Include="..\..\libs\csutil\reftrack.h" />
+    <ClInclude Include="..\..\libs\csutil\tinystr.h" />
+    <ClInclude Include="..\..\libs\csutil\tinyxml.h" />
+    <ClInclude Include="..\..\libs\csutil\win32\callstack-dbghelp.h" />
+    <ClInclude Include="..\..\libs\csutil\win32\shellstuff.h" />
+    <ClInclude Include="..\..\libs\csutil\win32\syminit.h" />
+    <ClInclude Include="..\..\libs\csutil\win32\win32kbd.h" />
+    <ClInclude Include="..\..\libs\csutil\win32\win32kbd_identstrs.h" />
+    <ClInclude Include="..\..\libs\csutil\xmltinyp.h" />
+    <ClInclude Include="..\..\libs\..\include\csgeom\polyclip.h" />
+    <ClInclude Include="..\..\libs\..\include\cstool\noise\model\sphere.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\callstack.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\win32\callstack.h" />
+    <ClInclude Include="..\..\libs\..\include\csutil\win32\csosdefs.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\..\mk\msvc\libcrystalspace.rc">
+      <ExcludedFromBuild Condition="'$(Configuration)'=='ReleaseWithStaticLibs'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)'=='DebugWithStaticLibs'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)'=='MemoryTrackerWithStaticLibs'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)'=='RefTrackerWithStaticLibs'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)'=='ThreadCheckerWithStaticLibs'">true</ExcludedFromBuild>
+    </ResourceCompile>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

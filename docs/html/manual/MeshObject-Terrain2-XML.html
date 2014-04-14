@@ -1,0 +1,182 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.10.10.2 XML format</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.10.10.2 XML format">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.10.10.2 XML format">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="MeshObject-Terrain2-XML"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="MeshObject-Terrain2-General.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="MeshObject-Particles.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="MeshObject-Terrain2.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h4 class="subsubsection"> 4.10.10.2 XML format </h4>
+
+<p>The main way to use the terrain2 plugin is via its syntax in the worldfiles.
+</p>
+<a name="1"></a>
+<h4 class="subsubheading"> Terrain factory XML syntax </h4>
+<p>The majority of the settings are specified on a per factory level. The factory
+loader recognize the following tags.
+</p>
+<dl compact="compact">
+<dt> <code>&lt;renderer&gt;pluginname&lt;/renderer&gt;</code></dt>
+<dd><p>Set the renderer plugin to use. Must be specified if rendering is desired.
+</p></dd>
+<dt> <code>&lt;collider&gt;pluginname&lt;/collider&gt;</code></dt>
+<dd><p>Set the collision detection plugin to use. Must be specified for collision detection
+to work.
+</p></dd>
+<dt> <code>&lt;feeder&gt;pluginname&lt;/feeder&gt;</code></dt>
+<dd><p>Set feeder plugin to use.
+</p></dd>
+<dt> <code>&lt;cells&gt;...&lt;/cells&gt;</code></dt>
+<dd><p>Container for cells and per cell settings. See below for details.
+</p></dd>
+<dt> <code>&lt;maxloadedcells&gt;number&lt;/maxloadedcells&gt;</code></dt>
+<dd><p>Set the maximum number of cells to be loaded at any given time.
+</p></dd>
+<dt> <code>&lt;autopreload&gt;yes/no&lt;/autopreload&gt;</code></dt>
+<dd><p>Set if terrain should automatically preload cells which are outside view but
+can be expected to come into view shortly.
+</p></dd>
+<dt> <code>&lt;virtualviewdistance&gt;factor&lt;/virtualviewdistance&gt;</code></dt>
+<dd><p>Set enlargement factor for the virtual view used for automatic preloading.
+</p></dd>
+</dl>
+
+
+<p>The <code>&lt;cells&gt;</code> container contains definition of default settings as well
+as setting for individual cells. The <code>&lt;celldefault&gt;</code> accept the same
+settings as the <code>&lt;cell&gt;</code> except for the position and name tags.
+</p>
+<dl compact="compact">
+<dt> <code>&lt;name&gt;cellname&lt;/name&gt;</code></dt>
+<dd><p>Set cell name for future reference.
+</p></dd>
+<dt> <code>&lt;size x=&quot;&quot; y=&quot;&quot; z=&quot;&quot; /&gt;</code></dt>
+<dd><p>Set cell size in model space.
+</p></dd>
+<dt> <code>&lt;position x=&quot;&quot; y=&quot;&quot; /&gt;</code></dt>
+<dd><p>Set the offset in the heightmap to model space transform.
+</p></dd>
+<dt> <code>&lt;gridsize width=&quot;&quot; height=&quot;&quot; /&gt;</code></dt>
+<dd><p>Set the size of the heightmap
+</p></dd>
+<dt> <code>&lt;materialmapsize width=&quot;&quot; height=&quot;&quot; /&gt;</code></dt>
+<dd><p>Set desired size of the material map data.
+</p></dd>
+<dt> <code>&lt;basematerial&gt;materialname&lt;/basematerial&gt;</code></dt>
+<dd><p>Set the material to use for the base rendering pass in the renderer.
+</p></dd>
+<dt> <code>&lt;materialmappersistent&gt;yes/no&lt;/materialmappersistent&gt;</code></dt>
+<dd><p>Control if the material map should be persistent or not. A persistent material 
+map allow you to modify it after loading but also results in increased memory
+usage.
+</p></dd>
+<dt> <code>&lt;renderproperties&gt;&lt;param name=&quot;&quot;&gt;value&lt;/param&gt;...&lt;/renderproperties&gt;</code></dt>
+<dd><p>Set one or more named parameters in the renderer. See the documentation for
+the renderer in use for a list of parameters and their values.
+</p></dd>
+<dt> <code>&lt;colliderproperties&gt;&lt;param name=&quot;&quot;&gt;value&lt;/param&gt;...&lt;/colliderproperties&gt;</code></dt>
+<dd><p>Set one or more named parameters in the collider. See the documentation for
+the collider in use for a list of parameters and their values.
+</p></dd>
+<dt> <code>&lt;feederproperties&gt;&lt;param name=&quot;&quot;&gt;value&lt;/param&gt;...&lt;/feederproperties&gt;</code></dt>
+<dd><p>Set one or more named parameters in the data feeder. See the documentation for
+the data feeder in use for a list of parameters and their values.
+</p></dd>
+</dl>
+
+
+<a name="2"></a>
+<h4 class="subsubheading"> Terrain object XML syntax </h4>
+
+<p>The terrain2 object loader is very simple and accept only two tags
+</p>
+<dl compact="compact">
+<dt> <code>&lt;factory&gt;factoryname&lt;/factory&gt;</code></dt>
+<dd><p>Set the terrain2 factory to use.
+</p></dd>
+<dt> <code>&lt;materialpalette&gt;&lt;material&gt;materialname&lt;/material&gt;..&lt;/materialpalette&gt;</code></dt>
+<dd><p>Set the materialpalette to use for rendering. The material palette is a list
+of materials numbered in the order specified in the xml tag. The number corresponds
+to the index in the materialmap.
+</p></dd>
+</dl>
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="MeshObject-Terrain2-General.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="MeshObject-Particles.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="MeshObject-Terrain2.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

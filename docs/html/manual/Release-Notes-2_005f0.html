@@ -1,0 +1,486 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: C.1 Release Notes from 1.4 to 2.0</title>
+
+<meta name="description" content="Crystal Space 2.1.0: C.1 Release Notes from 1.4 to 2.0">
+<meta name="keywords" content="Crystal Space 2.1.0: C.1 Release Notes from 1.4 to 2.0">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Release-Notes-2_005f0"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Release-Notes-1_005f4_005f1.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Licenses.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h2 class="appendixsec"> C.1 Release Notes from 1.4 to 2.0 </h2>
+
+<p>This section documents the major changes between versions 1.4 and 2.0 of
+Crystal Space.
+</p>
+<p>Version 2.0 is a major release, covering more than three years of continuous
+effort. As such, not all changes are documented. Below details the major
+changes since the last release. This will continue to be updated as time
+progresses.
+</p>
+<p>This list will not be as complete as wished, but due to timescale between
+this and the last release, it makes it difficult to document all changes.
+</p>
+<p><strong>New features/enhancements:</strong>
+</p>
+<ul>
+<li>
+Added new demonstration applications: <tt>&lsquo;csbias&rsquo;</tt>, <tt>&lsquo;csisland&rsquo;</tt>.
+
+</li><li>
+Added new tutorial applications: <tt>&lsquo;avatartest&rsquo;</tt>, <tt>&lsquo;shadertut&rsquo;</tt>.
+
+</li><li>
+Added new tool applications: <tt>&lsquo;hairtest&rsquo;</tt>, <tt>&lsquo;shagnetron&rsquo;</tt>, <tt>&lsquo;cslodgen&rsquo;</tt>,
+<tt>&lsquo;cslodview&rsquo;</tt>, <tt>&lsquo;csmocapviewer&rsquo;</tt>, <tt>&lsquo;csterrainedtest&rsquo;</tt>.
+
+</li><li>
+Added new test applications: <tt>&lsquo;imptest&rsquo;</tt>, <tt>&lsquo;transparentwindow&rsquo;</tt>,
+<tt>&lsquo;csceguiconftest&rsquo;</tt>, <tt>&lsquo;threadtest&rsquo;</tt>, <tt>&lsquo;jobtest&rsquo;</tt>, <tt>&lsquo;smoketest&rsquo;</tt>,
+<tt>&lsquo;deferreddemo&rsquo;</tt>, <tt>&lsquo;waterdemo2&rsquo;</tt>.
+
+</li><li>
+The <tt>&lsquo;startme&rsquo;</tt> application has been almost completely re-written for a nicer
+an a more usable User Interface.
+
+</li><li>
+Many improvements have been added to the following applications and plugins:
+<tt>&lsquo;viewmesh&rsquo;</tt>, <tt>&lsquo;walktest&rsquo;</tt>, <tt>&lsquo;genmeshify&rsquo;</tt>, <tt>&lsquo;bugplug&rsquo;</tt>.
+
+</li><li>
+Added several generic tool classes that can be used in application development:
+<code>CS::Utility::iCameraManager</code>, <code>CS::Utility::iHUDManager</code>,
+<code>CS::Utility::DemoApplication</code>, <code>CS::Debug::iVisualDebugger</code>,
+<code>CS::Material::MaterialBuilder</code>.
+
+</li><li>
+New level and data added. Please look within the <tt>&lsquo;data&rsquo;</tt> directory.
+
+</li><li>
+Threading support has been extended and improved.
+
+</li><li>
+Added a threaded loader for the parallel loading of the data.
+
+</li><li>
+Added support for custom camera projection matrices.
+
+</li><li>
+A new <code>iRenderManager</code> interface has been added, abstracting the rendering
+method used to display the scenes.
+
+</li><li>
+A new post-effects system has been added, see <code>iRenderManagerPostEffects</code>
+and related classes.
+
+</li><li>
+The render managers, the lighting and shader systems have all received many fixes
+and improvements.
+
+</li><li>
+The shaders have been split in the directories <tt>&lsquo;data/shader&rsquo;</tt> for the global
+<cite>weaved</cite> shaders, <tt>&lsquo;data/shader-snippet&rsquo;</tt> for the snippets to be weaved in
+the shader weaver, and <tt>&lsquo;data/shader-old&rsquo;</tt> for the previous shaders.
+
+</li><li>
+Many new shaders have been added, such as the <samp>&lsquo;sky&rsquo;</samp> shader implementing the
+Perez luminance model, the <samp>&lsquo;clouds&rsquo;</samp> shader implementing a Perlin noise, and
+the <samp>&lsquo;fake_sss&rsquo;</samp> implementing a fake sub-surface scattering. See in
+<tt>&lsquo;data/shader&rsquo;</tt> for the other additions.
+
+</li><li>
+A new <samp>&lsquo;deferred&rsquo;</samp> render manager has been added, implementing deferred shading.
+
+</li><li>
+The <tt>&lsquo;lighter2&rsquo;</tt> application has been extended with a radiosity system with
+support for caustics, allowing far more realistic pre-lighting.
+
+</li><li>
+A new culler has been added, <samp>&lsquo;occluvis&rsquo;</samp>, doing hardware occlusion visibility
+culling.
+
+</li><li>
+A new imposter system has been added. See the <tt>&lsquo;imptest&rsquo;</tt> application.
+
+</li><li>
+A new <a href="Progressive-Level-of-Detail.html#0">progressive Level of Detail</a> system has
+been added.
+
+</li><li>
+Added support for Pixel Buffer Objects.
+
+</li><li>
+Added support for static mesh and static mesh factory instancing.
+
+</li><li>
+Many fixes and improvements have been made to the mesh generator.
+
+</li><li>
+Many fixes and improvements have been made to <samp>&lsquo;terrain2&rsquo;</samp> and its multi-splatting
+functionalities.
+
+</li><li>
+Added support for modifiable terrains, along with the start of a terrain editor (see
+<tt>&lsquo;csterrainedtest&rsquo;</tt>).
+
+</li><li>
+Implemented most of the missing functionalities in the <tt>&lsquo;Bullet&rsquo;</tt> physics
+plugin. Augmented this plugin with many new functionalities such as soft bodies,
+kinematic objects, terrains, and hit beam tests.
+
+</li><li>
+Added some tools for the creation and animation of soft bodies (see
+<code>CS::Animation::iSoftBodyAnimationControl</code> and
+<code>CS::Physics::Bullet::SoftBodyHelper</code>).
+
+</li><li>
+Added a plugin for the visual debugging of a physical simulation (see
+<code>CS::Debug::iDynamicSystemDebugger</code>).
+
+</li><li>
+Many additions and fixes to the <a href="MeshObject-Animesh.html#0">Animesh mesh</a>. Many
+additions are about optimizations of the morphing and display processes.
+
+</li><li>
+Added support for animated decals on Animesh meshes.
+
+</li><li>
+Added a structure to hold the physical description of an Animesh (see
+<code>iBodySkeleton</code> and other classes).
+
+</li><li>
+Added many new animation blending nodes: <samp>&lsquo;Ragdoll&rsquo;</samp>, <samp>&lsquo;LookAt&rsquo;</samp>,
+<samp>&lsquo;IKPhysical&rsquo;</samp>, <samp>&lsquo;IKCCD&rsquo;</samp>, <samp>&lsquo;Speed&rsquo;</samp>, <samp>&lsquo;Debug&rsquo;</samp>, <samp>&lsquo;Retarget&rsquo;</samp>.
+
+</li><li>
+Fixes and improvements of the <samp>&lsquo;FSM&rsquo;</samp> and <samp>&lsquo;Animation&rsquo;</samp> animation
+blending nodes.
+
+</li><li>
+Added some default template classes for the creation of new animation nodes (see
+the header file <tt>&lsquo;cstool/animnodetmpl.h&rsquo;</tt>).
+
+</li><li>
+Added a <small>BVH</small> motion capture parser for the Animesh, along with a motion capture
+viewer and a Point Light Display System (see <tt>&lsquo;csmocapviewer&rsquo;</tt>).
+
+</li><li>
+Added some tools for the creation and merging of Animesh meshes
+(see <code>CS::Mesh::AnimatedMeshTools</code>).
+
+</li><li>
+Added the parsing of animation blending nodes to the <tt>&lsquo;skeleton2&rsquo;</tt> loader.
+
+</li><li>
+Added a new <samp>&lsquo;Fur&rsquo;</samp> mesh, for the animation and display of hairs and fur.
+
+</li><li>
+Added a new <samp>&lsquo;Water&rsquo;</samp> mesh, for the display of oceans and seas.
+
+</li><li>
+Added a plugin for the <a href="Assimp-importer.html#0">Assimp library</a>, allowing to load
+genmeshes and animeshes into Crystal Space from a wide range of different file
+format.
+
+</li><li>
+Added a new <a href="Blender.html#0">Blender 2.6x export script</a>.
+
+</li><li>
+Improved the <a href="3DSMax.html#0">3DSMax export script</a>.
+
+</li><li>
+Added a new 3DSMax exporter plugin, see in the <tt>&lsquo;/CSExporters/CrystalMax&rsquo;</tt>
+Subversion repository.
+
+</li><li>
+Added a new terrain exporter plugin for the <a href="http://www.pnp-terraincreator.com/">PnP TerrainCreator</a> editor, see in the <tt>&lsquo;/CSExporters/CrystalPnP&rsquo;</tt> Subversion
+repository.
+
+</li><li>
+The <small>CEGUI</small> plugin has received many improvements and additions.
+
+</li><li>
+A new generic application configuration tool has been added. See the classes
+<samp>&lsquo;iConfigListener&rsquo;</samp> and <samp>&lsquo;iConfigNotifier&rsquo;</samp>, and the <tt>&lsquo;csceguiconftest&rsquo;</tt>
+application.
+
+</li><li>
+The <samp>&lsquo;wxWidgets&rsquo;</samp> canvas and <tt>&lsquo;wxtest&rsquo;</tt> application have been improved.
+
+</li><li>
+The <a href="http://libnoise.sourceforge.net/">libnoise</a> library has been integrated.
+See the <code>CS::Math::Noise</code> namespace.
+
+</li><li>
+Added a Secure Hash Algorithm implementation (SHA-256). See the <code>SHA256</code> class.
+
+</li><li>
+Added a HTTP implementation (see the <code>iHTTPConnection</code> class and related).
+
+</li><li>
+Added many namespaces in the Crystal Space SDK. Future new classes should always
+be put in some <small>CS</small> namespace.
+
+</li><li>
+There has been many additions, fixes and other work performed on the configure
+system.
+
+</li><li>
+Extended support and usage of unit testing with <small>CS</small>.
+
+</li><li>
+There have been many fixes and updates for platform support, especially for the
+ARM platform.
+
+</li><li>
+There has been many updates and fixes to the documentation.
+
+</li><li>
+Made memory blocks dump more useful in <code>ptmalloc</code>.
+
+</li><li>
+Added copy constructors to <code>csRefCount</code>/<code>FastRefCount</code>
+that properly set the refcount to 1.
+
+</li><li>
+Made generic render step provide inverse object to world TF as a SV.
+
+</li><li>
+Extended <code>csFIFO</code> with a <code>Top ()</code> method that peeks into the fifo
+without removing anything.
+
+</li><li>
+Added [no]compact option to <tt>&lsquo;optimisedata&rsquo;</tt>, to put all data into
+one file (or split into many).
+
+</li></ul>
+
+<p><strong>API changes:</strong>
+</p>
+<ul>
+<li>
+Added <code>csBitArray::IsBitSetTolerant ()</code> (does not assert for out
+of bound indices).
+
+</li><li>
+Removed <code>CS_CONST_METHOD</code> and <code>CS_PURE_METHOD</code>. Pure and
+const specifiers have very strong semantics that almost never is warranted,
+and to avoid problems and bugs caused by them remove them totally.
+
+</li><li>
+Addition new <code>SimpleStaticLighter</code> class. This is a convenience class
+that calculates simple static vertex lighting (similar to what lighter2 would
+do) for individual meshes. This is useful for statically lighting dynamically
+created geometry or for updating vertex lighting on an object that has moved.
+
+</li><li>
+Added <code>PeekNext ()</code> methods to <code>csRedBlackTreeMap</code> iterators.
+
+</li><li>
+Renamed <code>csFinite ()</code> to <code>CS::IsFinite ()</code>.
+
+</li><li>
+Renamed <code>csNaN ()</code> to <code>CS::IsNaN ()</code>.
+
+</li><li>
+Deprecated <code>csNormal ()</code>.
+
+</li><li>
+Added <code>iCameraListener</code> and deprecated <code>iCameraSectorListener</code>.
+</li></ul>
+
+<p><strong>Removals:</strong>
+</p>
+<ul>
+<li>
+Completed removal of software renderer.
+
+</li><li>
+Completed removal of old event system.
+
+</li><li>
+Completed removal of <samp>&lsquo;thing&rsquo;</samp> mesh plugin. However, you can now convert your
+previous <samp>&lsquo;thing&rsquo;</samp> meshes using <tt>&lsquo;genmeshify&rsquo;</tt>.
+
+</li><li>
+Completed removal of old sound system.
+
+</li><li>
+Completed removal of deprecated world attributes from tree.
+
+</li><li>
+Large cleanup of lighting code which has resulted in removal of both
+interfaces and other methods. A result was a complete rework of lighting
+code.
+
+</li><li>
+Removed the following canvas: <samp>&lsquo;sdl&rsquo;</samp>, <samp>&lsquo;caca&rsquo;</samp>, <samp>&lsquo;xextshm&rsquo;</samp>,
+<samp>&lsquo;ddraw&rsquo;</samp>, <samp>&lsquo;softx&rsquo;</samp>, <samp>&lsquo;memory&rsquo;</samp>.
+
+</li><li>
+Removal of <tt>&lsquo;instmesh&rsquo;</tt> and <tt>&lsquo;bezier&rsquo;</tt> meshes as they are
+not that useful and instmesh isn't working that well either.
+
+</li><li>
+Removed <code>iImageIO::SetDithering ()</code>.
+
+</li><li>
+Removed deprecated <code>csProcessorCapability</code>.
+
+</li><li>
+Removed the <tt>&lsquo;simpvs&rsquo;</tt> application.
+
+</li></ul>
+
+<p><strong>Fixes that apply to tickets in Trac:</strong>
+</p>
+<ul>
+<li>
+Changed <code>XMLshader</code> to expand all templates before retaining nodes
+for later parsing. Should help with #486.
+</li></ul>
+
+<p><strong>Other changes:</strong>
+</p>
+<ul>
+<li>
+Switched by default to the <tt>&lsquo;Bullet&rsquo;</tt> library instead of <small>ODE</small> for the
+physical simulation. The <small>ODE</small> plugin will not get further support anymore,
+and will be removed in some future.
+
+</li><li>
+The logic of the Animesh's animation blending nodes has been changed, and the
+nodes work now in bind space instead of bone space.
+
+</li><li>
+<tt>&lsquo;perl&rsquo;</tt> and <tt>&lsquo;java&rsquo;</tt> plugins are now disabled by default.
+
+</li><li>
+When building an application with &ldquo;statically linked plugins&rdquo; (usually by
+utilizing the <samp>&lsquo;LinkStaticPlugins&rsquo;</samp> Jam rule) <small>SCF</small>'s automatic scanning
+for plugins was &ldquo;magically&rdquo; inhibited. This behaviour has been abandoned;
+now, by default plugin scanning is always performed independently of whether
+statically linked plugins are used or not. Plugin scanning can be inhibited by
+calling <code>scfInitialize</code> manually (see the API documentation for details
+how).
+
+</li><li>
+parallaxAtt moved to <samp>&lsquo;shader-old&rsquo;</samp>.
+
+</li><li>
+Added a check to the legacy renderbuffer so that it removes the
+<code>CS_BUFFER_COLOR</code> user renderbuffer if colors are not set.
+
+</li><li>
+Changed to unshadowed render manager as default.
+
+</li><li>
+Disabled high <small>DPI</small> scaling on Windows Vista.
+
+</li><li>
+Un-inline most <code>csPathsList</code> methods to avoid cross-module memory
+allocs/frees.
+
+</li><li>
+Add a 'used <small>SV</small>' traverser that gives the set of used <small>SV</small>s (instead
+of individual <small>SV</small> names).
+
+</li><li>
+Optimisation <tt>&lsquo;lighter2&rsquo;</tt> by not doing transparency-computation of shadowrays
+if path is fully unoccluded or fully occluded.
+
+</li><li>
+Support for (properly hardware-accelerated) clip planes.
+
+</li><li>
+Packaging scripts have been moved from the scripts directory into a sub packaging
+directory.
+
+</li><li>
+Use <code>glXChooseFBConfig</code> instead of <code>glXChooseVisual</code>.
+
+</li><li>
+Avoid crashes when encountering a corrupt <small>PNG</small> images.
+
+</li><li>
+Extensive removal of dead and old code.
+
+</li></ul>
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Release-Notes-1_005f4_005f1.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Licenses.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

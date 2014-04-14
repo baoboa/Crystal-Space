@@ -1,0 +1,1020 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: C.10 Release Notes from 0.18 to 0.90</title>
+
+<meta name="description" content="Crystal Space 2.1.0: C.10 Release Notes from 0.18 to 0.90">
+<meta name="keywords" content="Crystal Space 2.1.0: C.10 Release Notes from 0.18 to 0.90">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Release-Notes-90"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Release-Notes-92.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Release-Notes-18.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Licenses.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h2 class="appendixsec"> C.10 Release Notes from 0.18 to 0.90 </h2>
+
+<p>This section documents the major changes between versions 0.18 and 0.90 of
+Crystal Space.
+</p>
+<a name="1"></a>
+<h3 class="subheading"> <small>SCF</small> </h3>
+
+<p>The set of <small>SCF</small> functions has been removed except for
+<code>scfInitialize()</code>.  This function creates a global instance of the
+<samp>&lsquo;iSCF&rsquo;</samp> interface which is always available to the application and to
+plugin modules as <samp>&lsquo;iSCF::SCF&rsquo;</samp>.  All other <small>SCF</small> functionality should be
+accessed via this shared object.  This change makes it possible to call
+<small>SCF</small> functions from within dynamic libraries (i.e. from plugins), which
+was not possible before.  The only thing that is still not allowed is to use
+the <code>SCF_REGISTER_STATIC()</code> family of macros in dynamic libraries.
+</p>
+<p><small>SCF</small> now associates a so-called <em>Interface <small>ID</small> Number</em> with every
+interface name.  You can get the number for an interface by calling
+<samp>&lsquo;iSCF::SCF-&gt;GetInterfaceID(&quot;iInterface&quot;)&rsquo;</samp>.  It is currently not possible
+to get the interface name for a given number, but this should not be needed
+anyway (see below).
+</p>
+<p><code>iBase::QueryInterface()</code> now takes the interface <small>ID</small> as its parameter
+instead of the interface name. This makes a lot of optimization possible,
+because interfaces can be compared using simple integer comparison instead
+of string comparison. You will not see anything of this because the
+<code>SCF_QUERY_INTERFACE()</code> macro shields you from it. As a result, your
+program should not require any changes.
+</p>
+<p>However, you can increase performance in critical areas by using two new macros
+which have been introduced.  Place <code>SCF_DECLARE_FAST_INTERFACE()</code>
+somewhere at top-level in your source files (or in one of your header files).
+For every interface you do this you can then use
+<code>SCF_QUERY_INTERFACE_FAST()</code>.  The advantage of this is a performance
+gain.  The disadvantage is that you have to use
+<code>SCF_DECLARE_FAST_INTERFACE()</code> and that the name of the interface must be
+hard-coded (e.g. you cannot use <code>SCF_QUERY_INTERFACE_FAST()</code> if the name
+of the interface is given to your function as a parameter).
+</p>
+<p>Three other changes have been done to <small>SCF</small>.  First, it is now possible to
+get a list of registered classes using <code>iSCF::SCF-&gt;QueryClassList()</code>.
+Second, <code>scfGetRefCount()</code> has been introduced which allows access to an
+object's reference count without accessing the reference count variable
+directly.  This function should only be used for debugging, however.  Third,
+the macros which implement <samp>&lsquo;iBase&rsquo;</samp> functions have been split up.  For
+example, <samp>&lsquo;SCF_IMPLEMENT_IBASE()&rsquo;</samp> is now composed from these components:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">SCF_IMPLEMENT_IBASE_INCREF()
+SCF_IMPLEMENT_IBASE_DECREF()
+SCF_IMPLEMENT_IBASE_GETREFCOUNT()
+SCF_IMPLEMENT_IBASE_QUERY()
+</pre></td></tr></table>
+<p>This decomposition makes it easier to replace iBase methods individually in a
+particular implementation.
+</p>
+<a name="2"></a>
+<h3 class="subheading"> csObject and <small>RTTI</small> </h3>
+
+<p>The pseudo-<small>RTTI</small> system has been removed from <code>csObject</code>.  Instead,
+<small>SCF</small> functions are now used to identify an object's type.  As an example of
+how this affects your code, if your old code was checking an object's type in
+this fashion:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">csObject* obj = ...;
+if (obj-&gt;Type == csMyClass::Type)
+{
+  csMyClass* a = (csMyClass*)obj;
+  ...
+}
+</pre></td></tr></table>
+<p>Then it should now do so in this fashion:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">csObject *obj = ...;
+iMyInterface* a = SCF_QUERY_INTERFACE(obj, iMyInterface);
+if (a != NULL)
+{
+  ...
+}
+</pre></td></tr></table>
+<p>In performance-critical areas, you should use <code>SCF_QUERY_INTERFACE_FAST()</code>
+rather than <code>SCF_QUERY_INTERFACE()</code>.
+</p>
+<p>A result of this change is that child object iterators cannot easily iterate
+over objects of a certain type anymore.  To achieve the same effect, you should
+create an iterator for all children and then use <code>SCF_QUERY_INTERFACE()</code>
+to test if an object implements a certain interface.
+</p>
+<p>Note that if you don't want to create proper interfaces for all your classes,
+it is possible to query the class itself instead of an interface.  Assuming
+that <code>csMyClass</code> is just a set of values, and you don't want to create an
+interface with accessor functions for it.  Then you may place
+<code>SCF_DECLARE_IBASE_EXT()</code> into the class as usual (note the <samp>&lsquo;EXT&rsquo;</samp>
+version of the macro because it extends the interface list of <samp>&lsquo;csObject&rsquo;</samp>).
+In addition, you must set a version number for the class using
+<code>SCF_VERSION(csMyClass, ?, ?, ?)</code>.  The interface list then looks like
+this:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">SCF_IMPLEMENT_IBASE_EXT (csMyClass)
+  SCF_IMPLEMENTS_INTERFACE (csMyClass)
+SCF_IMPLEMENT_IBASE_EXT_END
+</pre></td></tr></table>
+<p>Using this you can use <code>SCF_QUERY_INTERFACE(object, csMyClass)</code>, i.e.
+use the class without an interface.
+</p>
+<p>Another change is that <samp>&lsquo;csObject&rsquo;</samp> stores its children as <samp>&lsquo;iObject&rsquo;</samp>
+references now.  It does not deal with <samp>&lsquo;csObject&rsquo;</samp> pointers any longer.
+All children are correctly reference-counted.  Also, all objects maintain a
+pointer to their &ldquo;parent&rdquo; object.  How this pointer is used is left to you.
+The pointer is not reference-counted in order to avoid circular referencing.
+Consequently, the classes <samp>&lsquo;csPObject&rsquo;</samp> and <samp>&lsquo;csObjNoDel&rsquo;</samp>, and the
+member function <code>ObjRelease()</code> have been removed.
+</p>
+<p>This usually means that after calling <code>ObjAdd()</code>, you have to call
+<code>DecRef()</code> on the added child because you don't want to use the reference
+anymore.  Of course, this only applies if you possess a valid reference.
+Similarly, if you want to unlink the object from its parent without deleting it
+(i.e.  wherever you used <code>ObjRelease()</code> before), you should now call
+<code>IncRef()</code> on the child before removing it from its parent.
+</p>
+<a name="3"></a>
+<h3 class="subheading"> Platform Portability Encapsulation </h3>
+
+<p>The new macro <samp>&lsquo;CS_IMPLEMENT_APPLICATION&rsquo;</samp> must now be invoked by exactly
+one compilation unit of each application.  This macro encapsulates
+platform-specific implementation details for any given platform.  For instance,
+on Windows, this macro defines the <code>WinMain()</code> function required by all
+Windows <small>GUI</small> applications.
+</p>
+<p>The new macro <samp>&lsquo;CS_IMPLEMENT_PLUGIN&rsquo;</samp> must now be invoked by exactly one
+compilation unit of each plugin module.  This macro encapsulates
+platform-specific implementation details for any given platform.  For instance,
+on Windows, this macro defines the <code>DllMain()</code> function required by all
+Windows <small>DLL</small> modules.
+</p>
+<p>These macros alleviate the need to link applications with specially prepared
+object files or libraries.  The summary below explains what this means for
+various platforms.
+</p>
+<dl compact="compact">
+<dt> Unix</dt>
+<dd><p>No longer required to link plugin modules against the <tt>&lsquo;dummy.o&rsquo;</tt> file.
+</p>
+</dd>
+<dt> Visual-C++</dt>
+<dd><p>No longer required to link applications against Crystal Space's
+<tt>&lsquo;win32exe.lib&rsquo;</tt> library.  No longer required to link plugin modules
+(<small>DLL</small>'s) against the <tt>&lsquo;win32dll.lib&rsquo;</tt> library.  Also, the
+<tt>&lsquo;libwin32exe.dsp&rsquo;</tt> and <tt>&lsquo;libwin32dll.dsp&rsquo;</tt> project files have been
+removed.
+</p>
+</dd>
+<dt> Mingw</dt>
+<dd><p>No longer required to link applications with the <tt>&lsquo;exeentry.o&rsquo;</tt> object file.
+No longer required to link plugin modules (<small>DLL</small>'s) with the
+<tt>&lsquo;dllentry.o&rsquo;</tt> object file.
+</p>
+</dd>
+<dt> <small>OS/2</small></dt>
+<dd><p>No longer required to link plugin modules with the <tt>&lsquo;dllentry.o&rsquo;</tt> object
+file.
+</p></dd>
+</dl>
+
+<a name="4"></a>
+<h3 class="subheading"> System Driver Removal and Application Structure </h3>
+
+<p>The classes <code>SysSystemDriver</code>, and <code>csSystemDriver</code>, and
+the interface <code>iSystem</code> have been removed. All the functionality
+that used to be present in the system driver has moved to smaller
+components (plugin manager, event queue, configuration manager, commandline
+parser, virtual clock, etc.).
+</p>
+<p>There is now a new concept called the <em>object registry</em> which is
+the central repository where all objects can register themselves.
+When you used to do <code>CS_QUERY_PLUGIN</code> you now have to do
+<code>CS_QUERY_REGISTRY</code> instead.
+</p>
+<p>Applications can no longer inherit from <code>SysSystemDriver</code>. Instead
+there is now a new <code>csInitializer</code> class which helps in the
+initialization of an application. Check out the simple tutorial
+(see section <a href="Tutorial-Simple.html#0">Simple Tutorial 1: Basic Setup, World Creation</a>) to see how this works. This tutorial also explains
+all the new concepts very clearly.
+</p>
+<a name="5"></a>
+<h3 class="subheading"> Removal of Function <small>ID</small>'s </h3>
+
+<p>Function ID's (a concept of the old plugin system) have been removed.
+This has an effect on configuration files where you now must replace things
+like:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">System.PlugIns.LevelLoader = crystalspace.level.loader
+</pre></td></tr></table>
+<p>with:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">System.PlugIns.iLoader = crystalspace.level.loader
+</pre></td></tr></table>
+<p>So in general use the interface name. This interface name will be the
+tag with which the loaded plugin is registered in the object registry.
+</p>
+<a name="6"></a>
+<h3 class="subheading"> Image Loading </h3>
+
+<p><samp>&lsquo;csImageLoader&rsquo;</samp> is gone and has now become a plugin which implements
+the <samp>&lsquo;iImageIO&rsquo;</samp> interface. To use it you typically use the following
+code:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">#include &quot;igraphic/imageio.h&quot;
+...
+iDataBuffer* buf = ...;
+iImageIO* imgldr = CS_QUERY_PLUGIN (System, iImageIO);
+imgldr-&gt;Load (buf-&gt;GetUint8 (), buf-&gt;GetSize (),
+txtmgr-&gt;GetTextureFormat ());
+...
+imgldr-&gt;DecRef ();
+</pre></td></tr></table>
+<a name="7"></a>
+<h3 class="subheading"> Map Loading (csLoader) </h3>
+
+<p>The level loader is now a plugin. Make sure you have it loaded by putting the
+following in your configuration file:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">System.PlugIns.iLoader = crystalspace.level.loader
+</pre></td></tr></table>
+
+<p>Or you can add <samp>&lsquo;CS_REQUEST_LEVELLOADER&rsquo;</samp> to the list of requested plugin
+in the call to <code>csInitializer::RequestPlugins()</code>.  Then you can get the
+level loader with:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">iLoader* level_loader = CS_QUERY_REGISTRY (object_reg, iLoader);
+</pre></td></tr></table>
+<p>When you don't need it anymore you must call <code>level_loader-&gt;DecRef ()</code>.
+Check the API reference to see what functions you can use on level_loader.
+There are functions to load a map, textures, mesh objects, etc. Many of
+these functions have been renamed as well.
+</p>
+<a name="8"></a>
+<h3 class="subheading"> Things are Mesh Objects </h3>
+
+<p>Things are now mesh objects which means that you can no longer access
+<code>csThing</code> directly.
+<code>iThing</code> has been removed. Instead there is <code>iThingState</code>.
+Check out the simple tutorial (see section <a href="Tutorial-Simple.html#0">Simple Tutorial 1: Basic Setup, World Creation</a>) for more information
+about this.
+</p>
+<a name="9"></a>
+<h3 class="subheading"> Map File Changes </h3>
+
+<p>The following map file elements have changed:
+</p>
+<ul>
+<li>
+<code>PLANE</code> =&gt; <code>ADDON</code>
+</li><li>
+<code>THING</code> =&gt; <code>MESHOBJ</code>
+</li><li>
+<code>SKY</code> =&gt; <code>MESHOBJ + RENDPRI</code>
+</li><li>
+<code>MESHOBJ</code> =&gt; <code>MESHFACT</code> &mdash; (for factories)
+</li><li>
+<code>BEZIER</code> =&gt; <code>ADDON</code>
+</li><li>
+<code>MATERIALS</code>
+</li><li>
+<code>RENDERPRIORITIES</code>
+</li><li>
+<code>PLUGINS</code>
+</li></ul>
+
+<a name="10"></a>
+<h3 class="subheading"> Sky Objects Removed </h3>
+
+<p>Sky objects must now be created the same as normal mesh objects
+but you need to give them a low render priority (i.e. 'sky' render
+priority).
+</p>
+<a name="11"></a>
+<h3 class="subheading"> Using the Engine as a Plugin </h3>
+
+<p>It is now recommended to use the engine as a plugin. Linking directly
+to the <tt>&lsquo;csengine&rsquo;</tt> library is still possible but strongly discouraged.
+We will not be able to guarantee <small>API</small> compatibility on this level.
+</p>
+<p>Using the engine as a plugin means in the first loading the engine plugin
+instead of linking to the <tt>&lsquo;csengine&rsquo;</tt> library.  You can do this with:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">csInitializer::RequestPlugins (object_reg,
+  CS_REQUEST_ENGINE,
+  ...,
+  CS_REQUEST_END);
+iEngine* engine = CS_QUERY_REGISTRY (object_reg, iEngine);
+</pre></td></tr></table>
+<p>You then use the engine through <small>SCF</small> interfaces.  Therefore, your programs
+should include header files from <tt>&lsquo;CS/include/iengine&rsquo;</tt> rather than
+<tt>&lsquo;CS/include/csengine&rsquo;</tt>.  Importing files from <tt>&lsquo;CS/include/csengine&rsquo;</tt>
+is discouraged.
+</p>
+<a name="12"></a>
+<h3 class="subheading"> Sectors Have No Polygons </h3>
+
+<p>Sectors can no longer contain polygons. All geometry is now represented
+with mesh objects (see the section above about how to create csThing
+mesh objects). To create the outer walls of a sector (i.e. the geometry
+that used to go to the sector in 0.18 or earlier) you create a csThing
+mesh object. In a world file this happens like this:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">SECTOR 'room' (
+  MESHOBJ 'walls' (
+    PLUGIN ('crystalspace.mesh.loader.thing')
+    PARAMS (
+      VERTEX (...) ...
+      POLYGON (...) ...
+    )
+    ZFILL ()
+    PRIORITY ('wall')
+  )
+  ...
+)
+</pre></td></tr></table>
+<p>In code you can use <code>iEngine::CreateSectorWallsMesh()</code> like this:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">iMeshWrapper* mesh =
+  engine-&gt;CreateSectorWallsMesh (sector, &quot;walls&quot;);
+</pre></td></tr></table>
+<a name="13"></a>
+<h3 class="subheading"> Header Directory Changes </h3>
+
+<p>All <small>SCF</small> interfaces (class names starting with the letter <samp>&lsquo;i&rsquo;</samp> such as
+<samp>&lsquo;iPolygon3D&rsquo;</samp>) have moved from <tt>&lsquo;CS/include&rsquo;</tt> to individual
+subddirectories of <tt>&lsquo;CS/include&rsquo;</tt>.  A few brief examples:
+</p>
+<ul>
+<li>
+<code>imeshobj.h</code> =&gt; <code>imesh/object.h</code> and <code>iengine/mesh.h</code>
+</li><li>
+<code>light.h</code> =&gt; <code>iengine/light.h</code>
+</li></ul>
+
+<p>The following new header directories exist:
+</p>
+<dl compact="compact">
+<dt> <code>include/iengine</code></dt>
+<dd><p>Everything related to the engine itself
+(<code>view.h</code>, <code>camera.h</code>, <code>light.h</code>, <code>sector.h</code>,
+<code>engine.h</code>, <code>texture.h</code>, <small class="dots">...</small>).
+</p></dd>
+<dt> <code>include/igame</code></dt>
+<dd><p>For the <tt>&lsquo;csgame&rsquo;</tt> plugin (<code>csgame.h</code>).
+</p></dd>
+<dt> <code>include/igeom</code></dt>
+<dd><p>For the <tt>&lsquo;csgeom&rsquo;</tt> library (<code>clip2d.h</code>).
+</p></dd>
+<dt> <code>include/igraphic</code></dt>
+<dd><p>For the <tt>&lsquo;csgfx&rsquo;</tt> library and the image loader
+plugins (<code>image.h</code>, <code>imageio.h</code>, and <code>loader.h</code>).
+</p></dd>
+<dt> <code>include/imap</code></dt>
+<dd><p>For the map loader and mesh object loaders and
+savers (<code>parser.h</code>, <code>reader.h</code>, and <code>writer.h</code>).
+</p></dd>
+<dt> <code>include/imesh</code></dt>
+<dd><p>For everything related to mesh objects and the
+state interfaces of mesh objects (<code>object.h</code>, <code>spr3d.h</code>,
+<code>ball.h</code>, <code>thing.h</code>, <small class="dots">...</small>).
+</p></dd>
+<dt> <code>include/inetwork</code></dt>
+<dd><p>For networking plugins (<code>driver.h</code> and <code>socket.h</code>).
+</p></dd>
+<dt> <code>include/isound</code></dt>
+<dd><p>For sound (<code>listener.h</code>, <code>renderer.h</code>, <small class="dots">...</small>).
+</p></dd>
+<dt> <code>include/isys</code></dt>
+<dd><p>Everything related to the system driver and its facilities (<code>event.h</code>,
+<code>evdefs.h</code>, <code>plugin.h</code>, <code>vfs.h</code>, and <code>system.h</code>).
+</p></dd>
+<dt> <code>include/iutil</code></dt>
+<dd><p>For the <tt>&lsquo;csutil&rsquo;</tt> library (<code>string.h</code>, <code>object.h</code>,
+<code>config.h</code>, <small class="dots">...</small>).
+</p></dd>
+<dt> <code>include/ivideo</code></dt>
+<dd><p>Everything for the 3D and 2D driver subsystems (<code>graph2d.h</code>,
+<code>graph3d.h</code>, <code>texture.h</code>, <code>fontserv.h</code>, <code>txtmgr.h</code>,
+<small class="dots">...</small>).
+</p></dd>
+<dt> <code>include/ivaria</code></dt>
+<dd><p>Everything that does not fit anywhere else
+(<code>collider.h</code>, <code>conin.h</code>, <code>conout.h</code>, <code>iso.h</code>,
+<code>keyval.h</code>, <code>script.h</code>, <small class="dots">...</small>).
+</p></dd>
+</dl>
+
+<a name="14"></a>
+<h3 class="subheading"> Global <small>API</small> Changes </h3>
+
+<p>All <small>SCF</small> macro names are now prefixed with <samp>&lsquo;SCF_&rsquo;</samp> in order to avoid
+polluting the global namespace.
+</p>
+<ul>
+<li>
+<code>CONSTRUCT_EMBEDDED_IBASE</code> =&gt; <code>SCF_CONSTRUCT_EMBEDDED_IBASE</code>
+</li><li>
+<code>CONSTRUCT_IBASE</code> =&gt; <code>SCF_CONSTRUCT_IBASE</code>
+</li><li>
+<code>CREATE_INSTANCE</code> =&gt; <code>SCF_CREATE_INSTANCE</code>
+</li><li>
+<code>DECLARE_EMBEDDED_IBASE</code> =&gt; <code>SCF_DECLARE_EMBEDDED_IBASE</code>
+</li><li>
+<code>DECLARE_FACTORY</code> =&gt; <code>SCF_DECLARE_FACTORY</code>
+</li><li>
+<code>DECLARE_FAST_INTERFACE</code> =&gt; <code>SCF_DECLARE_FAST_INTERFACE</code>
+</li><li>
+<code>DECLARE_IBASE_EXT</code> =&gt; <code>SCF_DECLARE_IBASE_EXT</code>
+</li><li>
+<code>DECLARE_IBASE</code> =&gt; <code>SCF_DECLARE_IBASE</code>
+</li><li>
+<code>DEC_REF</code> =&gt; <code>SCF_DEC_REF</code>
+</li><li>
+<code>EXPORT_CLASS_DEP</code> =&gt; <code>SCF_EXPORT_CLASS_DEP</code>
+</li><li>
+<code>EXPORT_CLASS_TABLE_END</code> =&gt; <code>SCF_EXPORT_CLASS_TABLE_END</code>
+</li><li>
+<code>EXPORT_CLASS_TABLE</code> =&gt; <code>SCF_EXPORT_CLASS_TABLE</code>
+</li><li>
+<code>EXPORT_CLASS</code> =&gt; <code>SCF_EXPORT_CLASS</code>
+</li><li>
+<code>IMPLEMENTS_EMBEDDED_INTERFACE</code> =&gt; <code>SCF_IMPLEMENTS_EMBEDDED_INTERFACE</code>
+</li><li>
+<code>IMPLEMENTS_INTERFACE_COMMON</code> =&gt; <code>SCF_IMPLEMENTS_INTERFACE_COMMON</code>
+</li><li>
+<code>IMPLEMENTS_INTERFACE</code> =&gt; <code>SCF_IMPLEMENTS_INTERFACE</code>
+</li><li>
+<code>IMPLEMENT_EMBEDDED_IBASE_DECREF</code> =&gt; <code>SCF_IMPLEMENT_EMBEDDED_IBASE_DECREF</code>
+</li><li>
+<code>IMPLEMENT_EMBEDDED_IBASE_END</code> =&gt; <code>SCF_IMPLEMENT_EMBEDDED_IBASE_END</code>
+</li><li>
+<code>IMPLEMENT_EMBEDDED_IBASE_GETREFCOUNT</code> =&gt;<br><code>SCF_IMPLEMENT_EMBEDDED_IBASE_GETREFCOUNT</code>
+</li><li>
+<code>IMPLEMENT_EMBEDDED_IBASE_INCREF</code> =&gt; <code>SCF_IMPLEMENT_EMBEDDED_IBASE_INCREF</code>
+</li><li>
+<code>IMPLEMENT_EMBEDDED_IBASE_QUERY_END</code> =&gt;<br><code>SCF_IMPLEMENT_EMBEDDED_IBASE_QUERY_END</code>
+</li><li>
+<code>IMPLEMENT_EMBEDDED_IBASE_QUERY</code> =&gt; <code>SCF_IMPLEMENT_EMBEDDED_IBASE_QUERY</code>
+</li><li>
+<code>IMPLEMENT_EMBEDDED_IBASE</code> =&gt; <code>SCF_IMPLEMENT_EMBEDDED_IBASE</code>
+</li><li>
+<code>IMPLEMENT_FACTORY</code> =&gt; <code>SCF_IMPLEMENT_FACTORY</code>
+</li><li>
+<code>IMPLEMENT_IBASE_DECREF</code> =&gt; <code>SCF_IMPLEMENT_IBASE_DECREF</code>
+</li><li>
+<code>IMPLEMENT_IBASE_END</code> =&gt; <code>SCF_IMPLEMENT_IBASE_END</code>
+</li><li>
+<code>IMPLEMENT_IBASE_EXT_DECREF</code> =&gt; <code>SCF_IMPLEMENT_IBASE_EXT_DECREF</code>
+</li><li>
+<code>IMPLEMENT_IBASE_EXT_END</code> =&gt; <code>SCF_IMPLEMENT_IBASE_EXT_END</code>
+</li><li>
+<code>IMPLEMENT_IBASE_EXT_GETREFCOUNT</code> =&gt; <code>SCF_IMPLEMENT_IBASE_EXT_GETREFCOUNT</code>
+</li><li>
+<code>IMPLEMENT_IBASE_EXT_INCREF</code> =&gt; <code>SCF_IMPLEMENT_IBASE_EXT_INCREF</code>
+</li><li>
+<code>IMPLEMENT_IBASE_EXT_QUERY_END</code> =&gt; <code>SCF_IMPLEMENT_IBASE_EXT_QUERY_END</code>
+</li><li>
+<code>IMPLEMENT_IBASE_EXT_QUERY</code> =&gt; <code>SCF_IMPLEMENT_IBASE_EXT_QUERY</code>
+</li><li>
+<code>IMPLEMENT_IBASE_EXT</code> =&gt; <code>SCF_IMPLEMENT_IBASE_EXT</code>
+</li><li>
+<code>IMPLEMENT_IBASE_GETREFCOUNT</code> =&gt; <code>SCF_IMPLEMENT_IBASE_GETREFCOUNT</code>
+</li><li>
+<code>IMPLEMENT_IBASE_INCREF</code> =&gt; <code>SCF_IMPLEMENT_IBASE_INCREF</code>
+</li><li>
+<code>IMPLEMENT_IBASE_QUERY_END</code> =&gt; <code>SCF_IMPLEMENT_IBASE_QUERY_END</code>
+</li><li>
+<code>IMPLEMENT_IBASE_QUERY</code> =&gt; <code>SCF_IMPLEMENT_IBASE_QUERY</code>
+</li><li>
+<code>IMPLEMENT_IBASE</code> =&gt; <code>SCF_IMPLEMENT_IBASE</code>
+</li><li>
+<code>INC_REF</code> =&gt; <code>SCF_INC_REF</code>
+</li><li>
+<code>QUERY_INTERFACE_FAST</code> =&gt; <code>SCF_QUERY_INTERFACE_FAST</code>
+</li><li>
+<code>QUERY_INTERFACE_SAFE</code> =&gt; <code>SCF_QUERY_INTERFACE_SAFE</code>
+</li><li>
+<code>QUERY_INTERFACE</code> =&gt; <code>SCF_QUERY_INTERFACE</code>
+</li><li>
+<code>REGISTER_STATIC_CLASS_DEP</code> =&gt; <code>SCF_REGISTER_STATIC_CLASS_DEP</code>
+</li><li>
+<code>REGISTER_STATIC_CLASS</code> =&gt; <code>SCF_REGISTER_STATIC_CLASS</code>
+</li><li>
+<code>REGISTER_STATIC_LIBRARY</code> =&gt; <code>SCF_REGISTER_STATIC_LIBRARY</code>
+</li></ul>
+
+<p>Plugin management macro names are now prefixed with <samp>&lsquo;CS_&rsquo;</samp> in order to
+avoid polluting the global namespace.
+</p>
+<ul>
+<li>
+<code>QUERY_PLUGIN_CLASS</code> =&gt; <code>CS_QUERY_PLUGIN_CLASS</code>
+</li><li>
+<code>LOAD_PLUGIN</code> =&gt; <code>CS_LOAD_PLUGIN</code>
+</li><li>
+<code>_LOAD_PLUGIN</code> =&gt; <code>CS_LOAD_PLUGIN_ALWAYS</code>
+</li></ul>
+
+<p>Macros for classifying events are now prefixed with <samp>&lsquo;CS_&rsquo;</samp> in order to
+avoid polluting the global namespace.
+</p>
+<ul>
+<li>
+<code>IS_KEYBOARD_EVENT</code> =&gt; <code>CS_IS_KEYBOARD_EVENT</code>
+</li><li>
+<code>IS_MOUSE_EVENT</code> =&gt; <code>CS_IS_MOUSE_EVENT</code>
+</li><li>
+<code>IS_JOYSTICK_EVENT</code> =&gt; <code>CS_IS_JOYSTICK_EVENT</code>
+</li><li>
+<code>IS_NETWORK_EVENT</code> =&gt; <code>CS_IS_NETWORK_EVENT</code>
+</li></ul>
+
+<p>Platform-specific configuration macros are now prefixed with <samp>&lsquo;CS_&rsquo;</samp> in
+order to avoid polluting the global namespace.
+</p>
+<ul>
+<li>
+<code>SOFTWARE_2D_DRIVER</code> =&gt; <code>CS_SOFTWARE_2D_DRIVER</code>
+</li><li>
+<code>OPENGL_2D_DRIVER</code> =&gt; <code>CS_OPENGL_2D_DRIVER</code>
+</li><li>
+<code>GLIDE_2D_DRIVER</code> =&gt; <code>CS_GLIDE_2D_DRIVER</code>
+</li><li>
+<code>SOUND_DRIVER</code> =&gt; <code>CS_SOUND_DRIVER</code>
+</li></ul>
+
+<p>All <samp>&lsquo;csVector&rsquo;</samp>-related macros are now prefixed with <samp>&lsquo;CS_&rsquo;</samp> in order to
+avoid polluting the global namespace.  Furthermore,
+<code>DECLARE_TYPED_SCF_VECTOR()</code> has been renamed to
+<code>CS_DECLARE_TYPED_IBASE_VECTOR()</code> in order to more clearly indicate that
+this array type works with reference-counted <samp>&lsquo;iBase&rsquo;</samp> objects.
+</p>
+<ul>
+<li>
+<code>BEGIN_TYPED_VECTOR()</code> =&gt; <code>CS_BEGIN_TYPED_VECTOR()</code>
+</li><li>
+<code>FINISH_TYPED_VECTOR()</code> =&gt; <code>CS_FINISH_TYPED_VECTOR()</code>
+</li><li>
+<code>DECLARE_TYPED_VECTOR()</code> =&gt; <code>CS_DECLARE_TYPED_VECTOR()</code>
+</li><li>
+<code>DECLARE_TYPED_VECTOR_HELPER()</code> =&gt; <code>CS_CS_DECLARE_TYPED_VECTOR_HELPER()</code>
+</li><li>
+<code>DECLARE_TYPED_VECTOR_NODELETE()</code> =&gt; <code>CS_CS_DECLARE_TYPED_VECTOR_NODELETE()</code>
+</li><li>
+<code>DECLARE_TYPED_SCF_VECTOR()</code> =&gt; <code>CS_DECLARE_TYPED_IBASE_VECTOR()</code>
+</li></ul>
+
+<p>All <samp>&lsquo;SYSDEF_BLAH&rsquo;</samp> request macros are now prefixed with <samp>&lsquo;CS_&rsquo;</samp> in order
+to avoid polluting the global namespace.  Furthermore, each macro name now
+contains the word &ldquo;provide&rdquo; since these macros are used by client code to
+request that <tt>&lsquo;cssysdef.h&rsquo;</tt> <em>provides</em> certain facilities.
+</p>
+<ul>
+<li>
+<code>SYSDEF_ACCESS</code> =&gt; <code>CS_SYSDEF_PROVIDE_ACCESS</code>
+</li><li>
+<code>SYSDEF_ALLOCA</code> =&gt; <code>CS_SYSDEF_PROVIDE_ALLOCA</code>
+</li><li>
+<code>SYSDEF_CASE</code> =&gt; <code>CS_SYSDEF_PROVIDE_CASE</code>
+</li><li>
+<code>SYSDEF_DIR</code> =&gt; <code>CS_SYSDEF_PROVIDE_DIR</code>
+</li><li>
+<code>SYSDEF_GETCWD</code> =&gt; <code>CS_SYSDEF_PROVIDE_GETCWD</code>
+</li><li>
+<code>SYSDEF_GETOPT</code> =&gt; <code>CS_SYSDEF_PROVIDE_GETOPT</code>
+</li><li>
+<code>SYSDEF_MKDIR</code> =&gt; <code>CS_SYSDEF_PROVIDE_MKDIR</code>
+</li><li>
+<code>SYSDEF_PATH</code> =&gt; <code>CS_SYSDEF_PROVIDE_PATH</code>
+</li><li>
+<code>SYSDEF_SELECT</code> =&gt; <code>CS_SYSDEF_PROVIDE_SELECT</code>
+</li><li>
+<code>SYSDEF_SOCKETS</code> =&gt; <code>CS_SYSDEF_PROVIDE_SOCKETS</code>
+</li><li>
+<code>SYSDEF_TEMP</code> =&gt; <code>CS_SYSDEF_PROVIDE_TEMP</code>
+</li><li>
+<code>SYSDEF_UNLINK</code> =&gt; <code>CS_SYSDEF_PROVIDE_UNLINK</code>
+</li></ul>
+
+<p>Methods in many classes and <small>SCF</small> interfaces have been renamed in order to
+improve naming consistency throughout the project.
+The following method name changes follow the pattern where
+<code>GetNumSomething()</code> or <code>GetNumberSomething()</code> became
+<code>GetSomethingCount()</code>.
+</p>
+<ul>
+<li>
+<code>GetMiniBspNumVerts()</code> =&gt; <code>GetMiniBspVertexCount()</code>
+</li><li>
+<code>GetNumActions()</code> =&gt; <code>GetActionCount()</code>
+</li><li>
+<code>GetNumberAging()</code> =&gt; <code>GetAgingCount()</code>
+</li><li>
+<code>GetNumberEmitters()</code> =&gt; <code>GetEmitterCount()</code>
+</li><li>
+<code>GetNumberMetaBalls()</code> =&gt; <code>GetMetaBallCount()</code>
+</li><li>
+<code>GetNumberParticles()</code> =&gt; <code>GetParticleCount()</code>
+</li><li>
+<code>GetNumCameraPositions()</code> =&gt; <code>GetCameraPositionCount()</code>
+</li><li>
+<code>GetNumChars()</code> =&gt; <code>GetCharCount()</code>
+</li><li>
+<code>GetNumCollections()</code> =&gt; <code>GetCollectionCount()</code>
+</li><li>
+<code>GetNumCollisionPairs()</code> =&gt; <code>GetCollisionPairCount()</code>
+</li><li>
+<code>GetNumCurves()</code> =&gt; <code>GetCurveCount()</code>
+</li><li>
+<code>GetNumCurveVertices()</code> =&gt; <code>GetCurveVertexCount()</code>
+</li><li>
+<code>GetNumDimensions()</code> =&gt; <code>GetDimensionCount()</code>
+</li><li>
+<code>GetNumEdges()</code> =&gt; <code>GetEdgeCount()</code>
+</li><li>
+<code>GetNumElements()</code> =&gt; <code>GetElementCount()</code>
+</li><li>
+<code>GetNumFonts()</code> =&gt; <code>GetFontCount()</code>
+</li><li>
+<code>GetNumFormats()</code> =&gt; <code>GetFormatCount()</code>
+</li><li>
+<code>GetNumFrames()</code> =&gt; <code>GetFrameCount()</code>
+</li><li>
+<code>GetNumMaterials()</code> =&gt; <code>GetMaterialCount()</code>
+</li><li>
+<code>GetNumMeshFactories()</code> =&gt; <code>GetMeshFactoryCount()</code>
+</li><li>
+<code>GetNumMeshObjects()</code> =&gt; <code>GetMeshObjectCount()</code>
+</li><li>
+<code>GetNumNormals()</code> =&gt; <code>GetNormalCount()</code>
+</li><li>
+<code>GetNumObjects()</code> =&gt; <code>GetObjectCount()</code>
+</li><li>
+<code>GetNumPalEntries()</code> =&gt; <code>GetPalEntryCount()</code>
+</li><li>
+<code>GetNumPlanes()</code> =&gt; <code>GetPlaneCount()</code>
+</li><li>
+<code>GetNumPlugIns()</code> =&gt; <code>GetPlugInCount()</code>
+</li><li>
+<code>GetNumPoints()</code> =&gt; <code>GetPointCount()</code>
+</li><li>
+<code>GetNumPolygons()</code> =&gt; <code>GetPolygonCount()</code>
+</li><li>
+<code>GetNumPolyTxtPlanes()</code> =&gt; <code>GetPolyTxtPlaneCount()</code>
+</li><li>
+<code>GetNumRepeats()</code> =&gt; <code>GetRepeatCount()</code>
+</li><li>
+<code>GetNumShadows()</code> =&gt; <code>GetShadowCount()</code>
+</li><li>
+<code>GetNumSpokes()</code> =&gt; <code>GetSpokeCount()</code>
+</li><li>
+<code>GetNumTexels()</code> =&gt; <code>GetTexelCount()</code>
+</li><li>
+<code>GetNumTextureLayers()</code> =&gt; <code>GetTextureLayerCount()</code>
+</li><li>
+<code>GetNumTextures()</code> =&gt; <code>GetTextureCount()</code>
+</li><li>
+<code>GetNumTriangles()</code> =&gt; <code>GetTriangleCount()</code>
+</li><li>
+<code>GetNumVertices()</code> =&gt; <code>GetVertexCount()</code>
+</li><li>
+<code>GetNumVertsToLight()</code> =&gt; <code>GetVertexToLightCount()</code>
+</li><li>
+<code>GetStaticNumSamples()</code> =&gt; <code>GetStaticSampleCount()</code>
+</li><li>
+<code>NumVertices()</code> =&gt; <code>GetVertexCount()</code>
+</li><li>
+<code>ReportNumberTriangles()</code> =&gt; <code>ReportTriangleCount()</code>
+</li><li>
+<code>SetNumber()</code> =&gt; <code>SetCount()</code>
+</li><li>
+<code>SetNumberMetaBalls()</code> =&gt; <code>SetMetaBallCount()</code>
+</li><li>
+<code>SetNumberParticles()</code> =&gt; <code>SetParticleCount()</code>
+</li><li>
+<code>SetNumEdges()</code> =&gt; <code>SetEdgeCount()</code>
+</li><li>
+<code>SetNumPolygons()</code> =&gt; <code>SetPolygonCount()</code>
+</li><li>
+<code>SetNumSpokes()</code> =&gt; <code>SetSpokeCount()</code>
+</li><li>
+<code>SetNumVertices()</code> =&gt; <code>SetVertexCount()</code>
+</li><li>
+<code>Update_Num()</code> =&gt; <code>UpdateCount()</code>
+</li></ul>
+
+<p>The prefix <samp>&lsquo;cs&rsquo;</samp> was added to the following list of functions, and their
+names were also normalized.
+</p>
+<ul>
+<li>
+<code>ByteSwap16bit()</code> =&gt; <code>csByteSwap16bit()</code>
+</li><li>
+<code>ByteSwap16bitBuffer()</code> =&gt; <code>csByteSwap16bitBuffer()</code>
+</li><li>
+<code>ByteSwap32bit()</code> =&gt; <code>csByteSwap32bit()</code>
+</li><li>
+<code>ByteSwap32bitBuffer()</code> =&gt; <code>csByteSwap32bitBuffer()</code>
+</li><li>
+<code>Combinations()</code> =&gt; <code>csCombinations()</code>
+</li><li>
+<code>expandname()</code> =&gt; <code>csExpandName()</code>
+</li><li>
+<code>FindNearestPowerOf2()</code> =&gt; <code>csFindNearestPowerOf2()</code>
+</li><li>
+<code>fnamematches()</code> =&gt; <code>csFilenameMatches()</code>
+</li><li>
+<code>fSquare()</code> =&gt; <code>csSquareFloat()</code>
+</li><li>
+<code>fSwap()</code> =&gt; <code>csSwapFloat()</code>
+</li><li>
+<code>GenerateHalo()</code> =&gt; <code>csGenerateHalo()</code>
+</li><li>
+<code>GenerateNova()</code> =&gt; <code>csGenerateNova()</code>
+</li><li>
+<code>get_token()</code> =&gt; <code>csGetToken()</code>
+</li><li>
+<code>get_token_float()</code> =&gt; <code>csGetTokenFloat()</code>
+</li><li>
+<code>get_token_int()</code> =&gt; <code>csGetTokenInt()</code>
+</li><li>
+<code>IsPowerOf2()</code> =&gt; <code>csIsPowerOf2()</code>
+</li><li>
+<code>iSwap()</code> =&gt; <code>csSwapInt()</code>
+</li><li>
+<code>RndNum()</code> =&gt; <code>csRndNum()</code>
+</li><li>
+<code>ScanStr()</code> =&gt; <code>csScanStr()</code>
+</li><li>
+<code>skip_token()</code> =&gt; <code>csSkipToken()</code>
+</li><li>
+<code>splitpath()</code> =&gt; <code>csSplitPath()</code>
+</li><li>
+<code>strnew()</code> =&gt; <code>csStrNew()</code>
+</li></ul>
+
+<a name="15"></a>
+<h3 class="subheading"> Library Renamed: csfx </h3>
+
+<p>The <samp>&lsquo;csfx&rsquo;</samp> library was renamed to <samp>&lsquo;cstool&rsquo;</samp>.
+</p>
+<a name="16"></a>
+<h3 class="subheading"> Library Removed: csobject </h3>
+
+<p>The <tt>&lsquo;csobject&rsquo;</tt> library has been removed. All files in that
+library have moved to <tt>&lsquo;csutil&rsquo;</tt>.
+</p>
+<a name="17"></a>
+<h3 class="subheading"> csCollider </h3>
+
+<p>The <samp>&lsquo;csCollider&rsquo;</samp> facility moved from <samp>&lsquo;csengine&rsquo;</samp> to <samp>&lsquo;cstool&rsquo;</samp> and
+was renamed to <samp>&lsquo;csColliderWrapper&rsquo;</samp>.
+</p>
+<a name="18"></a>
+<h3 class="subheading"> Key/Node Mechanism </h3>
+
+<p>The <samp>&lsquo;csKeyValuePair&rsquo;</samp> and <samp>&lsquo;csMapNode&rsquo;</samp> classes moved from
+<tt>&lsquo;csengine&rsquo;</tt> to <tt>&lsquo;cstool&rsquo;</tt>.
+</p>
+<a name="19"></a>
+<h3 class="subheading"> csView </h3>
+
+<p>The <samp>&lsquo;csView&rsquo;</samp> class moved from <samp>&lsquo;csengine&rsquo;</samp> to <samp>&lsquo;cstool&rsquo;</samp>.
+</p>
+<a name="20"></a>
+<h3 class="subheading"> <small>DDG</small> Terrain Engine Removed </h3>
+
+<p>The <small>DDG</small> landscape engine which used to be featured in Crystal Space has
+been removed and was replaced with a simpler landscape engine, but one which is
+better integrated with the project. It is now also a mesh object.
+</p>
+<a name="21"></a>
+<h3 class="subheading"> <small>CSWS</small> Modal Session Paradigm Shift </h3>
+
+<p><code>csApp::Execute()</code> has been removed.  This method ran a modal session for
+dialog panels, and would only return control to the caller when the dialog was
+dismissed.  As a replacement for <code>Execute()</code>, <code>csApp::StartModal()</code>
+and <code>csApp::StopModal()</code> have been introduced.  <code>StartModal()</code> sets
+up modality for the given component and then immediately returns to the
+caller.  From the perspective of the <small>GUI</small> user the component behaves in the
+standard modal fashion, but from the perspective of the application programmer
+this represents a paradigm shift since the application must now watch events
+arriving in its <code>csApp::HandleEvent()</code> method in order to determine when
+the modal session has terminated.  Notification arrives in the form of a
+<samp>&lsquo;csevCommand&rsquo;</samp> event with command code <code>cscmdStopModal</code>.  This is sent
+when then component's modal session terminates, such as when the &ldquo;<small>OK</small>&rdquo; or
+&ldquo;Cancel&rdquo; button is pressed.
+</p>
+<p>With <code>StartModal()</code> you can provide a <em>userdata</em> argument (which is an
+<small>SCF</small> interface that you can implement on your own).  The userdata will be
+available at any time while the modal session is active by calling
+<code>csApp::GetTopModalUserdata()</code>.  The modal component can be retrieved with
+<code>csApp::GetTopModalComponent()</code>.  The <samp>&lsquo;Event.Command.Info&rsquo;</samp> field will
+be an integer containing the <small>ID</small> of the pressed button (i.e.
+<code>cscmdOK</code>, <code>cscmdCancel</code>, etc.).
+</p>
+<p>A related change was made to <code>csMessageBox()</code>.  It also now returns
+immediately.  It nows sends a similar message to the application when the
+message box is closed (via &ldquo;<small>OK</small>&rdquo; or &ldquo;Cancel&rdquo;).  In this case, the
+userdata object will implement the <small>SCF</small> interface <code>iMessageBoxData</code>,
+so you can use <code>SCF_QUERY_INTERFACE()</code> to check for this.
+</p>
+<p>Here is an example on how to define your own userdata object.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">struct ModalData : public iBase
+{
+  ...
+  SCF_DECLARE_IBASE;
+  ModalData ()
+  {
+    SCF_CONSTRUCT_IBASE (NULL);
+  }
+};
+
+SCF_IMPLEMENT_IBASE (ModalData)
+SCF_IMPLEMENT_IBASE_END
+
+bool MyApp::HandleEvent (iEvent &amp;Event)
+{
+  switch (Event.Type)
+  {
+    case csevCommand:
+      switch (Event.Command.Code)
+      {
+        case APP_OPEN_FILE:
+        { // Allow user to select a file with csFileDialog.
+          csWindow* d = csFileDialog (this, &quot;test file dialog&quot;);
+          ModalData* data = new ModalData ();
+          ...
+          StartModal (d, data);
+          data-&gt;DecRef ();
+          return true;
+        }
+        case cscmdStopModal:
+        {
+          csComponent* d = GetTopModalComponent ();
+          int rc = (int)Event.Command.Info;
+          if (rc == 0 || rc == cscmdCancel)
+          {
+            delete d;
+            return true;
+          }
+          iMessageBoxData* mbd =
+            SCF_QUERY_INTERFACE (d, iMessageBoxData);
+          if (mbd)
+          {
+            mbd-&gt;DecRef ();
+            delete d;
+            return true;
+          }
+          ModalData* md = (ModalData*)GetTopModalUserdata ();
+          ... // csFileDialog was closed.
+          return true;
+        }
+        ...
+}
+</pre></td></tr></table>
+<a name="22"></a>
+<h3 class="subheading"> 3D Sprite Factories </h3>
+
+<p>The sprite factory interface has been modified to show the restrictions of 3D
+sprites and to clean it up:
+</p>
+<ul>
+<li>
+<code>GetNormalCount()</code> and <code>GetTexelCount()</code> have been removed. Sprites
+do not allow to have different numbers of vertices, normals and texels. So
+<code>GetVertexCount()</code> should be used instead.
+
+</li><li>
+The <samp>&lsquo;count&rsquo;</samp> parameter has been removed from <code>SetVertices()</code>,
+<code>SetNormals()</code> and <code>SetTexels()</code>. These functions only worked
+properly if the current number of vertices was passed for <samp>&lsquo;count&rsquo;</samp>, so
+passing the parameter at all makes no sense.
+
+</li><li>
+<code>GetVertex()</code>, <code>GetNormal()</code> and <code>GetTexel()</code> now return
+<samp>&lsquo;const&rsquo;</samp> objects. To modify these objects, <code>SetVertex()</code>,
+<code>SetNormal()</code> and <code>SetTexel()</code> have been added.
+</li></ul>
+
+<a name="23"></a>
+<h3 class="subheading"> Miscellaneous Changes </h3>
+
+<p>The <small>SCF</small> name of the 3D engine changed:
+</p>
+
+<p><code>crystalspace.engine.core</code> =&gt; <code>crystalspace.engine.3d</code>
+</p>
+<p><code>csEngine::NextFrame()</code> and <code>iEngine::NextFrame()</code> are removed.
+This is now done automatically in <code>csEngine::Draw()</code>.
+</p>
+<p>Renamed <code>iPortal::GetPortal()</code> to <code>GetSector()</code> and
+<code>iPortal::SetPortal()</code> to <code>SetSector()</code>.
+</p>
+<p>Removed <code>csMeshWrapper::GetChildren()</code>.  Instead use
+<code>csMeshWrapper::AddChild()</code> and <code>csMeshWrapper::RemoveChild()</code>.
+</p>
+<p>Renamed <code>iEngine::CreateMeshObject()</code> to
+<code>iEngine::CreateMeshWrapper()</code>. In general all iEngine functions that
+work mesh wrappers will be renamed like that.
+</p>
+<p>Renamed <code>csFilenameMatches()</code> to <code>csGlobMatches()</code> (from
+<tt>&lsquo;csutil&rsquo;</tt> library).
+</p>
+<p>From the <samp>&lsquo;iEngine&rsquo;</samp> interface, these two methods were removed:
+</p>
+<ul>
+<li>
+<code>iEngine::EnableLightingCache()</code>
+</li><li>
+<code>iEngine::IsLightingCacheEnabled()</code>
+</li></ul>
+
+
+<p>They were replaced by these methods:
+</p>
+<ul>
+<li>
+<code>iEngine::SetLightingCacheMode()</code>
+</li><li>
+<code>GetLightingCacheMode()</code>
+</li></ul>
+
+<p><samp>&lsquo;FrameWidth&rsquo;</samp> and <samp>&lsquo;FrameHeight&rsquo;</samp> are no longer available
+in <samp>&lsquo;SysSystemDriver&rsquo;</samp> (entire system driver is gone, in fact). Instead
+you have to call <code>GetWidth()</code> and <code>GetHeight()</code> on the pointer
+to the canvas (<samp>&lsquo;iGraphics2D&rsquo;</samp>).
+</p>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Release-Notes-92.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Release-Notes-18.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Licenses.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

@@ -1,0 +1,17 @@
+Document: crystalspace
+Title: Crystal Space Manual
+Author: Jorrit Tyberghein
+ Eric Sunshine
+ Frank Richter
+ Mårten Svanfeldt
+ Andrew Zabolotny
+ Seth Galbraith
+ Philip Wyett
+ Michael Voase
+Abstract: This document includes usage instructions,
+ conceptual material, and detailed technical information.
+Section: Help/Books
+
+Format: HTML
+Index: /usr/share/doc/crystalspace-2.0.0/html/manual/index.html
+Files: /usr/share/doc/crystalspace-2.0.0/html/manual/*.html

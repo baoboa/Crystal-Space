@@ -1,0 +1,305 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.9.11 Progressive Level of Detail</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.9.11 Progressive Level of Detail">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.9.11 Progressive Level of Detail">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Progressive-Level-of-Detail"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Level-of-Detail.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Decals.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Engine.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 4.9.11 Progressive Level of Detail </h3>
+
+
+<p><em>Written by Eduardo Poyart, August 2010.</em>
+</p>
+<p>Good management of mesh LODs (levels of detail) is essential for a game engine
+or any 3D visualizer that works with complex scenes. If a very detailed mesh has
+to be rendered far away from the viewpoint, it can be replaced with a less
+detailed version without compromise on the visual quality. This lowers CPU and
+GPU costs and leads to frame rate improvements and more objects represented on
+the scene.
+</p>
+<p>With progressive LODs, as models move further away from the camera, their edges
+progressively collapse one by one, making smooth transitions that produce less
+visual &quot;pops&quot; than discrete LODs.
+</p>
+<p>This section is about Crystal Space's Progressive LODs support. Currently,
+Crystal Space supports progressive LODs for genmeshes.
+</p>
+<p>The steps to create a genmesh with progressive LOD support in Crystal Space are
+described below.
+</p>
+<ul>
+<li>
+Create a mesh in your favorite modeling tool and export it to the Crystal Space's
+XML format.
+</li><li>
+Use the <tt>&lsquo;cslodgen&rsquo;</tt> command line tool to apply LOD processing to this mesh. The
+result is typically saved into a new file. See below for details.
+</li><li>
+Test the generated mesh in <tt>&lsquo;cslodview&rsquo;</tt>.
+</li><li>
+
+Add C++ commands to your application to either enable automatic LODs or choose a
+specific LOD level according to your needs. Typically, if you just want to use
+automatic LODs, you don't need to change your source code, as all the needed
+information is loaded with your meshes.
+
+</li></ul>
+
+<a name="1"></a>
+<h4 class="subsubheading"> The <tt>&lsquo;cslodgen&rsquo;</tt> tool </h4>
+
+<p>The <tt>&lsquo;cslodgen&rsquo;</tt> tool processes a mesh and generates progressive LODs for it. The
+results can be saved to a new file, which will contain the original mesh and allow
+LOD representations of it.
+</p>
+<p>The tool works by selecting the best collapse to perform at each collapse step.
+At the end, it stores information on the mesh that defines the order of
+collapses. Selecting the best collapse is done by performing many collapses on a
+copy of the original mesh and using a heuristic to test how much different the
+collapsed mesh is from the original mesh.
+</p>
+<p>The <tt>&lsquo;cslodgen&rsquo;</tt> tool source is in <tt>&lsquo;apps/tools/lod&rsquo;</tt>. You can test it by using
+sample data in <tt>&lsquo;/data/lodtest&rsquo;</tt> (mounted in VFS in <tt>&lsquo;/lev/lodtest&rsquo;</tt>).
+</p>
+<p>This is a typical usage example of the <tt>&lsquo;cslodgen&rsquo;</tt> tool:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">lod -i=/lev/lodtest/lodbarrel -mindist=5 -maxdist=50
+</pre></td></tr></table>
+<p>These are the command line options for the <tt>&lsquo;cslodgen&rsquo;</tt> tool:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">lod -i=&lt;input_file&gt; -o=&lt;output_file&gt; -mindist=d -maxdist=d [-em=&lt;fast|precise&gt;]
+    [-v] [-force]
+
+-em       Error metric (fast or precise).
+-v        Verbose.
+-mindist  Minimum LOD distance.
+-maxdist  Maximum LOD distance.
+          For medium-sized objects, try -mindist=5 -maxdist=50.
+          Existing values in input file take precedence, unless -force is used.
+-force    Force use of cmdline-specified mindist and maxdist.
+          Mindist and maxdist *need* to be either in cmdline or input file.
+
+</pre></td></tr></table>
+<ul>
+<li>
+
+<b>-i=&lt;input_file&gt;</b>: It can be either a Crystal Space mesh or library file, or a
+zip file containing a world file.
+
+</li><li>
+
+<b>-o=&lt;output_file&gt;</b>: The destination file. If not provided, the tool will append
+_lod to the name of the input file.
+
+</li><li>
+
+<b>-em</b>: Select between fast and precise error metric. The error metric is a
+measurement of how different a LOD mesh is from the original mesh. Fast error
+metric employs a local heuristic to test only modified triangles. It can be used
+on very large meshes and it's the default option. Precise error metric is much
+slower, especially for meshes with a large number of triangles, but since it
+tests all triangles against all others, it can be used as a &quot;ground truth&quot;.
+Please note that the &quot;fast&quot; results are usually pretty good.
+
+</li><li>
+
+<b>-v</b>: Displays information about edge collapses and index buffer replication.
+
+</li><li>
+
+<b>-mindist</b> and <b>-maxdist</b>: These options tell the tool what are the desired
+minimum and maximum distances for LODs to take effect. A mesh will begin to
+enter its LODs when it's at the minimum distance, and it will get to its most
+reduced LOD level when it's at the maximum distance. The LOD tool simply embeds
+this information into the output xml file &mdash; it doesn't do any special
+processing with it. You can manually edit the xml file if you want to change the
+distances. See the 'XML LOD Tags' section below. If there are existing mindist
+and maxdist parameters in the input xml file, the existing parameters in the
+file will override the values on the command line parameters unless '-force' is
+used. This allows for the processing of entire worlds in zip files, with the
+modeler having the ability to specify per-mesh distance parameters.
+
+</li><li>
+
+<b>-force</b>: Makes the command-line-specified mindist and maxdist override any
+existing file-specified distances.
+
+</li></ul>
+
+<a name="2"></a>
+<h4 class="subsubheading"> The <tt>&lsquo;cslodview&rsquo;</tt> tool </h4>
+
+<p>The <tt>&lsquo;cslodview&rsquo;</tt> tool allows visualizing and changing LOD levels in order to
+test the results. Here are the command line parameters:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">cslodview &lt;filename&gt; [-m=&lt;num&gt;] -adap
+
+-m=&lt;num&gt;   multiple sprites, large room (will show num^2 sprites)
+-adap      adaptive LODs (best if used with -m)
+</pre></td></tr></table>
+<p>If adaptive LODs are used, the system will try to keep a frame rate close to 30
+fps by biasing the LOD levels of the rendered models.
+</p>
+<p>When viewing the model, use the following keys:
+</p>
+<ul>
+<li>
+'k' / 'l':  increase/reduce LOD resolution, to manually view LOD levels.
+</li><li>
+'a':  toggle auto LODs based on distance.
+</li></ul>
+
+<a name="3"></a>
+<h4 class="subsubheading"> The XML LOD tags </h4>
+
+<p>The LOD tags reside inside the &lt;params&gt; section of a genmesh factory. The
+example below shows a typical output file from the <tt>&lsquo;cslodgen&rsquo;</tt> tool.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">&lt;meshfact name=&quot;...&quot;&gt;
+  &lt;plugin&gt;crystalspace.mesh.loader.factory.genmesh&lt;/plugin&gt;
+  &lt;params&gt;
+    &lt;prog_lod_distances min=&quot;5&quot; max=&quot;50&quot; /&gt;
+    ...
+    &lt;submesh&gt;
+      ...
+      &lt;lod&gt;
+        &lt;sliding_windows&gt;
+        ...
+        &lt;/sliding_windows&gt;
+      &lt;/lod&gt;
+    &lt;/submesh&gt;
+  &lt;/params&gt;
+&lt;/meshfact&gt;
+</pre></td></tr></table>
+<p>The lod tool generates everything that you see inside the &lt;lod&gt; <small class="dots">...</small> &lt;/lod&gt;
+tags.
+</p>
+<p>The &lt;prog_lod_distances&gt; tag is generated by the lod tool if it's not already
+present in the input file. If it exists there, it is preserved. A modeler can
+set this tag in order to be able to do multiple LOD conversions in one run
+without the need to specify distances on the command line each time.
+</p>
+<a name="4"></a>
+<h4 class="subsubheading"> Notes </h4>
+
+<p>The purpose of progressive LODs is to improve the frame rate of your scene
+without too much compromise on your visual quality. Try to make your models
+begin to enter LODs (mindist) when they are at a distance that makes them appear
+relatively small on the screen. The maximum LOD distance (maxdist) should be set
+to a distance in which the model is tiny on screen. If you look at the
+lowest-resolution LODs of your model up close, the results will look bad &mdash;
+remember, it was designed to be seen from very far away.
+</p>
+<p>The <tt>&lsquo;cslodgen&rsquo;</tt> tool works on each submesh of the model separately. It can
+potentially change the bounded volume of your submesh. This means that, if you
+have a model that has two submeshes touching each other, they will probably not
+be touching each other anymore at the lowest resolutions. If this is your case
+and you want to ensure that they touch (or that there are no holes), try to turn
+them into a single submesh.
+</p>
+<a name="5"></a>
+<h4 class="subsubheading"> C++ API </h4>
+
+<p>A CS application talks with the progressive LOD system through the following
+interfaces:
+</p>
+<ul>
+<li>
+iEngine
+</li><li>
+iGeneralFactorySubMesh
+</li><li>
+iGeneralFactorySubMeshObject
+</li><li>
+iGeneralMeshState
+</li><li>
+iGeneralFactoryState
+</li></ul>
+
+<p>Please refer to the API documentation of these interfaces for details.
+</p>
+<p>Examining the <tt>&lsquo;cslodview&rsquo;</tt> source code in <tt>&lsquo;apps/tools/lod/lodview.cpp|h&rsquo;</tt>
+is a good way to learn the progressive LOD API.
+</p>
+
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Level-of-Detail.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Decals.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Engine.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

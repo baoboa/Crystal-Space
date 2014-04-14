@@ -1,0 +1,378 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: C.5.4 Container Templates Changes</title>
+
+<meta name="description" content="Crystal Space 2.1.0: C.5.4 Container Templates Changes">
+<meta name="keywords" content="Crystal Space 2.1.0: C.5.4 Container Templates Changes">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Api1_005f0-Container-Changes"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Api1_005f0-Input-Helper-Changes.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Api1_005f0-String-Changes.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Release-Notes-1_005f0.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Licenses.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> C.5.4 Container Templates Changes </h3>
+
+<a name="1"></a>
+<h3 class="subheading"> <code>csArray&lt;&gt;</code> Index and Size Type Change </h3>
+
+<p><code>csArray&lt;&gt;</code> has been changed to use <samp>&lsquo;size_t&rsquo;</samp> instead of
+<samp>&lsquo;int&rsquo;</samp> for array sizes and indices.  Probably, the most significant
+semantic difference of this change is that <samp>&lsquo;size_t&rsquo;</samp> is usually
+<em>unsigned</em> as opposed to <samp>&lsquo;int&rsquo;</samp> which is <em>signed</em>.
+</p>
+<p><strong>Read this paragraph carefully.</strong> In actual code, this change may result
+in nothing more than simple-looking compiler warnings. However, it may have
+caused <em>semantics</em> to change subtly.
+</p>
+<p>This has the greatest impact in the areas discussed below.
+</p>
+<a name="2"></a>
+<h4 class="subsubheading"> Iterating Over <code>csArray&lt;&gt;</code> Contents </h4>
+
+<p>For this purpose, usually, <samp>&lsquo;int&rsquo;</samp> typed variables were used for keeping
+track of the index of the current item of an array iteration.  Fixing forward
+iteration over a <code>csArray&lt;&gt;</code> to instead use <samp>&lsquo;size_t&rsquo;</samp> is simple:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">csArray&lt;...&gt; a;
+for (int i = 0, n = a.Length(); i &lt; n; i++)
+{
+  ...
+}
+</pre></td></tr></table>
+
+<p>Is changed to:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">...
+for (size_t i = 0, n = a.Length(); i &lt; n; i++)
+...
+</pre></td></tr></table>
+<p>Backward iteration is a bit more problematic. As mentioned before,
+<samp>&lsquo;size_t&rsquo;</samp> typically is unsigned, so you do not have negative values. This
+can be a problem in constructs like:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">csArray&lt;...&gt; a;
+for (int i = a.Length() - 1; i &gt;= 0; i--)
+{
+  ...
+}
+</pre></td></tr></table>
+<p>If the <samp>&lsquo;int&rsquo;</samp> is changed simply to a <samp>&lsquo;size_t&rsquo;</samp>, this 
+<code>for</code>-loop misbehaves unexpectedly. When <samp>&lsquo;i&rsquo;</samp> becomes 0, the body 
+of the loop is executed correctly. However, decrementing <samp>&lsquo;i&rsquo;</samp> will 
+<strong>not</strong> cause <samp>&lsquo;i&rsquo;</samp> to have a negative value&mdash;after all, <samp>&lsquo;size_t&rsquo;</samp>
+is unsigned. Instead, decrementing will make <samp>&lsquo;i&rsquo;</samp> wrap around from 0 to
+0xffffffff (on 32-bit machines). Clearly, this is greater
+than 0, effectively causing an infinite loop. The same thing also happens when
+<samp>&lsquo;a&rsquo;</samp> has no items (i.e. <samp>&lsquo;a.Length() == 0&rsquo;</samp>). Here the
+-1 in the initialization of <samp>&lsquo;i&rsquo;</samp> causes wrap-around.
+</p>
+<p>Possible solutions include:
+</p>
+<ul>
+<li>
+Use an <code>int</code>-typed counter variable and cast the array length to
+<samp>&lsquo;int&rsquo;</samp>.  This is not entirely elegant, but it does the job in most cases.
+
+</li><li>
+Re-write the loop to deal properly with the unsigned nature of <samp>&lsquo;size_t&rsquo;</samp>:
+
+<table><tr><td>&nbsp;</td><td><pre class="example">csArray&lt;...&gt; a;
+for (size_t i = a.Length(); i-- &gt; 0;)
+{
+  ...
+}
+</pre></td></tr></table>
+<p>This code does the same as the <samp>&lsquo;int&rsquo;</samp> version above, iterating from 
+<samp>&lsquo;a.Length() - 1&rsquo;</samp> to 0, inclusively. It also correctly works
+in the case <samp>&lsquo;a.Length() == 0&rsquo;</samp>. The &ldquo;trick&rdquo; is to place the 
+modification of <samp>&lsquo;i&rsquo;</samp> as a post-decrement in the loop condition. This 
+way, as soon as <samp>&lsquo;i&rsquo;</samp> becomes 0, the loop is terminated. The 
+post-decrement ensures that <samp>&lsquo;i&rsquo;</samp> has the expected value in the loop body.
+</p>
+</li></ul>
+
+<a name="3"></a>
+<h4 class="subsubheading"> Searching </h4>
+
+<p>Functions like <code>csArray&lt;&gt;::FindSortedKey()</code> and <code>csArray&lt;&gt;::Find()</code>
+used to return -1 to signify that an item was not found.  This is still the
+case, but with a twist.  Now, <samp>&lsquo;(size_t)-1&rsquo;</samp> is returned.  For convenience,
+a constant, <samp>&lsquo;csArrayItemNotFound&rsquo;</samp>, has been added, which has this exact
+value.  It can be used in comparisons to make it clear what is actually being
+checked.
+</p>
+<p>Apropros comparisons: Recall that <samp>&lsquo;size_t&rsquo;</samp> is <em>unsigned</em>, so checking
+whether an index returned by <samp>&lsquo;FindSortedKey()&rsquo;</samp> or <samp>&lsquo;Find()&rsquo;</samp> is 
+actually a valid index by testing with <samp>&lsquo;&gt;= 0&rsquo;</samp> no longer works since
+<samp>&lsquo;(size_t)-1&rsquo;</samp> is always <code>&gt;= 0</code>. Replace such checks with tests of
+equality against <samp>&lsquo;csArrayItemNotFound&rsquo;</samp>:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">csArray&lt;...&gt; a;
+int index = a.Find (...);
+if (index &gt;= 0)
+{
+  /* Item found */
+  ...
+}
+else
+{
+  /* Item not found */
+  ...
+}
+</pre></td></tr></table>
+<p>Must be replaced with:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">csArray&lt;...&gt; a;
+size_t index = a.Find (...);
+if (index != csArrayItemNotFound)
+{
+  /* Item found */
+  ...
+}
+else
+{
+  /* Item not found */
+  ...
+}
+</pre></td></tr></table>
+<a name="4"></a>
+<h3 class="subheading"> <tt>&lsquo;csutil/garray.h&rsquo;</tt> Deprecated </h3>
+
+<p>The <tt>&lsquo;csutil/garray.h&rsquo;</tt> file, containing the class 
+<code>csDirtyAccessArray&lt;&gt;</code>, has been deprecated in favor of the more sensible
+file name <tt>&lsquo;csutil/dirtyaccessarray.h&rsquo;</tt>. No functional changes have been
+made to the class.
+</p>
+<a name="5"></a>
+<h3 class="subheading"> <code>csList&lt;&gt;::Iterator</code> Normalization </h3>
+
+<p>The behavior of <code>csList&lt;&gt;::Iterator</code> has been normalized so that it
+functions identically to all other iterators in Crystal Space.  In the past, a
+newly created <code>csList&lt;&gt;::Iterator</code> already pointed at the first element in
+the container.  This differed from all other iterator implementations, in which
+the first element, like all other elements, is accessed by an invocation of
+<code>Next()</code>.
+</p>
+<p>Old code which accessed the elements of a <code>csList&lt;&gt;::Iterator</code> required a
+non-standard idiom, such as:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">csList&lt;sometype&gt; list = ...;
+csList&lt;sometype&gt;::Iterator it(list);
+if (it.HasCurrent())
+{
+  do_something(*it);         // First value.
+  while (it.HasNext())
+  {
+    do_something(it.Next()); // Remaining values.
+  }
+}
+</pre></td></tr></table>
+
+<p>Or, the slightly less complicated, though still somewhat convoluted:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">csList&lt;sometype&gt;::Iterator it(list);
+while (it.HasCurrent())
+{
+  do_something(*it);
+  it.Next();
+}
+</pre></td></tr></table>
+<p>Following normalization, <code>csList&lt;&gt;::Iterator</code> now works like all other
+iterators throughout the toolkit.  In particular, for forward iteration, all
+elements can be accessed via the standard <code>HasNext()</code> / <code>Next()</code>
+idiom:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">csList&lt;sometype&gt;::Iterator it(list);
+while (it.HasNext())
+{
+  do_something(it.Next());
+}
+</pre></td></tr></table>
+
+<p>Likewise, for backward iteration, the <code>HasPrevious()</code> / <code>Previous()</code>
+idiom works in the obvious and expected inverse fashion.
+</p>
+<p>Finally, <code>csList&lt;&gt;::Iterator::Next()</code> and <code>Previous()</code> now return
+references to contained elements, rather than pointers.  This makes the
+interface of <code>csList&lt;&gt;::Iterator</code> internally consistent, as well as
+consistent with other iterators throughout the toolkit, in which these methods
+return references.
+</p>
+<a name="6"></a>
+<h3 class="subheading"> <code>csSet&lt;&gt;</code> Relocation and Changes </h3>
+
+<p>The declaration of <code>csSet&lt;&gt;</code> was moved out from <tt>&lsquo;csutil/hash.h&rsquo;</tt> and
+into its own header file, <tt>&lsquo;csutil/set.h&rsquo;</tt>. The method
+<code>csSet&lt;&gt;::GetHash()</code> has likewise been removed since it unnecessarily
+exposed an underlying implementation detail of <code>csSet&lt;&gt;</code>.
+</p>
+<p>However, this implementation detail still affects the use of <code>csSet&lt;&gt;</code> as
+for storage of pointers in a <code>csSet&lt;&gt;</code> the <code>csPtrKey&lt;&gt;</code> wrapper must
+be used.
+</p>
+<a name="7"></a>
+<h3 class="subheading"> <code>csHash&lt;&gt;</code> Changes </h3>
+
+<p>The way <code>csHash&lt;&gt;</code> handles support for arbitrary key types has been
+changed. Previously, a so-called &ldquo;hash key handler&rdquo; was passed as an optional
+third template parameter that computed hash keys and was able to compare
+keys. Now, the hash computation is handled through the new
+<code>csHashComputer&lt;&gt;</code> template, and key comparison through
+<code>csComparator&lt;&gt;</code>. To provide hash computation and comparisons for specific
+types used as hash keys, specializations of the templates mentioned above are
+needed. Alternatively the default comparator uses the <samp>&lsquo;operator &lt;&rsquo;</samp> and
+<samp>&lsquo;operator &gt;&rsquo;</samp> operators, so you can also implement those operators instead
+of a <code>csComparator&lt;&gt;</code> specialization. The default <code>csHashComputer&lt;&gt;</code>
+implementation assumes that a type provides a <samp>&lsquo;GetHash()&rsquo;</samp> method that
+computes the hash value for an object. However, this means that integral types 
+need a specialization. As a convenience, Crystal Space already provides 
+specializations of <code>csHashComputer&lt;&gt;</code> for a number of commonly used 
+intergrals. Further, <code>csComparator&lt;&gt;</code> and/or <code>csHashComputer&lt;&gt;</code> 
+specializations are provided for the commonly used types <samp>&lsquo;csString&rsquo;</samp>, 
+<samp>&lsquo;const char*&rsquo;</samp> and <samp>&lsquo;csStrKey&rsquo;</samp>; and the default comparison semantics of 
+<samp>&lsquo;operator &lt;&rsquo;</samp> and <samp>&lsquo;operator &gt;&rsquo;</samp> handle the remaining fundamental types 
+and any composite types which provide these operators. Pointers (other than 
+<samp>&lsquo;void*&rsquo;</samp> for which exists a specialization) as hash keys are a special 
+case: to use a pointer of type <samp>&lsquo;Foo*&rsquo;</samp> as a hash key, employ 
+<samp>&lsquo;csPtrKey&lt;Foo&gt;&rsquo;</samp> as the key type in the hash declaration. 
+</p>
+<a name="8"></a>
+<h3 class="subheading"> Default <code>csHash&lt;&gt;</code> (and <code>csHashReversible&lt;&gt;</code>) Table Size </h3>
+
+<p>The default hash table size and grow rate has been reduced from 257 and 64 to
+23 and 5, respectively, to have hashes use less memory.  If a hash is expected
+to contain a large quantity of elements, those two parameters can be tweaked
+upon construction of a <code>csHash&lt;&gt;</code> or <code>csHashReversible&lt;&gt;</code>.  Consult
+the Public <small>API</small> Documentation of <code>csHash&lt;&gt;</code> for more information.
+</p>
+<a name="9"></a>
+<h3 class="subheading"> <samp>&lsquo;csHashMap&rsquo;</samp> and <samp>&lsquo;csHashSet&rsquo;</samp> Removal </h3>
+
+<p>The long-deprecated <samp>&lsquo;csHashMap&rsquo;</samp>, <samp>&lsquo;csHashMapReversible&rsquo;</samp>, and
+<samp>&lsquo;csHashSet&rsquo;</samp> classes have been removed. Instead, use the templated classes
+<code>csHash&lt;&gt;</code>, <code>csHashReversible&lt;&gt;</code>, and <code>csSet&lt;&gt;</code>.  For
+string-related <em>set</em> functionality, you may also want to consider using
+<samp>&lsquo;csStringHash&rsquo;</samp> and <samp>&lsquo;csStringSet&rsquo;</samp>.
+</p>
+<a name="10"></a>
+<h3 class="subheading"> <code>csObjectPool&lt;&gt;</code> Removal </h3>
+
+<p>The <code>csObjectPool&lt;&gt;</code> utility class has been removed since it managed
+memory poorly, and failed to invoke the destructor of contained objects at the
+time they were recycled via <code>csObjectPool&lt;&gt;::Free()</code>, which meant that the
+objects might not release their own resources in a timely fashion.  (It did
+correctly destroy the freed objects when the pool itself was destroyed, but
+should have been doing so at <code>Free()</code>-time.)
+</p>
+<p>You can use <code>csBlockAllocator&lt;&gt;</code> (see <tt>&lsquo;csutil/blockallocator.h&rsquo;</tt>) as a
+drop-in replacement for <code>csObjectPool&lt;&gt;</code> since the <small>API</small> of
+<code>csBlockAllocator&lt;&gt;</code> is a proper superset of the <code>csObjectPool&lt;&gt;</code>
+<small>API</small>. A global search and replace should be sufficient to account for this
+change.
+</p>
+<a name="11"></a>
+<h3 class="subheading"> <samp>&lsquo;csStringSetIterator&rsquo;</samp> and <samp>&lsquo;csStringHashIterator&rsquo;</samp> Removal </h3>
+
+<p><samp>&lsquo;csStringSetIterator&rsquo;</samp> and <samp>&lsquo;csStringHashIterator&rsquo;</samp> have been replaced
+with the iterator classes <samp>&lsquo;csStringSet::GlobalIterator&rsquo;</samp> and
+<samp>&lsquo;csStringHash::GlobalIterator&rsquo;</samp>, respectively.  Rather than instantiating
+iterators directly, you now ask the set or hash for an iterator. This brings
+the <samp>&lsquo;csStringSet&rsquo;</samp> and <samp>&lsquo;csStringHash&rsquo;</samp> <small>API</small>'s in line with other
+container classes which vend iterators. Given old code which is using
+<samp>&lsquo;csStringSetIterator&rsquo;</samp>:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">csStringSet set;
+// ...populate set...
+csStringSetIterator iter(&amp;set);
+while (iter.HasNext())
+{
+  char const* s = iter.Next();
+  // ...do something with `s'...
+}
+</pre></td></tr></table>
+
+<p>Convert it like this:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">csStringSet::GlobalIterator iter = set.GetIterator();
+while (iter.HasNext())
+{
+</pre></td></tr></table>
+
+<p>Code using <samp>&lsquo;csStringHashIterator&rsquo;</samp> can be fixed using the same simple
+transformation.
+</p>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Api1_005f0-Input-Helper-Changes.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Api1_005f0-String-Changes.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Release-Notes-1_005f0.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Licenses.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

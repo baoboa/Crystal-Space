@@ -1,0 +1,155 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.19 CEGUI Introduction</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.19 CEGUI Introduction">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.19 CEGUI Introduction">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="CEGUI"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Basics.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Making-Own-Projects.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h2 class="section"> 4.19 <small>CEGUI</small> Introduction </h2>
+
+<p><em>Written by Seth Yastrov, <a href="mailto:syastrov@users.sourceforge.net">syastrov@users.sourceforge.net</a> and
+Dan H&auml;rdfeldt, <a href="mailto:swedishcoder@users.sourceforge.net">swedishcoder@users.sourceforge.net</a>.</em>
+</p>
+<a name="1"></a>
+<h3 class="subheading"> The <small>CEGUI</small> Plugin </h3>
+
+<p>The <small>CEGUI</small> plugin is a wrapper around <small>CEGUI</small>, an embeddable widget
+library, so it can be easily used from within Crystal Space applications. The
+plugin provides a renderer, a <small>VFS</small> resource provider, and an event handler
+for <small>CEGUI</small>. You will need version 0.4.1 or 0.5.0 of <small>CEGUI</small>.
+</p>
+
+<p><a href="http://www.cegui.org.uk/">http://www.cegui.org.uk/</a>
+</p>
+<a name="2"></a>
+<h3 class="subheading"> Initialization </h3>
+
+<p>All components of the <small>CEGUI</small> plugin are set up when the application calls
+<code>iCEGUI::Initialize()</code>. This function will initialize <small>CEGUI</small> and tell
+it to use the <small>CEGUI</small> plugin renderer and event handler. It is not necessary
+to create a new <code>CEGUI::System()</code> in your application as this is
+performed automatically by the Crystal Space <small>CEGUI</small> plugin.
+</p>
+<a name="3"></a>
+<h3 class="subheading"> Renderer </h3>
+
+<p>To render the graphical user interface (<small>GUI</small>), use convenience function,
+<code>iCEGUI::Render()</code>.  This function may be called from anywhere in the
+application to allow the ability to render to an alternate render target (like
+procedural textures).  In applications based upon <samp>&lsquo;csBaseEventHandler&rsquo;</samp>, it
+is called typically in <code>ProcessFrame()</code>, sandwiched somewhere between
+<code>BeginDraw()</code> and <samp>&lsquo;FinishDraw()&rsquo;</samp> calls.
+</p>
+<a name="4"></a>
+<h3 class="subheading"> Singletons </h3>
+
+<p>It is important that applications using <small>CEGUI</small> from Crystal Space do not
+use any of the <small>CEGUI</small> <code>getSingleton()</code> or <code>getSingletonPtr()</code>
+calls, such as <code>CEGUI::Singleton&lt;T&gt;::getSingleton()</code> or
+<code>CEGUI::System::getSingleton()</code>.  The reason for this is that global and
+static variables (declared in methods, classes, namespaces, or globally) are
+not normally shared between modules.  Calling <code>getSingleton()</code> from the
+Crystal Space application will not necessarily return the same instance as
+calling <code>getSingleton()</code> from the <small>CEGUI</small> plugin.
+</p>
+<p>To remedy this, there are <samp>&lsquo;Get*&rsquo;</samp> functions in the <samp>&lsquo;iCEGUI&rsquo;</samp> interface
+that return a reference or pointer to the <small>CEGUI</small> singletons so that they
+may be used safely from a Crystal Space application. <code>iCEGUI::GetSystem()</code>
+and <code>GetSystemPtr()</code> are the most commonly used.
+</p>
+<a name="5"></a>
+<h3 class="subheading"> Resource Provider </h3>
+
+<p>The <small>CEGUI</small> plugin provides a <small>VFS</small> implementation of the <small>CEGUI</small>
+resource provider.  This means that all paths passed to <small>CEGUI</small> functions
+should be <small>VFS</small> paths.  Textures, scheme files, layout files, etc, will all
+be loaded through the <small>VFS</small>.  Paths within these files should be <small>VFS</small>
+paths as well.
+</p>
+<a name="6"></a>
+<h3 class="subheading"> Event Handler </h3>
+
+<p>Keyboard and mouse input is automatically injected into the <small>CEGUI</small> event
+system by the <small>CEGUI</small> plugin event handler. The <small>CEGUI</small> display area is
+automatically resized when the Crystal Space canvas is resized.
+</p>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Basics.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Making-Own-Projects.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

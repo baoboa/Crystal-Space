@@ -1,0 +1,180 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.9.12 Decals</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.9.12 Decals">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.9.12 Decals">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Decals"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Progressive-Level-of-Detail.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Deferred-Shading.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Engine.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 4.9.12 Decals </h3>
+
+
+<p><em>Written by Andrew Robberts and adapted by Jorrit Tyberghein</em>
+</p>
+<p><em>Note</em>: A decal is a piece of geometry that wraps around the
+existing world.  Examples of this might be a bullet mark in a wall, a halo
+projected onto the floor around a selected item, or even a simple shadow
+underneath a player.
+</p>
+<p>To create a decal you first need a reference to the global decal manager
+and decal template designed for your decal.
+</p>
+<a name="1"></a>
+<h4 class="subsubheading"> Decal Manager </h4>
+
+<p>The decal manager is used to create decals.  Use the <code>iDecalManager</code>
+<small>SCF</small>F interface to access the decal manager.
+</p>
+<p>You can load and get a reference to an iDecalManager through any mechanism
+that loads a Crystal Space Plugin. For example, the following code will
+attempt to load the decal plugin and give an iDecalManager reference.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">iObjectRegistry* object_reg = ...;
+csRef&lt;iDecalManager&gt; decal_mgr = csLoadPluginCheck&lt;iDecalManager&gt; (
+  object_reg, &quot;crystalspace.decal.manager&quot;);
+</pre></td></tr></table>
+<a name="2"></a>
+<h4 class="subsubheading"> Decal Templates </h4>
+
+<p>A decal template holds all the generic settings that are needed to create
+a decal such as lifespan, color, material, and other more complicated settings.
+</p>
+<p>A decal template is created using the decal manager's
+<samp>&lsquo;CreateDecalTemplate&rsquo;</samp> function:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">iMaterialWrapper* matWrap = ...;	// Material wrapper for your decal.
+csRef&lt;iDecalTemplate&gt; decalTemplate = decal_mgr-&gt;CreateDecalTemplate(matWrap);
+</pre></td></tr></table>
+<p>The returned decalTemplate has sufficient default values to create a decal,
+but the decal template can be greatly customized by calling the many
+settings functions of iDecalTemplate.
+</p>
+<a name="3"></a>
+<h4 class="subsubheading"> Creating Decals </h4>
+
+<p>Once you have an <code>iDecalManager</code> reference and your <code>iDecalTemplate</code>
+you can create a decal using the decal manager's CreateDecal function:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">iDecal * iDecalManager::CreateDecal(iDecalTemplate * decalTemplate,
+  iSector * sector, const csVector3 &amp; pos, const csVector3 &amp; up,
+  const csVector3 &amp; normal, float width, float height, iDecal * oldDecal)
+</pre></td></tr></table>
+<ul>
+<li> <samp>&lsquo;decalTemplate&rsquo;</samp>
+This is the decal template you created earlier that will dictate the
+settings used for the decal.
+</li><li> <samp>&lsquo;sector&rsquo;</samp>
+This is the sector where the decal will be placed.
+</li><li> <samp>&lsquo;pos&rsquo;</samp>
+This is the position of the decal in the given sector.
+</li><li> <samp>&lsquo;up&rsquo;</samp>
+This is the direction of the top side of the decal.  This setting can be
+used to rotate the decal.
+</li><li> <samp>&lsquo;normal&rsquo;</samp>
+This is the direction that will be perpendicular to the decal.  This
+setting can be used to tilt the decal.  For something like a bullet mark,
+you will probably want this direction to be perpendicular to the wall
+that will receive the bullet mark.
+</li><li> <samp>&lsquo;width&rsquo;</samp>
+The width of the decal.
+</li><li> <samp>&lsquo;height&rsquo;</samp>
+The height of the decal.
+</li><li> <samp>&lsquo;oldDecal&rsquo;</samp>
+This is an optional parameter.  If you're recreating a decal (ie,
+moving/rotating an old decal) you can pass your old decal.  The decal
+manager will recycle this decal as much as possible so that supplying
+an old decal is more efficient than deleting the old decal manually
+and creating a new one from scratch.
+</li></ul>
+
+<a name="4"></a>
+<h4 class="subsubheading"> Deleting Decals </h4>
+
+<p>If you set a lifespan for your decal through
+<code>iDecalTemplate::SetTimeToLive()</code>, then your decal will die naturally
+and delete itself.
+</p>
+<p>However, if you want to remove your decal early or it does not have a
+lifespan set, then you can remove your decal from the world by passing
+your <code>iDecal</code> pointer into <code>iDecalManager::DeleteDecal()</code>.
+</p>
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Progressive-Level-of-Detail.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Deferred-Shading.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Engine.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

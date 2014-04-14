@@ -1,0 +1,104 @@
+Source: crystalspace
+Section: libs
+Priority: optional
+Maintainer: Crystal Space Dev Team <crystal-develop@lists.sourceforge.net>
+Uploaders: Philip Wyett <philip.wyett@cohere-technology.co.uk>
+Build-Depends: debhelper (>= 7.4.15),
+               autoconf,
+               jam,
+               bison,
+               flex,
+               swig,
+               doxygen,
+               python-dev,
+               zlib1g-dev,
+               libcppunit-dev,
+               libfreetype6-dev,
+               libode-dev,
+               lib3ds-dev,
+               libcal3d-dev,
+               libx11-dev,
+               libxxf86vm-dev,
+               libxaw7-dev,
+               libgl1-mesa-dev | libgl-dev,
+               libwxgtk2.8-dev,
+               libcegui-mk2-dev,
+               liblcms-dev,
+               libcairo-dev,
+               libcairomm-1.0-dev,
+               libgtk2.0-dev,
+               libasound2-dev [ linux-any ],
+               libopenal-dev,
+               libogg-dev,
+               libvorbis-dev,
+               libspeex-dev,
+               libjpeg-dev,
+               libmng-dev,
+               libpng12-dev
+Standards-Version: 3.9.1
+Homepage: http://www.crystalspace3d.org/
+Vcs-Svn: https://crystal.svn.sourceforge.net/svnroot/crystal/CS/trunk
+Vcs-Browser: http://trac.crystalspace3d.org/trac/CS/browser/CS/trunk
+
+Package: libcrystalspace-2.0
+Architecture: amd64 armel i386 kfreebsd-amd64 kfreebsd-i386 powerpc sparc
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Multiplatform 3D Game Development Kit
+ Crystal Space is a free 3D game toolkit. It can be used for a variety
+ of 3D visualization tasks. Many people will probably be interested in using
+ Crystal Space as the basis of a 3D game, for which it is well suited.
+
+Package: libcrystalspace-dev
+Section: libdevel
+Architecture: amd64 armel i386 kfreebsd-amd64 kfreebsd-i386 powerpc sparc
+Depends: ${misc:Depends}, libcrystalspace-2.0 (= ${binary:Version})
+Description: Multiplatform 3D Game Development Kit (development files)
+ Crystal Space is a free 3D game toolkit. It can be used for a variety
+ of 3D visualization tasks. Many people will probably be interested in using
+ Crystal Space as the basis of a 3D game, for which it is well suited.
+ .
+ This package provides the development files of Crystal Space.
+
+Package: libcrystalspace-dbg
+Section: debug
+Priority: extra
+Architecture: amd64 armel i386 kfreebsd-amd64 kfreebsd-i386 powerpc sparc
+Depends: ${misc:Depends}, libcrystalspace-2.0 (= ${binary:Version})
+Description: Multiplatform 3D Game Development Kit (debugging files)
+ Crystal Space is a free 3D game toolkit. It can be used for a variety
+ of 3D visualization tasks. Many people will probably be interested in using
+ Crystal Space as the basis of a 3D game, for which it is well suited.
+ .
+ This package provides the debugging files of Crystal Space.
+
+Package: crystalspace
+Architecture: amd64 armel i386 kfreebsd-amd64 kfreebsd-i386 powerpc sparc
+Depends: ${shlibs:Depends}, ${misc:Depends}, crystalspace-data
+ (= ${source:Version}), libcrystalspace-2.0 (= ${binary:Version})
+Description: Multiplatform 3D Game Development Kit (binaries)
+ Crystal Space is a free 3D game toolkit. It can be used for a variety
+ of 3D visualization tasks. Many people will probably be interested in using
+ Crystal Space as the basis of a 3D game, for which it is well suited.
+ .
+ This package provides the binaries of Crystal Space.
+
+Package: crystalspace-data
+Architecture: all
+Depends: ${misc:Depends}
+Description: Multiplatform 3D Game Development Kit (data files)
+ Crystal Space is a free 3D game toolkit. It can be used for a variety
+ of 3D visualization tasks. Many people will probably be interested in using
+ Crystal Space as the basis of a 3D game, for which it is well suited.
+ .
+ This package provides the data files of Crystal Space binaries.
+
+Package: crystalspace-doc
+Section: doc
+Architecture: all
+Depends: ${misc:Depends}
+Description: documentation for Crystal Space
+ Crystal Space is a free 3D game toolkit. It can be used for a variety
+ of 3D visualization tasks. Many people will probably be interested in using
+ Crystal Space as the basis of a 3D game, for which it is well suited.
+ .
+ This package provides documentation for Crystal Space.

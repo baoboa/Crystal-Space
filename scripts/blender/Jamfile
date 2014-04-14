@@ -1,0 +1,6 @@
+SubDir TOP scripts blender ;
+
+InstallData README : conversion blender ;
+InstallData [ Wildcard io_scene_cs : *.py ] : conversion blender io_scene_cs ;
+InstallData [ Wildcard io_scene_cs io : *.py ] : conversion blender io_scene_cs io ;
+InstallData [ Wildcard io_scene_cs ui : *.py ] : conversion blender io_scene_cs ui ;

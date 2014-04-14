@@ -1,0 +1,367 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.12.1.1 Shader System Overview</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.12.1.1 Shader System Overview">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.12.1.1 Shader System Overview">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Shader-System-Overview"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Shaders.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Shader-Variables.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Shaders.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h4 class="subsubsection"> 4.12.1.1 Shader System Overview </h4>
+
+<a name="1"></a>
+<h3 class="subheading"> Terminology </h3>
+
+<p>The term &ldquo;shader&rdquo; is used for a number of different things in computer
+graphics.  In DirectX, and recently OpenGL, &ldquo;shader&rdquo; is used to name
+the programs running on the <small>GPU</small> to process vertex and fragment data.
+Offline rendering packages use the term to describe the complete appearance 
+of a surface.
+</p> 
+<p>Shaders in Crystal Space are closer to the second meaning, as they are a
+generic surface description.  (&ldquo;Shaders&rdquo; in the DirectX/OpenGL sense are
+appropriately called &ldquo;programs&rdquo; in Crystal Space.)  They are generic as 
+a single shader describes a class of a surface, or even classes of surfaces,
+and specific aspects can be controlled via parameters.  The benefit is that
+shaders are reusable, and actual values for such parameters can be provided 
+by a material and other instances, defining the actual look of a surface.  As
+an example, you may create a shader &ldquo;cloth&rdquo; emulating a cloth-like look.
+The shader would provide a generic description of the surface, with specific
+parameters (e.g. the actual color or pattern, whether it appears shiny or
+dull) being set as material properties. Hence you can have a lot of &ldquo;cloth&rdquo;
+materials by just changing these properties. (The mechanism for this are the 
+&ldquo;shader variables&rdquo;, described further below.)
+</p>
+<a name="2"></a>
+<h3 class="subheading"> Components of a Shader </h3>
+
+<p>A shader itself consists of a number of components:
+</p><ul>
+<li> Metadata
+</li><li> Shader variables
+</li><li> One or more techniques
+</li><li> One or more passes per technique
+</li><li> Mappings for each pass
+</li><li> An optional vertex processor for each pass
+</li><li> A vertex program for each pass
+</li><li> A fragment program for each pass 
+</li></ul>
+
+<a name="3"></a>
+<h4 class="subsubheading"> Metadata </h4>
+
+<p>This contains information about the shader as a whole which are relevant for
+the engine or the external tools. Currently, this only consists of the number
+of lights a shader can handle at most; in the future, the metadata may be
+expanded with e.g. descriptions of the parameters that can be controlled.
+</p>
+<a name="4"></a>
+<h4 class="subsubheading"> Shader Variables </h4>
+
+<p>Shader variables are &ldquo;parameters&rdquo; for shaders and are commonly used for
+things that should be customizeable, e.g. the diffuse texture of a surface
+or its shininess. A shader variable defined in the shader itself acts like a 
+default value which can be overridden by other shader variable sources like
+materials. Shader variables are more described in a more detailed fashion
+further down. A number of commonly used shader variables are listed in
+<a href="Shader-Variables.html#0">Shader Variables</a>.
+</p>
+<a name="5"></a>
+<h4 class="subsubheading"> Techniques </h4>
+
+<p>A shader consists of multiple techniques.  The idea is that each technique
+realizes the same basic effect, but in a different fashion.  At runtime, a
+technique is selected which is supported by the current hardware and renderer.
+This allows to support of hardware with different capabilities by the same
+shader.  Each technique is assigned a priority, and all technique are tried
+in the order of their priority, highest first.  Usually, the highest priority
+technique is geared towards more advanced hardware, while lower priorities
+gradually accomodate less advanced hardware (commonly also degrading the
+quality since not all effects can be achieved on all hardware).
+</p>
+<p>Another mechanism to control the shader selection are the so-called &ldquo;shader
+tags&rdquo;.  Currently, a tag can be set to be required by a technique to have
+the latter selected, or set to prevent a technique that has this tag to be
+selected.  Tags can be controlled from the configuration system, hence this
+mechanism offers a simple way to disable a number of techniques from a
+configuration utility, e.g. to allow the user to disable certain effects to
+gain higher performance. 
+</p>
+<a name="6"></a>
+<h4 class="subsubheading"> Passes </h4>
+
+<p>Shader programs as well as buffer and texture bindings are associated with
+passes.  During rendering, a mesh is drawn once for each pass in the used
+shader: essentially, the same geometry is drawn multiple times with different
+shader programs (and hence different processing).  Multiple passes can be
+used to overcome hardware limitations: for example, a lightmapped surface
+that should &ldquo;glow&rdquo; needs three textures (lightmap, diffuse texture, glow
+mask), however, implementing it as a single-pass technique is impossible on
+hardware that features only two texture units.  Using multiple passes can
+be used here to get around the limitation: the first pass combines normal
+lighting and glow, while the second pass applies the diffuse texture.
+</p>
+<p>Also made possible are special effects: for example a fur shader using fur
+shells; each fur shell can be a separate pass.
+</p>
+<p>Using multiple passes has its backdraws, though: obviously, drawing geometry
+multiple times is potentially more expensive than drawing it once. Also, the
+only way to propagate data between multiple passes is the framebuffer: you can
+only &ldquo;propagate&rdquo; data to the immediately following pass, and it can only be
+combined with the this passes output via the fragment blending.  (Also, in very
+dire circumstances the alpha channel may not be available for propagation.)
+</p>
+<a name="7"></a>
+<h4 class="subsubheading"> Shader Programs </h4>
+
+<p>Shader programs is where it is defined how a vertex of a mesh or a fragment 
+of a triangle are processed.  Consequently, the two types of programs needed
+are vertex and fragment programs.  Both programs are usually tuned to work
+together to produce a certain effect or appearance.
+</p>
+<p>Shader programs in Crystal Space are abstracted into plugins.  Plugins exist
+for e.g. <small>ARB</small> vertex or fragment programs, Cg vertex or fragment programs
+or fixed function pipeline setup (not actually &ldquo;true&rdquo; programs, but by
+Crystal Space provided by shader program plugins as well).
+</p>
+<p>A Crystal Space-specific feature grouped into shader programs is the support
+for &ldquo;vertex processors&rdquo;.  These are not shader programs in the sense of being
+executed on the GPU, rather they're plugins that manipulate vertex data in
+software.  The motivation for this feature was to allow vertex manipulation
+that might be too complicated, or simply impossible due hardware limitations,
+to realize with GPU vertex programs (the specific motivation was software
+lighting: some aspects of CS' light support don't map well to older hardware).
+</p>
+<a name="8"></a>
+<h4 class="subsubheading"> Mappings </h4>
+
+<p>Shader programs, as all programs, need some kind of input.  For vertex
+programs, it's data varying per-vertex, provided by vertex buffers.  For
+fragment programs, it's textures as well as per-vertex data (output by the
+vertex program - sometimes, computed in the vertex program, sometimes just
+data specified by the user passed through). Both also take uniform 
+parameters - that is, data that does not change over the geometry drawn.
+</p>
+<p>Vertex buffers, textures and uniform parameters are mapped to program inputs
+via <small>XML</small> statements.  The actual format of the mapping destinations
+depends on the shader programs used - e.g. for Cg programs, variable names
+used in the actual programs can be utilized as targets.  Other program types
+may have more abstract mappings (e.g. registers for <small>ARB</small> programs).
+</p>
+
+<a name="9"></a>
+<h3 class="subheading"> Shader Variables </h3>
+
+<p>Shader variables serve as an important carrier for data related to rendering
+in Crystal Space.  The function &ldquo;customize shaders&rdquo; is actually just a
+subset of what shader variables are used for; other uses include passing
+around data inside the engine itself.
+</p>
+<p>Shader variables are identified by a name which is a string ID obtained
+from the global <code>iShaderVarStringSet</code>.  Note that a name is not unique
+to an instance of a variable.  Indeed, commonly multiple variables will have
+the same name; there is no global single namespace of variables, which one is
+chosen depends on what variables are attached to the different contexts -
+see below.
+</p>
+<p>Shader variables can contain vectors, transforms, but also textures, vertex 
+buffers and even arrays of other shader variables.
+</p>
+<p>Shader variables are provided by so-called &ldquo;shader variable contexts&rdquo;.  
+Before rendering a mesh, the render loop collects shader variables from the 
+contexts.  There is a hardcoded order of preference: some contexts override 
+variables from other contexts, if variables of the same name exist.
+</p>
+<p>Contexts are provided by (in order of increasing preference):
+</p><ul>
+<li> Shader manager - The shader manager provides &ldquo;global&rdquo; shader 
+variables.  Currently, only a variable <samp>&lsquo;standard time&rsquo;</samp> is provided, 
+which contains the time from the virtual clock, useful for animations in 
+shaders.
+</li><li> Current Light - This context contain shader variables attached to 
+the current light being used for rendering.  The idea is to potentially allow 
+light-specific effects, e.g. the ability to support &ldquo;projectors&rdquo; by having 
+a texture attached to a light.
+</li><li> Renderstep - This context is not accessible by the user.  It provides 
+shader variables that are filled from &ldquo;special&rdquo; sources as a convenience for 
+shaders, like <samp>&lsquo;object2 world transform&rsquo;</samp>.
+</li><li> Rendermesh - This context is also not accessible by the user.  It 
+contains shader variables provided by mesh objects.  Usually these are 
+buffers with geometry, but in some special cases also textures (e.g. the 
+GenMesh mesh provides lightmaps, the terrain mesh splatting masks).
+</li><li> Mesh object wrapper - Shader variables can be attached to mesh objects 
+in order to realize per-mesh effects.  E.g. you can write a &ldquo;colorize&rdquo; 
+shader that renders a surface with a given tint and then attach shader 
+variables with the tint color to mesh wrappers: this will have the result 
+that different meshes are tinted differently.  Another application for this 
+mechanism is lightmaps, which are attached to a mesh object via shader 
+variables.
+</li><li> Shader - Shader variables can be defined by shaders itself.  The idea 
+behind this is to allow providing &ldquo;default&rdquo; values for shader parameters: 
+if a shader variable isn't overridden by any context with higher precedence, 
+it still has some sensible default value.
+</li><li> Material - This is probably the context that is most used.  Shader 
+specific parameters can be set on a per-material basis.  This includes 
+textures (e.g. normal maps, but also the diffuse texture is internally 
+backed by a shader variable) but also all other kinds of parameters.
+</li></ul>
+
+<a name="10"></a>
+<h3 class="subheading"> Shader expressions </h3>
+
+<p>Crystal Space does not just support fixed values for shader variables, but also 
+allows to specify simple formulas to dynamically compute values as well.
+Applications include transformation of values provided by the user or simple
+animations (e.g. a pulsating glow).
+</p>
+<a name="11"></a>
+<h3 class="subheading"> Shader conditions and processing instructions </h3>
+
+<a name="12"></a>
+<h4 class="subsubheading"> Basic conditions </h4>
+
+<p>Shader conditionals allow a single shader to support an array of different
+features.  For example, a shader might have to support both per-vertex and
+lightmap lighting, and optionally support a normal map and/or a glow map.
+</p> 
+<p>Without conditionals, basically all combinations of these features would
+require a separate shader: obviously a rather large amount of work to
+begin with and a continued maintenance headache, since a single change must
+be propagated to a number of shaders.
+</p>
+<p>Shader conditionals allow to litter &ldquo;conditions&rdquo; throughout a shader.  The
+possible conditions include tests for the existance of shader variables and
+comparisons between variables or immediate values.
+</p>
+<p>This allows to only let the code that supports different features differ: e.g.
+in the case above, around the lighting code could be a condition that tests
+for the existance of a lightmap; is one present, lightmap lighting is utilized,
+otherwise per-vertex lighting.
+</p>
+<a name="13"></a>
+<h4 class="subsubheading"> Processing instruction </h4>
+
+<p>A feature useful for code reduction are templates.  These are blocks of XML
+that can be inserted in a place via a processing instruction.  Also supported
+are parameters, so special placeholders in the XML will be replaced by the
+value given as a parameter.
+</p>
+<p>Related to this is <small>XML</small> generation in a fashion akin to <code>for</code>-loops.
+A block of <small>XML</small> is repeated a number of times, with a counting variable 
+that can be inserted into <small>XML</small> via placeholders the same way template 
+parameters can be inserted.
+</p>
+<p>Last but not least other files can be included.  This can be used to move
+recurring blocks of XML into separate file, or have the included file
+generate a number of utility templates.
+</p>
+<p>For a detailed reference of both shader conditions and processing instructions
+see section <a href="Shader-Conditions-and-Processing-Instructions-Reference.html#0">Shader Conditions and Processing Instructions Reference</a>. 
+</p>
+<a name="14"></a>
+<h4 class="subsubheading"> Caveats </h4>
+
+<p>There are some pitfalls in shader conditions and processing instructions that 
+one needs to be aware of:
+</p><ul>
+<li> Processing - There is a difference between shader conditions and 
+processing instructions that is not obvious.  Shader conditions are 
+processed dynamically - in principle, at runtime, each condition is evaluated
+and a new shader document created, based on the evaluation results.
+Processing instructions (i.e. templates and inclusions) are processed at 
+parse time - the effects of these instructions are applied immediately.  
+
+<p>This has e.g. the practical consequence that template definitions inside 
+conditions will not work as probably expected - that is, instead of a 
+template only being defined when the enclosing condition is true, it's 
+always defined, no matter the condition. (The workaround for this
+particular issue is to move the condition into the template.)
+</p>
+<p>In order to facilitate the recognition whether a conditional instruction is
+statically or dynamically processed, static processing instructions start by
+convention with an uppercase letter, while dynamic conditions start with a
+lowercase letter.
+</p></li><li> Based on <small>XML</small> - The shader conditionals and processing instructions 
+work on top of <small>XML</small>. This means that a condition branch or templated 
+block must be a properly closed block of <small>XML</small>; likewise, conditionals and 
+instructions must be completely contained in a block of <small>XML</small>.
+</li></ul>
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Shaders.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Shader-Variables.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Shaders.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

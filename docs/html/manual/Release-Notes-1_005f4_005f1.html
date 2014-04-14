@@ -1,0 +1,189 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: C.2 Release Notes from 1.4 to 1.4.1</title>
+
+<meta name="description" content="Crystal Space 2.1.0: C.2 Release Notes from 1.4 to 1.4.1">
+<meta name="keywords" content="Crystal Space 2.1.0: C.2 Release Notes from 1.4 to 1.4.1">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Release-Notes-1_005f4_005f1"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Release-Notes-2_005f0.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Release-Notes-1_005f4.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Licenses.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h2 class="appendixsec"> C.2 Release Notes from 1.4 to 1.4.1 </h2>
+
+<p>This section documents changes between versions 1.4 and 1.4.1 of
+Crystal Space.
+</p>
+<p><strong>Fixes that apply to tickets in Trac:</strong>
+</p>
+<ul>
+<li>
+Ticket #737: Projects created by <tt>&lsquo;jamtemplate&rsquo;</tt>/<tt>&lsquo;createproject.sh&rsquo;</tt> now take <code>MSVC_VERSION</code> into account when linking against <small>CEL</small> libraries.
+
+</li><li>
+Ticket #803: Don't use a deprecated <tt>&lsquo;libpng&rsquo;</tt> function.
+
+</li><li>
+Ticket #805: Fix problem where <code>csTinyXmlDocument::Parse(iDataBuffer*)</code> overload did not ensure that string passed to <code>Parse(const char*)</code> overload was null-terminated.
+
+</li><li>
+Ticket #810: Fix OpenGL context-related build error on Snow Leopard by taking advantage of <small>API</small> available since 10.3 rather than employing hack needed by earlier versions.
+
+</li><li>
+Ticket #811: Fix <em>cannot convert size_t to UInt32</em> compilation error on Snow Leopard where <code>size_t</code> is now 64-bit by default rather than 32-bit.
+
+</li><li>
+Ticket #812: Fix leak reported in oggstream2. <code>ov_clear</code> must be called when the ogg stream is no more needed according to vorbis documentation. It seems as a result leaks reported by openal have disappeared. patch by agy.
+
+</li><li>
+Ticket #813:
+
+<p>Fix problem where version number was appended to the executable name at <tt>&lsquo;jam install&rsquo;</tt> time on Windows without regard for file extension (i.e. <tt>&lsquo;foobar.exe-1.9&rsquo;</tt>) rather than being inserted just before the extension (i.e. <tt>&lsquo;foobar-1.9.exe&rsquo;</tt>).
+</p>
+<p>Fix problem where symbolic-link creation failed on Windows at <tt>&lsquo;jam install&rsquo;</tt> time when linking non-versioned to versioned executable name.
+</p>
+</li><li>
+Ticket #817: Update <small>CS</small> repository <small>URL</small> to latest format specified by SourceForge.
+
+</li><li>
+Ticket #895: Cherry picked doc updates. Many thanks to darkenor for taking the time to make the submission.
+</li></ul>
+
+<p><strong>Other changes:</strong>
+</p>
+<ul>
+<li>
+Removal of special autoresume code when unpausing on Mac OS X as multiple consecutive <code>NSApplicationDidResignActiveNotification</code> messages may be sent causing the app to permanently freeze.
+
+</li><li>
+Set <code>CS_CONFIGDIR</code> for <small>VFS</small>.
+
+</li><li>
+Change Bullet configure test to look for (apparently) new-style <code>BulletCollision -lLinearMath</code> as well as previous <code>-lbulletcollision</code> and <code>-lbulletmath</code>.
+
+</li><li>
+Moved <tt>&lsquo;Python.h&rsquo;</tt> <code>_DEBUG</code> hack into it's own file.
+
+</li><li>
+Fixed release mode compile errors in cspython.
+
+</li><li>
+Fixed usage of m4_default in call to <code>CS_CHECK_PROG_VERSION</code> to work with the now stable interface tested on <tt>&lsquo;autoconf&rsquo;</tt> 2.66 and 2.67
+
+</li><li>
+Relocated <small>POSIX</small> dl-based <tt>&lsquo;libs/csutil/unix/loadlib.cpp&rsquo;</tt> to <tt>&lsquo;libs/csutil/generic&rsquo;</tt> since it should be portable to various <small>POSIX</small> platforms.
+  
+<p>Genericized <tt>&lsquo;libs/csutil/generic/loadlib.cpp&rsquo;</tt> to allow platform-specific file extensions (<tt>&lsquo;.csplugin&rsquo;</tt>/<tt>&lsquo;.so&rsquo;</tt>) to be specified at compile time.
+</p>  
+<p>Retired the Mac OS X specific dynamic module loading facilities in favor of <tt>&lsquo;libs/csutil/generic/loadlib.cpp&rsquo;</tt>.  This is possible since Mac OS X supports <small>POSIX</small> <tt>&lsquo;dl&rsquo;</tt> facilities, unlike ancestors NextStep, OpenStep, Rhapsody from which the OS X port arose. In addition to reducing Mac OS X specific implementation, this also resolves Apple deprecation warnings from the Darwin module-loading <small>API</small>.
+</p>
+</li><li>
+Fix wrongly placed <code>break</code>.
+
+</li><li>
+Fix a wrong data size validation check. Spotted by Lirrec.
+
+</li><li>
+Remove redundancy.
+
+</li><li>
+1.4 requires <small>CEGUI</small> 0.5 but is known to work with 0.6. 1.4 will not compile with <small>CEGUI</small> 0.7.x.
+
+<p>We don't want bug reports about this on such an old release and the work involved in changes to 1.4 to now support 0.7 is not really worth it.
+</p>
+<p>Added test for versions greater than 0.6 of <small>CEGUI</small>, so it fails the 1.4 <tt>&lsquo;configure&rsquo;</tt> test.
+</p>
+</li><li>
+Add arm support.
+
+</li><li>
+Disable Java build.
+
+</li><li>
+Removed <tt>&lsquo;csdemo&rsquo;</tt> from the default build.
+
+<p>This is due to the <tt>&lsquo;demodata.zip&rsquo;</tt> file no longer being available.
+Code has been left in place for review and learning purposes.
+Removed <tt>&lsquo;csdemo&rsquo;</tt> from <tt>&lsquo;startme&rsquo;</tt> application list.
+Updated docs to indicate the above.
+</p>
+</li><li>
+Documented options for running <tt>&lsquo;phystut&rsquo;</tt> with preferred physics plug-in more explanatory.
+</li></ul>
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Release-Notes-2_005f0.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Release-Notes-1_005f4.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Licenses.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

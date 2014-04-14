@@ -1,0 +1,148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 2.6 Quick Start</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 2.6 Quick Start">
+<meta name="keywords" content="Crystal Space 2.1.0: 2.6 Quick Start">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Quick-Start"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Problems.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Running-The-Demos.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Building.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Building.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Running-The-Demos.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h2 class="section"> 2.6 Quick Start </h2>
+
+<p>Once you have built the Crystal Space system and its demonstration applications
+you may be eager to test them out.  This section will give you the opportunity
+to do so without forcing you to wade through an over-abundance of explanations.
+Later sections will describe options and applications in more detail, but
+for now, sit back and have some fun.
+</p>
+<p>Typically, the executable for each application and its support files will be
+located in the same directory, though this is not strictly necessary.  The map
+files are generally placed in the <tt>&lsquo;CS/data&rsquo;</tt> directory, but this not
+required.  Please note that the map <small>ZIP</small> files should <em>not</em> be
+unpacked.  Crystal Space can read these files directly.
+</p>
+<p>On <small>GNU</small> Linux:
+</p>
+<p>If you see the following error <samp>&lsquo;error while loading shared libraries:
+libcrystalspace-2.x.so: cannot open shared object file: No such file or
+directory&rsquo;</samp>
+</p>
+<p>Crystal Space now creates and uses shared libraries. In order to run the demo
+applications you need to export the <em>LD_LIBRARY_PATH</em> to where the Crystal
+Space root folder is currently located e.g.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">export LD_LIBRARY_PATH=/home/me/CS_latest
+</pre></td></tr></table>
+<p>If you are running from the command line on <small>GNU</small> Linux or similar and in
+the root <tt>&lsquo;CS&rsquo;</tt> folder which contains the shared objects and executables you
+can simply use.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">export LD_LIBRARY_PATH=`pwd`
+</pre></td></tr></table>
+<p>In the following examples we will run <samp>&lsquo;walktest&rsquo;</samp>, the quintessential
+Crystal Space demonstration program in various ways.
+</p>
+<p>In this example, we will run <samp>&lsquo;walktest&rsquo;</samp> and specify the map it should load
+and use.
+</p>
+<p>On Windows:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">walktest.exe <var>map</var>
+</pre></td></tr></table>
+<p>On other Operating Systems:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">./walktest <var>map</var>
+</pre></td></tr></table>
+<p>Replace <var>map</var> with any map file name which you have downloaded and
+placed in your <tt>&lsquo;CS/data&rsquo;</tt> directory.  For instance:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">walktest partsys
+</pre></td></tr></table>
+<p>If your map is not one of those from the <small>CS</small> homepage, you may also
+have to add it to <tt>&lsquo;vfs.cfg&rsquo;</tt>.  Look at the entries for the other maps
+to see how to do this.
+</p>
+<p>You can use command line parameters when running Crystal Space
+applications.  See section <a href="Common-Command-Line-Options.html#0">Common Command Line Options</a>.  Detailed setup can be done
+in the configuration file.  See section <a href="Configuration-File.html#0">Configuration File</a>.  For Walktest, in-game
+setup can be done via the console.  See section <a href="Walktest-Console-Commands.html#0">Console Commands</a>.
+</p>
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Problems.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Running-The-Demos.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Building.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Building.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Running-The-Demos.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

@@ -1,0 +1,206 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.8.2 Attaching User Objects to CS Objects</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.8.2 Attaching User Objects to CS Objects">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.8.2 Attaching User Objects to CS Objects">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="User-Objects"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="csObject.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="User-Objects-in-Maps.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Game-Data.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 4.8.2 Attaching User Objects to CS Objects </h3>
+
+<p>This section explains how you can assign your own game specific data
+to Crystal Space objects (i.e. like meshes and sectors). In this section
+we explain how to do it from within code. In the next howto
+(see section <a href="User-Objects-in-Maps.html#0">Attaching User Objects to CS Objects in a map file</a>) we explain how you can do this from
+a map file.
+</p>
+<a name="1"></a>
+<h4 class="subsubheading"> The Crystal Space Object System </h4>
+
+<p>Almost all objects in the Crystal Space engine implement the
+<code>iObject</code> interface. Because of this you can attach your own
+objects to them. This can be very useful to attach game specific
+data to Crystal Space objects. For example, you may want to attach
+the state of an actor to the mesh object representing that actor (like
+current amount of ammunition, health, <small class="dots">...</small>).
+</p>
+<a name="2"></a>
+<h4 class="subsubheading"> Defining Game Data </h4>
+
+<p>To define data that you can attach to any other Crystal Space
+object (or any object implementing <code>iObject</code>) you also have to
+create an object that implements <code>iObject</code>. The easiest way to do
+that is to inherit from <code>csObject</code> which implements <code>iObject</code>
+for you. Here is an example on how you can do this easily:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">class MyOwnData : public scfImplementationExt1&lt;MyOwnData, csObject,
+	scfFakeInterface&lt;MyOwnData&gt; &gt;
+{
+private:
+  int myDataInt;
+
+public:
+  SCF_INTERFACE (MyOwnData, 1, 0, 0);
+  ...
+  MyOwnData () : scfImplementationType (this)
+  {
+    ...
+  }
+  virtual ~MyOwnData ()
+  {
+    ...
+  }
+  
+  ...
+  
+  int GetMyData () const { return myDataInt; }
+  void SetMyData (int newData) { myDataInt = newData; }
+};
+</pre></td></tr></table>
+<p>In this example you must use some <small>SCF</small> templates so that your
+own class becomes a valid <small>SCF</small> object that inherits from <code>csObject</code>
+properly.
+</p>
+<p>Basically you create a class called <samp>&lsquo;MyOwnData&rsquo;</samp> which inherits
+from <code>csObject</code>. In that class you can do whatever you want
+with respect to your own game data. In the example above we only
+have a variable <samp>&lsquo;myDataInt&rsquo;</samp> but of course you can do whatever
+you want. The <small>SCF</small> templates make sure that you can later query for
+that object (using <code>scfQueryInterface</code> for example).
+</p>
+<a name="3"></a>
+<h4 class="subsubheading"> Attaching Game Data </h4>
+
+<p>To attach your own data to some Crystal Space object you can use
+<code>iObject::ObjAdd()</code>. The example below shows how you can attach
+an instance of <code>MyOwnData</code> to a mesh:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">csRef&lt;MyOwnData&gt; mydata; mydata.AttachNew (new MyOwnData ());
+mydata-&gt;SetMyData (...);
+iMeshWrapper* mesh = ...;
+mesh-&gt;QueryObject ()-&gt;ObjAdd (mydata);
+</pre></td></tr></table>
+<p><code>mesh-&gt;QueryObject()</code> is interesting. Many Crystal Space objects
+that implement <code>iObject</code> have a convenience function called
+<code>QueryObject()</code> which will return a reference to the <code>iObject</code>
+implementation. This code is equivalent to:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">csRef&lt;iObject&gt; obj = scfQueryInterface&lt;iObject&gt; (mesh);
+</pre></td></tr></table>
+<p>with the important difference that <code>QueryObject()</code> does not increment
+the reference count. If an object doesn't have this convenience function you
+must use <code>scfQueryInterface</code> instead.
+</p>
+<a name="4"></a>
+<h4 class="subsubheading"> Finding Game Data </h4>
+
+<p>To find if some object has your data attached to it you can use the
+following code:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">csRef&lt;MyOwnData&gt; mydata =
+  CS_GET_CHILD_OBJECT(mesh-&gt;QueryObject(), MyOwnData);
+if (mydata)
+{
+  ... (use mydata)
+}
+</pre></td></tr></table>
+<a name="5"></a>
+<h4 class="subsubheading"> Removing Game Data </h4>
+
+<p>To remove your data you can use:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">csRef&lt;MyOwnData&gt; mydata =
+  CS_GET_CHILD_OBJECT(mesh-&gt;QueryObject(), MyOwnData);
+if (mydata)
+{
+  mesh-&gt;QueryObject ()-&gt;ObjRemove (mydata);
+}
+</pre></td></tr></table>
+<a name="6"></a>
+<h4 class="subsubheading"> Include Files </h4>
+
+<p>The include files useful for this section are:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">#include &lt;iutil/object.h&gt;
+#include &lt;csutil/csobject.h&gt;
+</pre></td></tr></table>
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="csObject.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="User-Objects-in-Maps.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Game-Data.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

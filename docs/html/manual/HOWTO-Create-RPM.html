@@ -1,0 +1,193 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.20.5 Creating Crystal Space RPM's</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.20.5 Creating Crystal Space RPM's">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.20.5 Creating Crystal Space RPM's">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="HOWTO-Create-RPM"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="HOWTO-CS-Project-DevCPP.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="HOWTO-Setting-the-CRYSTAL-environment-variable.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Making-Own-Projects.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 4.20.5 Creating Crystal Space <small>RPM</small>'s </h3>
+
+
+<p><em>Written by Vincent Knecht <a href="mailto:vknecht@club-internet.fr">vknecht@club-internet.fr</a>.</em>
+
+<em>Last updated 19 March 2006.</em>
+</p>
+<a name="1"></a>
+<h4 class="subsubheading"> Creating Crystal Space <small>RPM</small> Packages </h4>
+
+<p>It is possible to build Crystal Space <small>RPM</small>'s. This is useful if you want to
+distribute pre-built Crystal Space packages, or if you want to install Crystal
+Space on your machine using the normal package management facilities of your
+host.  For this purpose, <tt>&lsquo;CS/scripts/rpm/cs.spec&rsquo;</tt> file is provided with
+Crystal Space.
+</p>
+<a name="2"></a>
+<h4 class="subsubheading"> Configure to Build <small>RPM</small> Packages </h4>
+
+<p>Building <small>RPM</small> packages involves a few settings, which are covered at
+the following page:
+</p>
+
+<p><a href="http://qa.mandriva.com/twiki/bin/view/Main/RpmHowTo#Preliminary_tasks">http://qa.mandriva.com/twiki/bin/view/Main/RpmHowTo#Preliminary_tasks</a>
+</p>
+<a name="3"></a>
+<h4 class="subsubheading"> Building Your Own <small>RPM</small>'s From Source Archive </h4>
+
+<p>Once you've set your system to build <small>RPM</small> packages as a regular user,
+perform the following steps:
+</p>
+<ol>
+<li>
+Get Crystal Space sources archive (see section <a href="Where-to-Get.html#0">Where to Get Crystal Space</a>) and put it in your
+<tt>&lsquo;rpm/SOURCES/&rsquo;</tt> directory.
+
+</li><li>
+Go into your <tt>&lsquo;rpm/SPECS&rsquo;</tt> directory.
+
+</li><li>
+Extract the <tt>&lsquo;CS/scripts/rpm/cs.spec&rsquo;</tt> file, and put it in your
+<tt>&lsquo;rpm/SPECS/&rsquo;</tt> directory. You can also get the latest <tt>&lsquo;cs.spec&rsquo;</tt> file
+at
+<a href="http://svn.sourceforge.net/viewcvs.cgi/*checkout*/crystal/CS/trunk/scripts/rpm/cs.spec">http://svn.sourceforge.net/viewcvs.cgi/*checkout*/crystal/CS/trunk/scripts/rpm/cs.spec</a>
+
+<table><tr><td>&nbsp;</td><td><pre class="example">cd /home/user/rpm/SPECS
+tar xvjf /home/user/rpm/SOURCES/cs-current-snapshot.tar.bz2 \
+     CS/scripts/rpm/cs.spec
+mv CS/scripts/rpm/cs.spec /home/user/rpm/SPECS
+rm -rf CS
+</pre></td></tr></table>
+</li><li>
+Verify the source archive filename you downloaded is set in accordance with the
+filename part of the <small>URL</small> in <samp>&lsquo;Source:&rsquo;</samp> line of <tt>&lsquo;cs.spec&rsquo;</tt>,
+otherwise <code>rpm</code> won't be able to do his job.
+
+</li><li>
+Build the <small>RPM</small>'s.
+
+<ul>
+<li>
+To build binary <small>RPM</small>'s only, issue <code>rpmbuild -bb cs.spec</code>
+</li><li>
+To build source <small>RPM</small>'s as well, issue <code>rpmbuild -ba cs.spec</code>
+</li></ul>
+</li></ol>
+
+<p>Build options are specified by using <code>--with</code> switch. The following
+values are supported:
+</p>
+<ul>
+<li>
+<code>--with perl</code> to build with Perl support.
+</li><li>
+<code>--with debug</code> to build with debugging support.
+</li><li>
+<code>--with shared</code> to build with shared libraries.
+</li></ul>
+
+<p>So, to build all packages, with Perl support, use:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">rpmbuild -ba cs.spec --with perl
+</pre></td></tr></table>
+<p>The binary <small>RPM</small>'s should be under <tt>&lsquo;rpm/RPMS/&rsquo;</tt>, and the source <small>RPM</small>
+in <tt>&lsquo;rpm/SRPMS/&rsquo;</tt>.
+</p>
+<p>The process creates four Crystal Space binary <small>RPM</small> packages:
+</p>
+<ul>
+<li>
+<samp>&lsquo;crystalspace&rsquo;</samp> base package. It provides plugins, data and configuration
+files.
+</li><li>
+<samp>&lsquo;crystalspace-devel&rsquo;</samp> development package. It provides headers and static
+libraries needed for development.
+</li><li>
+<samp>&lsquo;crystalspace-demos&rsquo;</samp> demonstration package. It provides applications
+showing Crystal Space capabilities.
+</li><li>
+<samp>&lsquo;crystalspace-doc&rsquo;</samp> documentation package. It provides <small>API</small> and user
+manual documentation in <small>HTML</small> format.
+</li><li>
+<samp>&lsquo;crystalspace-utils&rsquo;</samp> utilities package. It provides executables, data
+(especially map files) and configuration files.
+</li></ul>
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="HOWTO-CS-Project-DevCPP.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="HOWTO-Setting-the-CRYSTAL-environment-variable.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Making-Own-Projects.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

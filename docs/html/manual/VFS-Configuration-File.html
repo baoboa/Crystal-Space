@@ -1,0 +1,263 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.7.2 Configuration File (vfs.cfg)</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.7.2 Configuration File (vfs.cfg)">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.7.2 Configuration File (vfs.cfg)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="VFS-Configuration-File"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="VFS-Details.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Game-Data.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="VFS.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 4.7.2 Configuration File (<tt>&lsquo;vfs.cfg&rsquo;</tt>) </h3>
+
+<p>When the <small>VFS</small> plugin is loaded, it searches for a configuration file named
+<tt>&lsquo;vfs.cfg&rsquo;</tt> in the following locations in the order shown:
+</p>
+<ul>
+<li>
+Application resource directory; typically, the directory in which the
+application executable resides but, on MacOS/X, it is the <tt>&lsquo;Resources&rsquo;</tt>
+directory within the Cocoa application wrapper for <small>GUI</small> programs. (Returned
+by <code>csGetResourceDir()</code>.)
+
+</li><li>
+Directory where application executable resides, or the directory where Cocoa
+application wrapper resides on MacOS/X. (Returned by <code>csGetAppDir()</code>.)
+
+</li><li>
+Crystal Space installation directory. (Returned by <code>csGetConfigPath()</code>.)
+</li></ul>
+
+
+<p>The full set of directories mounted by <small>VFS</small> after it scans for
+configuration files is the union of the entries in all of the discovered
+<tt>&lsquo;vfs.cfg&rsquo;</tt> files. If there are conflicting entries, then mounts and
+variable assignments specified in configuration files discovered earlier in the
+scan take precedence over those discovered later.
+</p>
+<p>Keys in the <tt>&lsquo;vfs.cfg&rsquo;</tt> configuration file with names starting with
+<samp>&lsquo;VFS.Mount.&rsquo;</samp> describe the layout of the <em>virtual</em> file system.
+Imagine a clean disk drive onto which you start to create directories by making
+links to existing <em>real</em> directories and archive (<tt>&lsquo;.zip&rsquo;</tt>) files.  An
+archive is treated exactly like a subdirectory; you even can link one &ldquo;virtual
+directory&rdquo; to several &ldquo;real&rdquo; paths and archives; however if you write files
+they will be written to the first directory or archive in list.
+</p>
+<p>These keys present a list of virtual-to-real path mappings.  The local name of
+a key with the <samp>&lsquo;VFS.Mount.&rsquo;</samp> prefix define the virtual directory, and the
+values define the real paths, which can represent a list of <em>physical</em>
+directories and <small>ZIP</small> archives.  The physical directory path lists should be
+separated by commas (,), therefore commas cannot be used in directory names.
+This should not be much of a restriction, but if it is a problem for a
+particular platform, you may want to take the drastic action of changing
+<samp>&lsquo;VFS_PATH_DIVIDER&rsquo;</samp> macro in <tt>&lsquo;vfs.cpp&rsquo;</tt>.
+</p>
+<p>The <samp>&lsquo;VFS.Mount.&rsquo;</samp> values typically makes heavy use of variables since
+most operating systems have different pathname semantics and syntax.  The
+&ldquo;common denominator&rdquo; that <small>VFS</small> emulates is a Unix-like filesystem.  To
+include the value of a variable in a <small>VFS</small> path use the
+<samp>&lsquo;$(<var>variable-name</var>)&rsquo;</samp> construct.  In the case where
+<samp>&lsquo;<var>variable-name</var>&rsquo;</samp> consists of a single letter, you can omit the
+parentheses, as in <code>$<var>variable-name</var></code> (for example <samp>&lsquo;$A&rsquo;</samp>).
+</p>
+<p>Variables that are defined in the environment override those defined in this
+file.  For example, the <samp>&lsquo;$HOME&rsquo;</samp> environment variable is set in all
+Unixes, but is undefined in many other operating systems.  They can define
+their own values for these variables in system-dependent sections, but if the
+user defines the <samp>&lsquo;$HOME&rsquo;</samp> environment variable it will always override
+the one from this file. You also can refer the variables in the following
+way: <samp>&lsquo;$(<var>var</var>:<var>expr</var>)&rsquo;</samp> which means &ldquo;use the contents of
+<samp>&lsquo;<var>var</var>&rsquo;</samp> if <samp>&lsquo;<var>var</var>&rsquo;</samp> is set (usually in environment), or use
+<samp>&lsquo;<var>expr</var>&rsquo;</samp> if not&rdquo;.  This can be used for more complex expressions,
+for example:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">$(HOME:$(HOMEDIR:$(HOMEPATH:/home)))
+</pre></td></tr></table>
+<p>This expression means &ldquo;take the value of the <samp>&lsquo;$HOME&rsquo;</samp> variable; if it is
+not set, use the contents of <samp>&lsquo;$HOMEDIR&rsquo;</samp>; if it is also not set, use
+<samp>&lsquo;$HOMEPATH&rsquo;</samp>; and if none are set, use the literal string <samp>&lsquo;/home&rsquo;</samp> as
+the resulting value.
+</p>
+<p><small>VFS</small> defines a pseudo-variable named <samp>&lsquo;/&rsquo;</samp> that contains the path
+delimiter for the current operating system (i.e.  <tt>&lsquo;/&rsquo;</tt> for Unix and
+MacOS/X, and <tt>&lsquo;\&rsquo;</tt> for Windows/<small>DOS</small>).  You reference this variable by
+writing <samp>&lsquo;$/&rsquo;</samp> rather than using the &ldquo;real-world&rdquo; delimiters <samp>&lsquo;/&rsquo;</samp>,
+or <samp>&lsquo;\&rsquo;</samp>.
+</p>
+<p>Here is the complete list of pseudo-variables understood by <small>VFS</small>:
+</p>
+<dl compact="compact">
+<dt> <code>$/</code></dt>
+<dd><p>Platform-specific path delimiter; <tt>&lsquo;/&rsquo;</tt> on Unix and MacOS/X; <tt>&lsquo;\&rsquo;</tt> on
+Windows.
+</p>
+</dd>
+<dt> <code>$@</code></dt>
+<dd><p>Crystal Space installation directory.
+</p>
+</dd>
+<dt> <code>$*</code></dt>
+<dd><p>Application resource directory; typically, the directory in which the
+application executable resides but, on MacOS/X, it is the <tt>&lsquo;Resources&rsquo;</tt>
+directory within the Cocoa application wrapper for <small>GUI</small> programs.
+</p>
+</dd>
+<dt> <code>$^</code></dt>
+<dd><p>Directory where application executable resides, or the directory where Cocoa
+application wrapper resides on MacOS/X.
+</p></dd>
+</dl>
+
+<p>The following is an example <small>VFS</small> configuration file.
+</p>
+<p>Assume we wrote a game with three levels; the game is located on <small>CD-ROM</small>
+and we want to be able to release patches in the future which will replace
+several files from level archives (each level is presumed to be placed in a
+separate <small>ZIP</small> archive on either <small>CD-ROM</small> or cached on the hard drive).
+Additionally, we will add a link to user's home directory (something somewhat
+vaguely defined on non-Unix platforms) so that game can store the user's
+settings into the file <tt>&lsquo;~/game.profile&rsquo;</tt>.
+</p>
+<p>Note that in this example many of the options in the real <tt>&lsquo;vfs.cfg&rsquo;</tt> are
+omitted. So you should not take this example for your game, because one of the
+libraries or plug-in modules you use may require a mapping that is not listed
+here. This example is only intended to understand the concept:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">;;; Virtual File System mount table
+;;;
+;;; $/ -- path delimiter (i.e. &quot;/&quot; on Unix; &quot;\&quot; on Windows)
+;;; $@ -- installation directory of Crystal Space
+;;; $* -- application resource directory
+;;; $^ -- directory in which application resides
+;;; The expansions of $@, $*, and $^ always have a trailing
+;;; path delimiter.
+;
+; The following variables should be defined either in
+; the environment or in system-dependent sections:
+;
+; $CD - The path to CD-ROM.
+; $HOME - user's home directory
+;
+; A common error is to omit the last $/ from directories.
+; This is an error since VFS will treat any path not ending
+; in $/ as an archive file name and not as a physical
+; directory.
+
+; Mount points. (These are split over multiple lines in order to
+; fit correctly on a printed page in the documentation.  In real
+; life, the values would appear immediately after the `=' signs!)
+VFS.Mount.~ = $(HOME)$/
+VFS.Mount.map1 =
+  $*$/patch$/map1$/, $*$/cache$/map1.zip, $(CD)$/data$/map1.zip
+VFS.Mount.map2 =
+  $*$/patch$/map2$/, $*$/cache$/map2.zip, $(CD)$/data$/map2.zip
+VFS.Mount.map3 =
+  $*$/patch$/map3$/, $*$/cache$/map3.zip, $(CD)$/data$/map3.zip
+
+; Platform aliases.  Aliases are always read first; VFS
+; entries specific to each platform override those defined
+; in the platform alias section.  For example, if your
+; current platform is MacOS/X, VFS will look for the value
+; of a variable first in the environment, then in
+; VFS.MacOS/X., and finally in VFS.Unix. (as specified in
+; section below).
+
+; Unix-style filesystems
+VFS.Alias.Unix    = VFS.Unix
+VFS.Alias.MacOS/X = VFS.Unix
+
+; CP/M-style filesystems
+VFS.Alias.Win32   = VFS.CP/M
+VFS.Alias.DOS     = VFS.CP/M
+
+; Strange key names follow:
+; VFS.Unix.. means key '.' in section VFS.Unix.*
+; VFS.Unix... means key '..' in section VFS.Unix.*
+VFS.Unix.. = .
+VFS.Unix... = ..
+VFS.Unix.CDROM = /mnt/cdrom
+VFS.Unix.TMP = /tmp
+
+VFS.CP/M.. = .
+VFS.CP/M... = ..
+VFS.CP/M.HOME = $(HOMEDIR:$(HOMEPATH:.))
+VFS.CP/M.CDROM = x:
+VFS.CP/M.TMP = $(TEMP:$(TMP:$(SYSTEMROOT)$/temp))
+</pre></td></tr></table>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="VFS-Details.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Game-Data.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="VFS.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

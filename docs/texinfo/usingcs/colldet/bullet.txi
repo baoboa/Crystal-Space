@@ -1,0 +1,254 @@
+@c -*-texinfo-*-
+@node Physics Bullet, Physics ODE, Basic Collision Detection, Collision Detection
+@subsection Physics using Bullet
+@cindex physics
+@cindex Bullet
+
+The @samp{Bullet} plugin implements physical simulation for Crystal Space using
+the @url{http://www.bulletphysics.com/Bullet/, Bullet library}.
+
+This section will present the main concepts that are used within a physical
+simulation. A tutorial with example of codes can be found with the application
+@file{phystut} (see in @file{CS/apps/tutorial/phystut}).
+
+@subsubheading iDynamics Plugin Interface
+
+The name of the @samp{Bullet} plugin is @samp{crystalspace.dynamics.bullet}, and
+this plugin implements also the iDynamics interface. This interface can be used in
+order to create the various dynamic systems that will contain the virtual objects
+of the simulation.
+
+@subsubheading Dynamic Systems
+
+Dynamic systems are independent virtual worlds containing physical objects. The
+physical objects are active only when they are put inside a dynamic system, and they
+will interact only with the objects in the same dynamic system. It is not possible
+to put an object in more than one dynamic system.
+
+At least one dynamic system should therefore be created. Usually, one would need
+one dynamic system per Crystal Space sector, the problem being to switch the dynamic
+systems when an object crosses a portal. This is not yet made automatically by the
+@samp{Bullet} plugin, this is however a feature of the WIP @samp{physics2} plugin.
+
+Each dynamic system has separate parameters such as the gravity force, the visual
+debug mode, the internal scale, and whether or not soft bodies are allowed within the
+system.
+
+Dynamic systems are also used to create the bodies, joints and colliders.
+
+The common interface for dynamic systems is @code{iDynamicSystem}. However, the
+@samp{Bullet} plugin also exhibits the interface @code{CS::Physics::Bullet::iDynamicSystem}
+that extends the system with additional functionalities.
+
+@subsubheading Stepping the Physical Simulation
+
+In order to actually perform the physical simulation, you must specify manually to the
+@samp{Bullet} plugin how much time has elapsed since the previous frame. The method
+@code{iDynamics::Step()} is responsible of that, and takes as a parameter the delta
+time value in seconds.
+
+The @code{iDynamics::Step()} method will update all the dynamic systems that have
+been created. If you want to control them separately, you can use instead the method
+@code{iDynamicSystem::Step()}.
+
+Several other parameters allow to control the stepping and the precision of the
+simulation. Those parameters are set using the method
+@code{CS::Physics::Bullet::iDynamicSystem::SetStepParameters()}.
+
+@subsubheading Rigid Bodies and Colliders
+
+Rigid bodies are bodies whose shape do not vary over the time. They are the physical
+objects that are the most used because their motion is the less costly to compute.
+
+The shape of the rigid bodies are defined by a set of one or more colliders. There
+are several types of colliders, varying in computation cost and in stability, and
+that can be combined to approximate the shape of the physical object:
+
+@itemize @bullet
+@item
+@strong{Sphere}: the sphere is probably the most stable and the less costly collider.
+Use it whenever you can.
+@item
+@strong{Capsule}: a capsule is a cylinder with an half sphere on each side. It is an
+excellent collider, either in stability and in computation costs.
+@item
+@strong{Cylinder}: a cylinder is less stable and more costly than a capsule, this last
+collider should be preferred whenever possible.
+@item
+@strong{Box}: boxes, although simple primitives, are more costly than e.g. a capsule.
+@item
+@strong{Plane}: planes are infinite in size, and prevent all objects passing to the
+other side of the plane. This is perfect e.g. for a floor. Plane colliders can be used
+only for static objects.
+@item
+@strong{Convex mesh}: these are meshes without holes, i.e. these are meshes where every
+segment between every vertices of the mesh is still contained within the mesh. Convex
+meshes allows a much bigger precision in the approximation of the shape of the object,
+but there are however quite costly, and a combination of simpler primitives is generally
+more advised.
+@item
+@strong{Concave mesh}: those are meshes with holes in their shape. Although legal, they
+are not advised to be used as non-static objects because they can alter either the
+stability or the speed of the simulation. Using them for static objects should however
+be fine.
+@end itemize
+
+Once the set of colliders is defined for a given rigid bodies, several other properties
+can be set up, such as the mass or the density, the friction and the elasticity of the
+body.
+
+Finally, in order to visualize the rigid body in the rendering engine, a mesh should be
+attached to the rigid body, using the method @code{iRigidBody::AttachMesh()}. The
+position of this mesh will then be updated automatically whenever the physical object
+is moved within the simulation. Additional lights and cameras can attached too.
+
+The common interface for rigid bodies is @code{iRigidBody}, but the @samp{Bullet}
+plugin also exhibits the interface @code{CS::Physics::Bullet::iRigidBody}
+
+@subsubheading Static, Dynamic and Kinematic States
+
+A rigid body can be in one of the states static, dynamic or kinematic, and that state
+that will define the behavior of the body in the physical simulation:
+
+@itemize @bullet
+@item
+@strong{Static}: a static body is a mesh that never moves, whatever the forces and
+collisions that are applied on it. These are used for the parts of the environment where
+the objects shouldn't go.
+@item
+@strong{Dynamic}: a dynamic object is an object that will fall, collider, and react to
+the dynamic forces that are applied on it. Most objects will probably need to be put in
+this state.
+@item
+@strong{Kinematic}: a kinematic object is some kind of static object, whose position is
+controlled by the user application, and not the simulation. Kinematic objects will
+collide with the dynamic objects and push them away. In order to control the motion of
+a kinematic body, you can either attach a mesh to it using @code{iRigidBody::AttachMesh()}
+and simply move that mesh using it's @code{iMovable} interface, or alternatively, you can
+use the dedicated class @code{CS::Physics::Bullet::iKinematicCallback}.
+@end itemize
+
+Changing the state of a rigid body is made through the methods @code{iRigidBody::MakeStatic()},
+@code{iRigidBody::MakeDynamic()}, @code{CS::Physics::Bullet::iRigidBody::MakeKinematic()}
+and @code{CS::Physics::Bullet::iRigidBody::SetDynamicState()}.
+
+@subsubheading Joints and Motors
+
+Joints (interface @code{iJoint}) can be set up between two rigid bodies in order to
+constrain their motion together.
+
+A joint is defined by the degrees of freedom that are allowed, that is whether the
+rotations and/or translations are allowed, along what axis, and the minimal and maximal
+values that are allowed.
+
+Additionally, a force can be generated on the joint, and that will act as a motor. This
+is made using the method @code{iJoint::SetDesiredVelocity()}
+
+An alternative type of joint is also available with the pivot joint (interface
+@code{CS::Physics::Bullet::iPivotJoint}), that allows to grab a rigid body at a given
+point and move its position in the world. This is useful e.g. for grabbing an object
+through a mouse interaction.
+
+@subsubheading Soft Bodies
+
+Soft bodies (interface @code{CS::Physics::Bullet::iSoftBody}) are bodies whose shape is
+soft and is therefore modified by the physical simulation. Soft bodies are quite costly
+to compute and should therefore be used carefully.
+
+A soft body is basically made of a set of vertices and triangles defining its shape
+and the straightness of the forces applied between the vertices. There are several
+ways to create a soft body, using the methods @code{CS::Physics::Bullet::iDynamicSystem::CreateRope()},
+@code{CreateCloth()} and @code{CreateSoftBody()}:
+
+@itemize @bullet
+@item
+@strong{Rope}: a rope is a one dimensional line cut in several segments. Unfortunately,
+there are no pre-made way to animated a 3D mesh depending on the motion of a rope, so
+you would need to display it by your own mean.
+@item
+@strong{Cloth}: a cloth is a two dimensional array of vertices linked by segments. A
+Genmesh can be created automatically for those soft body using the tool class
+@code{CS::Physics::Bullet::SoftBodyHelper}.
+@item
+@strong{Genmesh}: the soft body will be created using the vertices and triangles of the
+Genmesh.
+@item
+@strong{Custom}: a custom shape can be defined by providing explicitly the set of
+vertices and triangles.
+@end itemize
+
+Displaying a soft body is more complex than a rigid body because its shape should be
+updated depending on the physical simulation. In that goal, a soft body animation
+controller has been created, allowing to animate automatically the
+@ref{MeshObject Genmesh, Genmesh} associated to a given soft body. See the class
+@code{CS::Animation::iSoftBodyAnimationControl} and related.
+
+The parts of a soft body can be attached to a rigid body in order to follow its motion
+and act as a joint. This is made using anchors (see @code{CS::Physics::Bullet::iSoftBody::AnchorVertex}).
+
+The @code{CS::Animation::iSoftBodyAnimationControl} has also additional functionalities
+in order to attach a soft body more precisely to an @ref{MeshObject Animesh, Animesh},
+and have the position of the anchors updated when the mesh is animated. All of these
+functionalities are useful to simulate the clothes of a character. As an example, you
+can have a look at the @samp{Krystal} scene in the @file{avatartest} tutorial
+application (in @file{CS/apps/tutorial/avatartest}).
+
+@subsubheading Terrains
+
+Terrain physical colliders are special objects allowing to create static colliders for
+@ref{MeshObject Terrain2, terrain2 objects}. They are created using the methods
+@code{CS::Physics::Bullet::iDynamicSystem::AttachColliderTerrain()}.
+
+If the collider is associated with an object iTerrainSystem, then the
+@code{iTerrainCollider} will update automatically its collider model whenever a new cell
+is added or removed from the terrain.
+
+@subsubheading Ragdolls
+
+For characters and more complex objects made of a set of rigid bodies linked through
+joints, then it is advised to use the @ref{MeshObject Animesh, Animeshes} and the
+@ref{Animation Nodes, ragdoll animation node}. This system allows to manage automatically
+the physical simulation and the animation of the whole skeleton of the animesh. This can
+be typically be used in order to simulate a character falling on the floor, or to attach
+other physical bodies such as clothes to an animesh.
+
+@subsubheading Hit Beams
+
+Collision tests can be performed against a hit beam, e.g. in order to find the objects
+that are pointed by a mouse or a weapon. This is similar to the hit beam tests that can be
+performed with the Crystal Space engine, although they will act only on the objects that
+are present in the dynamic simulation (and not on their visual counterpart in the
+rendering engine).
+
+Hit beams can be done using the method @code{CS::Physics::Bullet::iDynamicSystem::HitBeam}.
+
+@subsubheading Moving Objects Inside a Dynamic System
+
+A rigid body cannot be moved freely in a virtual world, and care should be taken
+whenever the position of an object has to be changed in order to not alter the
+stability of the simulation.
+
+There are several ways to move a rigid body:
+
+@itemize @bullet
+@item
+If you want to control continually and precisely the motion of an object, then you
+should probably use a rigid body in kinematic state. Your body will not react and
+be blocked by the other objects, but the objects that are in a dynamic state will
+be pushed away by the body that you manipulate.
+@item
+If you want to push or pull an object, then you should apply virtual forces on it,
+and that is the forces that will be the source of the motion of the body.
+@item
+Alternatively, you can grab a rigid body using a pivot joint, and move the joint
+in order to act on the rigid body.
+@item
+Lastly, if you really want to change the position of the body, you can use the method
+@code{iRigidBody::SetTransform()} and related, but this should be done as less as
+possible. One general problem while doing so, is that dynamic objects that are
+already present at the position where you move your object will be violently pulled
+away, breaking all realism in the physical simulation. In this case, care should be
+taken to test for such cases, and choose an adapated solution to this problem. This
+problem is also to be addressed whenever an object is to be spawned.
+@item
+@end itemize

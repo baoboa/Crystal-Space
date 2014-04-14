@@ -1,0 +1,505 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 5.4.2.1 Initalization Section</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 5.4.2.1 Initalization Section">
+<meta name="keywords" content="Crystal Space 2.1.0: 5.4.2.1 Initalization Section">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="XML-Init-Section"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="XML-File-Format.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="XML-World-Element-Section.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="XML-File-Format.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Internals.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h4 class="subsubsection"> 5.4.2.1 Initalization Section </h4>
+
+<p>This section describes the initialization section.
+</p>
+<a name="1"></a>
+<h4 class="subsubheading"> Texture Specification Section </h4>
+
+<p>Here is an example texture specification section:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">&lt;textures&gt;
+  &lt;texture name=&quot;wood&quot;&gt;
+    &lt;file&gt;/mygamedata/wood.png&lt;/file&gt;
+  &lt;/texture&gt;
+  &lt;texture name=&quot;transp&quot;&gt;
+    &lt;file&gt;/mygamedata/stripes.png&lt;/file&gt;
+    &lt;transparent red=&quot;1&quot; green=&quot;0&quot; blue=&quot;0&quot;/&gt;
+  &lt;/texture&gt;
+  &lt;proctex name=&quot;plasma&quot;&gt;
+    &lt;type&gt;plasma&lt;/type&gt;
+  &lt;/proctex&gt;
+&lt;/textures&gt;
+</pre></td></tr></table>
+<p>In this example we define three textures. The first one is called
+<samp>&lsquo;wood&rsquo;</samp> and will be loaded from the <small>VFS</small> file
+<tt>&lsquo;/mygamedata/wood.png&rsquo;</tt>. See section <a href="VFS.html#0">Virtual File System (<small>VFS</small>)</a>.
+</p>
+<p>The second texture, <samp>&lsquo;transp&rsquo;</samp>, is loaded from
+<tt>&lsquo;/mygamedata/stripes.png&rsquo;</tt>. The red color will be made fully
+transparent. If you want to use an alpha channel then this is supported
+too. In that case simply load a <small>PNG</small> image that has an alpha channel (or
+any other type of image that supports an alpha channel).
+</p>
+<p>The third texture is a procedural texture. There are four types of
+procedural textures predefined in Crystal Space: <samp>&lsquo;fire&rsquo;</samp>, <samp>&lsquo;water&rsquo;</samp>,
+<samp>&lsquo;dots&rsquo;</samp>, and <samp>&lsquo;plasma&rsquo;</samp>.
+</p>
+<p>Subcommands allowed for a texture specification are:
+</p>
+<ul class="toc">
+<li> <samp>&lsquo;key&rsquo;</samp>
+<samp>&lsquo;Key/value node&rsquo;</samp>. Specifies a generic key/value.
+</li><li> <samp>&lsquo;for2d&rsquo;</samp>
+<samp>&lsquo;Boolean&rsquo;</samp>. Texture is for 2D usage.
+</li><li> <samp>&lsquo;for3d&rsquo;</samp>
+<samp>&lsquo;Boolean&rsquo;</samp>. Texture is for 3D usage (default).
+</li><li> <samp>&lsquo;transparent&rsquo;</samp>
+<samp>&lsquo;Color&rsquo;</samp>. Texture uses keycolor with the given color.
+</li><li> <samp>&lsquo;file&rsquo;</samp>
+<samp>&lsquo;String&rsquo;</samp>. <small>VFS</small> filename for the texture.
+</li><li> <samp>&lsquo;mipmap&rsquo;</samp>
+<samp>&lsquo;Boolean&rsquo;</samp>. Texture uses mipmaps (default on). For 2D textures it is
+usually better to disable this. Also skybox textures should probably disable
+this.
+</li><li> <samp>&lsquo;npots&rsquo;</samp>
+<samp>&lsquo;Boolean&rsquo;</samp>. Texture doesn't have to be power of two and it will
+not be scaled to power of two dimensions. (default off). Note that not all
+hardware supports this, and sometimes this only works if mipmaps are 
+disabled as well as clamping enabled.
+</li><li> <samp>&lsquo;clamp&rsquo;</samp>
+<samp>&lsquo;Boolean&rsquo;</samp>. If set the texture will not be tiled and color lookups
+outside the 0..1 range will be clamped to the edge of the texture. Default off.
+</li><li> <samp>&lsquo;filter&rsquo;</samp>
+<samp>&lsquo;Boolean&rsquo;</samp>. If disabled then no texture filtering will occur. This usually
+looks worse. Default is on.
+</li><li> <samp>&lsquo;keepimage&rsquo;</samp>
+<samp>&lsquo;Boolean&rsquo;</samp>. If this is set then the loaded image will be kept
+and attached to the texture for later usage. With this flag off (which is
+default) the image will be freed after the texture is given to the
+3D renderer (to conserve memory).
+</li><li> <samp>&lsquo;type&rsquo;</samp>
+<samp>&lsquo;String&rsquo;</samp>. Name of the texture plugin. Some examples of texture
+plugins are <samp>&lsquo;crystalspace.texture.loader.water&rsquo;</samp>,
+<samp>&lsquo;crystalspace.texture.loader.plasma&rsquo;</samp>,
+<samp>&lsquo;crystalspace.texture.loader.checkerboard&rsquo;</samp>,
+<samp>&lsquo;crystalspace.texture.loader.cubemap&rsquo;</samp>, <small class="dots">...</small>
+</li><li> <samp>&lsquo;params&rsquo;</samp>
+<samp>&lsquo;Node&rsquo;</samp>. Parameters for the optional texture plugin.
+</li><li> <samp>&lsquo;size&rsquo;</samp>
+<samp>&lsquo;Attributes 'width' and 'height'&rsquo;</samp>. Desired size of the texture. This
+is mainly useful in case you use one of the texture plugins. If you use a
+normal file then the width and height is fetched from the image.
+</li><li> <samp>&lsquo;alwaysanimate&rsquo;</samp>
+<samp>&lsquo;Boolean&rsquo;</samp>. If this is an animated texture then this flag will
+make sure the texture keeps animating even if out of view. This is less
+performant but in some cases it is more correct. Default off.
+</li><li> <samp>&lsquo;class&rsquo;</samp>
+<samp>&lsquo;String&rsquo;</samp>. This is used to specify the class of the texture. One
+common example is <samp>&lsquo;normalmap&rsquo;</samp> which is used by many shaders.
+</li><li> <samp>&lsquo;alpha&rsquo;</samp>
+<samp>&lsquo;String&rsquo;</samp>. One of <samp>&lsquo;none&rsquo;</samp>, <samp>&lsquo;binary&rsquo;</samp>, <samp>&lsquo;smooth&rsquo;</samp>, or <samp>&lsquo;auto&rsquo;</samp>.
+<samp>&lsquo;binary&rsquo;</samp> is often used to force binary alpha for an alpha mapped texture. 
+In short, by using this flag the texture can be used on regular objects using 
+<samp>&lsquo;zuse&rsquo;</samp> and <samp>&lsquo;object&rsquo;</samp> render priority. This greatly helps performance 
+and correct visual appearance of objects. For a more detailed explanation
+see section <a href="Alpha-Textures.html#0">Alpha and Keycolor in Textures</a>.
+</li></ul>
+
+<a name="2"></a>
+<h4 class="subsubheading"> Material Specification Section </h4>
+
+<p>Materials are very important in Crystal Space. Almost all objects will
+use materials to define the surface characteristics of their geometry.
+A material itself is usually made from one or more textures.
+</p>
+<p>Here is an example material section. It uses the textures defined
+in the previous section:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">&lt;materials&gt;
+  &lt;material name=&quot;table_material&quot;&gt;
+    &lt;texture&gt;wood&lt;/texture&gt;
+  &lt;/material&gt;
+  &lt;material name=&quot;fence_material&quot;&gt;
+    &lt;texture&gt;transp&lt;/texture&gt;
+  &lt;/material&gt;
+  &lt;material name=&quot;plasma_wood&quot;&gt;
+    &lt;texture&gt;wood&lt;/texture&gt;
+    &lt;shader type=&quot;standard&quot;&gt;std_lighting_detail_alpha&lt;/shader&gt;
+    &lt;shadervar name=&quot;tex detail&quot; type=&quot;texture&quot;&gt;plasma&lt;/shadervar&gt;
+    &lt;shadervar name=&quot;detail texture scale&quot;
+               type=&quot;vector2&quot;&gt;10,10&lt;/shadervar&gt;
+    &lt;shadervar name=&quot;detail texture color&quot;
+               type=&quot;vector4&quot;&gt;1,1,1,0.25&lt;/shadervar&gt;
+  &lt;/material&gt;
+&lt;/materials&gt;
+</pre></td></tr></table>
+<p>When defining materials you usually use a name that indicates the use of that
+material.  That way you can easily replace how the material looks like (by
+swapping textures) without having to change the material name itself.
+</p>
+<p>In the example above we first define a <samp>&lsquo;table_material&rsquo;</samp> which uses only
+the <samp>&lsquo;wood&rsquo;</samp> texture.  The second material is <samp>&lsquo;fence_material&rsquo;</samp> which
+uses the semi-transparent <samp>&lsquo;transp&rsquo;</samp> texture.
+</p>
+<p>The last material is interesting. The base of the material is the
+<samp>&lsquo;wood&rsquo;</samp> texture. On top of that there is an additional texture layer
+that uses the <samp>&lsquo;plasma&rsquo;</samp> texture. The layer is scaled 10 times in both
+<em>u</em> and <em>v</em> direction and it is added to the original texture
+(i.e. the colors are added). This &ldquo;special effect&rdquo; is achieved by attaching
+the <samp>&lsquo;std_lighting_detail&rsquo;</samp> shader to this material. Different shaders
+allow different effects - the additive blending of a second texture in this
+case.
+</p>
+<p>Subcommands allowed for a material specification are:
+</p>
+<ul class="toc">
+<li> <samp>&lsquo;key&rsquo;</samp>
+<samp>&lsquo;Key/value node&rsquo;</samp>. Specifies a generic key/value.
+</li><li> <samp>&lsquo;texture&rsquo;</samp>
+<samp>&lsquo;String&rsquo;</samp>. Name of the texture.
+</li><li> <samp>&lsquo;color&rsquo;</samp>
+<samp>&lsquo;Color&rsquo;</samp>. A color instead of a texture. If you use this then <samp>&lsquo;texture&rsquo;</samp>
+should not be used.
+</li><li> <samp>&lsquo;shader&rsquo;</samp>
+<samp>&lsquo;String&rsquo;</samp>. A shader to use for this material. The value of this should
+be the name of the shader to use. In addition you also need to specify
+the <samp>&lsquo;type&rsquo;</samp> (as an attribute) of this shader. This will be used in combination
+with the renderloop to control when this material will be used in the rendering
+steps.
+</li><li> <samp>&lsquo;shadervar&rsquo;</samp>
+<samp>&lsquo;Value&rsquo;</samp>. This defines a variable for the shader attached to this material.
+The meaning of a variable as well as the required type depends on the specific
+shader A shader variable has two attributes: <samp>&lsquo;name&rsquo;</samp> and <samp>&lsquo;type&rsquo;</samp>. 
+<samp>&lsquo;name&rsquo;</samp> is the name as used in the shader. The type can be anything like
+<samp>&lsquo;texture&rsquo;</samp>, <samp>&lsquo;vector2&rsquo;</samp>, <samp>&lsquo;vector3&rsquo;</samp>, <samp>&lsquo;vector4&rsquo;</samp>, <samp>&lsquo;integer&rsquo;</samp>,
+<samp>&lsquo;float&rsquo;</samp>,  <samp>&lsquo;expr&rsquo;</samp>, <samp>&lsquo;expression&rsquo;</samp>, or <samp>&lsquo;array&rsquo;</samp>.
+</li></ul>
+
+<a name="3"></a>
+<h4 class="subsubheading"> Shader Section </h4>
+
+<p>With shaders you can describe more advanced texture and material
+effects. Here is an example:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">&lt;shaders&gt;
+  &lt;shader&gt;&lt;file&gt;/shader/reflect.xml&lt;/file&gt;&lt;/shader&gt;
+&lt;/shaders&gt;
+</pre></td></tr></table>
+<p>Most of the times you simply refer to shaders from a file.
+</p>
+<a name="4"></a>
+<h4 class="subsubheading"> Sounds Section </h4>
+
+<p>The <samp>&lsquo;sounds&rsquo;</samp> Section of the map file format allows you to encode
+information about the sound effects, background music, or pre-recorded
+dialogues that you want to include in the map. Here is an example of
+a 'sounds' section of a map file:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">&lt;sounds&gt;
+  &lt;sound name=&quot;ear-joy.mp3&quot; mode3d=&quot;relative&quot; /&gt;
+  &lt;sound name=&quot;waterfall.mp3&quot;
+    file=&quot;waterfall_179384.mp3&quot;
+    mode3d=&quot;absolute&quot; /&gt;
+&lt;/sounds&gt;
+</pre></td></tr></table>
+<p>As you can see, you can include multiple <samp>&lsquo;sound&rsquo;</samp> nodes within a
+<samp>&lsquo;sounds&rsquo;</samp> node, and there are three attributes that determine the
+behavior of each <samp>&lsquo;sound&rsquo;</samp> node. Here is an overview of what each of
+the attributes do:
+</p>
+<ul class="toc">
+<li> <samp>&lsquo;name&rsquo;</samp>
+<samp>&lsquo;String&rsquo;</samp>. The <samp>&lsquo;name&rsquo;</samp> attribute is the internal Crystal
+Space <small>VFS</small> identifier for the sound object. This is usually identical to
+the filename for the object.
+</li><li> <samp>&lsquo;file&rsquo;</samp>
+<samp>&lsquo;String&rsquo;</samp>. The <samp>&lsquo;file&rsquo;</samp> attribute is the external filename for the
+sound object, which may be different than the sound object's Crystal Space
+name. Most of the time, though, the <samp>&lsquo;file&rsquo;</samp> attribute will be left
+blank, and its default value will be the value of the <samp>&lsquo;name&rsquo;</samp> attribute.
+</li><li> <samp>&lsquo;mode3d&rsquo;</samp>
+<samp>&lsquo;Enum&rsquo;</samp>.  The <samp>&lsquo;mode3d&rsquo;</samp> attribute can be one of: <samp>&lsquo;absolute&rsquo;</samp>,
+<samp>&lsquo;disable&rsquo;</samp>, or <samp>&lsquo;relative&rsquo;</samp>. If <samp>&lsquo;mode3d&rsquo;</samp> is not one of these
+three values or empty, then the <samp>&lsquo;crystalspace.maploader.parse.sound&rsquo;</samp>
+error is reported.
+</li></ul>
+
+<p>As mentioned above, it is possible to omit, the <samp>&lsquo;file&rsquo;</samp> attribute and
+let it default to <samp>&lsquo;name&rsquo;</samp>, because <samp>&lsquo;name&rsquo;</samp> is required. However,
+if you want the Crystal Space name to be different than the filename,
+use the <samp>&lsquo;file&rsquo;</samp> attribute as well. An alternative to using <samp>&lsquo;file&rsquo;</samp>
+attribute (for example: <samp>&lsquo;file=&quot;mysound.wav&quot;&rsquo;</samp> to indicate the filename
+of a sound object, you may instead use a <samp>&lsquo;file&rsquo;</samp> element (for example
+<samp>&lsquo;&lt;file&gt;mysong.wav&lt;/file&gt;&rsquo;</samp>) within a <samp>&lsquo;sound&rsquo;</samp> node to load a
+sound from a filename. Here is an example of how it would look:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">&lt;sounds&gt;
+  &lt;sound name=&quot;mysong.wav&quot; mode3d=&quot;disable&quot;&gt;
+    &lt;file&gt;mysong.wav&lt;/file&gt;
+  &lt;/sound&gt;
+&lt;/sounds&gt;
+</pre></td></tr></table>
+<p>As mentioned earlier, The <samp>&lsquo;mode3d&rsquo;</samp> enumeration is one of:
+<samp>&lsquo;absolute&rsquo;</samp>, <samp>&lsquo;disable&rsquo;</samp>, or <samp>&lsquo;relative&rsquo;</samp>. The following is a
+breakdown of what each of these options implies:
+</p>
+<ul class="toc">
+<li> <samp>&lsquo;disable&rsquo;</samp>
+When <samp>&lsquo;mode3d&rsquo;</samp> is <samp>&lsquo;disable&rsquo;</samp> then no signal processing is done
+to the sound object. This mode allows stereo audio to be stored in a
+sound object. Both other modes only allow one channel.
+</li><li> <samp>&lsquo;relative&rsquo;</samp>
+When <samp>&lsquo;mode3d&rsquo;</samp> is <samp>&lsquo;relative&rsquo;</samp> then some level of signal processing
+is done to ensure that the sound being played will have different volumes
+depending on the <samp>&lsquo;position&rsquo;</samp> parameter of the sound object. Note that
+only one-channel sound objects are allowed.
+</li><li> <samp>&lsquo;absolute&rsquo;</samp>
+When <samp>&lsquo;mode3d&rsquo;</samp> is <samp>&lsquo;absolute&rsquo;</samp> then the highest level of signal
+processing is performed. Like <samp>&lsquo;relative&rsquo;</samp> this mode only works with
+one-channel sound objects. Unlike <samp>&lsquo;relative&rsquo;</samp>, this mode translates
+absolute coordinates into relative listener coordinates, allowing the
+calculation of the sound output by finding the difference between the
+user and the sound object, so the volume of the sound object will seem
+to vary as you move about.
+</li></ul>
+
+<a name="5"></a>
+<h4 class="subsubheading"> Variable Section </h4>
+
+<p>The <code>variables</code> section of a map file format allows you to define
+variables, and make shortcuts for common strings, colors, and vectors.
+Here is an example of a <code>variables</code> section of a map file:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">&lt;variables&gt;
+  &lt;variable name=&quot;avatar_age&quot; value=&quot;21.0&quot; /&gt;
+  &lt;variable name=&quot;sky_color&quot;&gt;
+    &lt;color red=&quot;0.0&quot; green=&quot;0.0&quot; blue=&quot;1.0&quot; alpha=&quot;1.0&quot; /&gt;
+  &lt;/variable&gt;
+  &lt;variable name=&quot;that_way&quot;&gt;
+    &lt;v x=&quot;-0.5&quot; y=&quot;3.5&quot; z=&quot;0.5&quot; /&gt;
+  &lt;/variable&gt;
+&lt;/variables&gt;
+</pre></td></tr></table>
+<p>As you can see, the <code>variables</code> section can contain multiple
+<code>variable</code> elements, each of them defining a variable definition.
+Within each variable definition, depending on the type, you can specify
+different attributes. Here is an overview of the attributes and
+elements that can be found within a <code>variable</code> element:
+</p>
+<ul class="toc">
+<li> <samp>&lsquo;name&rsquo;</samp> <samp>&lsquo;String&rsquo;</samp> attribute,
+The name of the variable.
+</li><li> <samp>&lsquo;value&rsquo;</samp> <samp>&lsquo;String&rsquo;</samp> attribute
+A string value associated with the variable name.
+</li><li> <samp>&lsquo;color&rsquo;</samp> element
+A color value associated with the variable name. A <samp>&lsquo;color&rsquo;</samp> element
+can have <samp>&lsquo;red&rsquo;</samp>, <samp>&lsquo;green&rsquo;</samp>, <samp>&lsquo;blue&rsquo;</samp>, and optionally
+<samp>&lsquo;alpha&rsquo;</samp> attributes, where each attribute can be assigned a value
+between 0 and 1. If the <samp>&lsquo;alpha&rsquo;</samp> attribute is omitted, then it is
+assumed to have a value of 1.
+</li><li> <samp>&lsquo;v&rsquo;</samp> element
+A vector value associated with the variable name. A <samp>&lsquo;vector&rsquo;</samp> element
+can have <samp>&lsquo;x&rsquo;</samp>, <samp>&lsquo;y&rsquo;</samp>, and optionally <samp>&lsquo;z&rsquo;</samp> attributes, where
+each attribute is any floating point number. If the <samp>&lsquo;z&rsquo;</samp> attribute
+is omitted, then it is assumed to have a value of 0.
+</li></ul>
+
+<a name="6"></a>
+<h4 class="subsubheading"> Plugin Section </h4>
+
+<p>The plugin section is purely for convenience later. Normally when creating
+mesh objects you have to specify the <small>SCF</small> class name of the loader
+which will parse the <small>XML</small> data for that mesh object. This is a long
+name. The plugin section allows you to define shorter names for those
+plugins. Here is an example where names are defined for the genmesh,
+spr3d, and spr3dfact plugins:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">&lt;plugins&gt;
+    &lt;plugin name=&quot;genmesh&quot;&gt;
+        crystalspace.mesh.loader.genmesh
+    &lt;/plugin&gt;
+    &lt;plugin name=&quot;spr3dFact&quot;&gt;
+        crystalspace.mesh.loader.factory.sprite.3d
+    &lt;/plugin&gt;
+    &lt;plugin name=&quot;spr3d&quot;&gt;
+        crystalspace.mesh.loader.sprite.3d
+    &lt;/plugin&gt;
+&lt;/plugins&gt;
+</pre></td></tr></table>
+<a name="7"></a>
+<h4 class="subsubheading"> Settings Section </h4>
+
+<p>In the settings section there are a few configuration options that you can
+specify. Here is a complete settings example:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">&lt;settings&gt;
+  &lt;clearzbuf /&gt;
+  &lt;clearscreen /&gt;
+  &lt;ambient red=&quot;.1&quot; green=&quot;.1&quot; blue=&quot;.1&quot; /&gt;
+&lt;/settings&gt;
+</pre></td></tr></table>
+<p>By default Crystal Space does not clear the z-buffer not the screen every
+frame. For the z-buffer it depends on objects to fill the z-buffer. In a
+typical Crystal Space world every sector would have an outer hull (either
+a skybox or else the walls of the room) which would use <samp>&lsquo;zfill&rsquo;</samp> mode
+so that the z-buffer is updated but not read. Objects in the room can then
+use <samp>&lsquo;zuse&rsquo;</samp>. If you don't want this (i.e. you want to use <samp>&lsquo;zuse&rsquo;</samp>
+for all objects) then you can use <samp>&lsquo;clearzbuf&rsquo;</samp>. Similar for
+<samp>&lsquo;clearscreen&rsquo;</samp>.
+</p>
+<p>In addition to the lighting information given by all lights in the system,
+every object will also get ambient lighting. Ambient lighting is global to
+the engine (at least static ambient lighting). You can set the ambient
+for a level in the settings block. Default ambient is 0.078 for all color
+components.
+</p>
+<a name="8"></a>
+<h4 class="subsubheading"> Start Location Section </h4>
+
+<p>A map file can contain zero or more start locations for the camera. How
+these start locations are interpreted is up to the application. Typically
+there is one start location that has no name and which is considered the
+default. But you can have multiple start locations and refer to them by
+name in your application. Here is an example:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">&lt;start&gt;
+    &lt;sector&gt;room&lt;/sector&gt;
+    &lt;position x=&quot;0&quot; y=&quot;0&quot; z=&quot;0&quot; /&gt;
+&lt;/start&gt;
+&lt;start name=&quot;alternate&quot;&gt;
+    &lt;sector&gt;other_room&lt;/sector&gt;
+    &lt;position x=&quot;0&quot; y=&quot;0&quot; z=&quot;0&quot; /&gt;
+    &lt;up x=&quot;0&quot; y=&quot;-1&quot; z=&quot;0&quot; /&gt;
+    &lt;forward x=&quot;0&quot; y=&quot;0&quot; z=&quot;-1&quot; /&gt;
+    &lt;farplane a=&quot;0&quot; b=&quot;0&quot; c=&quot;1&quot; d=&quot;100&quot; /&gt;
+&lt;/start&gt;
+</pre></td></tr></table>
+<p>If there is no start location then by convention many applications assume
+that the default start is in sector called <samp>&lsquo;room&rsquo;</samp> at location
+<samp>&lsquo;0,0,0&rsquo;</samp>.
+</p>
+<p>The first example above is easy. It just defines the same starting location
+as specifying nothing would have done.
+</p>
+<p>The second example is more complicated. It defines a start location called
+<samp>&lsquo;alternate&rsquo;</samp>. The up-vector is specified as <samp>&lsquo;0,-1,0&rsquo;</samp> which is just
+the reverse of the default <samp>&lsquo;0,1,0&rsquo;</samp>. This means that the camera will
+be upside down. The forward vector is <samp>&lsquo;0,0,-1&rsquo;</samp> which means that
+the camera will be looking to the negative z axis. By default the camera
+looks in the positive z direction.
+</p>
+<p>The last <samp>&lsquo;farplane&rsquo;</samp> option is interesting. It indicates that all
+geometry beyond <samp>&lsquo;z=100&rsquo;</samp> will be clipped away. You can use this if
+you want to speed up rendering and you know that objects further away than
+the specified distance are not interesting or you use fog that would have
+made them invisible anyway. Note that fog alone doesn't do that. By default
+there is no farplane. If you use the farplane option it is usually recommended
+to let the engine clear the z-buffer every frame (see the <samp>&lsquo;settings&rsquo;</samp>
+section above) because you can no longer depend on geometry to do it for you
+if it is culled away.
+</p>
+<a name="9"></a>
+<h4 class="subsubheading"> Library Specification Section </h4>
+
+<p>It is possible to define libraries that contain objects like mesh factories,
+textures, materials, and so on and then include those libraries in your
+map files. Creating a library file is very easy. It is basically the same
+as creating a map file but instead of <code>&lt;world&gt;</code> you would use
+<code>&lt;library&gt;</code>. To use a library you can simply put the following in
+your map file:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">&lt;library&gt;/mygamedata/library&lt;/library&gt;
+</pre></td></tr></table>
+<a name="10"></a>
+<h4 class="subsubheading"> Keys </h4>
+
+<p>Crystal Space has a system with which you can attach user data to almost
+all Crystal Space objects. This user data has a name and several values (string
+based) and in code you can query for those name/value pairs. Crystal Space
+itself doesn't use this. It only stores the information.
+</p>
+<p>When you specify name/value pairs in the world section itself you are
+essentially adding information to the engine class. Here is an example:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">&lt;key name=&quot;spawn_monster&quot; type=&quot;ghost&quot; location=&quot;mainhall&quot;
+  pos=&quot;10,1,12&quot; /&gt;
+&lt;key name=&quot;spawn_monster&quot; type=&quot;goblin&quot; location=&quot;corridor&quot;
+  pos=&quot;15,3,10&quot; /&gt;
+</pre></td></tr></table>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="XML-File-Format.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="XML-World-Element-Section.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="XML-File-Format.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Internals.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

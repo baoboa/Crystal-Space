@@ -1,0 +1,8 @@
+SubDir TOP plugins documentsystem preprocessor ;
+
+Description docpreproc : "document preprocessor" ;
+
+Plugin docpreproc
+	: [ Wildcard *.cpp *.h ]
+;
+LinkWith docpreproc : crystalspace ;

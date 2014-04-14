@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Copyright (C) 2012 by Matthieu Kraus
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Library General Public
+  License as published by the Free Software Foundation; either
+  version 2 of the License, or (at your option) any later version.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  Library General Public License for more details.
+
+  You should have received a copy of the GNU Library General Public
+  License along with this library; if not, write to the Free
+  Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+-->
+<snippet>
+  <technique priority="100">
+    <combiner name="cg" plugin="crystalspace.graphics3d.shader.combiner.glcg" />
+    <combiner name="glsl" plugin="crystalspace.graphics3d.shader.combiner.glsl" />
+
+    <input name="texGBuffer0" type="tex2d" default="complex">
+      <block location="cg:pass">
+        <texture name="tex gbuffer 0" destination="fragmentIn.GBuffer0" />
+      </block>
+      <block location="glsl:pass">
+        <texture name="tex gbuffer 0" destination="in_texGBuffer0" />
+      </block>
+      
+      <block location="cg:fragmentIn">
+        <uniform type="tex2d" name="texGBuffer0" />
+      </block>
+      <block location="glsl:inputs">
+        <uniform type="tex2d" name="in_texGBuffer0" />
+      </block>
+      
+      <block location="cg:fragmentMain">
+        texGBuffer0 = fragmentIn.texGBuffer0;
+      </block>
+      <block location="glsl:fragmentMain">
+        #sampler_assign texGBuffer0 in_texGBuffer0
+      </block>
+    </input>
+
+    <input name="texGBuffer1" type="tex2d" default="complex">
+      <block location="cg:pass">
+        <texture name="tex gbuffer 1" destination="fragmentIn.GBuffer1" />
+      </block>
+      <block location="glsl:pass">
+        <texture name="tex gbuffer 1" destination="in_texGBuffer1" />
+      </block>
+      
+      <block location="cg:fragmentIn">
+        <uniform type="tex2d" name="texGBuffer1" />
+      </block>
+      <block location="glsl:inputs">
+        <uniform type="tex2d" name="in_texGBuffer1" />
+      </block>
+      
+      <block location="cg:fragmentMain">
+        texGBuffer1 = fragmentIn.texGBuffer1;
+      </block>
+      <block location="glsl:fragmentMain">
+        #sampler_assign texGBuffer1 in_texGBuffer1
+      </block>
+    </input>
+
+    <input name="texGBuffer2" type="tex2d" default="complex">
+      <block location="cg:pass">
+        <texture name="tex gbuffer 2" destination="fragmentIn.GBuffer2" />
+      </block>
+      <block location="glsl:pass">
+        <texture name="tex gbuffer 2" destination="in_texGBuffer2" />
+      </block>
+      
+      <block location="cg:fragmentIn">
+        <uniform type="tex2d" name="texGBuffer2" />
+      </block>
+      <block location="glsl:inputs">
+        <uniform type="tex2d" name="in_texGBuffer2" />
+      </block>
+      
+      <block location="cg:fragmentMain">
+        texGBuffer2 = fragmentIn.texGBuffer2;
+      </block>
+      <block location="glsl:fragmentMain">
+        #sampler_assign texGBuffer2 in_texGBuffer2
+      </block>
+    </input>
+
+    <input name="texGBuffer3" type="tex2d" default="complex">
+      <block location="cg:pass">
+        <texture name="tex gbuffer 3" destination="fragmentIn.GBuffer3" />
+      </block>
+      <block location="glsl:pass">
+        <texture name="tex gbuffer 3" destination="in_texGBuffer3" />
+      </block>
+      
+      <block location="cg:fragmentIn">
+        <uniform type="tex2d" name="texGBuffer3" />
+      </block>
+      <block location="glsl:inputs">
+        <uniform type="tex2d" name="in_texGBuffer3" />
+      </block>
+      
+      <block location="cg:fragmentMain">
+        texGBuffer3 = fragmentIn.texGBuffer3;
+      </block>
+      <block location="glsl:fragmentMain">
+        #sampler_assign texGBuffer3 in_texGBuffer3
+      </block>
+    </input>
+
+    <input name="texGBuffer4" type="tex2d" default="complex">
+      <block location="cg:pass">
+        <texture name="tex gbuffer 4" destination="fragmentIn.GBuffer4" />
+      </block>
+      <block location="glsl:pass">
+        <texture name="tex gbuffer 4" destination="in_texGBuffer4" />
+      </block>
+      
+      <block location="cg:fragmentIn">
+        <uniform type="tex2d" name="texGBuffer4" />
+      </block>
+      <block location="glsl:inputs">
+        <uniform type="tex2d" name="in_texGBuffer4" />
+      </block>
+      
+      <block location="cg:fragmentMain">
+        texGBuffer4 = fragmentIn.texGBuffer4;
+      </block>
+      <block location="glsl:fragmentMain">
+        #sampler_assign texGBuffer4 in_texGBuffer4
+      </block>
+    </input>
+
+    <input name="texGBufferDepth" type="tex2d" default="complex">
+      <block location="cg:pass">
+        <texture name="tex gbuffer depth" destination="fragmentIn.GBufferDepth" />
+      </block>
+      <block location="glsl:pass">
+        <texture name="tex gbuffer depth" destination="in_texGBufferDepth" />
+      </block>
+      
+      <block location="cg:fragmentIn">
+        <uniform type="tex2d" name="texGBufferDepth" />
+      </block>
+      <block location="glsl:inputs">
+        <uniform type="tex2d" name="in_texGBufferDepth" />
+      </block>
+      
+      <block location="cg:fragmentMain">
+        texGBufferDepth = fragmentIn.texGBufferDepth;
+      </block>
+      <block location="glsl:fragmentMain">
+        #sampler_assign texGBufferDepth in_texGBufferDepth
+      </block>
+    </input>
+
+    <input name="ProjInv" type="float4x4" default="complex">
+      <block location="cg:variablemap">
+        <variablemap variable="projection transform inverse" destination="fragmentIn.ProjInv" />
+      </block>
+      <block location="glsl:variablemap">
+        <variablemap variable="projection transform inverse" destination="in_ProjInv" />
+      </block>
+
+      <block location="cg:fragmentIn">
+	<uniform type="float4x4" name="ProjInv" />
+      </block>
+      <block location="glsl:inputs">
+        <uniform type="float4x4" name="in_ProjInv" />
+      </block>
+      
+      <block location="cg:fragmentMain">
+	ProjInv = fragmentIn.ProjInv;
+      </block>
+
+      <block location="glsl:fragmentMain">
+        ProjInv = in_ProjInv;
+      </block>
+    </input>
+
+    <input name="buffer_scaleoffset" type="translateScale2" default="complex">
+      <block location="shadervars">
+        <shadervar name="gbuffer scaleoffset" type="vector4">0.5,0.5,0.5,0.5</shadervar>
+      </block> 
+
+      <block location="cg:variablemap">
+	<variablemap variable="gbuffer scaleoffset" destination="fragmentIn.buffer_scaleoffset" />
+      </block>
+
+      <block location="glsl:variablemap">
+	<variablemap variable="gbuffer scaleoffset" destination="in_buffer_scaleoffset" />
+      </block>
+      
+      <block location="cg:fragmentIn">
+	<uniform type="float4" name="buffer_scaleoffset" />
+      </block>
+
+      <block location="glsl:inputs">
+	<uniform type="float4" name="in_buffer_scaleoffset" />
+      </block>
+      
+      <block location="cg:fragmentMain">
+	buffer_scaleoffset = fragmentIn.buffer_scaleoffset;
+      </block>
+
+      <block location="glsl:fragmentMain">
+	buffer_scaleoffset = in_buffer_scaleoffset;
+      </block>
+    </input>
+
+    <input name="positionS" type="position4_screen" />
+
+    <block location="cg:vertexMain">
+      normal = float3(0.0, 0.0, 1.0);
+      shininess = 0.0;
+      surfaceDiffuse = float4(0.0);
+      surfaceSpecular = float3(0.0);
+      staticDiffuse = float3(0.0);
+      staticSpecular = float3(0.0);
+      glow = float3(0.0);
+      position = positionS;
+    </block>
+
+    <block location="glsl:vertexMain">
+      normal = vec3(0.0, 0.0, 1.0);
+      shininess = 0.0;
+      surfaceDiffuse = vec4(0.0);
+      surfaceSpecular = vec3(0.0);
+      staticDiffuse = vec3(0.0);
+      staticSpecular = vec3(0.0);
+      glow = vec3(0.0);
+      position = positionS;
+    </block>
+
+    <block location="cg:fragmentMain">
+      float2 screenXY = positionS.xy / positionS.w;
+      texCoord = screenXY * buffer_scaleoffset.xy + buffer_scaleoffset.zw;
+      texCoord_attr_perfragment = true;
+
+      float4 gBuffer0 = tex2D(texGBuffer0,     texCoord);
+      float4 gbuffer1 = tex2D(texGBuffer1,     texCoord);
+      float4 gbuffer2 = tex2D(texGBuffer2,     texCoord);
+      float4 gbuffer3 = tex2D(texGBuffer3,     texCoord);
+      float4 gbuffer4 = tex2D(texGBuffer4,     texCoord);
+      depth           = tex2D(texGBufferDepth, texCoord).x;
+      depth_attr_perfragment = true;
+
+      normal = gBuffer0.xyz * 2.0 - 1.0;
+      normal_attr_perfragment = true;
+      shininess = gBuffer0.w;
+      shininess_attr_perfragment = true;
+      surfaceDiffuse = gbuffer1;
+      surfaceDiffuse_attr_perfragment = true;
+      surfaceSpecular = gbuffer2.rgb;
+      surfaceSpecular_attr_perfragment = true;
+      staticDiffuse = gbuffer3.rgb;
+      staticDiffuse_attr_perfragment = true;
+      staticSpecular = gbuffer4.rgb;
+      staticSpecular_attr_perfragment = true;
+      glow = float3(gbuffer2.a, gbuffer3.a, gbuffer4.a);
+      glow_attr_perfragment = true;
+
+      position  = mul(ProjInv, float4(screenXY.x, -screenXY.y, 1.0 - 2.0 * depth, 1.0));
+      position /= position.w;
+      position_attr_perfragment = true;
+    </block>
+
+    <block location="glsl:fragmentMain">
+      vec2 screenXY = positionS.xy / positionS.w;
+      texCoord = screenXY * buffer_scaleoffset.xy + buffer_scaleoffset.zw;
+      texCoord_attr_perfragment = true;
+
+      vec4 gBuffer0 = texture2D(texGBuffer0,     texCoord);
+      vec4 gBuffer1 = texture2D(texGBuffer1,     texCoord);
+      vec4 gBuffer2 = texture2D(texGBuffer2,     texCoord);
+      vec4 gBuffer3 = texture2D(texGBuffer3,     texCoord);
+      vec4 gBuffer4 = texture2D(texGBuffer4,     texCoord);
+      depth         = texture2D(texGBufferDepth, texCoord).x;
+      depth_attr_perfragment = true;
+
+      normal = gBuffer0.xyz * 2.0 - 1.0;
+      normal_attr_perfragment = true;
+      shininess = gBuffer0.w;
+      shininess_attr_perfragment = true;
+      surfaceDiffuse = gBuffer1;
+      surfaceDiffuse_attr_perfragment = true;
+      surfaceSpecular = gBuffer2.rgb;
+      surfaceSpecular_attr_perfragment = true;
+      staticDiffuse = gBuffer3.rgb;
+      staticDiffuse_attr_perfragment = true;
+      staticSpecular = gBuffer4.rgb;
+      staticSpecular_attr_perfragment = true;
+      glow = vec3(gBuffer2.a, gBuffer3.a, gBuffer4.a);
+      glow_attr_perfragment = true;
+
+      position  = ProjInv * vec4(screenXY.x, -screenXY.y, 1.0 - 2.0 * depth, 1.0);
+      position /= position.w;
+      position_attr_perfragment = true;
+    </block>
+
+    <output name="normal" type="normal_camera">
+      <attribute name="perfragment" type="bool" />
+    </output>
+    <output name="shininess" type="float">
+      <attribute name="perfragment" type="bool" />
+    </output>
+    <output name="surfaceDiffuse" type="rgba">
+      <attribute name="perfragment" type="bool" />
+    </output>
+    <output name="surfaceSpecular" type="rgb">
+      <attribute name="perfragment" type="bool" />
+    </output>
+    <output name="staticDiffuse" type="rgb">
+      <attribute name="perfragment" type="bool" />
+    </output>
+    <output name="staticSpecular" type="rgb">
+      <attribute name="perfragment" type="bool" />
+    </output>
+    <output name="glow" type="rgb">
+      <attribute name="perfragment" type="bool" />
+    </output>
+    <output name="position" type="position4_camera">
+      <attribute name="perfragment" type="bool" />
+    </output>
+    <output name="depth" type="depth">
+      <attribute name="perfragment" type="bool" />
+    </output>
+    <output name="texCoord" type="texcoord2">
+      <attribute name="perfragment" type="bool" />
+    </output>
+  </technique>
+</snippet>

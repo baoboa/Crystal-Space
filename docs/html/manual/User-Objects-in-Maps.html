@@ -1,0 +1,127 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.8.3 Attaching User Objects to CS Objects in a map file</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.8.3 Attaching User Objects to CS Objects in a map file">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.8.3 Attaching User Objects to CS Objects in a map file">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="User-Objects-in-Maps"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="User-Objects.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Engine.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Game-Data.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 4.8.3 Attaching User Objects to CS Objects in a map file </h3>
+
+<p>In the previous howto (see section <a href="User-Objects.html#0">Attaching User Objects to CS Objects</a>) you could see how
+you can attach game data to Crystal Space objects at runtime (i.e. from
+within code). It is also possible to attach game data to objects through
+the map file. Here we explain how.
+</p>
+<a name="1"></a>
+<h4 class="subsubheading"> Using Key/Value Pairs </h4>
+
+<p>Crystal Space doesn't do anything with the keys you specify in a map file.
+The only thing it does is store them so you can use them later. Here is
+how you would fetch all keys from a mesh object:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">void MyGame::ProcessKeys (iMeshWrapper* mesh)
+{
+  csRef&lt;iObjectIterator&gt; it = mesh-&gt;QueryObject ()-&gt;GetIterator ();
+  while (it-&gt;HasNext ())
+  {
+    iObject* obj = it-&gt;Next ();
+    csRef&lt;iKeyValuePair&gt; key = scfQueryInterface&lt;iKeyValuePair&gt; (obj);
+    if (key)
+    {
+      if (!strcmp (key-&gt;GetKey (), &quot;monsterAI&quot;))
+      {
+        // Process key-&gt;GetValue ()
+        ...
+      }
+      else if (!strcmp (key-&gt;GetKey (), &quot;monsterLive&quot;))
+      {
+        // Process key-&gt;GetValue ()
+        ...
+      }
+    }
+  }
+}
+</pre></td></tr></table>
+<p>This is only an example. You can call <code>QueryObject</code> on almost every
+Crystal Space object and loop over all keys (or other <code>iObject</code>
+implementing objects) with the code above.
+</p>
+<p>To actually process the key you could check out the previous
+tutorial (see section <a href="User-Objects.html#0">Attaching User Objects to CS Objects</a>) and make your own game data object
+that contains all the collected values and attach that to the mesh too.
+</p>
+<a name="2"></a>
+<h4 class="subsubheading"> Include Files </h4>
+
+<p>The include files useful for this section are:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">#include &lt;iutil/object.h&gt;
+#include &lt;csutil/csobject.h&gt;
+#include &lt;cstool/keyval.h&gt;
+</pre></td></tr></table>
+
+
+<hr size="1">
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

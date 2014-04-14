@@ -1,0 +1,169 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 2.4.1 Unix</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 2.4.1 Unix">
+<meta name="keywords" content="Crystal Space 2.1.0: 2.4.1 Unix">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Unix"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Platform-Instructions.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Debian.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Building.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Platform-Instructions.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Running-The-Demos.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 2.4.1 Unix </h3>
+
+<p>This section covers all of the Unix-style platforms supported by Crystal Space,
+including <small>GNU</small>/Linux, FreeBSD, NetBSD, Solaris, etc.
+</p>
+<p>It is also possible to install Crystal Space using packaging systems,
+See section <a href="HOWTO-Create-RPM.html#0">Creating Crystal Space <small>RPM</small>'s</a>.
+</p>
+<p>Crystal Space's X11 canvas optionally supports the <small>MIT</small> Shared Memory
+Extension (<small>MIT-SHM</small>).  This makes Crystal Space run much faster if your
+server supports it.  The Crystal Space configuration script will detect this
+extension automatically and use it if present.
+</p>
+<p>A note of caution: Take care when obtaining the Crystal Space source code to
+ensure that the line-terminators are in Unix format (a single linefeed should
+terminate each line).  This is an especially important consideration when
+transporting the code from Windows to Unix.  Although many Unix tools deal
+gracefully with Windows line-terminators (a carriage-return followed by a
+linefeed), not all tools do so, and may emit apparently inexplicable error
+messages when encountering files with Windows line-terminators.  The official
+distributions of Crystal Space, including the stable releases and the <small>SVN</small>
+snapshots, are packaged with Unix line-terminators, which are acceptable on all
+supported platforms.  These virgin packages themselves can be transported
+between Windows and Unix safely
+</p>
+<a name="1"></a>
+<h4 class="subsubheading"> Compiling on Unix </h4>
+
+<p>Crystal Space can be built with either <tt>&lsquo;make&rsquo;</tt> or Jam (see <a href="Requirements.html#GettingJam">GettingJam</a>).
+Both tools work equally well.  In the examples below, wherever <samp>&lsquo;jam&rsquo;</samp>
+is used, you can instead substitute <tt>&lsquo;make -k&rsquo;</tt> (with the <samp>&lsquo;-k&rsquo;</samp>) if you
+so desire.
+</p>
+<p>You first need to configure the project for your platform.  You do this
+by running the configuration script.  For example, from within the <tt>&lsquo;CS&rsquo;</tt>
+directory:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">./configure
+</pre></td></tr></table>
+<p>If you wish to build with debugging information enabled, use this command,
+instead:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">./configure --enable-debug
+</pre></td></tr></table>
+<p>For a list of useful configuration options, invoke:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">./configure --help=short
+</pre></td></tr></table>
+<p>If the Crystal Space source directory is read-only, if it is shared between
+several developers, or if you simply dislike building a project within its
+source tree, you can instead configure and build from a different directory.
+For instance:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">mkdir $HOME/builddir
+cd $HOME/builddir
+/path/to/CS/configure --enable-debug
+</pre></td></tr></table>
+<p>Now, you can actually build the entire project:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">jam
+</pre></td></tr></table>
+<p>If your machine includes a dual core processor, you can easily reduce build
+times by as much as half and utilize the cores better by enabling more shell
+processes e.g.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">jam -j 2
+</pre></td></tr></table>
+<p>The build process will create an executable for each demonstration program or
+tool, and a dynamic-load-library for each plugin module (with extension
+<tt>&lsquo;.so&rsquo;</tt> on <small>GNU</small>/Linux and most Unix platforms).  Plugin modules include
+3D renderers, 2D canvases, 3D engine, etc.
+</p>
+<p>Finally, if you want to utilize Crystal Space as a software development kit
+(<small>SDK</small>), you can install it and then clean up the detritus of the build
+process:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">jam install
+jam distclean
+</pre></td></tr></table>
+<p>You can now try running the <tt>&lsquo;walktest&rsquo;</tt> demonstration. See section <a href="Quick-Start.html#0">Quick Start</a>.
+</p>
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Platform-Instructions.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Debian.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Building.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Platform-Instructions.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Running-The-Demos.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

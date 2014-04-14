@@ -1,0 +1,371 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.12.3.4 Bringing it All Together</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.12.3.4 Bringing it All Together">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.12.3.4 Bringing it All Together">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Texture-Mapping-Together"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Texture-Mapping-Perspective-Correction.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Texture-Mapping-Instructions.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Texture-Mapping.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h4 class="subsubsection"> 4.12.3.4 Bringing it All Together </h4>
+
+<p>Using all this information we have enough to correctly map a texture on
+screen.  Let's disregard clipping for the moment and just explain all the
+steps from the original object space polygon until the final texture mapped
+polygon on screen.
+</p>
+<p>We will assume that the polygon (and the texture) has already been transformed
+from object to world space.  So we start with a world space polygon, <em>Pw</em>.
+</p>
+<p>First all vertices of the polygon are transformed to camera space (note that
+in Crystal Space this is done earlier since vertices are shared for one
+sector.  This text ignores that and just concentrates on one polygon) with the
+equation:
+</p>
+<blockquote><p><em>Vc = Mwc * (Vw - Vwc)</em>
+</p></blockquote>
+
+<p>(Also note that at this point you could discard vertices because they are
+behind the view plane (or <em>Z = 0</em>).  We assume here that the polygon is
+completely visible so this does not matter.)
+</p>
+<p>At this point we do perspective correction on the polygon.  This means that we
+create a new 2-dimensional polygon with vertices <em>Vs</em> (in screen space)
+using the following equations:
+</p>
+<blockquote><p><em>Vs.x = (F * Vc.x) / Vc.z</em><br>
+<em>Vs.y = (F * Vc.y) / Vc.z</em>
+</p></blockquote>
+
+<p>Now we create the matrix to transform camera space to texture space starting
+from the matrix to transform world space to texture space.  Given:
+</p>
+<blockquote><p><em>Vc = Mwc * (Vw - Vwc)</em>
+</p></blockquote>
+
+
+<p>We calculate (using the inverse matrix of <em>Mwc</em>):
+</p>
+<blockquote><table>
+<tr><td><p> <em>Mcw * Vc + Vwc = Vw</em> </p></td><td><p> (Equation 1)
+</p></td></tr>
+</table>
+</blockquote>
+
+
+<p>Given also:
+</p>
+<blockquote><table>
+<tr><td><p> <em>Vt = Mwt * (Vw - Vwt)</em> </p></td><td><p> (Equation 2)
+</p></td></tr>
+</table>
+</blockquote>
+
+
+<p>We substitute (1) into (2) to get:
+</p>
+<blockquote><p><em>Vt = Mwt * (Mcw * Vc + Vwc - Vwt)</em>
+</p></blockquote>
+
+
+<p>This can also be re-written as:
+</p>
+<blockquote><p><em>Vt = Mwt * (Mcw * Vc + Mcw * Mwc * (Vwc - Vwt))</em>
+</p></blockquote>
+
+
+<p>Which simplifies to:
+</p>
+<blockquote><p><em>Vt = Mwt * Mcw * (Vc + Mwc * (Vwc - Vwt))</em>
+</p></blockquote>
+
+
+<p>If we say that:
+</p>
+<blockquote><p><em>Mct = Mwt * Mcw</em><br>
+<em>Vct = Mwc * (Vwt - Vwc)</em>
+</p></blockquote>
+
+
+<p>We then get:
+</p>
+<blockquote><p><em>Vt = Mct * (Vc - Vct)</em>
+</p></blockquote>
+
+
+<p>And this is the equation transforming camera space to texture space.
+</p>
+<p>Then we need to transform the world space plane equation to a camera space
+plane equation.  This we do as follows.
+</p>
+<p>The plane vector
+<em>Nw = (Aw,Bw,Cw)</em>
+is transformed to
+<em>Nc = (Ac,Bc,Cc)</em>
+using the following equation:
+</p>
+<blockquote><p><em>Nc = Mwc * Nw</em>
+</p></blockquote>
+
+<p>Using the first vertex of the polygon in camera space coordinates (<em>Vc</em>)
+we then calculate <em>Dc</em> as follows.
+</p>
+<p>Since the plane equation in camera space is equal to:
+</p>
+<blockquote><p><em>Ac * Vc.x + Bc * Vc.y + Cc * Vc.z + Dc = 0</em>
+</p></blockquote>
+
+
+<p>For every vertex <em>Vc</em> on the polygon we can calculate the missing <em>Dc</em>
+as follows:
+</p>
+<blockquote><p><em>Dc = -Ac * Vc.x - Bc * Vc.y - Cc * Vc.z</em>
+</p></blockquote>
+
+<p>Using this information (the polygon in perspective corrected 2D coordinates,
+the transformation from camera space to texture space and the plane equation
+in camera space) we can draw the polygon on the screen and perform correct
+texture mapping.  This happens as follows.
+</p>
+<p>From the perspective correction equations:
+</p>
+<blockquote><p><em>Vs.x = (F * Vc.x) / Vc.z</em><br>
+<em>Vs.y = (F * Vc.y) / Vc.z</em>
+</p></blockquote>
+
+
+<p>We can invert them to:
+</p>
+<blockquote><table>
+<tr><td><p> <em>Vc.x = (Vs.x * Vc.z) / F</em> </p></td><td><p> (Equation 3)
+</p></td></tr>
+<tr><td><p> <em>Vc.y = (Vs.y * Vc.z) / F</em> </p></td><td><p> (Equation 4)
+</p></td></tr>
+</table>
+</blockquote>
+
+
+<p>We can now substitute (3) and (4) into the following equation:
+</p>
+<blockquote><p><em>Ac * Vc.x + Bc * Vc.y + Cc * Vc.z + Dc = 0</em>
+</p></blockquote>
+
+
+<p>And get:
+</p>
+<blockquote><p><em>(Ac * Vs.x * Vc.z) / F + (Bc * Vs.y * Vc.z) / F + (F * Cc * Vc.z) / F = -Dc</em>
+</p></blockquote>
+
+
+<p>Or:
+</p>
+<blockquote><p><em>-(Ac * Vs.x) / (F*Dc) - (Bc * Vs.y) / (F*Dc) - Cc / (F*Dc) = 1 / Vc.z</em>
+</p></blockquote>
+
+<p>This equation is very important.  From this it follows that <em>1/z</em> linear
+is in screen space and this can be used for perspective correct texture
+mapping.  Lets define the following three new variables:
+</p>
+<blockquote><p><em>M = -Ac / (F * Dc)</em><br>
+<em>N = -Bc / (F * Dc)</em><br>
+<em>O = -Cc / Dc</em>
+</p></blockquote>
+
+
+<p>So the <em>1/z</em> equation in linear screen space is then written as:
+</p>
+<blockquote><table>
+<tr><td><p> <em>1 / Vc.z = M * Vs.x + N * Vs.y + O</em> </p></td><td><p> (Equation 5)
+</p></td></tr>
+</table>
+</blockquote>
+
+<p>So now we can easily calculate <em>1/z</em> at every point in screen space.  But
+we also need to calculate the texture coordinates (<em>u,v</em>) or <em>Vt</em>.
+Let's call the individual fields of the transformation matrix <em>Mct</em> as
+follows:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">      / m11 m12 m13 \
+Mct = | m21 m22 m23 |   Vct = (v1 v2 v3)
+      \ m31 m32 m33 /
+</pre></td></tr></table>
+<p>For simplicity let's use <em>u</em> for <em>Vt.u</em> and <em>v</em> for <em>Vt.v</em>
+(the <em>u,v</em> texture coordinates).  Let us also use <em>x</em>, <em>y</em>,
+and <em>z</em> for <em>Vc.x</em>, <em>Vc.y</em>, <em>Vc.z</em> respectively.
+</p>
+
+<p>Then from:
+</p>
+<blockquote><p><em>Vt = Mct * (Vc - Vct)</em>
+</p></blockquote>
+
+
+<p>We get:
+</p>
+<blockquote><p><em>u = m11 * (x - v1) + m12 * (y - v2) + m13 * (z - v3)</em><br>
+<em>v = m21 * (x - v1) + m22 * (y - v2) + m23 * (z - v3)</em>
+</p></blockquote>
+
+
+<p>This can be rewritten as:
+</p>
+<blockquote><p><em>u = m11 * x + m12 * y + m13 * z - (m11 * v1 + m12 * v2 + m13 * v3)</em><br>
+<em>v = m21 * x + m22 * y + m23 * z - (m21 * v1 + m22 * v2 + m23 * v3)</em>
+</p></blockquote>
+
+
+<p>To simplify let's introduce a couple new variables to take the place of
+complicated expressions from the above equations.
+</p>
+<blockquote><p><em>P = - (m11 * v1 + m12 * v2 + m13 * v3)</em><br>
+<em>Q = - (m21 * v1 + m22 * v2 + m23 * v3)</em>
+</p></blockquote>
+
+
+<p>And we have:
+</p>
+<blockquote><p><em>u = m11 * x + m12 * y + m13 * z + P</em><br>
+<em>v = m21 * x + m22 * y + m23 * z + Q</em>
+</p></blockquote>
+
+
+<p>As earlier, we substitute the inverse perspective correction equations (3)
+and (4) into the previous equations and we get:
+</p>
+<blockquote><p><em>u = (m11 * Vs.x * z) / F + (m12 * Vs.y * z) / F + m13 * z + P</em><br>
+<em>v = (m21 * Vs.x * z) / F + (m22 * Vs.y * z) / F + m23 * z + Q</em>
+</p></blockquote>
+
+
+<p>And then rewrite as:
+</p>
+<blockquote><p><em>u / z = (m11 * Vs.x) / F + (m12 * Vs.y) / F + m13 + P / z</em><br>
+<em>v / z = (m21 * Vs.x) / F + (m22 * Vs.y) / F + m23 + Q / z</em>
+</p></blockquote>
+
+
+<p>Substitute the linear <em>1/z</em> equation (5) into this to get:
+</p>
+<blockquote><p><em>u / z = (m11 * Vs.x) / F + (m12 * Vs.y) / F + m13 + P * (M * Vs.x + N * Vs.y + O)</em><br>
+<em>v / z = (m21 * Vs.x) / F + (m22 * Vs.y) / F + m23 + Q * (M * Vs.x + N * Vs.y + O)</em>
+</p></blockquote>
+
+
+<p>Rewrite as:
+</p>
+<blockquote><p><em>u / z = (m11 * Vs.x + m12 * Vs.y + F * (m13 + P * (M*Vs.x + N*Vs.y + O)) / F</em><br>
+<em>v / z = (m21 * Vs.x + m22 * Vs.y + F * (m23 + Q * (M*Vs.x + N*Vs.y + O)) / F</em>
+</p></blockquote>
+
+
+<p>And finally rewrite as:
+</p>
+<blockquote><p><em>u / z = (m11 / F + P * M) * Vs.x + (m12 / F + P * N) * Vs.y + (m13 + P * O)</em><br>
+<em>v / z = (m21 / F + Q * M) * Vs.x + (m22 / F + Q * N) * Vs.y + (m23 + Q * O)</em>
+</p></blockquote>
+
+<p>These are again two important equations because they state that <em>u/z</em> and
+<em>v/z</em> are also linear in screen space.  Using this we can easily
+calculate (<em>u,v</em>) at every screen space point.
+</p>
+<p>Now let's define:
+</p>
+<blockquote><p><em>J1 = m11 / F + P * M</em><br>
+<em>J2 = m12 / F + P * N</em><br>
+<em>J3 = m13 + P * O</em><br>
+<em>K1 = m21 / F + Q * M</em><br>
+<em>K2 = m22 / F + Q * N</em><br>
+<em>K3 = m23 + Q * O</em>
+</p></blockquote>
+
+
+<p>Then we have the following three equations:
+</p>
+<blockquote><p><em>1 / z = M * Vs.x + N * Vs.y + O</em><br>
+<em>u / z = J1 * Vs.x + J2 * Vs.y + J3</em><br>
+<em>v / z = K1 * Vs.x + K2 * Vs.y + K3</em>
+</p></blockquote>
+
+<p>With these three important equations we can do all texture mapping we want.
+With the first equation we can calculate <em>1/z</em>.  This is useful for
+Z-buffering and also for calculating (<em>u,v</em>) from the two other
+equations.
+</p>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Texture-Mapping-Perspective-Correction.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Texture-Mapping-Instructions.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Texture-Mapping.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

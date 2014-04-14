@@ -1,0 +1,278 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.15.1.2 List of animation nodes</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.15.1.2 List of animation nodes">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.15.1.2 List of animation nodes">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Animation-Nodes"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Animation-Nodes-General.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Sprite3D-Animation.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Animation-Blending-Trees.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h4 class="subsubsection"> 4.15.1.2 List of animation nodes </h4>
+
+<p>Here is the extensive list of the animation nodes that are shipped within
+Crystal Space.
+</p>
+<p>You can find an example of loading of these animation nodes from a Crystal Space
+library file in <tt>&lsquo;CS/data/krystal/anims_idle.cslib&rsquo;</tt>.
+</p>
+<a name="1"></a>
+<h4 class="subsubheading"> Raw animation </h4>
+
+<p>These are the objects <code>CS::Animation::iSkeletonAnimationNode</code> and
+<code>CS::Animation::iSkeletonAnimationNodeFactory</code>.
+</p>
+<p>This animation node allows the storage and playback of raw animation data. In this
+sense, they are probably the most used animation nodes since they are the main way
+to store pre-defined animations.
+</p>
+<p>The key frames of the animations are defined with a time stamp and some key values
+for the orientation and position of the bones of the skeleton. When playing back the
+animation, the data will be interpolated between the available key frames.
+</p>
+<p>The node can be configured to be played cyclically or not.
+</p>
+<p>The animations stored in this node are usually defined by an artist. They can
+also be loaded from motion captured data using the <a href="Animesh-Tools.html#0">dedicated tool</a>.
+</p>
+<a name="2"></a>
+<h4 class="subsubheading"> Finite State Machine </h4>
+
+<p>These are the objects <code>CS::Animation::iSkeletonFSMNode</code> and
+<code>CS::Animation::iSkeletonFSMNodeFactory</code>.
+</p>
+<p>This animation node allows to control the animation of the skeleton by navigating
+into the states of a Finite State Machine (FSM). This node is useful e.g. to drive
+the locomotion and the actions of a character.
+</p>
+<p>Each state of the FSM corresponds to an animation child node that will be played
+while the FSM is in that state. A crossfade and a transition sub-node can also be
+defined between the states of the FSM, they will be used when the FSM is switched
+between the two states, allowing for a smooth transition between two states.
+</p>
+<p>Automatic transitions can also be defined, they will be followed automatically at
+the end of the current playing state if no other state has been asked by the user
+to switch to.
+</p>
+<p>An example of Finite State Machine being used to drive the locomotion of a character
+can be found in CEL, within the <samp>&lsquo;pcactormove&rsquo;</samp> property class.
+</p>
+<a name="3"></a>
+<h4 class="subsubheading"> Blending node </h4>
+
+<p>These are the objects <code>CS::Animation::iSkeletonBlendNode</code> and
+<code>CS::Animation::iSkeletonBlendNodeFactory</code>.
+</p>
+<p>This node will blend together any number of child nodes. Each child node can receive
+a different weight in order to parameterize their influence.
+</p>
+<a name="4"></a>
+<h4 class="subsubheading"> Random node </h4>
+
+<p>These are the objects <code>CS::Animation::iSkeletonRandomNode</code> and
+<code>CS::Animation::iSkeletonRandomNodeFactory</code>.
+</p>
+<p>This node will play randomly one of its child node, allowing for more varied animations.
+</p>
+<a name="5"></a>
+<h4 class="subsubheading"> Priority </h4>
+
+<p>These are the objects <code>CS::Animation::iSkeletonPriorityNode</code> and
+<code>CS::Animation::iSkeletonPriorityNodeFactory</code>.
+</p>
+<p>This node blends its child nodes according to their priority. It is useful e.g. to
+add a secondary motion on top of a base animation while preserving most of the base
+animation.
+</p>
+<a name="6"></a>
+<h4 class="subsubheading"> LookAt </h4>
+
+<p>These are the objects <code>CS::Animation::iSkeletonLookAtNode</code> and
+<code>CS::Animation::iSkeletonLookAtNodeFactory</code>.
+</p>
+<p>This node aligns automatically some bone with a user-defined target. It is useful e.g.
+to breathe life into a character by generating an active interaction from the character.
+</p>
+<a name="7"></a>
+<h4 class="subsubheading"> Speed </h4>
+
+<p>These are the objects <code>CS::Animation::iSkeletonSpeedNode</code> and
+<code>CS::Animation::iSkeletonSpeedNodeFactory</code>.
+</p>
+<p>This node takes as child nodes the animations of the mesh moving at different speed,
+e.g. idle, walking, running, sprinting, and combines these animations to achieve any
+desired custom speed.
+</p>
+<a name="8"></a>
+<h4 class="subsubheading"> Ragdoll </h4>
+
+<p>These are the objects <code>CS::Animation::iSkeletonRagdollNode</code> and
+<code>CS::Animation::iSkeletonRagdollNodeFactory</code>.
+</p>
+<p>This node allows the interaction between the Animesh mesh and the physical
+simulation, allowing to either control the animation of the mesh through physical
+simulation, and to hit and collide with the other objects of the simulation.
+</p>
+<p>On demand, this node can create automatically the rigid bodies and joints for the
+bones of the skeleton of the Animesh, these rigid bodies will collide and interact
+with the physical environment.
+</p>
+<p>The bones can be set in dynamic state e.g. to have a character falling realistically
+in a stairwell, or in kinematic state in order for the mesh to interact with the
+environment while being animated by the classical animation method. This allows for
+example to attach to the mesh some external objects or clothes that will be
+physically animated while colliding with the character (i.e. its bones in kinematic
+state).
+</p>
+<p>Both states can also be combined to achieve effects such as the main body of the
+avatar classically animated, and sub-trees such as hair, clothes or accessories
+animated by the physical simulation.
+</p>
+<p>In order to use a ragdoll animation node, you must first define a body skeleton
+(see section <a href="MeshObject-Animesh.html#0">Animesh Mesh Object</a>), that will define the colliders and physical
+properties that the ragdoll node must use for all bones of the skeleton. Once done,
+you must also define in the body skeleton some body chains that will allow you to
+designate the set of bones that you want to manipulate within the ragdoll node.
+</p>
+<p>Whenever you change the dynamic state of some of the body chains, the ragdoll node
+will create and update automatically the rigid bodies and joints of the skeleton. You
+can use the ragdoll node to access those physical objects and manipulate them
+externally.
+</p>
+<a name="9"></a>
+<h4 class="subsubheading"> Inverse Kinematics </h4>
+
+<p>These are the objects <code>CS::Animation::iSkeletonIKNode</code> and
+<code>CS::Animation::iSkeletonIKNodeFactory</code>.
+</p>
+<p>This node generates an animation that places a bone end effector at a specific
+position and orientation. It allows e.g. a character to grab an object regardless
+of the relative position of the character and the object.
+</p>
+<p>There are two different implementation of this node:
+</p>
+<ul>
+<li>
+Using the Cyclic Coordinate Descent algorithm (object <code>CS::Animation::iSkeletonIKCCDNodeFactory</code>).
+This method is quite robust, but has some high computation costs.
+</li><li>
+Using the physical simulation (object <code>CS::Animation::iSkeletonIKPhysicalNodeFactory</code>).
+This method has the advantage of being able to react realistically to collisions on
+the path of the arm to the effector, the drawback is that the physical simulation may
+behave strangely if the motion of the target of the effector is not manipulated wisely.
+</li></ul>
+
+<p>In order to use Inverse Kinematics animation nodes, you must first define a body skeleton
+and some body chains within it. The body chains will be used to designate the set of
+bones that will be manipulated by the IK animation node (e.g. the arms). For the animation
+node based on the physical simulation, you must also use a ragdoll animation node in
+combination, therefore a definition for all colliders and joints of the body chains.
+</p>
+<a name="10"></a>
+<h4 class="subsubheading"> Retarget </h4>
+
+<p>These are the objects <code>CS::Animation::iSkeletonRetargetNode</code> and
+<code>CS::Animation::iSkeletonRetargetNodeFactory</code>.
+</p>
+<p>This node allows to retarget (or redirect) an animation that was defined for one skeleton
+to another skeleton. It is useful for example to re-use animations or to input
+motion captured data into your Animesh. However, the two skeletons must still have
+a similar topology and limb proportions, otherwise the results won't look good.
+</p>
+<a name="11"></a>
+<h4 class="subsubheading"> Debug </h4>
+
+<p>These are the objects <code>CS::Animation::iSkeletonDebugNode</code> and
+<code>CS::Animation::iSkeletonDebugNodeFactory</code>.
+</p>
+<p>This node currently simply allows to display the state of part or the whole skeleton. It
+is useful if you want to visualize either the skeleton of your mesh or the actual effects
+of the animations and animation nodes that you have defined.
+</p>
+<a name="12"></a>
+<h4 class="subsubheading"> Noise </h4>
+
+<p>These are the objects <code>CS::Animation::iSkeletonNoiseNode</code> and
+<code>CS::Animation::iSkeletonNoiseNodeFactory</code>.
+</p>
+<p>This node can generate animations through pseudo-random noise functions such as
+the Perlin noise. This allows to breathe life into an entity by adding some random
+variations in its motion.
+</p>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Animation-Nodes-General.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Sprite3D-Animation.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Animation-Blending-Trees.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

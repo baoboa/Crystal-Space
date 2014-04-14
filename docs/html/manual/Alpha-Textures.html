@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.12.2 Alpha and Keycolor in Textures</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.12.2 Alpha and Keycolor in Textures">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.12.2 Alpha and Keycolor in Textures">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Alpha-Textures"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Shader-Conditions-and-Processing-Instructions-Reference.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Texture-Mapping.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Materials.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 4.12.2 Alpha and Keycolor in Textures </h3>
+
+<p>Crystal Space supports the alpha channel that can be present in some image
+files (like <small>PNG</small> and <small>TGA</small>).
+</p>
+<p>It is important to realize that when you use alpha on an object you must
+sort the object back to front. That basically means you'll most likely have
+to use the <samp>&lsquo;alpha&rsquo;</samp> render priority (see section <a href="HOWTO-Render-Priorities.html#0">Render Priorities and Objects in Sectors</a>) and
+also <samp>&lsquo;ztest&rsquo;</samp> for the Z-buffer usage. Also in some cases you may need
+to set the <samp>&lsquo;back2front&rsquo;</samp> flag if the object is a genmesh
+(see section <a href="MeshObject-Genmesh.html#0">Genmesh Mesh Object</a>).
+</p>
+<p>It is often hard to get things correct with such a setup so in many cases
+it is preferable to use a method named <em>binary alpha</em>. This means that
+a pixel is either treated as <em>fully opaque</em> or <em>fully transparent</em> -
+the former for alpha values greater than 50%, the latter for alpha values
+lower than 50%. In practice, it is probably desireable to only use 0% and 
+100% transparency values in the alpha channel. Also, the transparent area(s)
+should be filled with a color that is similar to its adjacent opaque pixels, 
+as, due texture filtering, this color will slightly bleed into the neighboring
+opaque pixels. Choosing an approriate color makes this bleeding non-obvious.
+</p>
+<p>The easiest way to activate binary alpha is to mark the texture as follows in 
+your world file:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">&lt;texture name=&quot;transparent&quot;&gt;
+    &lt;file&gt;mytexture.png&lt;/file&gt;
+    &lt;alpha&gt;&lt;binary/&gt;&lt;/alpha&gt;
+&lt;/texture&gt;
+</pre></td></tr></table>
+<p>If you do this then this texture can be used on objects as any other texture.
+So the object can simply use <samp>&lsquo;object&rsquo;</samp> render priority and <samp>&lsquo;zuse&rsquo;</samp>
+Z-buffer mode.
+</p>
+<p>An alternative way to enable binary alpha is by using a <em>keycolor</em> for the
+texture; that is, all pixels of the specified color (in the example magenta)
+will be rendered transparent.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">&lt;texture name=&quot;transparent&quot;&gt;
+    &lt;file&gt;mytexture.png&lt;/file&gt;
+    &lt;transparent r=&quot;1&quot; g=&quot;0&quot; b=&quot;1&quot; /&gt;
+&lt;/texture&gt;
+</pre></td></tr></table>
+<p>However, using this technique is discouraged as it is less performant than the 
+using binary alpha as described above; specifically, when loading a texture
+with a keycolor, CrystalSpace will scan the image for pixels of that color and
+set their alpha value to 0. Internally, binary alpha and keycolor work in the 
+same way (transparency of a pixel is based on whether the alpha value is 
+above or below 50%), however, keycolored textures come with a load-time 
+performance penalty due to the required processing step.
+</p>
+
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Shader-Conditions-and-Processing-Instructions-Reference.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Texture-Mapping.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Materials.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

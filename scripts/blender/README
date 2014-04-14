@@ -1,0 +1,8 @@
+This Blender Add-On script can be used with the Blender 2.6x
+series to export meshes and scenes to the Crystal Space 3D file format.
+
+You need to manually install this Add-on by moving the 'io_scene_cs' directory into
+your 'blender/scripts/addons' folder.
+
+See the Crystal Space manual for more information on this script at:
+http://www.crystalspace3d.org/docs/online/manual/Blender.html

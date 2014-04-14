@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<!--
+  Copyright (C) 2012 by Matthieu Kraus
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Library General Public
+  License as published by the Free Software Foundation; either
+  version 2 of the License, or (at your option) any later version.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  Library General Public License for more details.
+
+  You should have received a copy of the GNU Library General Public
+  License along with this library; if not, write to the Free
+  Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+-->
+<snippet type="compound">
+  <technique priority="200">
+    <combiner plugin="crystalspace.graphics3d.shader.combiner.glcg" />
+
+    <!--
+	Weak aliases.
+	"Weak" means they do _not_ override aliases specified above this
+	snippet; instead, the weak alias applies only if an alias with the
+	given has not been specified yet.
+	The practical effect is that this allows to use aliased snippets,
+	but also provide "default" snippets and thus does not require users
+	of this snippets to provide all aliases.
+      -->
+    <alias name="position" weak="yes" file="/shader-snippets/position.xml" />
+    <alias name="use_buffer" weak="yes" file="/shader-snippets/deferred/full/use_buffer.xml" />
+    <alias name="lighting" weak="yes" file="/shader-snippets/deferred/full/lighting.xml" />
+    <!--
+	Snippets - the building blocks of this shader.
+	Their order influence what happens if not all features of the shader
+	are supported; for earlier appearing snippets higher techniques
+	are preferred. Basically, order snippets by 'importance' of the eye
+	candy they produce: in this case, we consider good ambient (which
+	does static normal mapped light mapping) and static specular more
+	important than a parallax effect.
+    -->
+    <snippet id="position" filealias="position" />
+    <snippet id="use_buffer" filealias="use_buffer" />
+    <snippet id="lighting" filealias="lighting" />
+    <snippet id="sectorfog" file="/shader-snippets/fog/fog-sector.xml" />
+    <snippet id="hdrscale" file="/shader-snippets/hdr-postscale.xml" />
+
+    <!-- "connections" describe what snippets take input from what other
+	  snippets (ie the "data flow" is modeled). The exact resolution of
+	  what output is linked to what input is done automatically. -->
+    <connection from="position" to="use_buffer" />
+    <connection from="use_buffer" to="lighting">
+      <explicit from="staticDiffuse" to="staticDiffuse" />
+      <explicit from="surfaceSpecular" to="surfaceSpecular" />
+      <explicit from="staticSpecular" to="staticSpecular" />
+      <explicit from="glow" to="rgb" />
+    </connection>
+    <connection from="lighting" to="sectorfog" />
+    <connection from="sectorfog" to="hdrscale" />
+
+    <!-- output results -->
+    <output snippet="use_buffer" name="depth" to="depth" />
+    <output snippet="hdrscale" name="result" to="color0" />
+  </technique>
+</snippet>

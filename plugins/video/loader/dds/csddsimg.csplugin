@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!-- csddsimg.csplugin -->
+<plugin>
+  <scf>
+    <classes>
+      <class>
+        <name>crystalspace.graphic.image.io.dds</name>
+        <implementation>csDDSImageIO</implementation>
+        <description>DDS image format I/O plugin</description>
+      </class>
+      <class>
+        <name>crystalspace.graphic.dxt.decompress.default</name>
+        <implementation>DXTDecompressor</implementation>
+        <description>Default DXT decompressor plugin</description>
+      </class>
+    </classes>
+  </scf>
+</plugin>

@@ -1,0 +1,338 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 7.2 Portability</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 7.2 Portability">
+<meta name="keywords" content="Crystal Space 2.1.0: 7.2 Portability">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Portability"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Writing-Documentation.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Coding-Style.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Contributing.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Contributing.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Glossary.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h2 class="section"> 7.2 Portability </h2>
+
+
+<p><em>Written by Eric Sunshine, <a href="mailto:sunshine@sunshineco.com">sunshine@sunshineco.com</a>, with
+contributions by others.</em>
+</p>
+<p>Crystal Space is a highly portable cross-platform 3D engine and toolkit.  As a
+contributor to the project, you should familiarize yourself with the issues
+discussed in this section in order to ensure maximum portability of code which
+you write and resources which you create.
+</p>
+<ol>
+<li>
+<em>Endian-ness</em>
+
+<p>Beware of code that is endian-specific.  To facilitate writing portable code,
+key off of the <samp>&lsquo;CS_BIG_ENDIAN&rsquo;</samp> or <samp>&lsquo;CS_LITTLE_ENDIAN&rsquo;</samp> macros if
+necessary.
+</p>
+<p>Avoid casting a <samp>&lsquo;long*&rsquo;</samp> or <samp>&lsquo;int*&rsquo;</samp> to a <samp>&lsquo;short*&rsquo;</samp> or <samp>&lsquo;char*&rsquo;</samp>
+as a slick way of checking the value of a particular sub-byte of the number
+since this trick will fail on platforms with different endian-ness.  In other
+words, given the declaration <samp>&lsquo;long n = 1&rsquo;</samp>, and the expression <samp>&lsquo;short
+p = *((short*)&amp;n)&rsquo;</samp>, on a little-endian platform, <samp>&lsquo;p&rsquo;</samp> will equal 1, but on
+a big-endian platform, <samp>&lsquo;p&rsquo;</samp> will equal 0.
+</p>
+<p>Avoid using C &ldquo;unions&rdquo; to represent bit-sets since they can result in
+endian-related problems if improperly used or stored as persistent data.
+Using bit-masks is a much better and far more portable solution.
+</p>
+<p>Beware of reading and writing data to binary format files and sending such
+information over the network.  Unless special care is taken to ensure
+portability, these files and network related facilities will suffer
+endian-related problems.  Use the network functions <code>ntohl()</code>,
+<code>ntohs()</code>, <code>htonl()</code>, and <code>htons()</code> to convert numbers to
+canonical format before transmitting them over the network.  You can also make
+use of the Crystal Space endian-related conversion functions found in
+<tt>&lsquo;CS/include/csutil/csendian.h&rsquo;</tt>.
+</p>
+</li><li>
+<em>Data Alignment</em>
+
+<p>Some platforms require data values to be strictly aligned in memory.  For
+instance, some processors can not access a <samp>&lsquo;long&rsquo;</samp> value at an odd memory
+address or at an address which is not a multiple of four (which is the size in
+bytes of the <samp>&lsquo;long&rsquo;</samp> data type).  In such cases, the program may crash.
+Other processors may be able to access misaligned values, but at greatly
+reduced speed, which can slow down program execution significantly if done
+frequently enough.
+</p>
+<p>In most cases, the compiler ensures that values are properly aligned for the
+given processor, but this problem can crop up when reading byte-streams from
+external sources such as binary files or network connections.  In such cases,
+it is up to you to ensure the proper alignment of the data before accessing
+it.
+</p>
+<p>For instance, if you are reading elements from a byte-stream and the next
+element to be read is a <samp>&lsquo;long&rsquo;</samp>, then the following code to extract the
+value is <em>incorrect</em> and <em>non-portable</em> since it does not ensure
+that the data is aligned properly for <samp>&lsquo;long&rsquo;</samp> access:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">long extract_long(unsigned char const* stream)
+{
+  return *((long*)stream);
+}
+</pre></td></tr></table>
+<p>The correct way to code this example would be as follows:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">long extract_long(unsigned char const* stream)
+{
+  long n;
+  memcpy(&amp;n, stream, sizeof(n));
+  return n;
+}
+</pre></td></tr></table>
+</li><li>
+<em>Data type sizes</em>
+
+<p>Don't make any assumptions about the size of <samp>&lsquo;int&rsquo;</samp>, <samp>&lsquo;long&rsquo;</samp>, 
+<samp>&lsquo;size_t&rsquo;</samp>, <samp>&lsquo;void*&rsquo;</samp> etc such as <code>sizeof(int)==4</code>, 
+<code>sizeof(int)==sizeof(void*)</code>, <code>sizeof(long)==sizeof(void*)</code> and so 
+on. If a specifically sized type is needed (for example, when reading a file
+and the format specification dictates a certain word size) use the sized types
+from <tt>&lsquo;cstypes.h&rsquo;</tt> (e.g. <samp>&lsquo;int32&rsquo;</samp>, <samp>&lsquo;uint8&rsquo;</samp>). Consequently, also 
+avoid constructs such as casting pointers to <samp>&lsquo;int&rsquo;</samp>s. If there's a rare 
+case that no other way than casting a pointer to/from an integral type, use the 
+value of the <samp>&lsquo;CS_PROCESSOR_SIZE&rsquo;</samp> macro (usually 32 or 64) to determine an 
+appropriate sized type.
+</p>
+</li><li>
+<em>Floating Points</em>
+
+<p>Depending upon the accuracy and representation of floating point values on
+some platforms, a number may successfully compare to (and equal) 0.0 on one
+platform or processor but fail on another.  In order to avoid such problems,
+compare numbers to a small value such as <samp>&lsquo;EPSILON&rsquo;</samp>.  In other words, if
+<samp>&lsquo;EPSILON&rsquo;</samp> is defined as a very small value, use <samp>&lsquo;(val &lt; EPSILON)&rsquo;</samp>
+rather than <samp>&lsquo;(val == 0.0)&rsquo;</samp>.
+</p>
+<p>As a corollary.  when comparing two floating point values, employ the
+<samp>&lsquo;EPSILON&rsquo;</samp> trick to ensure that they compare properly over a wide variety
+of platforms.  In other words, instead of <samp>&lsquo;(float1 &lt; float2)&rsquo;</samp>, use
+<samp>&lsquo;(float1 &lt; float2 + EPSILON)&rsquo;</samp>.
+</p>
+</li><li>
+<em>Scope of <samp>&lsquo;for&rsquo;</samp> Statements</em>
+
+<p>Some compilers do not properly scope a variable declared in a <code>for(;;)</code>
+statement to the loop itself.  In other words, some compilers treat the
+following code:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">for (int i = 0; ...) ...
+</pre></td></tr></table>
+
+<p>As though <samp>&lsquo;i&rsquo;</samp> was declared outside of the <samp>&lsquo;for&rsquo;</samp> statement, as in:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">int i;
+for (i = 0; ...) ...
+</pre></td></tr></table>
+<p>This can be a problem when several <samp>&lsquo;for&rsquo;</samp> loops exists at the same scoping
+level in a single block since some compilers will complain that <samp>&lsquo;i&rsquo;</samp> is
+being redeclared by all <samp>&lsquo;for&rsquo;</samp> loops following the first one.  In other
+words, the following code will generate a &ldquo;variable redeclaration&rdquo; warning
+with some compilers:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">for (int i = 0; ...) ...
+... other code ...
+for (int i = 5; ...) ...
+</pre></td></tr></table>
+<p>In cases where the variable appears in only a single <samp>&lsquo;for&rsquo;</samp> loop, declaring
+it directly in the <samp>&lsquo;for&rsquo;</samp> statement is perfectly safe, but in cases where
+many such loops may want to use the same variable name, the variable should
+be declared once outside of all loops, as in the following example:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">int i;
+for (i = 0; ...) ...
+... other code ...
+for (i = 5; ...) ...
+</pre></td></tr></table>
+<p>The Microsoft Visual C++ compiler is known to suffer from this problem,
+however most modern C++ compilers properly scope variables declared in the
+<samp>&lsquo;for&rsquo;</samp> statement.
+</p>
+</li><li>
+<em>Avoid Global Objects With Constructors in Plug-In Modules</em>
+
+<p>Avoid placing global objects which require automatic construction in
+dynamically loaded libraries (plug-in modules).  Some platforms fail to call
+the object's constructor at the time the library is loaded.  Therefore it is
+unsafe to rely on such objects.
+</p>
+</li><li>
+<em>Avoid Initializing Global Variables via Functions in Plug-In Modules</em>
+
+<p>Avoid initializing global variables within a plug-in module via function
+call.  In other words, in the following example, the function <code>foo()</code>
+should not rely upon the variable <samp>&lsquo;angle&rsquo;</samp> as having been properly
+initialized, assuming that this code fragment appears in a plug-in module.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">static float angle = cos(0.23);
+void foo() { printf(&quot;angle=%g\n&quot;, angle); }
+</pre></td></tr></table>
+<p>Instead, you should arrange for such variables to be initialized manually by
+some other mechanism.  Here is one possible (though not ideal) way to ensure
+that <samp>&lsquo;angle&rsquo;</samp> is initialized before it is accessed.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">static float angle = 0;
+void foo()
+{
+  static bool angle_ok = false;
+  if (!angle_ok)
+  {
+    angle = cos(0.23);
+    angle_ok = true;
+  }
+  printf(&quot;angle=%g\n&quot;, angle);
+}
+</pre></td></tr></table>
+<p>An even better solution is to utilize the initialization hooks provided by the
+<small>SCF</small> system to initialize global variables at the time that the plug-in
+module is loaded.  See section <a href="SCF.html#0">Shared Class Facility (<small>SCF</small>)</a>.
+</p>
+</li><li>
+<em>Pathname Syntax</em>
+
+<p>Pathname syntax varies widely from platform to platform.  For instance, a
+Unix-style pathname such as <tt>&lsquo;/mnt/home/zoop.c&rsquo;</tt> might appear as
+<tt>&lsquo;C:\home\zoop.c&rsquo;</tt> on <small>DOS</small> and Windows, and <tt>&lsquo;vol:home:zoop.c&rsquo;</tt> on
+Macintosh.
+</p>
+<p>When programming you should always use Unix-style pathname syntax in your
+<code>#include</code> directives; that is, always use the forward slash <samp>&lsquo;/&rsquo;</samp>, as
+in <code>#include &quot;csutil/scf.h&quot;</code>.  The forward slash is understood by
+compilers on all platforms including Unix, Windows, and Macintosh.  Never use
+<samp>&lsquo;\&rsquo;</samp> or <samp>&lsquo;:&rsquo;</samp> in filenames mentioned by an <code>#include</code> directive.
+Even though your Windows or Macintosh compiler might accept these characters,
+the Unix compilers will not.  The obvious exception to this rule is for source
+files which are intended only for a specific platform.  Such files may use the
+prohibited characters, but in general there is no reason to do so.
+</p>
+<p>At the application level, when writing a program or library which utilizes
+Crystal Space you should make use of the <small>VFS</small> facility which provides a
+unified way of referring to files by hiding platform-specific pathname syntax
+details.  Under <small>VFS</small>'s unified naming scheme, all pathnames use the
+Unix-style syntax and <small>VFS</small> translates such pathnames to a form appropriate
+for the host platform.  See section <a href="VFS.html#0">Virtual File System (<small>VFS</small>)</a>.
+</p>
+</li><li>
+<em>Filesystem Case Sensitivity</em>
+
+<p>Some operating systems have case sensitive filenames, whereas others do not.
+Undesirable things happen if you capitalize a file one way in an
+<code>#include</code> directive and a different way for the actual filename.  This
+problem may not even be apparent on your platform if you are using a
+case-insensitive file system such as <small>DOS</small>, Windows, or Macintosh (HFS).  In
+general, it is preferable to use entirely lower-case filenames for files which
+are shared between ports.
+</p>
+</li><li>
+<em><tt>&lsquo;Jamfile&rsquo;</tt>s and Project Files</em>
+
+<p>Some platforms use custom project files, whereas other platforms use the
+Crystal Space Jam-based build system.  If you change a <tt>&lsquo;Jamfile&rsquo;</tt> and then 
+change the code so that it depends on this change, ports for other platforms 
+will probably break.  This may be unavoidable to some extent, but try to 
+minimize the breakage.  For example, devise a <tt>&lsquo;configure&rsquo;</tt> check for the
+feature and wrap the dependent code in an <code>#ifdef</code> for a definition emitted
+when the feature was detected, or at least for operating systems that 
+<em>do</em> support the change.   This will allow other systems to continue to 
+work without your change.  After committing your change to the <small>SVN</small> 
+repository, be sure to  inform port maintainers that their projects may need 
+to be updated in order to support your modifications.
+</p>
+</li><li>
+<em>Ensuring Rendering</em>
+
+<p>Some renderers and video drivers depend on the <code>BeginDraw()</code> and
+<code>FinishDraw()</code> calls to <samp>&lsquo;iGraphics3D&rsquo;</samp> or <samp>&lsquo;iGraphics2D&rsquo;</samp>.  Thus
+every <code>BeginDraw()</code> must be followed by a <code>FinishDraw()</code> or nothing
+will be rendered.  Microsoft's DirectX renderer is known to have this
+requirement, so be sure to follow this guideline for maximum portability.
+</p>
+</li><li>
+<em>Template precautions</em>
+
+<p>These days, C++ compilers used with Crystal Space support templates, and the
+project makes use of templates for several utility classes.  For portability
+reasons, however, the entire template implementation should be placed into the
+header file.  There should be no associated source code file.
+</p></li></ol>
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Writing-Documentation.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Coding-Style.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Contributing.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Contributing.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Glossary.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

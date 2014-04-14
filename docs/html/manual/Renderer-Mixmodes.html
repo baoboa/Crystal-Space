@@ -1,0 +1,155 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.13.2 Mixmodes and Blending</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.13.2 Mixmodes and Blending">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.13.2 Mixmodes and Blending">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Renderer-Mixmodes"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="HOWTO-Use-custom-font.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Collision-Detection.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="3D-Renderer.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 4.13.2 Mixmodes and Blending </h3>
+
+<p>The <samp>&lsquo;mixmode&rsquo;</samp> controls how a source (usually a texture) is blended on
+top of the destination (usually a screen buffer). Typically mixmodes are set
+on mesh factories or objects to control transparency of some kind.
+There are various modes defined in <tt>&lsquo;include/ivideo/graph3d.h&rsquo;</tt>.
+</p>
+<p>In the explanation below we use the following terms: <small>SRC</small> is the source of
+the blend operation (usually the texture or material). <small>DST</small> is the
+destination of the blend operation (usually the screen buffer or texture
+on which you are rendering). <samp>&lsquo;srcAlpha&rsquo;</samp> is the alpha component
+of the source buffer. <samp>&lsquo;dstAlpha&rsquo;</samp> is the alpha component of the destination
+buffer. The following mixmodes are supported:
+</p>
+<ul>
+<li> <samp>&lsquo;CS_FX_COPY&rsquo;</samp>
+Blending function: <small>SRC</small>. This mode is usually default. It simply
+copies the source to the destination without blending.
+</li><li> <samp>&lsquo;CS_FX_MULTIPLY&rsquo;</samp>
+Blending function: <small>SRC</small>*<small>DST</small>. This is a common blend mode to
+simulate lighting.
+</li><li> <samp>&lsquo;CS_FX_MULTIPLY2&rsquo;</samp>
+Blending function: 2*<small>SRC</small>*<small>DST</small>. This is a common blend mode
+to simulate brighter lighting.
+</li><li> <samp>&lsquo;CS_FX_ADD&rsquo;</samp>
+Blending function: <small>SRC</small>+<small>DST</small>. Add source and destination. This is a
+mode that allows for nice transparency effects. One of the big advantages (as
+opposed to <samp>&lsquo;alpha&rsquo;</samp>) is that this mode doesn't require objects to be
+sorted from back to front.
+</li><li> <samp>&lsquo;CS_FX_ALPHA&rsquo;</samp>
+Blending function: <samp>&lsquo;alpha&rsquo;</samp>*<small>SRC</small> + (1-<samp>&lsquo;alpha&rsquo;</samp>)*<small>DST</small>.
+The <samp>&lsquo;alpha&rsquo;</samp> used in this formula is a combination of the <samp>&lsquo;srcAlpha&rsquo;</samp>
+and the alpha given in the alpha mask of the mixmode. But this
+depends on the actual shader that is being used.
+</li><li> <samp>&lsquo;CS_FX_SETALPHA(alpha)&rsquo;</samp>
+Convenience macro to set <samp>&lsquo;CS_FX_ALPHA&rsquo;</samp> and set the alpha value to the
+alpha mask (value is between 0 and 1).
+</li><li> <samp>&lsquo;CS_FX_SETALPHA_INT(alpha)&rsquo;</samp>
+Convenience macro to set <samp>&lsquo;CS_FX_ALPHA&rsquo;</samp> and set the alpha value to the
+alpha mask (value is between 0 and 255).
+</li><li> <samp>&lsquo;CS_FX_PREMULTALPHA&rsquo;</samp>
+Blending function: <small>SRC</small> + <small>DST</small>*(1-<samp>&lsquo;srcAlpha&rsquo;</samp>). When the
+source alpha component was multoplied into the source color then this acts
+like normal alpha blending. If it was not then it acts like additive
+blending. So this mixmode can be used to do both additive and alpha
+blending on the same triangle and even interpolate between these two
+extremes by appropriate choice of the color and alpha values.
+</li><li> <samp>&lsquo;CS_FX_DESTALPHAADD&rsquo;</samp>
+Blending function: <samp>&lsquo;dstAlpha&rsquo;</samp>*<small>SRC</small> + <small>DST</small>.
+</li><li> <samp>&lsquo;CS_FX_SRCALPHAADD&rsquo;</samp>
+Blending function: <samp>&lsquo;srcAlpha&rsquo;</samp>*<small>SRC</small> + <small>DST</small>.
+</li><li> <samp>&lsquo;CS_FX_TRANSPARENT&rsquo;</samp>
+Blending function: <small>DST</small>. This mode will simply leave the destination
+unchanged (fully transparent) except that the z-buffer is modified!
+</li><li> <samp>&lsquo;CS_FX_MESH&rsquo;</samp>
+@@TODO
+</li><li> <samp>&lsquo;CS_MIXMODE_ALPHATEST_AUTO&rsquo;</samp>
+@@TODO
+</li><li> <samp>&lsquo;CS_MIXMODE_ALPHATEST_ENABLE&rsquo;</samp>
+@@TODO
+</li><li> <samp>&lsquo;CS_MIXMODE_ALPHATEST_DISABLE&rsquo;</samp>
+@@TODO
+</li></ul>
+
+
+
+
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="HOWTO-Use-custom-font.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Collision-Detection.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="3D-Renderer.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

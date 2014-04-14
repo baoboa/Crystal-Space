@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 1.5 A Guide to This Documentation</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 1.5 A Guide to This Documentation">
+<meta name="keywords" content="Crystal Space 2.1.0: 1.5 A Guide to This Documentation">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="DocGuide"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="UsingForProject.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Feature-List.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="CS-Introduction.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="CS-Introduction.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Building.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h2 class="section"> 1.5 A Guide to This Documentation </h2>
+
+<p>In this section we guide you through some of the more useful sections of
+the documentation related to creating your own project using Crystal
+Space.  This guide can help you find the information you want more
+quickly, but it is recommended that you scan through the entire
+documentation (just browsing the table of contents should be enough) so
+that you have a better idea of what is explained where.
+</p>
+<p>One of the most useful sections for creating your own project is, of
+course, the tutorial section (see section <a href="Tutorials.html#0">Tutorials</a>). Here you will find
+tutorials that can help you to write your own Crystal Space game, along
+with the very important introductory tutorial
+(see section <a href="The-Basics.html#0">Basics and Overview</a>). You should certainly read this if you want to
+have a good idea of some of the basic concepts of Crystal Space.
+</p>
+<p>Additionally, the tutorial section contains the <small>HOWTO</small> section
+(see section <a href="HOWTO.html#0">HOWTO</a>).  The <small>HOWTO</small>s are small documents explaining how to
+deal with specific issues. They usually contain example code. Most of the
+<small>HOWTO</small>s are related to dealing with the Crystal Space
+engine (like collision detection, mesh lighting and animation, mesh
+movement, loading a map, etc), but there are others, such as those which
+explain how you can set up your own application outside of the Crystal Space
+application tree, one for Unix or Unix-like environments (such as Msys/Mingw or
+Cygwin) and another for Microsoft Visual C++.
+</p>
+<p>The section of the manual that talks about the engine (see section <a href="Engine.html#0">The 3D Engine</a>)
+is very important. If you want to know how the 3D engine works
+internally (which is important if you want to build your own 3D worlds)
+then you should read the section explaining the world components
+(see section <a href="World-Components.html#0">Components of a World</a>) and the section explaining portals
+(see section <a href="Portal-Engine.html#0">Portal Engine</a>). There is a <small>HOWTO</small> about render
+priorities (see section <a href="HOWTO-Render-Priorities.html#0">Render Priorities and Objects in Sectors</a>) which should assist greatly
+in that area. 
+</p>
+<p>The section about the Map File Parser (see section <a href="Map-Loader.html#0">Loading Maps and Models</a>) is useful if
+you want to create your map files manually.
+</p>
+<p>Reading the mesh object section (see section <a href="MeshObject.html#0">Mesh Object Plug-In System</a>) is also recommended.
+Mesh objects are objects that represent geometry in Crystal Space. If
+you want to display something in your world, you will have to know how to
+use them.  The tutorials and <small>HOWTO</small>s contain information about mesh
+objects, but this section contains the complete documentation.
+</p>
+<p>If you want to know more about how to build optimal maps for Crystal Space,
+then you should take a look at <a href="Map-Creation.html#0">How to Create Optimal Maps for Crystal Space</a>. This section explains
+how you should partition your world in sectors, what kind of objects you
+can use, how to effectively use the visibility cullers and other techniques
+you should know when creating your maps for Crystal Space.
+</p>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="UsingForProject.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Feature-List.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="CS-Introduction.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="CS-Introduction.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Building.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

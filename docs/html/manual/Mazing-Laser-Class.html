@@ -1,0 +1,218 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.2.4.9 Laser Class</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.2.4.9 Laser Class">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.2.4.9 Laser Class">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Mazing-Laser-Class"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Mazing-Explosion-Class.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Mazing-Game-Class.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Tutorial-Mazing.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h4 class="subsubsection"> 4.2.4.9 Laser Class </h4>
+
+<p>The <code>Laser</code> class is responsible for managing the laserbeam that the
+player can shoot. There is only one instance of this class.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">class Laser
+{
+private:
+  AppMazing* app;
+
+  /// Our laserbeam mesh.
+  csRef&lt;iMeshWrapper&gt; laserbeam;
+  // Lifetime of the laserbeam.
+  int lasertime;
+  // The current laserbeam coordinates.
+  csVector3 laserstart, laserend;
+  iSector* lasersector;
+
+public:
+  Laser (AppMazing* app);
+
+  void SetMeshWrapper (iMeshWrapper* laser)
+  {
+    laserbeam = laser;
+  }
+
+  /// Start the laser.
+  void Start ();
+  /// Handle life time of the laser.
+  void Handle (csTicks ticks);
+  /// Check if the laser hits anything.
+  void Check ();
+};
+</pre></td></tr></table>
+<p>The three important functions in this class are: <code>Start()</code> which starts
+the laser (unless it is already in progress), <code>Handle()</code> which takes
+care of the lifetime of the laser, and <code>Check()</code> which will check if
+the laser hits anything.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">Laser::Laser (AppMazing* app)
+{
+  Laser::app = app;
+  lasertime = 0;
+}
+
+void Laser::Start ()
+{
+  if (lasertime &gt; 0) return;	// Laser already in progress.
+  lasertime = LASER_LIFETIME;
+  const csOrthoTransform&amp; tr = app-&gt;GetCamera ()-&gt;GetTransform ();
+  laserstart = tr.This2Other (LASER_OFFSET);
+  laserend = tr.This2Other (csVector3 (0, 0, 20.0));
+  lasersector = app-&gt;GetCamera ()-&gt;GetSector ();
+
+  // Fire up our beam.
+  laserbeam-&gt;GetMovable ()-&gt;SetPosition (lasersector, laserstart);
+  laserbeam-&gt;GetMovable ()-&gt;GetTransform ().LookAt (
+  	laserend-tr.GetOrigin (), csVector3 (0, 1, 0));
+  laserbeam-&gt;GetMovable ()-&gt;UpdateMove ();
+}
+</pre></td></tr></table>
+<p>This function starts the laserbeam (unless it is already in progress).
+Starting the laser means that we basically put it at the same position
+of the camera but lowered a bit with the <samp>&lsquo;LASER_OFFSET&rsquo;</samp> offset.
+This offset is calculated in camera space that means that it will always
+be below the camera as seen from the perspective of the camera. The
+<code>This2Other()</code> functions transforms the offset (as seen in camera
+space) to world space by using the camera transformation
+(<code>iCamera-&gt;GetTransform()</code>).
+</p>
+<p>We also transform a point in front of the camera (20 units in front) to
+world space. So these two world space coordinates give us a starting and a
+direction for our laserbeam. We place the laserbeam mesh at the starting
+position and then we use <code>LookAt()</code> to change the transform of that
+mesh to look at the destination position. Then we place the mesh in the
+sector of the camera and finally we call <code>UpdateMove()</code> which is required
+after moving a mesh.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">void Laser::Handle (csTicks ticks)
+{
+  if (lasertime &lt;= 0) return;
+  lasertime -= ticks;
+  if (lasertime &lt;= 0)
+  {
+    // Time to stop the laser.
+    lasertime = 0;
+    laserbeam-&gt;GetMovable ()-&gt;ClearSectors ();
+    laserbeam-&gt;GetMovable ()-&gt;UpdateMove ();
+  }
+  else
+  {
+    int flick = (lasertime / LASER_FLICKTIME) &amp; 1;
+    Check ();
+    csRef&lt;iGeneralMeshState&gt; state = scfQueryInterface&lt;iGeneralMeshState&gt; (
+    	laserbeam-&gt;GetMeshObject ());
+    state-&gt;SetColor (flick ? csColor (2.0, 2.0, 2.0) : csColor (.5, .5, .5));
+  }
+}
+</pre></td></tr></table>
+<p>This function handles the lifetime of the laser. Again depending on the
+elapsed ticks since previous frame. This function also makes the beam
+flicker by changing the color. Additionally, every time the laserbeam
+changes color it will check if there is an adversary hit by the laser. This
+happens with the <code>Check()</code> function below:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">void Laser::Check ()
+{
+  // Do a beam to check if we hit an adversary.
+  csSectorHitBeamResult rc = lasersector-&gt;HitBeamPortals (
+  	laserstart, laserend);
+  if (rc.mesh)
+  {
+    csRef&lt;Adversary&gt; adv = CS_GET_CHILD_OBJECT (
+    	rc.mesh-&gt;QueryObject (), Adversary);
+    if (adv)
+    {
+      // Hit!
+      app-&gt;GetGame ().ExplodeAdversary (adv);
+    }
+  }
+}
+</pre></td></tr></table>
+<p>Using <code>iSector::HitBeamPortals()</code> we try to find if there is an object
+in the beam of the laser. We use the start and end position as calculated
+in the <code>Start()</code> function. If we hit a mesh then we will use
+<code>CS_GET_CHILD_OBJECT()</code> to get the <code>Adversary</code> instance that is
+attached to the mesh. This makes use of the fact that we added the
+adversary to the mesh using the <code>iObject</code> system.
+</p>
+<p>If we hit an adversary then we explode it by calling <code>ExplodeAdversary()</code>.
+</p>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Mazing-Explosion-Class.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Mazing-Game-Class.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Tutorial-Mazing.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

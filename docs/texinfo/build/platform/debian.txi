@@ -1,0 +1,193 @@
+@c -*-texinfo-*-
+@node Debian, cs-winlibs, Unix, Platform Instructions
+@subsection Specific instructions for Ubuntu and Debian based systems
+@cindex Debian
+
+This section is to help specific users of Debian and Debian derived systems
+in the compilation and setup of Crystal Space and its dependencies.
+
+@menu
+* Debian 3D Display:: 3D Display Configuration
+* Debian Libraries:: Library Prerequisites
+* Debian Building:: Building Crystal Space
+@end menu
+
+@node Debian 3D Display, Debian Libraries, Debian, Debian
+@subsubsection 3D Display Configuration
+
+@subsubheading Driver installation
+
+Depending on your hardware and your Debian distribution, you may need to
+manually install the official display drivers of your graphic card.
+In order to do so, please check the specific documentation available for
+your distribution/system.
+
+@subsubheading Deactivate the desktop 3D effects
+
+If you have 3D effects enabled on your desktop environment, then this may unfortunately
+interfere with any other 3D based applications such as the ones from Crystal
+Space. You may therefore have to disable these effects in order to avoid problems
+such as flickering, slow or unresponsive applications.
+
+Under Ubuntu Natty 11.04 and higher, this is done at login. Once you have selected
+the user you want to login, select the ``Ubuntu Classic (No effects)'' option at the
+bottom of your screen.
+
+
+@node Debian Libraries, Debian Building, Debian 3D Display, Debian
+@subsubsection Library Prerequisites
+
+@subsubheading Basic libraries
+
+These are most of the @ref{External Libraries, external libraries} that are either
+needed for Crystal Space, or may be used in optional plugins. Since Debian packages
+are available for those libraries, you can easily install the below packages from
+the terminal as @code{root} or using @code{sudo}:
+
+@code{
+apt-get install build-essential autoconf libtool pkg-config jam
+subversion swig doxygen bison flex libcppunit-dev
+libx11-dev mesa-common-dev libxaw7-dev libgl1-mesa-dev libxext-dev libxxf86vm-dev
+libxrender-dev nvidia-current-dev nvidia-cg-toolkit
+zlib1g-dev libfreetype6-dev libjpeg-dev libmng-dev libpng12-dev liblcms-dev
+libcairo-dev libcairomm-1.0-dev libgtk2.0-dev libwxbase2.8-dev libwxgtk2.8-dev
+libasound-dev libopenal-dev libogg-dev libvorbis-dev libspeex-dev
+python-dev libode-dev lib3ds-dev libcal3d-dev
+}
+
+@subsubheading Other libraries
+
+Some additional libraries are recommended for Crystal Space, but they do
+not have available Debian packages. Therefore, you have to build and install them
+manually as described in this section.
+
+@itemize @bullet
+@item
+@strong{CEGUI}
+
+The Crazy Eddie's GUI is used in many applications where there is a graphical user
+interface, such as @code{viewmesh}.
+
+There is a Debian package for CEGUI, but it is probably not enough up-to-date for
+Crystal Space, which needs the 0.7 version or higher. Therefore you will neeed to
+install the package manually.
+
+For that, install at first the PCRE library which is a needed dependency of CEGUI:
+
+@example
+sudo apt-get install libpcre3-dev
+@end example
+
+Then download the latest version of the CEGUI library at
+@uref{http://sourceforge.net/projects/crayzedsgui/files/}
+
+Extract the files to a temporary folder, compile and install the library:
+
+@example
+./configure
+make
+sudo make install
+@end example
+
+@item
+@strong{BULLET}
+
+The Bullet library allows to use advanced physical simulation effects such
+as soft bodies and ragdolls.
+
+You can download the latest version of the Bullet library at
+@uref{http://code.google.com/p/bullet/downloads/}
+
+Then extract the files to a temporary folder, compile and install the library:
+
+@example
+./configure
+make
+sudo make install
+@end example
+
+@item
+@strong{ASSIMP}
+
+The @ref{Assimp importer, Open Asset Import Library} can be used to load
+transparently in Crystal Space assets from a
+@uref{http://assimp.sourceforge.net/main_features_formats.html, wide list of different 3D file formats}.
+
+First, install the Boost libraries, which are needed by Assimp.
+
+@example
+sudo apt-get install libboost-dev
+@end example
+
+Then download either the last official release from the
+@url{http://assimp.sourceforge.net/main_downloads.html, official web page},
+or the latest version from its Subversion repository:
+
+@example
+svn co https://assimp.svn.sourceforge.net/svnroot/assimp/trunk assimp_trunk
+@end example
+
+Then configure, compile and install the library:
+
+@example
+cmake . -G "Unix Makefiles"
+make
+sudo make install
+@end example
+
+@end itemize
+
+@node Debian Building, , Debian Libraries, Debian
+@subsubsection Building Crystal Space
+
+Now that all dependencies are setup, you can go ahead with the compilation
+of Crystal Space.
+
+@subsubheading Configure and build the project
+
+Download and unpack a source package of Crystal Space, either
+@uref{http://www.crystalspace3d.org/main/Download, an official release from the website}
+or @uref{http://www.crystalspace3d.org/main/Download_trunk, a development version from Subversion}.
+
+Then open a new terminal, go to the directory where you unpacked Crystal Space,
+run the configuration script and build the entire project:
+
+@example
+./configure
+jam
+@end example
+
+This is the end of the compilation process of Crystal Space. You can now try
+to run a test application such as @samp{walktest} or @samp{startme}.
+
+You can also see more information on the available building options at the
+@ref{Unix, dedicated page}.
+
+@subsubheading Update your environment variables
+
+This is not advised to do a @code{make install} for Crystal Space, since it
+can interfere with other installations you may have made previously. The
+dedicated way to deal with that problem is to define the
+@ref{HOWTO Setting the CRYSTAL environment variable, CRYSTAL environment variable}.
+
+In order to do so, you can open your @file{~/.bashrc} file and add the following
+new line at the end of it:
+
+@example
+export CRYSTAL=path_to_your_CS_directory
+@end example
+
+Also, since you haven't installed Crystal Space, your system will most probably
+have troubles finding its shared library files. To deal with that, you would need
+to add an entry in your @code{LD_LIBRARY_PATH} environment variable, so add also
+the following line to your @file{~/.bashrc} file:
+
+@example
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:path_to_your_CS_directory
+@end example
+
+The changes you made to your @file{~/.bashrc} file will only get available for
+the next terminals you would open. You may therefore prefer to close the terminals
+you have already opened in order to avoid getting problems with the environment
+variables not defined.
+

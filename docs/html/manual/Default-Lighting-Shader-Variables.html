@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 5.5 Default Lighting Shader Variables</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 5.5 Default Lighting Shader Variables">
+<meta name="keywords" content="Crystal Space 2.1.0: 5.5 Default Lighting Shader Variables">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Default-Lighting-Shader-Variables"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="XML-Action-Section.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Using-lighter2.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Internals.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h2 class="section"> 5.5 Default Lighting Shader Variables </h2>
+
+
+<p>Below are details on some of the shader variables available for use with the default lighting shaders.
+These can be attached either in code or in the xml definition of your model.
+</p>
+<a name="1"></a>
+<h3 class="subheading"> Variables on Materials </h3>
+
+<dl compact="compact">
+<dt> <samp>&lsquo;tex diffuse&rsquo;</samp></dt>
+<dd><blockquote><p><b> Type:</b> Texture
+</p></blockquote>
+<p>Diffuse (colour) texture.
+</p>
+</dd>
+<dt> <samp>&lsquo;tex normal&rsquo;</samp></dt>
+<dd><blockquote><p><b> Type:</b> Texture
+</p></blockquote>
+<p>Normal map texture.
+</p>
+</dd>
+<dt> <samp>&lsquo;tex normal compressed&rsquo;</samp></dt>
+<dd><blockquote><p><b> Type:</b> Texture
+</p></blockquote>
+<p>DXT5nm normal map texture.
+Note that <samp>&lsquo;tex normal compressed&rsquo;</samp> is preferred over <samp>&lsquo;tex normal&rsquo;</samp>.
+</p>
+</dd>
+<dt> <samp>&lsquo;tex height&rsquo;</samp></dt>
+<dd><blockquote><p><b> Type:</b> Texture
+</p></blockquote>
+<p>Height map texture for parallax shading
+</p>
+</dd>
+<dt> <samp>&lsquo;tex specular&rsquo;</samp></dt>
+<dd><blockquote><p><b> Type:</b> Texture
+</p></blockquote>
+<p>Specular color map.
+</p>
+</dd>
+<dt> <samp>&lsquo;tex ambient occlusion&rsquo;</samp></dt>
+<dd><blockquote><p><b> Type:</b> Texture
+</p></blockquote>
+<p>Ambient occlusion map.
+</p>
+</dd>
+<dt> <samp>&lsquo;color modulation&rsquo;</samp></dt>
+<dd><blockquote><p><b> Type:</b> RGB
+</p></blockquote>
+<p>Values used to set the colour of a material. The change in colour depends on the existing pixels in the material.
+The lower (darker) the value of the pixel, the less it's affected by the colour change.
+</p>
+</dd>
+<dt> <samp>&lsquo;tex glow&rsquo;</samp></dt>
+<dd><blockquote><p><b> Type:</b> Texture
+</p></blockquote>
+<p>Glow map.
+</p>
+</dd>
+</dl>
+
+<hr size="1">
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

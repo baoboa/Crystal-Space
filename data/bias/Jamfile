@@ -1,0 +1,7 @@
+SubDir TOP data bias ;
+
+{
+local files = [ Wildcard *.zip *.layout ] ;
+InstallData $(files) : data bias ;
+FileListEntriesData $(files) : bias : data-demo ;
+}

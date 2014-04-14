@@ -1,0 +1,251 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 7.1 Writing Documentation</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 7.1 Writing Documentation">
+<meta name="keywords" content="Crystal Space 2.1.0: 7.1 Writing Documentation">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Writing-Documentation"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Contributing.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Portability.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Contributing.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Contributing.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Glossary.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h2 class="section"> 7.1 Writing Documentation </h2>
+
+<p>This section contains guidelines and instructions for writing documentation
+for the Crystal Space project.  Read this section if you are interested in
+contributing to the documentation project.
+</p>
+<p>These guidelines deal with subdivision of the documentation into files, into
+chapters and sections, and with node placing and linking.  To understand this
+document, you should know that <em>chapters</em> is the general division of a
+Texinfo file into several parts, and <em>sections</em> is the next subdivision.
+<em>ToC</em> means &ldquo;Table of Contents&rdquo;.  &ldquo;folder&rdquo; and &ldquo;directory&rdquo; have the
+expected meaning.
+</p>
+<p>Please follow these guidelines when writing documentation for Crystal Space.
+</p>
+<a name="1"></a>
+<h4 class="subsubheading"> General </h4>
+
+<p>Write documentation using the Texinfo mark-up language. You can get more
+information at <a href="http://www.texinfo.org/">http://www.texinfo.org/</a>.
+</p>
+<p>The documentation is converted from Texinfo to other formats, such as
+<small>HTML</small>. Conversion to most important formats happens automatically within
+the <small>SVN</small> repository by an automated mechanism, so you only have to commit
+the Texinfo docs if you make any changes.
+</p>
+<p>To make writing the documentation easier, <samp>&lsquo;@node&rsquo;</samp> and <samp>&lsquo;@menu&rsquo;</samp>
+directives in the Texinfo sources can be repaired, which means that the
+links to the previous, next and top nodes are generated automatically. So you
+can safely write the following line, omitting the various links which the
+<samp>&lsquo;@node&rsquo;</samp> directive normally requires:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">@node MySection
+@section My Section Title
+</pre></td></tr></table>
+<p>The repair occurs automatically within the <small>SVN</small> repository by an automated
+mechanism, however you can also repair the files manually if you use the
+<small>GNU</small> makefile system by invoking the following command:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">make repairdoc
+</pre></td></tr></table>
+<a name="2"></a>
+<h4 class="subsubheading"> Conversion and Maintenance via Makefile Targets </h4>
+
+<p>If you are using the <small>GNU</small> makefile system, you can use the following
+makefile targets to convert the Texinfo documents to different formats.
+The output will be placed in subdirectories of <tt>&lsquo;${builddir}/out/docs/&rsquo;</tt>.
+</p>
+<dl compact="compact">
+<dt> <code>make apihtml</code></dt>
+<dd><p>Generate <small>HTML</small> version of public <small>API</small> reference via Doxygen.  This is
+the reference manual for people using Crystal Space in their own projects.  It
+only documents public classes and functions.
+</p>
+</dd>
+<dt> <code>make apidevhtml</code></dt>
+<dd><p>Generate <small>HTML</small> version of developer <small>API</small> reference via Doxygen.  This
+is the reference manual for people actually working on Crystal Space itself. 
+It documents all classes and functions.
+</p>
+</dd>
+<dt> <code>make manualhtml</code></dt>
+<dd><p>Convert the Crystal Space manual to <small>HTML</small> format.
+</p>
+</dd>
+<dt> <code>make manualdvi</code></dt>
+<dd><p>Convert the Crystal Space manual to <small>DVI</small> format.
+</p>
+</dd>
+<dt> <code>make manualps</code></dt>
+<dd><p>Convert the Crystal Space manual to PostScript format.
+</p>
+</dd>
+<dt> <code>make manualpdf</code></dt>
+<dd><p>Convert the Crystal Space manual to <small>PDF</small> format.
+</p>
+</dd>
+<dt> <code>make manualinfo</code></dt>
+<dd><p>Convert the Crystal Space manual to <small>GNU</small> Info format.
+</p>
+</dd>
+<dt> <code>make repairdoc</code></dt>
+<dd><p>Repair all <samp>&lsquo;@node&rsquo;</samp> and <samp>&lsquo;@menu&rsquo;</samp> directives in the Texinfo sources.
+</p>
+</dd>
+<dt> <code>make cleandoc</code></dt>
+<dd><p>Delete all converted documents.
+</p></dd>
+</dl>
+
+<a name="3"></a>
+<h4 class="subsubheading"> Directory Structure </h4>
+
+<p>The <tt>&lsquo;CS/docs/texinfo&rsquo;</tt> directory contains:
+</p>
+<ul>
+<li>
+A table-of-contents file named <tt>&lsquo;cs.txi&rsquo;</tt>.  This is the platform-independent
+root of the entire documentation hierarchy.
+
+</li><li>
+Platform-dependent configuration files, such as <tt>&lsquo;unixdef.txi&rsquo;</tt>,
+<tt>&lsquo;macdef.txi&rsquo;</tt>, etc.
+
+</li><li>
+Platform-dependent wrapper files, such as <tt>&lsquo;cs-unix.txi&rsquo;</tt>,
+<tt>&lsquo;cs-mac.txi&rsquo;</tt>, etc.  These are the platform-specific root files for the
+entire documentation hierarchy.  They import the platform-dependent
+configuration (i.e. <tt>&lsquo;unixdef.txi&rsquo;</tt> and then the <small>TOC</small> file
+<tt>&lsquo;cs.txi&rsquo;</tt>.
+
+</li><li>
+Other configuration files, like <tt>&lsquo;version.txi&rsquo;</tt>, <tt>&lsquo;cpyright.txi&rsquo;</tt>, etc.,
+and helper files for conversion to other formats, like <tt>&lsquo;texinfo.tex&rsquo;</tt>.
+
+</li><li>
+One subdirectory for each chapter. Each chapter directory contains at least
+one file called <tt>&lsquo;chapter.txi&rsquo;</tt>, which is the root import file for this
+chapter. The <small>TOC</small> file will only include <tt>&lsquo;chapter.txi&rsquo;</tt>, which then
+includes one file in this directory for every section.
+
+<p>If one section in a chapter is too big for a single file, this section is split
+into several files by subsections.  These files are again often placed into a
+subdirectory.
+</p></li></ul>
+
+<a name="4"></a>
+<h4 class="subsubheading"> Formatting Conventions </h4>
+
+<p>Here are some general formatting conventions.
+</p>
+<ul>
+<li>
+When creating <code>@itemize</code> lists, one blank line should separate each
+<code>@item</code> except for short lists of items with short descriptions.  Also
+remember to use the <code>@bullet</code> directive after the <code>@itemize</code>
+directive, as in <code>@itemize @bullet</code>.
+
+</li><li>
+Do not indent the text of items within <code>@itemize</code> or
+<code>@table</code> blocks.  Allow the formatting tools to perform the indentation
+automatically. This also applies to <code>@example</code> blocks, but here you
+may indent sub-blocks. For example, you may want to create a block like this:
+
+<table><tr><td>&nbsp;</td><td><pre class="example">@example
+int Increment(int n)
+@{
+  return n + 1;
+@}
+@end example
+</pre></td></tr></table>
+<p>Then you may, of course, indent the <samp>&lsquo;return&rsquo;</samp> line, but not the other
+lines.
+</p>
+</li><li>
+Do not use tabs to indent code in <code>@example</code> blocks since the formatting
+tools do not faithfully reproduce the tab's indentation.  Instead, always
+indent using spaces.
+
+</li><li>
+Attempt to keep the content of Texinfo source files under 80-columns in width
+if possible.  This is a general guidelines rather than a hard rule.
+</li></ul>
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Contributing.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Portability.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Contributing.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Contributing.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Glossary.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

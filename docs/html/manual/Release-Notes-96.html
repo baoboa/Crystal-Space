@@ -1,0 +1,270 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: C.7 Release Notes from 0.94 to 0.96</title>
+
+<meta name="description" content="Crystal Space 2.1.0: C.7 Release Notes from 0.94 to 0.96">
+<meta name="keywords" content="Crystal Space 2.1.0: C.7 Release Notes from 0.94 to 0.96">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Release-Notes-96"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Release-Notes-98.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Release-Notes-94.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Licenses.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h2 class="appendixsec"> C.7 Release Notes from 0.94 to 0.96 </h2>
+
+<p>This section documents the major changes between versions 0.94 and 0.96 of
+Crystal Space.
+</p>
+<a name="1"></a>
+<h3 class="subheading"> Reference Counting Utilities </h3>
+
+<p>The new template class <code>csRef&lt;&gt;</code> automates reference count manipulation,
+thus freeing programmers from the task of manipulating reference counts
+manually.  When assigned, <code>csRef&lt;&gt;</code> increments the reference count of the
+target object by invoking the object's <code>IncRef()</code> method.  When the
+<code>csRef&lt;&gt;</code> is destroyed, or when it is re-assigned, it decrements the
+object's reference count via <code>DecRef()</code>.  This frees clients from having
+to invoke <code>IncRef()</code> and <code>DecRef()</code> manually, thus helping to
+alleviate a potential source of resource leaks.  The companion template
+<code>csPtr&lt;&gt;</code> has also been added as a micro-optimization for certain cases
+when it is desirable to avoid reference count manipulation during assignment.
+See the smart pointer <small>HOWTO</small> for additional information,
+<a href="Smart-Pointers.html#0">Correctly Using Smart Pointers</a>.  Also see the <small>API</small> documentation for
+<code>csRef&lt;&gt;</code> and <code>csPtr&lt;&gt;</code>.
+</p>
+<p>The Crystal Space <small>API</small> has been largely updated to return <code>csRef&lt;&gt;</code>
+and <code>csPtr&lt;&gt;</code> from functions which transfer ownership of an object to the
+caller of the function.  Client code which used to assign results of such
+function calls to a normal pointer and invoke <code>IncRef()</code> on that pointer
+should now instead simply assign the result to a <code>csRef&lt;&gt;</code>, and allow the
+reference count to be managed automatically.  See the smart pointer <small>HOWTO</small>
+for complete details.  See section <a href="Smart-Pointers.html#0">Correctly Using Smart Pointers</a>.
+</p>
+<a name="2"></a>
+<h3 class="subheading"> iPolygonMesh changes </h3>
+
+<p>The header for <samp>&lsquo;iPolygonMesh&rsquo;</samp> has moved from <tt>&lsquo;include/ivaria&rsquo;</tt>
+to <tt>&lsquo;include/igeom&rsquo;</tt>.
+</p>
+<a name="3"></a>
+<h3 class="subheading"> iMeshObject changes </h3>
+
+<p>The following functions have been removed:
+</p>
+<ul>
+<li>
+<code>iMeshObject::GetShapeNumber()</code>
+</li><li>
+<code>iMeshObject::GetObjectBoundingBox()</code>
+</li><li>
+<code>iMeshObject::GetRadius()</code>
+</li></ul>
+
+<p>Instead there is now a new routine called
+<code>iMeshObject::GetObjectModel()</code> which will return an instance of
+<samp>&lsquo;iObjectModel&rsquo;</samp>.  The functions can be called from that instance.
+</p>
+<p>A similar change has taken place in the <samp>&lsquo;iVisibilityObject&rsquo;</samp> interface.
+</p>
+<a name="4"></a>
+<h3 class="subheading"> <small>XML</small> </h3>
+
+<p>The map format has changed to <small>XML</small>. Use the <tt>&lsquo;cs2xml&rsquo;</tt> tool to
+convert old maps like this (with a real path to a zip file):
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">  cs2xml data/oldlevel.zip
+</pre></td></tr></table>
+<p>or (with a <small>VFS</small> path):
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">  cs2xml /this/mydata/sprite1
+</pre></td></tr></table>
+<a name="5"></a>
+<h3 class="subheading"> csGetObject and csGetCommand </h3>
+
+<p>The old parser is gone. We switched to <small>XML</small>.
+</p>
+<a name="6"></a>
+<h3 class="subheading"> Fast <small>SCF</small> Interfaces </h3>
+
+<p>The following macros have been removed:
+</p>
+<ul>
+<li>
+<code>SCF_QUERY_INTERFACE_FAST</code>
+</li><li>
+<code>CS_GET_CHILD_OBJECT_FAST</code>
+</li><li>
+<code>CS_GET_NAMED_CHILD_OBJECT_FAST</code>
+</li><li>
+<code>CS_GET_FIRST_NAMED_CHILD_OBJECT_FAST</code>
+</li><li>
+<code>SCF_DECLARE_FAST_INTERFACE</code>
+</li></ul>
+
+<p>Fast interfaces are now default. Just use the
+normal query versions instead of the ones above.
+</p>
+<a name="7"></a>
+<h3 class="subheading"> Internal <small>SCF</small> Changes </h3>
+
+<p>For interfaces the <samp>&lsquo;scfGetID_Interfacename&rsquo;</samp> and the
+<samp>&lsquo;VERSION_Interfacename&rsquo;</samp> have been renamed to
+<samp>&lsquo;Interfacename_scfGetID&rsquo;</samp> and <samp>&lsquo;Interfacename_VERSION&rsquo;</samp> for making
+namespaces working nicely with them.
+</p>
+<a name="8"></a>
+<h3 class="subheading"> Make Targets </h3>
+
+<p>Some targets for the <samp>&lsquo;make&rsquo;</samp> facility (all applications, some plugins) have
+changed.  In general, the name of a target is now the same as the name of the
+resulting binary (without suffix).  For example, <tt>&lsquo;walktest&rsquo;</tt> is now built
+with <samp>&lsquo;make -k walktest&rsquo;</samp> instead of <samp>&lsquo;make -k walk&rsquo;</samp>.  However, the
+composite target names have not been changed.  To build <tt>&lsquo;walktest&rsquo;</tt> and all
+required plugins, one still invokes <samp>&lsquo;make -k walkall&rsquo;</samp>.
+</p>
+<a name="9"></a>
+<h3 class="subheading"> Sound Loader Changes </h3>
+<p>The <code>iLoader::LoadSound()</code> that returns an <code>iSoundWrapper</code>
+now returns a pointer that has a reference count of one more compared
+to before.
+</p>
+<a name="10"></a>
+<h3 class="subheading"> iTextureManager Changes </h3>
+
+<p>The following methods have moved:
+</p>
+<ul>
+<li>
+<code>iTextureManager::FindRGB()</code> =&gt; <code>iGraphics2D::FindRGB()</code>
+</li></ul>
+
+<p>The following methods were eliminated:
+</p>
+<ul>
+<li>
+<code>iTextureManager::SetPalette()</code>
+</li><li>
+<code>iTextureManager::ResetPalette()</code>
+</li><li>
+<code>iTextureManager::ReserveColor()</code>
+</li></ul>
+
+<a name="11"></a>
+<h3 class="subheading"> Procedural Textures </h3>
+
+<p>The procedural texture system has been rewritten. See the documentation for
+<code>iGraphics3D::SetRenderTarget()</code> for details.
+</p>
+<a name="12"></a>
+<h3 class="subheading"> Hardmove Change </h3>
+
+<p>The interpretation of the matrix used in the <samp>&lsquo;hardmove&rsquo;</samp> tag
+for mesh factories (<samp>&lsquo;meshfact&rsquo;</samp>) has been inverted so it is more
+logical and also corresponds with the wah <samp>&lsquo;hardmove&rsquo;</samp> is interpreted
+for mesh objects (<samp>&lsquo;meshobj&rsquo;</samp>).
+</p>
+<a name="13"></a>
+<h3 class="subheading"> Octree Removal </h3>
+
+<p>The old octree culler is now completely gone. Instead you should use
+<em>Dynavis</em> now. If you still have an old level that uses this culler
+then you can try to convert it using the <tt>&lsquo;levtool&rsquo;</tt> utility but this
+is only a temporary measure. It is a lot better to design the level with
+<em>Dynavis</em> in mind. To convert an old level do this:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">  levtool -dynavis old_level.zip
+</pre></td></tr></table>
+<p>Note that the statements <samp>&lsquo;culler&rsquo;</samp> and <samp>&lsquo;vistree&rsquo;</samp> are no longer
+supported in world files. The loader will give an error if it finds them.
+</p>
+<a name="14"></a>
+<h3 class="subheading"> Typed Vectors </h3>
+
+<p>All the macro versions of the growing arrays and vectors have been removed
+and replaced with corresponding templated arrays (see section <a href="csUtil.html#0">Utility Library (<code>csUtil</code>)</a>).  For
+example, the following macros and all derivatives have been removed:
+</p>
+<ul>
+<li>
+<code>CS_DECLARE_TYPED_VECTOR</code>
+</li><li>
+<code>CS_DECLARE_OBJECT_VECTOR</code>
+</li><li>
+<code>CS_DECLARE_GROWING_ARRAY</code>
+</li></ul>
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Release-Notes-98.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Release-Notes-94.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Licenses.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

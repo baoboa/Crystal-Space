@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.5.2 Configuration File</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.5.2 Configuration File">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.5.2 Configuration File">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Configuration-File"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Common-Command-Line-Options.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Config-Domains.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Options.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 4.5.2 Configuration File </h3>
+
+<p>Many applications have an accompanying configuration file which describes
+configuration options specific to that application.  Similarly, plug-in
+modules can have configuration files.  Configuration files are named with the
+file extension <tt>&lsquo;.cfg&rsquo;</tt> and are typically located within the <small>VFS</small>
+virtual directory <tt>&lsquo;/config/&rsquo;</tt> (see section <a href="VFS.html#0">Virtual File System (<small>VFS</small>)</a>) which is often mounted at the
+physical location <tt>&lsquo;CS/data/config&rsquo;</tt> for Crystal Space sample applications.
+</p>
+<p>The format of these files is simple. They consist of a number of <em>keys</em>,
+each of which consists of a name, a <em>value</em> and an optional comment.  Key
+names contain dots to create a pseudo-hierarchy, similar to a file system; for
+example: <samp>&lsquo;Video.OpenGL.EnableDither&rsquo;</samp>.  This should be interpreted as the
+<samp>&lsquo;EnableDither&rsquo;</samp> option in the sub-section <samp>&lsquo;OpenGL.&rsquo;</samp>, which resides in
+section <samp>&lsquo;Video.&rsquo;</samp> (note that the dots are part of the key name).
+</p>
+<p>The file itself looks something like this:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">; This is the comment for the first batch of keys.
+Section.Keyname = Value
+; Comments may be
+; several lines long
+; The option 'Section.TestOption' (below) has no attached comment.
+Video.OpenGL.EnableDither = true
+Section.TestOption = false
+; Comments at the end of the file do not belong to any configuration
+; key. When a config file is loaded and saved again later this
+; end-of-file comment is retained at the end of the file.
+</pre></td></tr></table>
+<hr size="1">
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

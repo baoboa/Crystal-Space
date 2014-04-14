@@ -1,0 +1,216 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.10.17 Haze Mesh Object</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.10.17 Haze Mesh Object">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.10.17 Haze Mesh Object">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="MeshObject-Haze"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="MeshObject-Emit.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="MeshObject-Watermesh.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="MeshObject.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 4.10.17 Haze Mesh Object </h3>
+
+<p>This mesh object represents a 'haze' which is a bit like
+volumetric light. For example you can show this way moody
+rays from church windows.
+</p>
+<a name="1"></a>
+<h4 class="subsubheading"> Basic Structure </h4>
+
+<p>The following <small>SCF</small> class names are used (for <code>csLoadPlugin</code>):
+</p>
+<ul>
+<li>
+Type plugin: <code>crystalspace.mesh.object.haze</code>
+</li><li>
+Loader plugin: <code>crystalspace.mesh.loader.haze</code>
+</li><li>
+Factory loader plugin: <code>crystalspace.mesh.loader.factory.haze</code>
+</li></ul>
+
+<p>Objects in this plugin implement the following <small>SCF</small> interfaces, which you
+can retrieve with <code>scfQueryInterface</code>:
+</p>
+<ul>
+<li>
+<em>MeshObject</em>
+<ul>
+<li>
+Implements <samp>&lsquo;iMeshObject&rsquo;</samp>
+</li><li>
+Implements <samp>&lsquo;iHazeState&rsquo;</samp>
+</li></ul>
+</li><li>
+<em>MeshObjectFactory</em>
+<ul>
+<li>
+Implements <samp>&lsquo;iMeshObjectFactory&rsquo;</samp>
+</li><li>
+Implements <samp>&lsquo;iHazeFactoryState&rsquo;</samp>
+</li></ul>
+</li><li>
+<em>MeshObjectType</em>
+<ul>
+<li>
+Implements <samp>&lsquo;iMeshObjectType&rsquo;</samp>
+</li></ul>
+</li></ul>
+
+<a name="2"></a>
+<h4 class="subsubheading"> Factory State Interface </h4>
+
+<p>Use the <samp>&lsquo;iHazeFactoryState&rsquo;</samp> <small>SCF</small> interface to access settings for
+a haze factory.  The definition of this interface can be found in
+<tt>&lsquo;CS/include/imesh/haze.h&rsquo;</tt> and that is also the include file you need
+to include in your applications to use this plugin.  Using this interface you
+can access the direction, origin, layers, scale and various other 
+configuration parameters for a haze factory.
+</p>
+<a name="3"></a>
+<h4 class="subsubheading"> Factory Loader </h4>
+
+<p>The haze mesh factory loader has no parameters.
+</p>
+<a name="4"></a>
+<h4 class="subsubheading"> Object State Interface </h4>
+
+<p><samp>&lsquo;iHazeState&rsquo;</samp> (residing in <tt>&lsquo;CS/include/imesh/haze.h&rsquo;</tt>) is
+an empty <small>SCF</small> interface.
+</p>
+<a name="5"></a>
+<h4 class="subsubheading"> Object Loader </h4>
+
+<dl compact="compact">
+<dt> <code>&lt;material&gt; <small class="dots">...</small> &lt;/material&gt;</code></dt>
+<dd><p>Material name.
+</p></dd>
+<dt> <code>&lt;mixmode&gt; <small class="dots">...</small> &lt;/mixmode&gt;</code></dt>
+<dd><p>Color mixing mode.
+</p></dd>
+<dt> <code>&lt;origin x=&quot;&quot; y=&quot;&quot; z=&quot;&quot; /&gt;</code></dt>
+<dd><p>Set the origin of the texture.
+</p></dd>
+<dt> <code>&lt;directional x=&quot;&quot; y=&quot;&quot; z=&quot;&quot; /&gt;</code></dt>
+<dd><p>Set the direction of the texture.
+</p></dd>
+<dt> <code>&lt;layer&gt; <small class="dots">...</small> &lt;/layer&gt;</code></dt>
+<dd><p>Layer of the haze mesh.
+Inside layer:
+</p></dd>
+<dt> <code>&lt;scale&gt; <small class="dots">...</small> &lt;/scale&gt;</code></dt>
+<dd><p>Scale of the texture.
+</p></dd>
+<dt> <code>&lt;hazebox&gt; <small class="dots">...</small> &lt;/hazebox&gt;</code></dt>
+<dd><p>Draws box shape.
+Inside hazebox:
+</p></dd>
+<dt> <code>&lt;min x=&quot;&quot; y=&quot;&quot; z=&quot;&quot; /&gt;</code></dt>
+<dd><p>First corner of the box.
+</p></dd>
+<dt> <code>&lt;max x=&quot;&quot; y=&quot;&quot; z=&quot;&quot; /&gt;</code></dt>
+<dd><p>Last corner if the box.
+</p><table><tr><td>&nbsp;</td><td><pre class="example">&lt;layer&gt;
+  &lt;scale&gt;&lt;/scale&gt;
+  &lt;hazebox&gt;
+    &lt;min x=&quot;&quot; y=&quot;&quot; z=&quot;&quot; /&gt;
+    &lt;max x=&quot;&quot; y=&quot;&quot; z=&quot;&quot; /&gt;
+  &lt;/hazecone&gt;
+&lt;/layer&gt;
+</pre></td></tr></table></dd>
+<dt> <code>&lt;hazecone p=&quot;&quot; q=&quot;&quot; number=&quot;&quot;&gt; <small class="dots">...</small> &lt;/hazecone&gt;</code></dt>
+<dd><p>Draws cone shape. Give p - radius of the top, q - radius of the bottom
+and number of faces to create cone mesh.
+Inside hazecone:
+</p></dd>
+<dt> <code>&lt;min x=&quot;&quot; y=&quot;&quot; z=&quot;&quot; /&gt;</code></dt>
+<dd><p>Position of the cone's tip.
+</p></dd>
+<dt> <code>&lt;max x=&quot;&quot; y=&quot;&quot; z=&quot;&quot; /&gt;</code></dt>
+<dd><p>Position of the cone's bottom.
+</p><table><tr><td>&nbsp;</td><td><pre class="example">&lt;layer&gt;
+  &lt;scale&gt;&lt;/scale&gt;
+  &lt;hazecone p=&quot;&quot; q=&quot;&quot; number=&quot;&quot;&gt;
+    &lt;min x=&quot;&quot; y=&quot;&quot; z=&quot;&quot; /&gt;
+    &lt;max x=&quot;&quot; y=&quot;&quot; z=&quot;&quot; /&gt;
+  &lt;/hazecone&gt;
+&lt;/layer&gt;
+</pre></td></tr></table></dd>
+</dl>
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="MeshObject-Emit.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="MeshObject-Watermesh.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="MeshObject.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.6.1 Geometry Library (csGeom)</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.6.1 Geometry Library (csGeom)">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.6.1 Geometry Library (csGeom)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="csGeom"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Libraries.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="csUtil.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Libraries.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 4.6.1 Geometry Library (<code>csGeom</code>) </h3>
+
+<p>This library is used to perform any calculations dealing with 2D or 3D
+geometry. It contains several more or less independent classes. The most
+important classes are:
+</p>
+<ul>
+<li>
+<em>Geometric Functionality</em>
+
+<p>These are functions that do not fit in one of the following classes, for
+example to calculate intersections. They are grouped as static member
+functions of one class. (It does not make sense to create objects of this
+class, as it only contains these static member functions).
+</p>
+</li><li>
+<em>Vectors</em>
+
+<p>These classes represent 2D and 3D vectors.  There is also a variant of the 3D
+vector class which uses double precision numbers to represent its elements,
+rather than the single precision numbers used by the standard 3D vector class.
+These classes supply specially overloaded operators so you can use them in
+calculations as you can use integer or float values.  The possible operators
+are:
+</p>
+<ul>
+<li>
+Add two vectors
+</li><li>
+Subtract two vectors
+</li><li>
+Multiply a vector and a scalar
+</li><li>
+Divide a vector by a scalar
+</li><li>
+Dot product (uses <samp>&lsquo;*&rsquo;</samp> operator)
+</li><li>
+Cross product (uses <samp>&lsquo;%&rsquo;</samp> operator)
+</li><li>
+Comparison of two vectors (<samp>&lsquo;==&rsquo;</samp> and <samp>&lsquo;!=&rsquo;</samp>)
+</li><li>
+Projecting one vector on another (<samp>&lsquo;&lt;&lt;&rsquo;</samp> and <samp>&lsquo;&gt;&gt;&rsquo;</samp>)
+</li><li>
+Inverting a vector (<samp>&lsquo;-&rsquo;</samp> operator)
+</li><li>
+Comparing all components with a small epsilon value (<samp>&lsquo;&lt;&rsquo;</samp> and <samp>&lsquo;&gt;&rsquo;</samp>)
+</li></ul>
+
+<p>They also contain some functions to normalize the vector or return its length.
+Single and double precision vectors can be mixed in calculations.
+</p>
+</li><li>
+<em>Matrices</em>
+
+<p>These are 2D and 3D matrices. They are used to transform (rotate, scale etc.)
+vectors. They also use their own operators for easier usage (for example to
+multiply a matrix and a vector).
+</p>
+</li><li>
+<em>Transforms</em>
+
+<p>A transformation consists of a matrix and a vector. In contrast to just a
+matrix you can also include movement in a transform. It also uses its own
+operators.
+</p>
+</li><li>
+<em>Quaternions</em>
+
+<p>Encapsulation of quaternion functionality.
+</p>
+</li><li>
+<em>Planes</em>
+
+<p>These classes represent 2D and 3D planes. They can, for example, be used to
+split polygons or to calculate the distance of a point from a polygon (or
+line segments instead of polygons for 2D planes).
+</p>
+</li><li>
+<em>Line Segments</em>
+
+<p>A line segment is a straight line between two points, which ends at these
+points. It could for example be used to define start and finish point of
+straight movement. There are 2D and 3D segments.
+</p>
+</li><li>
+<em>Polygons</em>
+
+<p>Polygons are an important class used heavily in the 3D engine. A polygon is
+built from at least three points, called <em>vertices</em>. All vertices must
+be on the same plane in space. The polygons outline consists of all line
+segments from one vertex to the next one, including the segment from the last
+vertex to the first one. These segments may not cross. Also, the polygon
+must be convex, which means that if you take two arbitrary points inside the
+polygon and draw a straight line between them, it may not cross any of the
+polygon's edges.  A polygon has two faces, defined by the order of the
+vertices: If you count through all vertices, and from your position they appear
+in clockwise order, then you are viewing the front face, otherwise you are
+viewing the back face.  The <em>normal</em> vector of the polygon always points
+out perpendicular from the front face.
+</p>
+<p>There are different types of polygons concerning management of the vertices
+and how they can be used. First, there are the basic 2D and 3D polygons that
+store their vertices as 3D vectors. The clippers are similar to this but
+they are specialized on clipping other polygons (you lay the clipper somewhere
+on a polygon and cut everything away of the polygon that is outside the
+clipper, resulting in a new, smaller polygon). Then there is a 2D polygon
+that stores its sides as line segments, not its vertices as vectors.
+The most important type for the engine is the indexed polygon, which does not
+store its vertices as 3D vectors but only as indices in a table.
+</p></li></ul>
+
+<p>There are also other classes that are mostly used inside the engine, such as
+bounding boxes, frustums, polygon pools, etc.
+</p>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Libraries.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="csUtil.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Libraries.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

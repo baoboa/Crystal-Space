@@ -1,0 +1,178 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.2.2.3 Creating a Mesh from a Factory</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.2.2.3 Creating a Mesh from a Factory">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.2.2.3 Creating a Mesh from a Factory">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Simple-Creating-Mesh"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Simple-Loading-Mesh-Factory.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Tutorial-Simple-Map.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Tutorial-Simple-2.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h4 class="subsubsection"> 4.2.2.3 Creating a Mesh from a Factory </h4>
+
+<p>To create a mesh just add the following code in
+<code>Simple::CreateSprites()</code> (before <samp>&lsquo;return true&rsquo;</samp> and after
+the code we just added to load the mesh factory):
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">void Simple::CreateSprites ()
+{
+  ...
+
+  // Add the sprite to the engine.
+  csRef&lt;iMeshWrapper&gt; sprite (engine-&gt;CreateMeshWrapper (
+        imeshfact, &quot;MySprite&quot;, room,
+        csVector3 (-3, 5, 3)));
+  csMatrix3 m; m.Identity ();
+  m *= 5.; // Don't do this scale in your own code! (see discussion)
+  sprite-&gt;GetMovable ()-&gt;SetTransform (m);
+  sprite-&gt;GetMovable ()-&gt;UpdateMove ();
+  csRef&lt;iSprite3DState&gt; spstate (
+    scfQueryInterface&lt;iSprite3DState&gt; (sprite-&gt;GetMeshObject ()));
+  spstate-&gt;SetAction (&quot;default&quot;);
+  sprite-&gt;SetZBufMode (CS_ZBUF_USE);
+  sprite-&gt;SetRenderPriority (engine-&gt;GetObjectRenderPriority ());
+}
+</pre></td></tr></table>
+<p>The easiest way to create a mesh is to use <code>engine-&gt;CreateMeshWrapper()</code>.
+This will take care of using the given mesh factory to create the mesh, give
+it a name, and correctly place it at the given position in the world.
+The name of a mesh can be useful for scripting so that a script can refer
+to objects with their names.
+</p>
+<p>Moving meshes is done through the <code>iMovable</code> interface to
+which you can get a reference by doing <code>sprite-&gt;GetMovable()</code>.  The calls
+to <code>SetTransform()</code> and <code>SetPosition()</code> set up a transformation
+matrix and vector to correctly place the mesh in the room.  In this
+particular case we use the identity matrix as a transform and scale it with
+five to make the sprite five times bigger.
+After doing movement (either updating the sectors or the position) you
+<em>must</em> call <code>movable-&gt;UpdateMove()</code> to change internal data
+structures (i.e. the engine may use this to recalculate visibility
+information).
+</p>
+<p><em>WARNING</em>: The code above actually scaled the object by giving it
+a transformation matrix which is multiplied with 5. Don't do this in your
+own code. Many subsystems in Crystal Space (like the collision detection
+system, the visibility culling system and the lighting system) don't work
+properly with scaled objects. Instead scale your object using
+<code>HardTransform()</code>.
+</p>
+<p>If you read the mesh object documentation (see see section <a href="MeshObject.html#0">Mesh Object Plug-In System</a>)
+carefully you will see that in order to control visual attributes
+of mesh objects you will have to get the <em>state</em> interface for
+either the object or the factory. In this example we query
+<samp>&lsquo;iSprite3DState&rsquo;</samp> from the mesh in order to set the default action.
+An action is a set of frames and is used to control animation. In our
+simple example the sprite has only one frame so there is not much animation
+to see.
+</p>
+<p>The calls to <code>SetZBufMode()</code> and <code>SetRenderPriority()</code> are not
+strictly required since the values set here are default for meshes anyway.
+But the two lines serve as an example on how to set other values for these.
+<code>SetZBufMode()</code> sets the Z-buffer mode that the engine will use to
+render this object. With <samp>&lsquo;CS_ZBUF_USE&rsquo;</samp> this means that the Z-buffer
+will be used fully. Other values are <samp>&lsquo;CS_ZBUF_FILL&rsquo;</samp> (only fill the
+Z-buffer), <samp>&lsquo;CS_ZBUF_TEST&rsquo;</samp> (only test the Z-buffer), or <samp>&lsquo;CS_ZBUF_NONE&rsquo;</samp>
+(ignore the Z-buffer). <samp>&lsquo;CS_ZBUF_USE&rsquo;</samp> is a good default for objects
+in a room. <samp>&lsquo;CS_ZBUF_FILL&rsquo;</samp> is usually used for the outside walls of
+a sector.
+</p>
+<p><code>SetRenderPriority()</code> controls when this object is rendered in this
+sector. By default there are several render priorities. Some of the
+more important ones are: <em>sky</em>, <em>wall</em>,
+<em>object</em>, and <em>alpha</em>. Every object can be put in a render
+priority queue. Objects in lower render priorities will be rendered before
+objects in higher render priorities. In addition some render priority queues
+sort objects internally based on some other criteria. For example, the
+<samp>&lsquo;alpha&rsquo;</samp> render priority will render all objects in that queue
+from back to front. You can create your own additional render queues if
+you want. The default render priority is <em>object</em> which you can
+get with the call <code>engine-&gt;GetObjectRenderPriority()</code>. Most objects
+with Z-buffer mode equal to <samp>&lsquo;CS_ZBUF_USE&rsquo;</samp> are placed in the
+<samp>&lsquo;object&rsquo;</samp> render priority queue.
+</p>
+<p>For more information on render priorities and Z-buffer mode you can look
+at the <small>HOWTO</small> on this subject (see section <a href="HOWTO-Render-Priorities.html#0">Render Priorities and Objects in Sectors</a>).
+</p>
+<p>This concludes the second Simple tutorial.
+You can now go on to the next tutorial (see section <a href="Tutorial-Simple-Map.html#0">Simple Tutorial 3: Map Loading, Collision Detection</a>)) to learn
+how you can load a map from a file instead of creating your rooms
+programmatically.
+</p>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Simple-Loading-Mesh-Factory.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Tutorial-Simple-Map.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Tutorial-Simple-2.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

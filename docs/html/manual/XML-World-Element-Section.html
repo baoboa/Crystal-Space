@@ -1,0 +1,151 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 5.4.2.2 World Element Section</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 5.4.2.2 World Element Section">
+<meta name="keywords" content="Crystal Space 2.1.0: 5.4.2.2 World Element Section">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="XML-World-Element-Section"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="XML-Init-Section.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="XML-World-Definition-Section.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="XML-File-Format.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Internals.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h4 class="subsubsection"> 5.4.2.2 World Element Section </h4>
+
+<p>This section describes the world element section.
+</p>
+<a name="1"></a>
+<h4 class="subsubheading"> Addon Section </h4>
+
+<p>Addons are loader plugins that can be used to extend the loading
+capabilities. Like keys, addons can also be loaded from almost any
+Crystal Space object. The difference is that the loaded information
+is not automatically attached to the object. Instead the object in which
+the addon is called is given as a <em>context</em> to the addon loader
+so that it can choose to do with it whatever it wants. For example, you
+could make an addon plugin for your own game that sets up a physics
+object for a mesh object. To do that you would have to create a plugin
+that implements the <samp>&lsquo;iLoaderPlugin&rsquo;</samp> interface. In the plugin
+implementation you can examine the context and based on that create some
+information that you can attach to that context (if it is a mesh object
+for example). The addon plugin will also get an <small>XML</small> node that it
+can parse for additional parameters.
+</p>
+<a name="2"></a>
+<h4 class="subsubheading"> Mesh Factory Section </h4>
+
+<p>In a map file you can define zero or more mesh factories. A mesh factory
+itself is not an object that you can see. It only defines a blue-print
+for creating mesh objects later. How a mesh factory and mesh object
+interact depends on the specific type of mesh object. For some types
+factories are required but for others you can just define the object
+directly as a mesh object (see section <a href="MeshObject.html#0">Mesh Object Plug-In System</a>).
+</p>
+<p>Here is an example mesh factory:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">&lt;meshfact name=&quot;square&quot;&gt;
+    &lt;plugin&gt;crystalspace.mesh.loader.factory.genmesh&lt;/plugin&gt;
+    &lt;params&gt;
+        &lt;numvt&gt;4&lt;/numvt&gt;
+        &lt;numtri&gt;4&lt;/numtri&gt;
+        &lt;v x=&quot;-2&quot; y=&quot;0&quot; z=&quot;-2&quot; u=&quot;0&quot; v=&quot;0&quot; /&gt;
+        &lt;v x=&quot;2&quot; y=&quot;0&quot; z=&quot;-2&quot; u=&quot;1&quot; v=&quot;0&quot; /&gt;
+        &lt;v x=&quot;2&quot; y=&quot;0&quot; z=&quot;2&quot; u=&quot;1&quot; v=&quot;1&quot; /&gt;
+        &lt;v x=&quot;-2&quot; y=&quot;0&quot; z=&quot;2&quot; u=&quot;0&quot; v=&quot;1&quot; /&gt;
+        &lt;t v1=&quot;3&quot; v2=&quot;0&quot; v3=&quot;1&quot; /&gt;
+        &lt;t v1=&quot;1&quot; v2=&quot;2&quot; v3=&quot;3&quot; /&gt;
+        &lt;t v1=&quot;1&quot; v2=&quot;0&quot; v3=&quot;3&quot; /&gt;
+        &lt;t v1=&quot;3&quot; v2=&quot;2&quot; v3=&quot;1&quot; /&gt;
+        &lt;autonormals /&gt;
+    &lt;/params&gt;
+&lt;/meshfact&gt;
+</pre></td></tr></table>
+<p>In the example above we use the <samp>&lsquo;genmesh&rsquo;</samp> factory loader plugin.
+Everything inside the <samp>&lsquo;params&rsquo;</samp> block is specific to that loader. If
+you use other loaders you will need other stuff in there.
+It is also possible to specify the parameters of a plugin in another
+<small>XML</small> file in which case you can use <samp>&lsquo;paramsfile&rsquo;</samp>. The use
+of <samp>&lsquo;paramsfile&rsquo;</samp> is required if the other file is binary or not
+<small>XML</small>.
+</p>
+<p>The example above defines a factory called <samp>&lsquo;square&rsquo;</samp>. When you later
+define mesh objects you can create them from that factory. In case of
+<samp>&lsquo;genmesh&rsquo;</samp> which is used here you must use factories.
+</p>
+<p>Mesh factories can contain keys and addons.
+</p>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="XML-Init-Section.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="XML-World-Definition-Section.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="XML-File-Format.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Internals.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

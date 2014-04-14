@@ -1,0 +1,1613 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: C.6 Release Notes from 0.96 to 0.98</title>
+
+<meta name="description" content="Crystal Space 2.1.0: C.6 Release Notes from 0.96 to 0.98">
+<meta name="keywords" content="Crystal Space 2.1.0: C.6 Release Notes from 0.96 to 0.98">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Release-Notes-98"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Api1_005f0-Removed-Features.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Release-Notes-96.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Licenses.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h2 class="appendixsec"> C.6 Release Notes from 0.96 to 0.98 </h2>
+
+<p>This section documents the major changes between versions 0.96 and 0.98 of
+Crystal Space.
+</p>
+<a name="1"></a>
+<h3 class="subheading"> Lighting Changes </h3>
+
+<p>The following methods have been removed:
+</p>
+<ul>
+<li>
+<code>iMeshWrapper::DeferUpdateLighting()</code>
+</li><li>
+<code>iMeshWrapper::UpdateLighting()</code>
+</li></ul>
+
+
+<p>Instead there is a new function <code>iMeshWrapper::SetLightingUpdate()</code> with
+which you can exhibit the same control.  The big difference is that you don't
+have to call this function every time a light or object moves.  This is all
+updated automatically now.
+</p>
+<p>Also removed the <code>CS_NLIGHT_</code> flags. <code>iEngine::GetNearbyLights()</code>
+has been modified so that the flags parameter is no longer accepted.
+</p>
+<a name="2"></a>
+<h3 class="subheading"> Bezier Curve Changes </h3>
+
+<p>The notion of curve templates has been reworked. <samp>&lsquo;iCurveTemplate&rsquo;</samp> has
+been removed and it's functionality has moved to <samp>&lsquo;iCurve&rsquo;</samp> itself.
+As a consequence of this change the bezier addon loader has been removed.
+Also curves have been separated from the thing plugin and now live in the
+<tt>&lsquo;bezier&rsquo;</tt> plugin. So, a curve like this in the past:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">&lt;addon&gt;
+  &lt;plugin&gt;crystalspace.mesh.loader.thing.bezier&lt;/plugin&gt;
+  &lt;params&gt;
+    &lt;name&gt;b1&lt;/name&gt;
+    &lt;material&gt;mosaic&lt;/material&gt;
+    &lt;v&gt;0&lt;/v&gt; &lt;v&gt;1&lt;/v&gt; &lt;v&gt;2&lt;/v&gt;
+    &lt;v&gt;3&lt;/v&gt; &lt;v&gt;4&lt;/v&gt; &lt;v&gt;5&lt;/v&gt;
+    &lt;v&gt;6&lt;/v&gt; &lt;v&gt;7&lt;/v&gt; &lt;v&gt;8&lt;/v&gt;
+  &lt;/params&gt;
+&lt;/addon&gt;
+&lt;meshfact name=&quot;tunnel&quot;&gt;
+  &lt;plugin&gt;crystalspace.mesh.loader.factory.thing&lt;/plugin&gt;
+  &lt;params&gt;
+    &lt;curvecenter x=&quot;0&quot; y=&quot;0&quot; z=&quot;0&quot; /&gt;
+    &lt;curvescale&gt;80&lt;/curvescale&gt;
+    &lt;curvecontrol x=&quot;5&quot; y=&quot;2&quot; z=&quot;0&quot; u=&quot;1&quot; v=&quot;0&quot; /&gt;
+    ...
+    &lt;curve name=&quot;bez&quot;&gt;b1&lt;/curve&gt;
+  &lt;/params&gt;
+&lt;/meshfact&gt;
+</pre></td></tr></table>
+
+<p>should now become (note the new plugin line):
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">&lt;meshfact name=&quot;tunnel&quot;&gt;
+  &lt;plugin&gt;crystalspace.mesh.loader.factory.bezier&lt;/plugin&gt;
+  &lt;params&gt;
+    &lt;curvecenter x=&quot;0&quot; y=&quot;0&quot; z=&quot;0&quot; /&gt;
+    &lt;curvescale&gt;80&lt;/curvescale&gt;
+    &lt;curvecontrol x=&quot;5&quot; y=&quot;2&quot; z=&quot;0&quot; u=&quot;1&quot; v=&quot;0&quot; /&gt;
+    ...
+    &lt;curve name=&quot;b1&quot;&gt;
+      &lt;material&gt;mosaic&lt;/material&gt;
+      &lt;v&gt;0&lt;/v&gt; &lt;v&gt;1&lt;/v&gt; &lt;v&gt;2&lt;/v&gt;
+      &lt;v&gt;3&lt;/v&gt; &lt;v&gt;4&lt;/v&gt; &lt;v&gt;5&lt;/v&gt;
+      &lt;v&gt;6&lt;/v&gt; &lt;v&gt;7&lt;/v&gt; &lt;v&gt;8&lt;/v&gt;
+    &lt;/curve&gt;
+  &lt;/params&gt;
+&lt;/meshfact&gt;
+</pre></td></tr></table>
+<p>On the <small>API</small> side nothing much changes except that when you use
+the bezier mesh plugin you need to use <samp>&lsquo;iBezierState&rsquo;</samp> and
+<samp>&lsquo;iBezierFactoryState&rsquo;</samp>.
+</p>
+<p>The <samp>&lsquo;iThingEnvironment&rsquo;</samp> no longer has code to maintain bezier curve
+templates.
+</p>
+<a name="3"></a>
+<h3 class="subheading"> iThingState and iPolygon3D Changes </h3>
+
+<p>The interface <samp>&lsquo;iThingState&rsquo;</samp> no longer inherits from
+<samp>&lsquo;iObject&rsquo;</samp>, thus the <code>QueryObject()</code> function has been removed.
+</p>
+<p><samp>&lsquo;iThingState&rsquo;</samp> has been split into <samp>&lsquo;iThingState&rsquo;</samp> and
+<samp>&lsquo;iThingFactoryState&rsquo;</samp>. A thing mesh no longer implements both a mesh
+object and a mesh object factory. Instead things now work like usual
+mesh objects where <code>iMeshObjectType::NewFactory()</code> creates a
+factory that implements <samp>&lsquo;iThingFactoryState&rsquo;</samp> and
+<code>iMeshObjectFactory::NewInstance()</code> creates an instance that implements
+<samp>&lsquo;iThingState&rsquo;</samp>. The engine convenience functions to create a thing
+mesh will automatically create both the factory and mesh so you don't
+have to worry about that. You can use <code>iThingState::GetFactory()</code>
+from a thing mesh object to get the <samp>&lsquo;iThingFactoryState&rsquo;</samp> so you can
+build the polygons. Note that <code>SCF_QUERY_INTERFACE()</code> of
+<samp>&lsquo;iThingFactoryState&rsquo;</samp> no longer works on a thing mesh object. You must
+use <code>GetFactory()</code>.
+</p>
+<p><code>iThingState::GetVertexC()</code> has been removed. It is no longer possible
+to get camera space information from a thing.
+</p>
+<p>The method <code>iThingFactoryState::GetFlags()</code> has been removed.  Use the new
+method <code>iMeshObjectFactory::GetFlags()</code> instead.
+</p>
+<p>The interface <samp>&lsquo;iPolygon3D&rsquo;</samp> is completely removed.  The
+<samp>&lsquo;iThingFactoryState&rsquo;</samp> now contains a lot of new functions to create and
+manipulate polygons.  Here is an example:
+</p>
+<p>First the old code:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">  iPolygon3D* p;
+  p = state-&gt;CreatePolygon (&quot;First one&quot;);
+  p-&gt;CreateVertex (csVector3 (...));
+  p-&gt;CreateVertex (csVector3 (...));
+  p-&gt;CreateVertex (csVector3 (...));
+  p-&gt;CreateVertex (csVector3 (...));
+  p-&gt;SetMaterial (mat);
+  p = state-&gt;CreatePolygon (&quot;Second one&quot;);
+  p-&gt;CreateVertex (csVector3 (...));
+  p-&gt;CreateVertex (csVector3 (...));
+  p-&gt;CreateVertex (csVector3 (...));
+  p-&gt;CreateVertex (csVector3 (...));
+  p-&gt;SetMaterial (mat);
+  ...
+</pre></td></tr></table>
+<p>Here is the new code:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">  state-&gt;AddQuad (
+    csVector3 (...),
+    csVector3 (...),
+    csVector3 (...),
+    csVector3 (...));
+  state-&gt;SetPolygonName (CS_POLYRANGE_LAST, &quot;First one&quot;);
+  state-&gt;AddQuad (
+    csVector3 (...),
+    csVector3 (...),
+    csVector3 (...),
+    csVector3 (...));
+  state-&gt;SetPolygonName (CS_POLYRANGE_LAST, &quot;Second one&quot;);
+  state-&gt;SetPolygonMaterial (CS_POLYRANGE_ALL, mat);
+</pre></td></tr></table>
+<p>If you want to add a box that can be seen from the inside (typically a room)
+then you can do it like this:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">  state-&gt;AddInsideBox (csVector3 (-5, 0, -5), csVector3 (5, 20, 5));
+  state-&gt;SetPolygonMaterial (CS_POLYRANGE_LAST, mat);
+  state-&gt;SetPolygonTextureMapping (CS_POLYRANGE_LAST, 3);
+</pre></td></tr></table>
+<a name="4"></a>
+<h3 class="subheading"> Light Changes </h3>
+
+<p>The interfaces <samp>&lsquo;iStatLight&rsquo;</samp> and <samp>&lsquo;iDynLight&rsquo;</samp> have been removed
+and their functionality has been merged into <samp>&lsquo;iLight&rsquo;</samp> (this includes
+the function <code>iDynLight::Setup()</code>. There is now a new function
+<code>iLight::GetDynamicType()</code> which returns one of the following
+constants depending on the type of the light:
+</p>
+<ul class="toc">
+<li>
+<code>CS_LIGHT_DYNAMICTYPE_STATIC</code>: for static lights.
+</li><li>
+<code>CS_LIGHT_DYNAMICTYPE_PSEUDO</code>: for pseudo-dynamic lights.
+</li><li>
+<code>CS_LIGHT_DYNAMICTYPE_DYNAMIC</code>: for fully dynamic lights.
+</li></ul>
+
+<p>The method <code>iLight::IsDynamic()</code> was removed;
+use <code>iLight::GetDynamicType()</code> to get the same information.
+</p>
+<p>The following functions have been modified to work with <samp>&lsquo;iLight&rsquo;</samp>
+instead of <samp>&lsquo;iStatLight&rsquo;</samp> and <samp>&lsquo;iDynLight&rsquo;</samp>:
+</p>
+<ul class="toc">
+<li>
+<code>iEngine::CreateLight()</code>.
+</li><li>
+<code>iEngine::FindLight()</code>.
+</li><li>
+<code>iEngine::FindLightID()</code>.
+</li><li>
+<code>iEngine::ForceRelight()</code>.
+</li></ul>
+
+<p>The last parameter of <code>iEngine::CreateLight()</code> routine has
+changed to be the dynamic type of the light (one of the above
+<samp>&lsquo;CS_LIGHT_DYNAMICTYPE&rsquo;</samp> constants) instead of a boolean. Thus, the
+<code>iEngine::CreateDynLight()</code> method has been superceded by this
+function.
+</p>
+<p>All functions related to dynamic lights have been removed. Dynamic
+lights are now treated exactly like static lights. For example, you have to
+call <code>iSector::GetLights()</code> and then <code>Add()</code> to add the light to the
+sector. The <code>iLight::Setup()</code> function remains, however, and is
+specific to dynamic lights.
+</p>
+<a name="5"></a>
+<h3 class="subheading"> Polygon Texture Mapping Changes </h3>
+
+<p>The following interfaces have been removed: <samp>&lsquo;iPolyTexNone&rsquo;</samp>,
+<samp>&lsquo;iPolyTexGouraud&rsquo;</samp>, <samp>&lsquo;iPolyTexFlat&rsquo;</samp>, and  <samp>&lsquo;iPolyTexLightMap&rsquo;</samp>.
+The combined <small>API</small> from <samp>&lsquo;iPolyTexNone&rsquo;</samp> and the <samp>&lsquo;iPolyTexLightMap&rsquo;</samp>
+have moved to <samp>&lsquo;iThingFactoryState&rsquo;</samp>.
+</p>
+<p>It is no longer possible to set mixmode and alpha for individual polygons
+Instead use the new <code>iThingState::SetMixMode()</code> function to set the
+mixmode globally.  If needed you will have to separate the transparent polygon
+in a separate thing mesh.
+</p>
+<p>It is also no longer possible to get camera space information from polygons.
+</p>
+<p>The <code>&lt;shading&gt;</code> keyword in polygons in map files now accepts a boolean
+value instead of <samp>&lsquo;NONE&rsquo;</samp>, <samp>&lsquo;FLAT&rsquo;</samp>, <samp>&lsquo;GOURAUD&rsquo;</samp>, or <samp>&lsquo;LIGHTMAP&rsquo;</samp>.
+With this you can enable/disable lightmapping.
+</p>
+<p>If you want gouraud shaded polygons you should use the <tt>&lsquo;genmesh&rsquo;</tt>
+mesh object plugin instead.
+</p>
+<a name="6"></a>
+<h3 class="subheading"> Polygon Planes </h3>
+
+<p>Polygon planes are removed. So it is no longer possible to use
+the plane addon loader to define texture mapping for a polygon outside
+of the polygon itself. To fix this you must specify all texture mapping
+information in the <samp>&lsquo;texmap&rsquo;</samp> statement of the polygon. <tt>&lsquo;map2cs&rsquo;</tt>
+now correctly outputs polygons like this (no longer outputs planes) and
+<tt>&lsquo;levtool&rsquo;</tt> can convert old style maps to new format like this:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">levtool -planes yourmap.zip
+</pre></td></tr></table>
+<p><samp>&lsquo;iThingEnvironment&rsquo;</samp> no longer has code to maintain polygon texture
+mapping planes.
+</p>
+<p>The plane loader and saver addons have been removed from the thing
+loader plugin.
+</p>
+<p>Removed <samp>&lsquo;iPolyTxtPlane&rsquo;</samp> interface.
+</p>
+<a name="7"></a>
+<h3 class="subheading"> Portal Changes </h3>
+
+<p>Several methods in <samp>&lsquo;iPortal&rsquo;</samp> have changed slightly. For example,
+<code>SetMirror()</code> now expects a plane instead of a polygon.
+</p>
+<p>In the map loader the syntax for specifying warp vectors for portals has
+changed from <samp>&lsquo;v&rsquo;</samp> to <samp>&lsquo;wv&rsquo;</samp> and <samp>&lsquo;w&rsquo;</samp> to <samp>&lsquo;ww&rsquo;</samp>.
+</p>
+<p>Portals in thing have been removed completely! Instead there is now a separate
+portal container object which belongs in the engine (otherwise it is just
+a mesh like any other mesh). To create a portal you can use the convenience
+functions <code>iEngine::CreatePortal()</code> and
+<code>iEngine::CreatePortalContainer()</code>. Here is an example of old code
+and how to change it to new code:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">  ... create thing in sourceSector ...
+  iPolygon3D* p = state-&gt;CreatePolygon ();
+  p-&gt;CreateVertex (csVector3 (...));
+  p-&gt;CreateVertex (csVector3 (...));
+  p-&gt;CreateVertex (csVector3 (...));
+  p-&gt;CreateVertex (csVector3 (...));
+  iPortal* portal = p-&gt;CreatePortal (destSector);
+</pre></td></tr></table>
+<p>New code:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">  csPoly3D poly;
+  poly.AddVertex (csVector3 (...));
+  poly.AddVertex (csVector3 (...));
+  poly.AddVertex (csVector3 (...));
+  poly.AddVertex (csVector3 (...));
+  iPortal* portal;
+  csRef&lt;iMeshWrapper&gt; portal_mesh = engine-&gt;CreatePortal (
+        &quot;my_portal&quot;, sourceSector, csVector3 (0, 0, 0),
+        destSector, poly.GetVertices (), poly.GetVertexCount (),
+        portal);
+</pre></td></tr></table>
+<p>In map files the old way to create portals in a polygon is still supported.
+Internally it will also create a portal container (as a child mesh of
+the thing it is in). The new way to create portals is by using the new
+<samp>&lsquo;portals&rsquo;</samp> and <samp>&lsquo;portal&rsquo;</samp> keywords in sectors or as children of
+other meshes.
+</p>
+<a name="8"></a>
+<h3 class="subheading"> Datatype Changes </h3>
+
+<p>The <samp>&lsquo;csSome&rsquo;</samp>, <samp>&lsquo;csConstSome&rsquo;</samp> and <samp>&lsquo;uint&rsquo;</samp> types have been removed.
+Use <samp>&lsquo;void*&rsquo;</samp>, <samp>&lsquo;const void*&rsquo;</samp> and <samp>&lsquo;unsigned int&rsquo;</samp> instead.
+</p>
+<a name="9"></a>
+<h3 class="subheading"> Procedural Textures </h3>
+
+<p>Instead of only built-in types, procedural textures have been moved into 
+plugins. That means that the <code>&lt;type&gt;</code> token now works the same way
+as the <code>&lt;plugin&gt;</code> token for meshes. That is, either specify a full
+class ID (e.g. <samp>&lsquo;crystalspace.proctex.loader.fire&rsquo;</samp>), or a shortcut
+specified in the <code>&lt;plugins&gt;</code> token of the world. To simulate the
+old <code>&lt;type&gt;</code> behaviour, paste the following lines into a map's 
+<code>&lt;plugin&gt;</code> section:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">&lt;plugin name=&quot;dots&quot;&gt;crystalspace.texture.loader.dots&lt;/plugin&gt;
+&lt;plugin name=&quot;fire&quot;&gt;crystalspace.texture.loader.fire&lt;/plugin&gt;
+&lt;plugin name=&quot;water&quot;&gt;crystalspace.texture.loader.water&lt;/plugin&gt;
+&lt;plugin name=&quot;plasma&quot;&gt;crystalspace.texture.loader.plasma&lt;/plugin&gt;
+</pre></td></tr></table>
+<p>This requires that you move the <code>&lt;plugin&gt;</code> block in front of the 
+<code>&lt;textures&gt;</code> block, as otherwise the shortcuts won't be recognised.
+</p>
+<p>The behaviour of procedural textures also differs as a material of the same
+name was created along with the texture; this isn't the case any more, you
+have to create a material which uses the procedural texture manually.
+</p>
+<p>In addition, the loader now doesn't distinguish between normal and procedural
+textures any more, both are loaded with the same <code>&lt;texture&gt;</code> block. The 
+syntax recognized is a combination of both old <code>&lt;texture&gt;</code> and 
+<code>&lt;proctex&gt;</code> tokens&mdash;so renaming all <code>&lt;proctex&gt;</code> to <code>&lt;texture&gt;</code>
+tags is sufficient to convert a level (apart from fixing the <code>&lt;type&gt;</code>
+tokens.)
+</p>
+<a name="10"></a>
+<h3 class="subheading"> Regions </h3>
+
+<p>Region handling has changed considerably. The engine no longer has the
+concept of a current region. The engine still manages all regions though.
+Objects also no longer register themselves to the current region. It is
+the responsability of the object creator to do that. The standard loader
+has support for adding objects to a region now.
+</p>
+<p>The following functions have been removed from <samp>&lsquo;iEngine&rsquo;</samp>:
+</p>
+<ul class="toc">
+<li>
+<code>SelectRegion()</code>
+</li><li>
+<code>GetCurrentRegion()</code>
+</li><li>
+<code>AddToCurrentRegion()</code>
+</li></ul>
+
+<p>There is one new function <code>iEngine::CreateRegion()</code> which will create
+a new region.
+</p>
+<p>In <samp>&lsquo;iLoader&rsquo;</samp> the functions <code>LoadMapFile()</code> and
+<code>ThreadedLoadMapFile()</code> now expect an optional pointer to a region
+in addition with a boolean to restrict searching to that region.
+</p>
+<p>In addition to all these changes the <code>&lt;region&gt;</code> keyword in map files is no
+longer supported.
+</p>
+<a name="11"></a>
+<h3 class="subheading"> Mesh Objects / Factories and iPolygonMesh </h3>
+
+<p>Some mesh factories used to support the querying of the <samp>&lsquo;iPolygonMesh&rsquo;</samp>
+interface (e.g. Thing, Sprite3D, Genmesh). Due to the way this was 
+implemented internally this caused leaks. So, querying <samp>&lsquo;iPolygonMesh&rsquo;</samp> 
+directly from the object is now discouraged. Although it may still work in 
+some cases, this feature may be dropped without further notice and may not 
+work in all cases. 
+</p>
+<p>Similar for mesh objects. Querying <samp>&lsquo;iPolygonMesh&rsquo;</samp> is discouraged here,
+as well.
+</p>
+<p>Instead, if you want the polygon mesh from an object, use the
+<code>GetObjectModel()</code> method from the <samp>&lsquo;iMeshObject&rsquo;</samp> interface;
+respectively query for the <samp>&lsquo;iObjectModel&rsquo;</samp> interface in case of a factory,
+and utilize one of the <code>GetPolygonMeshXXX()</code> methods, depending on what
+you need (the old interface query returned the collision detection mesh.) This
+has also the advantages that you can get different meshes for different
+purposes (currently, visibility culling and collision detection in addition the
+the base mesh), and that those meshes can be overridden by user-defined meshes
+(e.g. if the collision detection mesh needs to have a shape different from the
+visible mesh.)
+</p>
+<p>In <samp>&lsquo;iPolygonMesh&rsquo;</samp> the <code>IsDeformable()</code> method has been replaced
+with the more general <code>GetFlags()</code>. In addition to that <code>Cleanup()</code>
+is removed and instead <code>Lock()</code> and <code>Unlock()</code> are added.
+</p>
+<p><samp>&lsquo;iPolygonMesh&rsquo;</samp> now has <code>GetTriangles()</code> and <code>GetTriangleCount()</code>.
+Check out the <small>API</small> docs for implementation details.
+</p>
+<a name="12"></a>
+<h3 class="subheading"> Iterator Changes </h3>
+
+<p>Changed the following iterators to conform to the following iterator standard:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">bool iterator-&gt;HasNext() // returns true if there are more items.
+T* iterator-&gt;Next()      // returns next element or 0.
+void Reset()             // resets iterator (not all implement this).
+</pre></td></tr></table>
+<ul class="toc">
+<li>
+<code>iVisibilityObjectIterator</code>
+</li><li>
+<code>iLightIterator</code>
+</li><li>
+<code>iSectorIterator</code>
+</li><li>
+<code>iObjectIterator</code>
+</li><li>
+<code>iStreamIterator</code>
+</li><li>
+<code>iObjectRegistryIterator</code>
+</li><li>
+<code>csTypedObjectIterator</code>
+</li><li>
+<code>csModelDataActionIterator</code>
+</li><li>
+<code>csModelDataPolygonIterator</code>
+</li><li>
+<code>csModelDataTextureIterator</code>
+</li><li>
+<code>csModelDataMaterialIterator</code>
+</li><li>
+<code>csModelDataObjectIterator</code>
+</li><li>
+<code>csNodeIterator</code>
+</li></ul>
+
+<a name="13"></a>
+<h3 class="subheading"> <small>AWS</small> Changes </h3>
+
+<p><code>iAWS::CreateCustomCanvas()</code> was removed.  To set up <small>AWS</small> with a
+canvas, use <code>iAWS::SetupCanvas()</code> instead. 
+</p>
+<p><code>iAWS::CreateTransition()</code> and <code>iAWS::CreateTransitionEx()</code> have been
+changed to take a <var>delay</var> parameter specified in <samp>&lsquo;csTicks&rsquo;</samp> instead of
+using a <var>step_size</var> parameter.  This change ensures that transitions take
+the same amount of time on computers having different processor speeds.
+<code>iAWS::ComponentIsInTransition()</code> has been added to allow users to query
+if a specified <samp>&lsquo;iAwsComponent&rsquo;</samp> is in the midst of a transition.
+</p>
+<a name="14"></a>
+<h3 class="subheading"> Array Changes </h3>
+
+<p>All arrays have been modified to inherit from <samp>&lsquo;csArray&rsquo;</samp>. This means
+that there are some slight <small>API</small> changes because some methods were
+not consistent with <samp>&lsquo;csArray&rsquo;</samp>.
+</p>
+<p><samp>&lsquo;csGrowingArray&rsquo;</samp> has been renamed to <samp>&lsquo;csDirtyAccessArray&rsquo;</samp> in order to
+better reflect its intention, which is that it publishes a method allowing the
+client to obtain access to the raw memory block containing the items in
+contiguous memory.  This potentially unsafe operation is not available in the
+other array templates.  Use this class only in very special-purpose cases where
+you need to construct a list of objects dynamically and then pass the address
+of the raw memory containing those objects to some foreign function which does
+not understand <code>csArray&lt;&gt;</code>.
+</p>
+<a name="15"></a>
+<h3 class="subheading"> csPArray Removed </h3>
+
+<p><samp>&lsquo;csPArray&rsquo;</samp> has been removed in favor of the <code>csArray&lt;&gt;</code> template.
+So, use <code>csArray&lt;T*&gt;</code> instead of <code>csPArray&lt;T&gt;</code>.
+</p>
+<a name="16"></a>
+<h3 class="subheading"> csStrVector and iStrVector Removed </h3>
+
+<p><samp>&lsquo;csStrVector&rsquo;</samp> and <samp>&lsquo;iStrVector&rsquo;</samp> have been removed in favor of
+<samp>&lsquo;csStringArray&rsquo;</samp> and <samp>&lsquo;iStringArray&rsquo;</samp>.  This means that functions like
+<code>iVFS::MountRoot()</code> and <code>iVFS::FindFiles()</code> now return an
+<samp>&lsquo;iStringArray&rsquo;</samp>.
+</p>
+<a name="17"></a>
+<h3 class="subheading"> csVector and csBasicVector Removed </h3>
+
+<p><samp>&lsquo;csVector&rsquo;</samp> and <samp>&lsquo;csBasicVector&rsquo;</samp> have been removed. Instead you
+should use one of the templated arrays: <code>csArray&lt;&gt;</code>, <code>csPDelArray&lt;&gt;</code>,
+or <code>csRefArray&lt;&gt;</code>.
+</p>
+<p>If you were using a regular <samp>&lsquo;csVector&rsquo;</samp> then this can usually be
+replaced directly by <code>csArray&lt;type*&gt;</code> with <samp>&lsquo;type&rsquo;</samp> the type you
+were storing in the vector.
+</p>
+<p>If you subclassed from <samp>&lsquo;csVector&rsquo;</samp> in order to override <code>FreeItem()</code>
+then you have to decide what to do depending on the code in <code>FreeItem()</code>.
+If that code performed a <samp>&lsquo;delete&rsquo;</samp> then you can use <code>csPDelArray&lt;&gt;</code>.
+If that code performed a <code>DecRef()</code> then you can use <code>csRefArray&lt;&gt;</code>
+but you still have to be careful because <code>csRefArray&lt;&gt;</code> will automatically
+invoke <code>IncRef()</code> for objects that are pushed on the array. In other cases
+you probably need to handle deletion manually.
+</p>
+<p><samp>&lsquo;csVector&rsquo;</samp> also allowed you to override <code>Compare()</code> and
+<code>CompareKey()</code>, and these methods were utilized automatically by
+<code>QuickSort()</code>, <code>FindSortedKey()</code>, <code>InsertSorted()</code>, and
+<code>FindKey()</code>.  <code>csArray&lt;&gt;</code>, on the other hand, accepts a comparison
+function as an argument to its sorting and searching methods, thus providing
+much greater flexibility than <samp>&lsquo;csVector&rsquo;</samp>.  You can transform your
+<code>csVector</code>-based code as follows.  First, the old code:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">class MyVector : public csVector
+{
+public:
+  virtual ~MyVector ()
+  {
+    DeleteAll ();
+  }
+  virtual void FreeItem (void* item)
+  {
+    delete (MyType*)item;
+  }
+  virtual int Compare (void* i1, void* i2, int mode) const
+  {
+    ...
+  }
+  virtual int CompareKey (void* i, const void* key, int mode) const
+  {
+    ...
+  }
+};
+</pre></td></tr></table>
+
+<p>This can be transformed roughly to the following class:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">class MyVector : public csPDelArray&lt;MyType&gt;
+{
+public:
+  static int Compare (MyType const&amp; i1, MyType const&amp; i2)
+  {
+    ...
+  }
+  static int CompareKey (MyType const&amp; i, MyKey const&amp; key)
+  {
+    ...
+  }
+};
+</pre></td></tr></table>
+<p>The methods <code>csArray&lt;&gt;::Sort()</code> and <code>csArray&lt;&gt;::InsertSorted()</code>
+accept an optional comparison function (<code>MyVector::Compare()</code>, in the
+example).  To use a custom comparison function, invoke these functions like
+this:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">MyVector v = ...;
+v.Sort(MyVector::Compare);
+...
+MyType o = ...;
+v.InsertSorted(o, MyVector::Compare);
+</pre></td></tr></table>
+
+<p>If you do not provide a comparison function, then the array elements are
+compared against each other with <code>T::operator&lt;(T)</code> where <samp>&lsquo;T&rsquo;</samp> is the
+type of the element contained in the array.  This default comparison semantic
+works nicely for all built-in types, as well as for complex types which define
+a <samp>&lsquo;&lt;&rsquo;</samp> operator.
+</p>
+<p>The methods <code>csArray&lt;&gt;::FindKey()</code> and <code>csArray&lt;&gt;::FindSortedKey()</code>
+accept a comparison <em>functor</em> which is constructed from the key for which
+you are searching and an optional comparison function
+(<code>MyVector::CompareKey()</code>, in the example).  Invoke these functions like
+this:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">int r;
+MyKey key = ...;
+MyVector v = ...;
+r = v.FindKey(csArrayCmp&lt;MyType,MyKey&gt;(key, MyVector::CompareKey));
+r = v.FindSortedKey(
+              csArrayCmp&lt;MyType,MyKey&gt;(key, MyVector::CompareKey));
+</pre></td></tr></table>
+
+<p>In this example, the key's type is <samp>&lsquo;MyKey&rsquo;</samp> (the type expected by
+<code>MyVector::CompareKey()</code>).  It is possible and often convenient for
+<samp>&lsquo;MyType&rsquo;</samp> and <samp>&lsquo;MyKey&rsquo;</samp> to be the same type (for instance, you might
+search for an integer in an array of integers).  When the types of
+<samp>&lsquo;MyType&rsquo;</samp> and <samp>&lsquo;MyKey&rsquo;</samp> differ, <samp>&lsquo;MyType&rsquo;</samp> is often a composite type,
+and <samp>&lsquo;MyKey&rsquo;</samp> is the type of one attribute of <samp>&lsquo;MyType&rsquo;</samp>, however you are
+not in any way limited to this arrangements.  If you do not provide a
+comparison function when constructing the functor, then the elements are
+compared with the search key via <code>T::operator&lt;(K)</code> and
+<code>K::operator&lt;(T)</code> where <samp>&lsquo;T&rsquo;</samp> and <samp>&lsquo;K&rsquo;</samp> are the type of the
+contained element and the type of the key, respectively.  This default
+comparison semantic is especially useful when the contained elements and key
+have the same type, provided that the type supports a useful <samp>&lsquo;&lt;&rsquo;</samp> operator.
+For example, if you have an array of integers which you want to sort and then
+search, you can use the default comparison semantics, rather than writing a
+custom comparison function, as shown here:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">csArray&lt;int&gt; v = ...;
+v.Sort();
+int r = v.FindSortedKey(csArrayCmp&lt;int,int&gt;(33));
+</pre></td></tr></table>
+<a name="18"></a>
+<h3 class="subheading"> Hash and Set Templates </h3>
+
+<p>The new template classes <code>csHash&lt;&gt;</code> and <code>csSet&lt;&gt;</code> are available for
+use by new code; and older code will be upgraded over time to use these
+template classes.  The older <samp>&lsquo;csHashMap&rsquo;</samp> and <samp>&lsquo;csHashSet&rsquo;</samp> classes are
+now deprecated.
+</p>
+<a name="19"></a>
+<h3 class="subheading"> csHashMap Changes </h3>
+
+<p>The deprecated <samp>&lsquo;csHashIterator&rsquo;</samp> can no longer iterate over all objects.
+To do that you need to use <samp>&lsquo;csGlobalHashIterator&rsquo;</samp>.
+</p>
+<a name="20"></a>
+<h3 class="subheading"> Event-Related Changes </h3>
+
+<p>Signatures of the <code>iEvent::Find()</code> methods have been unified so that they
+all now accept a reference into which to store the found item.  Previously,
+some <code>Find()</code> methods used a reference for this purpose, while others used
+a pointer.  In addition, rather than accepting a pointer to a pointer of type
+<samp>&lsquo;iEvent&rsquo;</samp>, the <code>Find()</code> method for finding an event now takes a
+reference to a <code>csRef&lt;iEvent&gt;</code>.
+</p>
+<p>Previously, <code>iEventQueue::Post()</code> had a special case where it assumed that
+the caller was giving up ownership of the posted <samp>&lsquo;iEvent&rsquo;</samp> if the caller
+had allocated the event manually, rather than obtaining the event via
+<code>iEventQueue::CreateEvent()</code> or <code>iEventOutlet::CreateEvent()</code>. In
+this case, <code>Post()</code> would hijack the caller's reference to the
+<samp>&lsquo;iEvent&rsquo;</samp> for itself.  This special case allowed the caller to write code,
+such as the following, which appeared to leak a reference to the event, but
+which did not in fact do so.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">iEvent* e = new csEvent(...);
+eventq-&gt;Post(e);
+</pre></td></tr></table>
+<p>Now, however, <code>iEventQueue::Post()</code> takes the more sane approach of
+treating all incoming events identically.  It never hijacks ownership of the
+event by stealing the caller's reference.  Instead, <code>Post()</code> uniformly
+invokes <code>IncRef()</code> on each incoming event in order to claim its own
+reference.  This means that callers are no longer burdened by having to
+determine whether or not the caller's reference is going to be hijacked.
+Thus, the above code should now be re-written as:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">csRef&lt;iEvent&gt; e;
+e.AttachNew(new csEvent(...));
+eventq-&gt;Post(e);
+</pre></td></tr></table>
+<p>Events created with <code>iEventQueue::CreateEvent()</code> or
+<code>iEventOutlet::CreateEvent()</code> are unaffected by this change since the
+client has never had to worry about <code>Post()</code> hijacking the reference in
+these cases.
+</p>
+<a name="21"></a>
+<h3 class="subheading"> New Renderer-Related Changes </h3>
+
+<p>The mesh object <small>API</small> has changed considerably, thus we recommend looking
+at the documentation on that to see how to modify your own mesh object for
+the new <small>API</small>.  In this section we describe <small>API</small> modifications that
+are relevant for user applications.
+</p>
+<p>For <samp>&lsquo;iLight&rsquo;</samp>: <code>SetRadius()</code>, <code>GetRadius()</code>, and
+<code>GetSquaredRadius()</code> have been replaced with <code>SetInfluenceRadius()</code>,
+<code>GetInfluenceRadius()</code>, and <code>GetInfluenceRadiusSq()</code>.
+</p>
+<p>For <samp>&lsquo;iMaterialEngine&rsquo;</samp> and related: <code>GetTextureWrapper()</code> for
+layers now expects a <samp>&lsquo;csStringID&rsquo;</samp> instead of an integer.
+</p>
+<a name="22"></a>
+<h3 class="subheading"> <small>SCF</small> Changes </h3>
+
+
+<p><em>Written by Eric Sunshine, <a href="mailto:sunshine@sunshineco.com">sunshine@sunshineco.com</a>.</em>
+</p>
+<p>The monolithic and inflexible plugin-registry database, <tt>&lsquo;scf.cfg&rsquo;</tt>, has
+been eliminated.  Instead, plugin modules are now self-describing via a
+meta-information resource associated with each module.  It is possible to
+access this meta-information without actually loading the plugin, thus avoiding
+a time-consuming and costly operation.
+</p>
+<p>A plugin's meta-information is now stored in an <small>XML</small>-format file rather
+than being hard-coded via the plugin's C++ code.  The meta-information file is
+named after the associated plugin module, except with filename extension
+<tt>&lsquo;.csplugin&rsquo;</tt>.  For instance, the meta-information for the <tt>&lsquo;vfs.so&rsquo;</tt> (or
+<tt>&lsquo;vfs.dll&rsquo;</tt>) plugin will be named <tt>&lsquo;vfs.csplugin&rsquo;</tt>.
+</p>
+<p>Since the meta-information is now maintained via an external resource, the
+following <small>SCF</small> macros, which were used to export this information from the
+C++ code, have been removed:
+</p>
+<ul>
+<li>
+<code>SCF_EXPORT_CLASS_TABLE()</code>
+</li><li>
+<code>SCF_EXPORT_CLASS()</code>
+</li><li>
+<code>SCF_EXPORT_CLASS_DEP()</code>
+</li><li>
+<code>SCF_EXPORT_CLASS_TABLE_END</code>
+</li></ul>
+
+<p>To deal with this change in your own code, simply remove the entire
+<code>SCF_EXPORT_CLASS_TABLE()</code> block from the C++ code which implements the
+plugin module.
+</p>
+<p>Creation of the meta-information resource file involves a straight-forward
+translation of the information from the obsolete <small>SCF</small> macros into a
+structured <small>XML</small>-format file.  For example:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">SCF_EXPORT_CLASS_TABLE(foo)
+  SCF_EXPORT_CLASS(
+    MyClass1,
+    &quot;myproj.myplugin.foo1&quot;,
+    &quot;My first custom foo class&quot;)
+  SCF_EXPORT_CLASS_DEP(
+    MyClass2,
+    &quot;myproj.myplugin.foo2&quot;,
+    &quot;My second custom foo class&quot;,
+    &quot;myproj.myplugin.bar1,myproj.myplugin.bar2&quot;)
+SCF_EXPORT_CLASS_TABLE_END
+</pre></td></tr></table>
+<p>This table exports two C++ classes, <samp>&lsquo;MyClass1&rsquo;</samp> and <samp>&lsquo;MyClass2&rsquo;</samp> under
+the <small>SCF</small> class names <samp>&lsquo;myproj.myplugin.foo1&rsquo;</samp> and
+<samp>&lsquo;myproj.myplugin.foo2&rsquo;</samp>, respectively.  Furthermore, the second exported
+class has a dependency upon two other <small>SCF</small> classes,
+<samp>&lsquo;myproj.myplugin.bar1&rsquo;</samp> and <samp>&lsquo;myproj.myplugin.bar2&rsquo;</samp>.  To convert
+this to an <small>XML</small>-format meta-information resource, just copy the above
+values into the appropriate <small>XML</small> nodes.  For instance:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;!-- myplugin.csplugin --&gt;
+&lt;plugin&gt;
+  &lt;scf&gt;
+    &lt;classes&gt;
+      &lt;class&gt;
+        &lt;name&gt;myproj.myplugin.foo1&lt;/name&gt;
+        &lt;implementation&gt;MyClass1&lt;/implementation&gt;
+        &lt;description&gt;My first custom foo class&lt;/description&gt;
+      &lt;/class&gt;
+      &lt;class&gt;
+        &lt;name&gt;myproj.myplugin.foo2&lt;/name&gt;
+        &lt;implementation&gt;MyClass2&lt;/implementation&gt;
+        &lt;description&gt;My second custom foo class&lt;/description&gt;
+        &lt;requires&gt;
+          &lt;class&gt;myproj.myplugin.bar1&lt;/class&gt;
+          &lt;class&gt;myproj.myplugin.bar2&lt;/class&gt;
+        &lt;/requires&gt;
+      &lt;/class&gt;
+    &lt;/classes&gt;
+  &lt;/scf&gt;
+&lt;/plugin&gt;
+</pre></td></tr></table>
+<p>The top-level node of a meta-information file is named <code>&lt;plugin&gt;</code>.  All
+<small>SCF</small>-related information is contained within an <code>&lt;scf&gt;</code> child node.
+Plugin modules can export multiple named <small>SCF</small> classes.  Each exported class
+is represented by a <code>&lt;class&gt;</code> node within the <code>&lt;classes&gt;</code> group.  The
+<code>&lt;name&gt;</code> node of a <code>&lt;class&gt;</code> is the class' <small>SCF</small> name.  The
+<code>&lt;implementation&gt;</code> node references the C++ class which actually implements
+the named <small>SCF</small> class.  This is the same name that is provided as an
+argument to the <code>SCF_IMPLEMENT_FACTORY()</code> macro.  When an <small>SCF</small> class
+depends upon other <small>SCF</small> classes, the dependencies are indicated via the
+optional <code>&lt;requires&gt;</code> group, which contains one <code>&lt;class&gt;</code> node per
+dependency.
+</p>
+<p>Meta-information in the <tt>&lsquo;.csplugin&rsquo;</tt> file is extensible; it is not
+restricted to <small>SCF</small>-only usage.  Plugin authors can choose to publish
+supplementary information about plugins in addition to the <small>SCF</small> information
+already published.  As a hypothetical example, image loading plugins might
+desire to publish <em>image indentification</em> information which would allow the
+image loading multiplexor to selectively request image loading plugins
+<em>on-demand</em>, rather than requesting all plugins unconditionally, even if
+they are not needed.  Here is a possible meta-information table for a <small>PNG</small>
+image loader (with the <code>&lt;scf&gt;</code> node collapsed to <samp>&lsquo;<small class="dots">...</small>&rsquo;</samp> for the
+sake of illustration):
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;!-- cspngimg.csplugin --&gt;
+&lt;plugin&gt;
+  &lt;scf&gt;...&lt;/scf&gt;
+  &lt;imageloader&gt;
+    &lt;imagetype&gt;
+      &lt;class&gt;crystalspace.graphic.image.io.png&lt;/class&gt;
+      &lt;identify&gt;
+        &lt;mimetype&gt;image/png&lt;/mimetype&gt;
+        &lt;extension&gt;png&lt;/extension&gt;
+        &lt;extension&gt;PNG&lt;/extension&gt;
+        &lt;scan length=&quot;4&quot; bytes=&quot;\0x89PNG&quot;/&gt;
+     &lt;/identify&gt;
+    &lt;/imagetype&gt;
+  &lt;/imageloader&gt;
+&lt;/plugin&gt;
+</pre></td></tr></table>
+<p>In this example, the <small>PNG</small> loader meta-information tells the multiplexor
+several different ways to identify a <small>PNG</small> image:
+</p>
+<ul>
+<li>
+By checking <small>MIME</small> type, if available.
+</li><li>
+By checking file extension, if available.
+</li><li>
+By checking for the <em>magic</em> identification string <samp>&lsquo;\0x89PNG&rsquo;</samp> in the
+raw image data.
+</li></ul>
+
+
+<p>If the hypothetical multiplexor identifies the image as <small>PNG</small>, only then
+will it actually request the <small>PNG</small> loader plugin.
+</p>
+<p>If you know the physical pathname of a plugin module, then you can retrieve its
+meta-information via <code>csGetPluginMetadata()</code> (<tt>&lsquo;csutil/csshlib.h&rsquo;</tt>),
+which returns an <samp>&lsquo;iDocument&rsquo;</samp>.  Alternately, if you know the name of an
+<small>SCF</small> class which a plugin exports, then you can retrieve the plugin's
+meta-information, by calling <code>iSCF::GetPluginMetadata()</code>.
+</p>
+<p>At program launch time, <small>SCF</small> discovers plugins automatically by searching a
+set of directories, and creates an internal database associating available
+<small>SCF</small> class names with the plugin modules which implement them.  The
+directories which <small>SCF</small> searches by default are:
+</p>
+<ul>
+<li>
+The application resource directory as returned by <code>csGetResourceDir()</code>.
+On most platforms, this is the same as the directory containing the
+application, however, on MacOS/X, it is the <tt>&lsquo;Resources&rsquo;</tt> directory within
+the Cocoa application wrapper.
+
+</li><li>
+The directory containing the application (or containing the Cocoa application
+wrapper for MacOS/X) as returned by <code>csGetAppDir()</code>.
+
+</li><li>
+The installed Crystal Space resource directories as returned by
+<code>csGetConfigPath()</code>.  This is often the value of the <samp>&lsquo;CRYSTAL&rsquo;</samp>
+environment variable, or the <samp>&lsquo;CrystalSpaceRoot&rsquo;</samp> default setting on MacOS/X
+(which is often stored within the <samp>&lsquo;NSGlobalDomain&rsquo;</samp> domain).
+</li></ul>
+
+<p>If you would like <small>SCF</small> to scan additional directories, you can invoke
+either of these two functions (multiple times, if necessary):
+</p>
+<ul>
+<li>
+<code>scfInitialize(csPluginPaths const*)</code>
+</li><li>
+<code>iSCF::ScanPluginsPath(char const*, bool, char const*)</code>
+</li></ul>
+
+<p>Finally, if you need to manually register a single plugin module with <small>SCF</small>
+for which you know the native pathname (not a <small>VFS</small> pathname), you can
+invoke <code>iSCF::RegisterPlugin()</code>.
+</p>
+<p>For those relatively rare cases when a <em>named</em> <small>SCF</small> class is built
+directly into an application, rather than being implemented via a plugin, the
+class must be registered with <small>SCF</small> manually since <small>SCF</small> will not
+otherwise be able to discover it automatically as is the case with named
+classes exported from plugin modules.  Manual registration is accomplished with
+the <code>SCF_REGISTER_STATIC_CLASS()</code> macro.  This macro existed previously,
+but accepted a different set of arguments.  The new arguments are:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">SCF_REGISTER_STATIC_CLASS(
+  C++Class,
+  &quot;scf.class.name&quot;,
+  &quot;description&quot;,
+  &quot;comma-separated dependency list&quot; or NULL)
+</pre></td></tr></table>
+
+<p>Invoke this macro in one of the source files of your application; usually in
+the source file which implements the class.  This macro should be invoked at
+file scope (that is, not from inside a function).  For instance:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">SCF_REGISTER_STATIC_CLASS(
+  MyClass2,
+  &quot;myproj.myplugin.foo2&quot;,
+  &quot;My second custom foo class&quot;,
+  &quot;myproj.myplugin.bar1,myproj.myplugin.bar2&quot;)
+</pre></td></tr></table>
+<p>If you used to use <code>SCF_REGISTER_STATIC_LIBRARY()</code> or
+<code>SCF_REGISTER_STATIC_CLASS_DEP()</code> for this same purpose, you must now
+instead use <code>SCF_REGISTER_STATIC_CLASS()</code>.  (A macro named
+<code>SCF_REGISTER_STATIC_LIBRARY()</code> still exists, but it has a completely
+different purpose than the original version, and is typically only used by very
+low-level mechanisms, rather than by end-users.  See
+<tt>&lsquo;CS/include/csutil/scf.h&rsquo;</tt> for the gory details, if you are curious.)
+</p>
+<p>The Crystal Space <tt>&lsquo;configure&rsquo;</tt> script option
+<samp>&lsquo;--enable-meta-info-embedding&rsquo;</samp> controls whether or not the build system
+embeds the plugin meta-information into plugin modules (if supported by the
+platform), and whether or not the plugin loader looks for embedded
+meta-information.  If this option is disabled, or if embedding is not supported
+by the platform, then the meta-information is laid down alongside the built
+plugin module (<tt>&lsquo;.so&rsquo;</tt> or <tt>&lsquo;.dll&rsquo;</tt>) in a text file with the same name as
+the plugin module, except with extension <tt>&lsquo;.csplugin&rsquo;</tt>.  The
+meta-information embedding option is enabled by default for most platforms, but
+is disabled by default for Unix platforms.
+</p>
+<p><em>Warning</em>: Meta-information embedding on Unix is accomplished via the
+<tt>&lsquo;libbfd&rsquo;</tt> library which carries a <small>GPL</small> license.  This license is
+incompatible with Crystal Space's <small>LGPL</small> license.  Unlike the <small>LGPL</small>
+which is compatible with closed-source projects, the <small>GPL</small> license is not.
+For this reason, embedding is disabled by default on Unix, and must be enabled
+explicitly with the <tt>&lsquo;configure&rsquo;</tt> script's
+<samp>&lsquo;--enable-meta-info-embedding&rsquo;</samp> option.  Enable this option on Unix only if
+you are certain that your project is compatible with the <small>GPL</small> license.
+</p>
+<p>The platform-specific plugin loaders are capable of reading embedded plugin
+meta-information, as well as meta-information in stand-alone <tt>&lsquo;.csplugin&rsquo;</tt>
+files.  Even when configured for embedding, the plugin loaders will still be
+able to recognize and utilize external <tt>&lsquo;.csplugin&rsquo;</tt> resources.  This means
+that Crystal Space-based projects with unsophisticated build systems, which are
+incapable of embedding meta-information into the plugin module, can still
+create usable plugins simply by placing a copy of the <tt>&lsquo;.csplugin&rsquo;</tt> file
+alongside the plugin executable (<tt>&lsquo;.so&rsquo;</tt> or <tt>&lsquo;.dll&rsquo;</tt>).
+</p>
+<p>External projects which are based upon Crystal Space's Jam build system
+(<tt>&lsquo;CS/mk/jam&rsquo;</tt>) inherit, for free, the capability of embedding
+meta-information within plugin modules (if supported by the platform).  Simply
+grab the newer <tt>&lsquo;.jam&rsquo;</tt> files from <tt>&lsquo;CS/mk/jam&rsquo;</tt>, and add a few
+definitions to the project's <tt>&lsquo;Jamconfig&rsquo;</tt> file.  The exact set of
+definitions is platform-specific, so consult the appropriate Jam file
+(<tt>&lsquo;unix.jam&rsquo;</tt>, <tt>&lsquo;win32.jam&rsquo;</tt>, or <tt>&lsquo;macosx.jam&rsquo;</tt>) to determine
+precisely which which definitions are required.  Here is a list of definitions
+required at the time of writing:
+</p>
+<dl compact="compact">
+<dt> Unix</dt>
+<dd><p><code>EMBED_META = yes</code><br>
+<code>LIBBFD.AVAILABLE = yes</code><br>
+<code>OBJCOPY.AVAILABLE = yes</code><br>
+<code>CMD.OBJCOPY = objcopy</code>
+</p>
+</dd>
+<dt> Windows</dt>
+<dd><p><code>EMBED_META = yes</code>
+</p>
+</dd>
+<dt> MacOS/X (not yet supported)</dt>
+<dd><p><code>EMBED_META = yes</code>
+</p></dd>
+</dl>
+
+<p>The <tt>&lsquo;scfreg&rsquo;</tt> tool whose job was to manipulate the monolithic <small>SCF</small>
+plugin-registry database, <tt>&lsquo;scf.cfg&rsquo;</tt>, has been eliminated since it is no
+longer required.
+</p>
+<a name="23"></a>
+<h4 class="subsubheading"> Other <small>SCF</small> Changes </h4>
+
+<p>The macros <code>SCF_DESTRUCT_IBASE()</code> and <code>SCF_DESTRUCT_EMBEDDED_IBASE()</code>
+have been introduced.  Just as a destructor reverses initialization performed
+by a constructor, these new macros reverse the initialization performed by the
+corresponding <code>SCF_CONSTRUCT_IBASE()</code> and
+<code>SCF_CONSTRUCT_EMBEDDED_IBASE()</code> macros.  Typically, you should invoke
+these macros within your class' destructor, just as you invoke the
+corresponding <small>SCF</small> construction macros in your class' constructor.
+</p>
+<p>The <code>SCF_CREATE_INSTANCE()</code> macro now returns <code>csPtr&lt;&gt;</code> to be
+consistent with the other <small>SCF</small> instantiation and query macros.  This means
+that you should now assign the result of <code>SCF_CREATE_INSTANCE()</code> to a
+<code>csRef&lt;&gt;</code>.
+</p>
+<p>The method <code>iSCF::QueryClassList()</code>, which used to return a raw
+<samp>&lsquo;iStringArray*&rsquo;</samp> that the client had to dispose of manually, now returns a
+<code>csRef&lt;iStringArray&gt;</code>.
+</p>
+<p>The macros <code>SCF_SET_REF()</code>, <code>SCF_INC_REF()</code>, and <code>SCF_DEC_REF()</code>
+have been removed. Instead you should use <code>csRef&lt;&gt;</code>.
+</p>
+<p>The method <code>iSCF::GetInterfaceName(scfInterfaceID)</code> has been added to
+complement the existing <code>iSCF::GetInterfaceID()</code>.
+</p>
+<p>The query template class <code>scfInterface&lt;&gt;</code> has been introduced.  This class
+provides a means to query static information about <small>SCF</small> interfaces, such as
+an interface's version number.  Presently, this class allows access to the
+following static information:
+</p>
+<ul>
+<li>
+<code>GetID()</code>&mdash;Retrieves the interface's low-level identifier as an
+<samp>&lsquo;scfInterfaceID&rsquo;</samp>, which is typically a small integer.  <small>SCF</small> identifies
+interfaces internally by an <small>ID</small> for performance reasons.
+
+</li><li>
+<code>GetName()</code>&mdash;Retrieves the interface's name as a null-terminated
+C-string.
+
+</li><li>
+<code>GetVersion()</code>&mdash;Retrieves the interface's current version number.
+</li></ul>
+
+<p>Here is an example illustrating how to retrieve various pieces of information
+about an interface.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">int ver = scfInterface&lt;iFoo&gt;::GetVersion();
+scfInterfaceID ident = scfInterface&lt;iFoo&gt;::GetID();
+char const* name = scfInterface&lt;iFoo&gt;::GetName();
+</pre></td></tr></table>
+<p>An important benefit of the new <code>scfInterface&lt;&gt;</code> template class is that it
+is now possible for template authors to perform queries for interface-related
+information.  For example, the author of a new template class may know an
+<small>SCF</small> interface via only the opaque identifier <code>T</code>, yet it is still
+possible to query <code>T</code>'s version using
+<code>scfInterface&lt;T&gt;::GetVersion()</code>.
+</p>
+<p>The old hidden, semi-private <small>API</small> for obtaining interface information via
+the global <samp>&lsquo;name_VERSION&rsquo;</samp> constant and global <code>name_scfGetID()</code>
+function has been removed.  Conversion from the old <small>API</small> to the new is
+straight forward.  For example:
+</p>
+<ul>
+<li>
+<code>iFoo_VERSION</code> =&gt; <code>scfInterface&lt;iFoo&gt;::GetVersion()</code>
+</li><li>
+<code>iFoo_scfGetID()</code> =&gt; <code>scfInterface&lt;iFoo&gt;::GetID()</code>
+</li></ul>
+
+<p>A consequence of this change is that it is no longer possible to invoke the
+<code>SCF_VERSION()</code> macro inside an alternate namespace.  If previously you
+were invoking this macro within your project's own namespace, you must relocate
+the invocation so that it appears outside the namespace.  For example:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">#include &lt;csutil/scf.h&gt;
+
+namespace MyProject
+{
+  struct iMyInterface : public iBase
+  {
+    ...
+  };
+}
+
+SCF_VERSION(MyProject::iMyInterface, 1, 0, 0);
+</pre></td></tr></table>
+<a name="24"></a>
+<h3 class="subheading"> csSys Library Removed </h3>
+
+<p>The <tt>&lsquo;cssys&rsquo;</tt> library has been merged into the <tt>&lsquo;csutil&rsquo;</tt> library.  This
+eliminates many problems resulting from the large number of circular
+dependencies which existed between these two libraries.  From the client
+viewpoint, this change manifests in two ways:
+</p>
+<ul>
+<li>
+Disappearance of the static link library <tt>&lsquo;libcssys.a&rsquo;</tt> (Unix) or
+<tt>&lsquo;cssys.lib&rsquo;</tt> (Windows).  To account for this change, simply eliminate the
+reference to this library from your build scripts, makefiles, or project files.
+
+</li><li>
+Disappearance of the <tt>&lsquo;CS/include/cssys&rsquo;</tt> directory.  Headers have been
+moved to the <tt>&lsquo;csutil&rsquo;</tt> include directory.  To account for this change,
+simply change <code>#include &lt;cssys/header.h&gt;</code> to
+<code>#include &lt;csutil/header.h&gt;</code>.
+
+</li></ul>
+
+<a name="25"></a>
+<h3 class="subheading"> csEngine Library Removed </h3>
+
+<p>The <tt>&lsquo;csengine&rsquo;</tt> library has been removed.  Direct use of this library has
+long been deprecated, so its removal will probably go unnoticed by most or all
+projects.  Any projects which were using this library must now instead interact
+with the 3D engine via the <tt>&lsquo;engine&rsquo;</tt> plugin and the <small>SCF</small> interfaces in
+the <tt>&lsquo;CS/include/iengine&rsquo;</tt> directory.
+</p>
+<a name="26"></a>
+<h3 class="subheading"> csAppFrame Library Removed </h3>
+
+<p>The <tt>&lsquo;csappframe&rsquo;</tt> library has been merged into the <tt>&lsquo;cstool&rsquo;</tt> library.
+Furthermore, the <code>main()</code> function, which client application's got for
+free when linking against this library, has been removed since it proved to be
+an obstacle to making Crystal Space libraries available as <em>shared</em>
+libraries. Instead, you must now provide your own <code>main()</code> function, like
+this:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">// main.cpp
+CS_IMPLEMENT_APPLICATION
+
+class MyApp : public csApplicationFramework
+{
+  /* ... */
+};
+
+int main (int argc, char* argv[]) 
+{
+  MyApp myApp;
+  return myApp.Main (argc, argv);
+}
+</pre></td></tr></table>
+<a name="27"></a>
+<h3 class="subheading"> csString and iString Changes </h3>
+
+<p>The <code>csString::strlwr()</code> method was renamed to <code>Downcase()</code>.  A
+complementary <code>Upcase()</code> method was added for completeness.  These methods
+were also added to <samp>&lsquo;iString&rsquo;</samp>.  A <code>Slice()</code> method was added to
+<samp>&lsquo;iString&rsquo;</samp> and <samp>&lsquo;csString&rsquo;</samp> which copies a sub-portion of a string.
+<code>Slice()</code> is similar to the existing <code>SubString()</code> method, but
+follows a more natural calling convention.  Several <samp>&lsquo;iString&rsquo;</samp> methods
+which were incorrectly returning raw <samp>&lsquo;iString*&rsquo;</samp> or <samp>&lsquo;iString&amp;&rsquo;</samp> now
+correctly return <code>csRef&lt;iString&gt;</code>.
+</p>
+<p><samp>&lsquo;csString&rsquo;</samp> now makes a distinction between a null-string (think
+<samp>&lsquo;(char const*)0&rsquo;</samp>), and a zero-length string (think <code>&quot;&quot;</code>).  Client
+code can check for these conditions in the normal fashion by invoking
+<code>csString::GetData()</code> or <code>operator char const*()</code> to retrieve a
+C-string representation of the string.  If the result is zero, then it is a
+null-string.  If the result is non-zero but <code>csString::Length()</code> returns
+zero, then it is a zero-length string.  The new convenience method
+<code>csString::GetDataSafe()</code> will always return a valid C-string, even if the
+underlying <samp>&lsquo;csString&rsquo;</samp> represents a null-string (in which case a
+zero-length C-string <code>&quot;&quot;</code> will be returned).  This means that the result
+of <code>GetDataSafe()</code> can be used directly without performing a null check.
+</p>
+<p>In previous releases, <samp>&lsquo;csString&rsquo;</samp> would also sometimes return a null
+pointer or a zero-length string from <code>csString::GetData()</code> or
+<code>operator char const*()</code>, but there was no controlled way to know when one
+or the other would be returned since <samp>&lsquo;csString&rsquo;</samp> was doing so haphazardly.
+Worse, several of the <samp>&lsquo;csString&rsquo;</samp> methods failed to check the underlying
+representation, and would crash if the string's state was not what the methods
+expected.  Now, however, <samp>&lsquo;csString&rsquo;</samp> itself makes a proper distinction
+between these cases, and the user has direct (and documented) control over when
+a <samp>&lsquo;csString&rsquo;</samp> will represent a null-string or a zero-length string.
+</p>
+<a name="28"></a>
+<h3 class="subheading"> csMD5 Changes </h3>
+
+<p>A <code>csMD5(csString const&amp;)</code> constructor was added to complement the
+existing <code>csMD5(char const*)</code> constructor.  The new method
+<code>csMD5::Digest:HexString()</code> returns a hexadecimal string representation of
+the <small>MD5</small> digest using lowercase hexadecimal characters.
+<code>csMD5::Digest::HEXString()</code> returns uppercase hexadecimal characters.
+</p>
+<a name="29"></a>
+<h3 class="subheading"> Beam Intersection Changes </h3>
+
+<p><code>IntersectSegment()</code> for <samp>&lsquo;iThingFactoryState&rsquo;</samp> and <samp>&lsquo;iThingState&rsquo;</samp>
+has been removed. Use <code>iMeshObject::HitBeamObject()</code> instead.
+</p>
+<p><code>iMeshObject::HitBeamObject()</code> now has an optional polygon index
+parameter so you can get the index of the polygon that was hit.
+</p>
+<p><code>iSector::HitBeam()</code> which doesn't support portals now returns a polygon
+index instead of a polygon pointer.
+</p>
+<p><code>iSector::HitBeam()</code> that supports portals has been renamed
+to <code>HitBeamPortals()</code>. It additionally returns a polygon index.
+Same for <code>iPortal::HitBeam()</code> which has also been renamed
+to <code>HitBeamPortals()</code>.
+</p>
+<p><code>iCamera::GetHit()</code> has been removed.  Instead, use the completely
+equivalent function <code>iSector::HitBeamPortals()</code>.
+</p>
+<p><code>iVisibilityCuller::IntersectSegment()</code> now returns a polygon index
+instead of a portal.
+</p>
+<a name="30"></a>
+<h3 class="subheading"> Directory and Path Queries </h3>
+
+<p>The following low-level functions, declared in <tt>&lsquo;csutil/syspath.h&rsquo;</tt> can be
+used to query various directories and paths.  Each of these functions expects
+to be passed <code>argv[0]</code> obtained from the program's <code>main()</code> function.
+</p>
+<dl compact="compact">
+<dt> <code>csGetAppPath()</code></dt>
+<dd><p>Returns the absolute path of the application executable file.
+</p>
+</dd>
+<dt> <code>csGetAppDir()</code></dt>
+<dd><p>Returns the absolute path of the directory containing the application
+executable file; or the path of the directory containing the Cocoa application
+wrapper on MacOS/X for <small>GUI</small> applications.
+</p>
+</dd>
+<dt> <code>csGetResourceDir()</code></dt>
+<dd><p>Returns the absolute path of the directory in which the application's resources
+reside.  On many platforms, resources, such as configuration files, data files,
+etc., reside in the same directory as the application itself.  On such
+platforms, this function will typically return the same directory as
+<code>csGetAppDir()</code>.  On MacOS/X, however, for <small>GUI</small> applications, this
+function will return the <tt>&lsquo;Resources&rsquo;</tt> directory within the Cocoa
+application wrapper.
+</p></dd>
+</dl>
+
+<p>Since it is rarely convenient to squirrel-away <code>argv[0]</code>, the following
+higher-level methods, declared in <tt>&lsquo;iutil/cmdline.h&rsquo;</tt>, are also available
+for obtaining the same information once the application has been initialized.
+These methods do not require access to <code>argv[0]</code>.  You can obtain a handle
+to the shared <samp>&lsquo;iCommandLineParser&rsquo;</samp> from the object registry,
+<samp>&lsquo;iObjectRegistry&rsquo;</samp>, which is declared in <tt>&lsquo;iutil/objreg.h&rsquo;</tt>.
+</p>
+<ul>
+<li>
+<code>iCommandLineParser::GetAppPath()</code>
+</li><li>
+<code>iCommandLineParser::GetAppDir()</code>
+</li><li>
+<code>iCommandLineParser::GetResourceDir()</code>
+</li></ul>
+
+<a name="31"></a>
+<h3 class="subheading"> <small>VFS</small> Changes </h3>
+
+<p><small>VFS</small> (see section <a href="VFS.html#0">Virtual File System (<small>VFS</small>)</a>) now understands two new pseudo-variables, <samp>&lsquo;$*&rsquo;</samp> and
+<samp>&lsquo;$^&rsquo;</samp>, in its configuration file, <tt>&lsquo;vfs.cfg&rsquo;</tt>, and during programmatic
+mounts.  The full list of pseudo-variables is:
+</p>
+<dl compact="compact">
+<dt> <code>$/</code></dt>
+<dd><p>Platform-specific path delimiter (<tt>&lsquo;/&rsquo;</tt> on Unix and MacOS/X; <tt>&lsquo;\&rsquo;</tt> on
+Windows).
+</p>
+</dd>
+<dt> <code>$@</code></dt>
+<dd><p>Crystal Space installation directory; same as <code>csGetConfigPath()</code>.
+</p>
+</dd>
+<dt> <code>$*</code></dt>
+<dd><p>Application resource directory; same as <code>csGetResourceDir()</code>.
+</p>
+</dd>
+<dt> <code>$^</code></dt>
+<dd><p>Directory where application resides, or directory containing Cocoa application
+wrapper on MacOS/X; same as <code>csGetAppDir()</code>.
+</p></dd>
+</dl>
+
+
+<p>The expansions of the <samp>&lsquo;$@&rsquo;</samp>, <samp>&lsquo;$*&rsquo;</samp>, and <samp>&lsquo;$^&rsquo;</samp> variables always
+contain a trailing path delimiter.
+</p>
+<p>At initialization time, <small>VFS</small> now searches for its configuration file,
+<tt>&lsquo;vfs.cfg&rsquo;</tt>, in the application resource directory
+(<code>csGetResourceDir()</code>), then in the directory containing the application
+(<code>csGetAppDir()</code>), and finally in the Crystal Space installation directory
+(<code>csGetConfigPath()</code>).  The first <tt>&lsquo;vfs.cfg&rsquo;</tt> file found during this
+search is the one used to initialize the facility.  In the past, <small>VFS</small>
+searched for <tt>&lsquo;vfs.cfg&rsquo;</tt> only in the Crystal Space installation directory.
+</p>
+<p>The <small>VFS</small> volume <tt>&lsquo;/temp&rsquo;</tt> has been renamed to <tt>&lsquo;/varia&rsquo;</tt> in the
+default <tt>&lsquo;vfs.cfg&rsquo;</tt> file in order to avoid confusion with the like-named
+<small>VFS</small> volume <tt>&lsquo;/tmp&rsquo;</tt>, which represents user-writable temporary storage.
+The <tt>&lsquo;/varia&rsquo;</tt> volume (n&eacute;e <tt>&lsquo;/temp&rsquo;</tt>), on the other hand, resides
+within <tt>&lsquo;${prefix}/etc/crystal&rsquo;</tt> (where <tt>&lsquo;${prefix}&rsquo;</tt> is the
+installation location), and this location usually is not writable by the
+typical user.  External projects may, of course, still create any <small>VFS</small>
+volume desired, including <tt>&lsquo;/temp&rsquo;</tt>, by supplying a project-specific
+<tt>&lsquo;vfs.cfg&rsquo;</tt>.
+</p>
+<a name="32"></a>
+<h3 class="subheading"> Internationalization </h3>
+
+<p>Some work to improve internationalization support in Crystal Space has been
+performed.  Crystal Space now has more complete support for Unicode input and
+output.
+</p>
+<a name="33"></a>
+<h4 class="subsubheading"> Unicode Helpers </h4>
+
+<p>The <samp>&lsquo;csUnicodeTransform&rsquo;</samp> class provides functions to deal with and convert
+between <small>UTF</small>-8, <small>UTF</small>-16, and <small>UTF</small>-32 encoded strings.
+</p>
+<a name="34"></a>
+<h4 class="subsubheading"> UTF-8 strings </h4>
+
+<p>Several portions of the CrystalSpace <small>API</small> now accept <small>UTF</small>-8-encoded
+strings. These include:
+</p>
+<ul>
+<li>
+Console
+<ul>
+<li>
+<code>csPrintf()</code>
+</li><li>
+<code>csPrintfV()</code>
+</li><li> <code>csFPutErr()</code>
+</li></ul>
+</li><li>
+Canvas
+<ul>
+<li>
+<code>iGraphics2D::Write()</code>
+</li></ul>
+</li><li>
+Reporter
+<ul>
+<li>
+<code>csReport()</code>
+</li><li>
+<code>csReportV()</code>
+</li><li>
+<code>iReporter::Report()</code>
+</li><li>
+<code>iReporter::ReportV()</code>
+</li></ul>
+</li><li>
+Native Window
+<ul>
+<li>
+<code>iNativeWindowManager::Alert()</code>
+</li><li>
+<code>iNativeWindowManager::AlertV()</code>
+</li><li>
+<code>iNativeWindow::SetTitle()</code>
+</li></ul>
+</li></ul>
+
+<a name="35"></a>
+<h3 class="subheading"> Keyboard Events </h3>
+
+<p>Keyboard events have changed.  The event data related to keyboard events is no
+longer stored in a structure inside <samp>&lsquo;iEvent&rsquo;</samp>, but instead now resides
+within <samp>&lsquo;iEvent&rsquo;</samp>'s property bag.  That means the way to access the event
+data has changed slightly; you now either query for the data via
+<code>iEvent::Find()</code> to get a specific property, or you access it via the the
+<samp>&lsquo;csKeyEventHelper&rsquo;</samp> class.
+</p>
+<p>Another change is that the <samp>&lsquo;csevKeyDown&rsquo;</samp> and <samp>&lsquo;csevKeyUp&rsquo;</samp> events have
+been collapsed to a single <samp>&lsquo;csevKeyboard&rsquo;</samp> event; the up/down information
+is transported along with the event data.
+</p>
+<p>The notion of <em>scan code</em> and <em>characters</em> has been replaced with
+<em>raw</em> and <em>cooked</em> codes.  Basically, the raw code identifies the key
+uniquely, while the cooked code is a processed version of it.  An important
+aspect of this is that both the raw and cooked codes are Unicode characters.
+Special keys (such as function keys) are encoded as characters from a Unicode
+private use area.  Almost all event handling code should consult the raw code
+because the raw code is invariant; that is, an <kbd>a</kbd> is an `a' even if the
+<kbd>ALT</kbd> or <kbd>SHIFT</kbd> key, or both, are depressed.  This is useful for
+games, for instance, which need to map keys to particular actions.  Cooked
+codes are useful typically only for text input, such as within a text input
+field.
+</p>
+<p>You can find additional information in Crystal Space's public <small>API</small>
+documentation in the Event Handling and Keyboard Events sections.
+</p>
+<p>To understand how to adjust your code for these changes, see the following
+examples.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">iEvent&amp; e = ...;
+if (e.Type == csevKeyDown &amp;&amp; e.Key.Code == CSKEY_ESC)
+{
+</pre></td></tr></table>
+
+<p>Change to:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">if (e.Type == csevKeyboard &amp;&amp;
+    csKeyEventHelper::GetEventType(&amp;e) == csKeyEventTypeDown) &amp;&amp;
+    csKeyEventHelper::GetCookedCode(&amp;e) == CSKEY_ESC))
+{
+</pre></td></tr></table>
+<p>Another example:
+</p><table><tr><td>&nbsp;</td><td><pre class="example">iEvent&amp; e = ...;
+switch (e.Type)
+{
+  case csevKeyDown:
+    Foo();
+    break;
+  case csevKeyUp:
+    Bar();
+    break;
+}
+</pre></td></tr></table>
+
+<p>Change to:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">switch (e.Type)
+{
+  case csevKeyboard:
+    if (csKeyEventHelper::GetEventType(&amp;e) == csKeyEventTypeDown)
+      Foo();
+    else
+      Bar();
+    break;
+}
+</pre></td></tr></table>
+<a name="36"></a>
+<h3 class="subheading"> iGraphics2D::WriteBaseline() Deprecated </h3>
+
+<p>The functionality provided by <code>WriteBaseline()</code> is now available by 
+specifying the <samp>&lsquo;CS_WRITE_BASELINE&rsquo;</samp> flag when calling 
+<code>iGraphics2D::Write()</code>. Hence, <code>WriteBaseline()</code> is superfluous and
+has been deprecated.
+</p>
+<a name="37"></a>
+<h3 class="subheading"> csInitializer Changes </h3>
+
+<p><code>csInitializer::RequestPlugins(csArray&lt;csPluginRequest&gt;)</code> has been added
+to complement the existing <code>RequestPlugins(...)</code> which accepts a variable
+number of arguments.  The new overload allows the list of requested plugins to
+be composed at run-time, whereas the older variable-argument method required
+the list be known at compile-time, which was not always convenient or possible.
+</p>
+<a name="38"></a>
+<h3 class="subheading"> Pollution Reduction </h3>
+
+<p>The following symbols have been renamed in order to avoid pollution of the
+global namespace.
+</p>
+<ul>
+<li>
+<code>STATIC_CAST()</code> =&gt; <code>CS_STATIC_CAST()</code>
+</li><li>
+<code>DYNAMIC_CAST()</code> =&gt; <code>CS_DYNAMIC_CAST()</code>
+</li><li>
+<code>REINTERPRET_CAST()</code> =&gt; <code>CS_REINTERPRET_CAST()</code>
+</li><li>
+<code>CONST_CAST()</code> =&gt; <code>CS_CONST_CAST()</code>
+</li></ul>
+
+<a name="39"></a>
+<h3 class="subheading"> Texture manager change </h3>
+
+<p>The <code>iTextureManager::SetVerbose()</code> function has been removed. It
+was not useful.
+</p>
+<a name="40"></a>
+<h3 class="subheading"> Font changes </h3>
+
+<p><code>iFont::SetSize()</code> has been removed. Instead, the font size is 
+supplied when the font is created with <code>iFontServer::LoadFont()</code>.
+This change has been made to fix the problem that multiple LoadFont()
+calls were returning the same instance of a font, and thus subsequent calls 
+of <code>SetSize()</code> affected a font globally (e.g. all Arial fonts would
+be the same size). The new behaviour is to return only an existing
+instance of a font when both the font name and font size match.  If there is
+no existing instance with the requested name and size, then a new instance
+is created and returned.
+</p>
+<p>Font-related client code, such as the following:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">csRef&lt;iFont&gt; font = fontserver-&gt;LoadFont (&quot;myfont.ttf&quot;);
+font-&gt;SetSize (23);
+g2d-&gt;Write (font, ...);
+</pre></td></tr></table>
+
+<p>Should be changed to:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">csRef&lt;iFont&gt; font = fontserver-&gt;LoadFont (&quot;myfont.ttf&quot;, 23);
+g2d-&gt;Write (font, ...);
+</pre></td></tr></table>
+<a name="41"></a>
+<h3 class="subheading"> Mesh flag change </h3>
+
+<p>There is a new flag <code>CS_ENTITY_INVISIBLEMESH</code> which controls visibility
+(and ONLY visibility) of a mesh. There is also a new flag
+<code>CS_ENTITY_NOHITBEAM</code> which controls if calling <code>HitBeam()</code> will
+ever return that mesh. The old <code>CS_ENTITY_INVISIBLE</code> has been changed
+so that it is now a combination of both flags.
+</p>
+<p>An important change is that setting the <code>CS_ENTITY_INVISIBLEMESH</code> flag
+on a parent in a hierarchy will no longer make the children invisible. You
+now have to set the invisible flag manually on all children in the hierarchy.
+</p>
+<a name="42"></a>
+<h3 class="subheading"> Skeletal Sprites </h3>
+
+<p>Support for skeletal sprites has been removed, along with the following related
+interfaces.  Use the <samp>&lsquo;sprcal3d&rsquo;</samp> mesh object instead.  It is more flexible
+and works correctly.  These interfaces have been retired:
+</p>
+<ul>
+<li>
+<code>iSkeletonState</code>
+</li><li>
+<code>iSkeletonLimbState</code>
+</li><li>
+<code>iSkeletonConnection</code>
+</li><li>
+<code>iSkeletonConnectionState</code>
+</li><li>
+<code>iSkeletonLimb</code>
+</li></ul>
+
+<p>In addition, the motion manager plugin has been removed, along with the
+following related interfaces:
+</p>
+<ul>
+<li>
+<code>iMotionTemplate</code>
+</li><li>
+<code>iMotionManager</code>
+</li><li>
+<code>iSkeletonBone</code>
+</li></ul>
+
+<a name="43"></a>
+<h3 class="subheading"> Skyboxes </h3>
+
+<p>Meshes that use the <code>CS_ENTITY_CAMERA</code> flag no longer have to be placed
+in a render priority that has the <samp>&lsquo;camera&rsquo;</samp> flag set. This render
+priority flag is no longer required (but <code>CS_ENTITY_CAMERA</code> still is!).
+</p>
+<a name="44"></a>
+<h3 class="subheading"> CS_FX_GOURAUD removed </h3>
+
+<p>Gouraud is much more commonly used than flat shading and is thus the default 
+now. To achieve the opposite behaviour (ie the behaviour when 
+<code>CS_FX_GOURAUD</code> was not present), use the <code>CS_FX_FLAT</code> flag.
+</p>
+<a name="45"></a>
+<h3 class="subheading"> Collision Detection Changes </h3>
+
+<p>The most important change is that <small>OPCODE</small> is now prefered over
+<small>RAPID</small>. The <small>OPCODE</small> plugin is free of restrictions (as opposed
+to <small>RAPID</small> which can't be used in commercial programs), it is faster,
+and uses a lot less memory. In future we will remove the <small>RAPID</small> plugin.
+</p>
+<p>The <code>iCollideSystem::CollidePath()</code> utility method has been relocated to
+<code>csColliderHelper::CollidePath()</code>. In addition there are a few extra
+overloads that can make life easier for calculating collisions on a path.
+</p>
+<a name="46"></a>
+<h3 class="subheading"> Isometric Engine </h3>
+
+<p>The isometric engine has been removed.  It was beyond repair.  The
+<samp>&lsquo;isotest&rsquo;</samp> application remains, though, and demonstrates how you can
+simulate an isometric look with the normal 3D engine.
+</p>
+<a name="47"></a>
+<h3 class="subheading"> Some Plugins Removed </h3>
+
+<p>The following plugins and programs also have been removed (along with any 
+parts of the <small>API</small> they provided exclusively), because they are unmaintained
+and not currently usable. For more discussion see mailing list posts at:
+</p>
+
+<p><a href="http://sourceforge.net/mailarchive/message.php?msg_id=8645194">http://sourceforge.net/mailarchive/message.php?msg_id=8645194</a><br>
+<a href="http://sourceforge.net/mailarchive/message.php?msg_id=8296024">http://sourceforge.net/mailarchive/message.php?msg_id=8296024</a><br>
+<a href="http://sourceforge.net/mailarchive/message.php?msg_id=8296017">http://sourceforge.net/mailarchive/message.php?msg_id=8296017</a><br>
+<a href="http://sourceforge.net/mailarchive/message.php?msg_id=8295883">http://sourceforge.net/mailarchive/message.php?msg_id=8295883</a><br>
+</p>
+<ul>
+<li> <code>terrbig</code> (use new terrain features in the new renderer)
+</li><li> skeletal sprites (use cal3d)
+</li><li> <code>cloth</code>
+</li><li> <code>cocoa2d</code> graphics driver for MacOSX
+</li><li> <code>rle</code> video codec
+</li><li> <code>milk2spr</code> (use the cal3d conversion)
+</li><li> <code>svgalib</code> graphics driver
+</li><li> <code>cssocket</code> (provided <code>iNetworkDriver</code>, <code>iNetworkListener</code>, and <code>iNetworkConnection</code>)
+</li><li> <code>ensocket</code> (provided <code>iNetworkDriver2</code> and <code>iNetworkSocket2</code>)
+</li><li> <code>netman</code>
+</li><li> <code>picogui</code>
+</li></ul>
+
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Api1_005f0-Removed-Features.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Release-Notes-96.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Licenses.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

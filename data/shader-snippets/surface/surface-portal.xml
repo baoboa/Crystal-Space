@@ -1,0 +1,135 @@
+<!--
+  Copyright (C) 2012 by Frank Richter
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Library General Public
+  License as published by the Free Software Foundation; either
+  version 2 of the License, or (at your option) any later version.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  Library General Public License for more details.
+
+  You should have received a copy of the GNU Library General Public
+  License along with this library; if not, write to the Free
+  Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+-->
+<snippet>
+  <technique priority="100">
+    <combiner name="cg" plugin="crystalspace.graphics3d.shader.combiner.glcg" />
+    <combiner name="glsl" plugin="crystalspace.graphics3d.shader.combiner.glsl" />
+    
+    <input name="tcPortal" type="texcoord4" default="complex">
+      <block location="cg:pass">
+        <buffer source="texture coordinate" destination="vertexIn.tcPortal" />
+      </block>
+      
+      <block location="glsl:pass">
+        <buffer source="texture coordinate" destination="in_tcPortal" />
+      </block>
+      
+      <block location="cg:vertexToFragment">
+        <!-- Explicit binding specified to work around bug with
+             Mesa 7.11.2 on Sandybridge Mobile graphics
+             (freedesktop.org bug 46644) -->
+        <varying type="texcoord4" name="tcPortal" binding="TEXCOORD" />
+      </block>
+      
+      <block location="glsl:vertexToFragment">
+        <varying type="texcoord4" name="tcPortal" />
+      </block>
+      
+      <block location="cg:vertexIn">
+        <varying type="texcoord4" name="tcPortal" />
+      </block>
+      
+      <block location="glsl:inputs">
+        <varying type="texcoord4" name="in_tcPortal" />
+      </block>
+
+      <block location="cg:vertexMain">
+        tcPortal = vertexIn.tcPortal;
+      </block>
+
+      <block location="glsl:vertexMain">
+        tcPortal = in_tcPortal;
+      </block>
+    </input>
+    <input name="texPortal" type="tex2d" default="complex">
+      <block location="cg:pass">
+	<texture name="tex portal" destination="fragmentIn.texPortal" />
+      </block>
+      <block location="glsl:pass">
+        <texture name="tex portal" destination="in_texPortal" />
+      </block>
+      
+      <block location="cg:fragmentIn">
+	<uniform type="tex2d" name="texPortal" />
+      </block>
+
+      <block location="glsl:inputs">
+        <uniform type="tex2d" name="in_texPortal" />
+      </block>
+
+      
+      <block location="cg:fragmentMain">
+	texPortal = fragmentIn.texPortal;
+      </block>
+
+      <block location="glsl:fragmentMain">
+        /* #sampler_assign is not a real directive from the GLSL preprocessor
+           but handled by the GLSL combiner. It's used since GLSL doesn't
+           allow assignment of sampler variables; so work around this
+           limitation in the combiner. */
+        #sampler_assign texPortal in_texPortal
+      </block>
+    </input>
+    
+    <block location="cg:vertexMain">
+      surfaceColor = float4(0);
+      <?if vars."tex portal".texture ?>
+      surfaceColor_attr_perfragment = true;
+      <?else?>
+      surfaceColor_attr_perfragment = false;
+      <?endif?>
+    </block>
+    
+    <block location="glsl:vertexMain">
+      surfaceColor = vec4(0);
+      <?if vars."tex portal".texture ?>
+      surfaceColor_attr_perfragment = true;
+      <?else?>
+      surfaceColor_attr_perfragment = false;
+      <?endif?>
+    </block>
+    
+    <block location="cg:fragmentMain">
+      <?if vars."tex portal".texture ?>
+      // "Heavy" portal: color from portal texture
+      surfaceColor = tex2Dproj (texPortal, tcPortal.xyw);
+      surfaceColor_attr_perfragment = true;
+      <?else?>
+      // "Normal" portal: clear color
+      surfaceColor = float4 (0);
+      surfaceColor_attr_perfragment = false;
+      <?endif?>
+    </block>
+    
+    <block location="glsl:fragmentMain">
+      <?if vars."tex portal".texture ?>
+      // "Heavy" portal: color from portal texture
+      surfaceColor = texture2DProj (texPortal, tcPortal);
+      surfaceColor_attr_perfragment = true;
+      <?else?>
+      // "Normal" portal: clear color
+      surfaceColor = vec4 (0);
+      surfaceColor_attr_perfragment = false;
+      <?endif?>
+    </block>
+    
+    <output name="surfaceColor" type="rgba">
+      <attribute name="perfragment" type="bool" />
+    </output>
+  </technique>
+</snippet>

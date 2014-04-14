@@ -1,0 +1,7 @@
+SubDir TOP data sintel ;
+
+{
+local files = [ Wildcard sintel* skelsintel* ] ;
+InstallData $(files) : data sintel ;
+FileListEntriesData $(files) : sintel : data-demo ;
+}

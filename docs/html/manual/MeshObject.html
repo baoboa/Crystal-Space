@@ -1,0 +1,155 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.10 Mesh Object Plug-In System</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.10 Mesh Object Plug-In System">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.10 Mesh Object Plug-In System">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="MeshObject"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Using-Volumetric.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="MeshObject-Concepts.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h2 class="section"> 4.10 Mesh Object Plug-In System </h2>
+
+<p>This section covers the Crystal Space Mesh Object plug-in system.  This is a
+very general system for defining various kinds of 3D objects and using them in
+the Crystal Space 3D engine.  You can use them to simulate things like
+snow, rain, fountains, fire, explosions, <small class="dots">...</small>.
+</p>
+<p>In practice you will probably want to use the following mesh objects
+in your own game:
+</p>
+<ul>
+<li>
+<samp>&lsquo;GenMesh&rsquo;</samp> (see section <a href="MeshObject-Genmesh.html#0">Genmesh Mesh Object</a>). The genmesh object is one of the
+most useful mesh objects. You can use it for static data (walls, buildings,
+floor, <small class="dots">...</small>) or for dynamic data (moving objects). It supports multiple
+materials, vertex lighting, and even animation. Using the new <samp>&lsquo;lighter2&rsquo;</samp>
+app it can also support lightmaps. See section <a href="Using-lighter2.html#0">Using <code>lighter2</code></a>.
+</li><li>
+<samp>&lsquo;AniMesh&rsquo;</samp> (see section <a href="MeshObject-Animesh.html#0">Animesh Mesh Object</a>). The animesh is the main mesh
+dedicated to skeletal and morphing animations. It is perfect for objects with
+shapes deforming over the time.
+</li><li>
+<samp>&lsquo;Terrain2&rsquo;</samp>. The terrain object is very
+useful if you want landscapes although you can do landscapes with genmesh
+too. But the terrain mesh object can do it more efficiently.
+</li><li>
+<samp>&lsquo;Particles&rsquo;</samp>. If you want particles then the particles mesh is
+the best choice. Currently the <samp>&lsquo;Emit&rsquo;</samp> particle system is also supported
+but it should be avoided as it is very slow and is going to be removed
+in the future as well.
+</li></ul>
+
+<p>In the first section a general overview is given on some of the concepts
+in the mesh object system.
+</p>
+<p>In the second section you will see how you can use mesh objects in your own
+applications and how you can work with them.
+</p>
+<p>The third section covers everything needed to write your own mesh object
+plug-in modules.
+</p>
+<p>After that there is a section for every specific mesh object plugin that
+Crystal Space supports.
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top"><a href="MeshObject-Concepts.html#0">4.10.1 MeshObject Concepts</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top"><a href="Using-MeshObject.html#0">4.10.2 Using Mesh Objects</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="Writing-MeshObjects.html#0">4.10.3 Writing Mesh Objects</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="HOWTO-Create-Genmesh.html#0">4.10.4 Creating a Genmesh Mesh</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="HOWTO-Mesh-LightAnim.html#0">4.10.5 Mesh Lighting and Animation</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="HOWTO-Mesh-Movement.html#0">4.10.6 Mesh Movement</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="MeshObject-Genmesh.html#0">4.10.7 Genmesh Mesh Object</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="MeshObject-Animesh.html#0">4.10.8 Animesh Mesh Object</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="MeshObject-TerrFunc.html#0">4.10.9 Terrain Mesh Object</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="MeshObject-Terrain2.html#0">4.10.10 Terrain2 Mesh Object</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="MeshObject-Particles.html#0">4.10.11 Particles Mesh Object</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="MeshObject-Portal-Container.html#0">4.10.12 Portal Container Mesh Object</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="MeshObject-SprCal3D.html#0">4.10.13 SpriteCal3D Mesh Object</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="MeshObject-Spr2D.html#0">4.10.14 Sprite2D Mesh Object</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="MeshObject-Spr3D.html#0">4.10.15 Sprite3D Mesh Object</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="MeshObject-Emit.html#0">4.10.16 Emitter Mesh Object</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="MeshObject-Haze.html#0">4.10.17 Haze Mesh Object</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="MeshObject-Watermesh.html#0">4.10.18 Watermesh Mesh Object</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="Furmesh-Mesh.html#0">4.10.19 Furmesh Mesh</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Using-Volumetric.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="MeshObject-Concepts.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

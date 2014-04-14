@@ -1,0 +1,322 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.10.14 Sprite2D Mesh Object</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.10.14 Sprite2D Mesh Object">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.10.14 Sprite2D Mesh Object">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="MeshObject-Spr2D"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="MeshObject-SprCal3D.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="MeshObject-Spr3D.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="MeshObject.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 4.10.14 Sprite2D Mesh Object </h3>
+
+<p><em>Written by Jorrit Tyberghein,
+(<a href="mailto:jorrit.tyberghein@gmail.com">jorrit.tyberghein@gmail.com</a>).</em>
+</p>
+<p>A 2D Sprite is basically a polygon that always faces the camera.  There are
+some special effects that you can do with this but it is really very simple
+otherwise.
+</p>
+<a name="1"></a>
+<h4 class="subsubheading"> Basic Structure </h4>
+
+<p>The following <small>SCF</small> class names are used (for <code>csLoadPlugin</code>):
+</p>
+<ul>
+<li>
+Type plugin: <samp>&lsquo;crystalspace.mesh.object.sprite.2d&rsquo;</samp>
+</li><li>
+Loader plugin: <samp>&lsquo;crystalspace.mesh.loader.sprite.2d&rsquo;</samp>
+</li><li>
+Factory loader plugin: <samp>&lsquo;crystalspace.mesh.loader.factory.sprite.2d&rsquo;</samp>
+</li></ul>
+
+<p>Objects in this plugin implement the following <small>SCF</small> interfaces (get with
+<code>scfQueryInterface</code>):
+</p>
+<ul>
+<li>
+<em>MeshObject</em>
+<ul>
+<li>
+Implements <samp>&lsquo;iMeshObject&rsquo;</samp>
+</li><li>
+Implements <samp>&lsquo;iSprite2DState&rsquo;</samp>
+</li><li>
+Implements <samp>&lsquo;iParticle&rsquo;</samp>
+</li></ul>
+</li><li>
+<em>MeshObjectFactory</em>
+<ul>
+<li>
+Implements <samp>&lsquo;iMeshObjectFactory&rsquo;</samp>
+</li><li>
+Implements <samp>&lsquo;iSprite2DFactoryState&rsquo;</samp>
+</li></ul>
+</li><li>
+<em>MeshObjectType</em>
+<ul>
+<li>
+Implements <samp>&lsquo;iMeshObjectType&rsquo;</samp>
+</li></ul>
+</li></ul>
+
+<a name="2"></a>
+<h4 class="subsubheading"> Factory State Interface </h4>
+
+<p>Use the <small>SCF</small> interface <samp>&lsquo;iSprite2DFactoryState&rsquo;</samp> to access settings for
+a 2D sprite factory.  The definition of this interface can be found in
+<tt>&lsquo;CS/include/imesh/sprite2d.h&rsquo;</tt> and that is also the include file you need
+to include in your applications to use this plugin.  Using this interface you
+can access the material, blending mode (mixmode), and lighting settings.
+</p>
+<a name="3"></a>
+<h4 class="subsubheading"> Factory Loader </h4>
+
+<dl compact="compact">
+<dt> <code>&lt;lighting&gt;yes/no&lt;/lighting&gt;</code></dt>
+<dd><p>Enable/disable lighting.
+</p></dd>
+<dt> <code>&lt;material&gt;materialname&lt;/material&gt;</code></dt>
+<dd><p>Material to use for the polygon.
+</p></dd>
+<dt> <code>&lt;mixmode&gt;&lt;mode /&gt;&lt;/mixmode&gt;</code></dt>
+<dd><p>Blending mode. see section <a href="XMLServices-Mixmode.html#0">Parsing Mixmode</a>.
+</p></dd>
+<dt> <code>&lt;uvanimation name=uvanimationname&gt;&lt;frame <small class="dots">...</small>&gt; <small class="dots">...</small></code></dt>
+<dd><p>Define an uv animation, that is a sequence of frames which textures are all in
+one big texture.  Thus the animation is achieved by altering the (u,v)
+coordinates of the polygon defined by this sprite.
+</p></dd>
+<dt> <code>&lt;frame&gt;&lt;duration&gt;&lt;vertices <small class="dots">...</small>&gt; <small class="dots">...</small></code></dt>
+<dd><p>Defines a single frame within an uv animation by specifying its duration in
+milliseconds and the u,v coordinates to use.
+</p><ul>
+<li><table><tr><td>&nbsp;</td><td><pre class="example">&lt;frame name=&quot;framename&quot;&gt;
+  &lt;duration&gt;milliseconds&lt;/duration&gt;
+  &lt;v u=&quot;&quot; v=&quot;&quot; /&gt;
+  ... u,v coo list
+&lt;/frame&gt;
+</pre></td></tr></table></li></ul>
+</dd>
+</dl>
+
+<a name="4"></a>
+<h4 class="subsubheading"> Object State Interface </h4>
+
+<p><samp>&lsquo;iSprite2DState&rsquo;</samp> is the <small>SCF</small> interface that you can use to set/get
+settings for a 2D sprite object.  The definition of this interface can be found
+in <tt>&lsquo;CS/include/imesh/sprite2d.h&rsquo;</tt> and that is also the include file you
+need to include in your applications to use this plugin.  Using this
+interface you can access the material, blending mode (mixmode), lighting
+settings, and also the vertices of the 2D polygon controlled by this plugin.
+</p>
+<a name="5"></a>
+<h4 class="subsubheading"> Object Loader </h4>
+
+<dl compact="compact">
+<dt> <code>&lt;factory&gt;factoryname&lt;/factory&gt;</code></dt>
+<dd><p>Name of the factory to use for creation of this instance.
+</p></dd>
+<dt> <code>&lt;mixmode&gt;&lt;mode /&gt;&lt;/mixmode&gt;</code></dt>
+<dd><p>Blending mode. see section <a href="XMLServices-Mixmode.html#0">Parsing Mixmode</a>.
+</p></dd>
+<dt> <code>&lt;material&gt;materialname&lt;/material&gt;</code></dt>
+<dd><p>Material to use for the polygon.
+</p></dd>
+<dt> <code>&lt;lighting&gt;yes/no&lt;/lighting&gt;</code></dt>
+<dd><p>Enable/disable lighting.
+</p></dd>
+<dt> <code>vertices &lt;v x=&quot;&quot; y=&quot;&quot; /&gt; <small class="dots">...</small></code></dt>
+<dd><p>List of 2D vertices defining the polygon.
+</p></dd>
+<dt> <code>&lt;uv u=&quot;&quot; v=&quot;&quot; /&gt;</code></dt>
+<dd><p>List of texture mapping UV coordinates for the polygon.
+</p></dd>
+<dt> <code>&lt;color red=&quot;&quot; green=&quot;&quot; blue=&quot;&quot; /&gt;</code></dt>
+<dd><p>List of rgb colors for the polygon.
+</p></dd>
+<dt> <code>&lt;animate&gt; <small class="dots">...</small></code></dt>
+<dd><p>Select an uv animation from the list of animations declared in the template
+</p><ul>
+<li><table><tr><td>&nbsp;</td><td><pre class="example">&lt;animate name=&quot;animationname&quot;&gt;
+  &lt;timing&gt;milliseconds&lt;/timing&gt;
+  &lt;loop&gt;yes/no&lt;/loop&gt;
+&lt;/animate&gt;
+</pre></td></tr></table><ul>
+<li>
+timing &gt; 0 : every &lt;timing&gt; milliseconds the next frame will be shown
+</li><li>
+timing &lt; 0 : every &lt;-timing&gt; gameloop the next frame will be shown
+</li><li>
+timing = 0 : timing attached to the frame will be used
+</li><li>
+loop : loop the animation or stop after last frame (and show the last frame)
+</li></ul>
+</li></ul>
+</dd>
+</dl>
+
+<a name="6"></a>
+<h4 class="subsubheading"> Example 1 </h4>
+
+<p>This is how our world file looks:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">&lt;world&gt;
+  &lt;textures&gt;
+    &lt;texture name=&quot;blow&quot;&gt;
+      &lt;file&gt;blow.png&lt;/file&gt;
+    &lt;/texture&gt;
+  &lt;/textures&gt;
+  &lt;materials&gt;
+    &lt;material name=&quot;explosion&quot;&gt;
+      &lt;texture&gt;blow&lt;/texture&gt;
+    &lt;/material&gt;
+  &lt;/materials&gt;
+  &lt;meshobj name=&quot;Explosion&quot;&gt;
+    &lt;plugin&gt;crystalspace.mesh.loader.factory.sprite.2d&lt;/plugin&gt;
+    &lt;params&gt;
+      &lt;material&gt;explosion&lt;/material&gt;
+      &lt;uvanimation name=&quot;boom&quot;&gt;
+        &lt;frame name=&quot;first&quot;&gt;
+          &lt;duration&gt;100&lt;/duration&gt;
+          &lt;v u=&quot;0&quot; v=&quot;0&quot; /&gt;
+          &lt;v u=&quot;0.5&quot; v=&quot;0&quot; /&gt;
+          &lt;v u=&quot;0.5&quot; v=&quot;0.5&quot; /&gt;
+          &lt;v u=&quot;0&quot; v=&quot;0.5&quot; /&gt;
+        &lt;/frame&gt;
+        &lt;frame name=&quot;second&quot;&gt;
+          &lt;duration&gt;100&lt;/duration&gt;
+          &lt;v u=&quot;0.5&quot; v=&quot;0&quot; /&gt;
+          &lt;v u=&quot;1&quot; v=&quot;0&quot; /&gt;
+          &lt;v u=&quot;1&quot; v=&quot;0.5&quot; /&gt;
+          &lt;v u=&quot;0.5&quot; v=&quot;0.5&quot; /&gt;
+        &lt;/frame&gt;
+        &lt;frame name=&quot;third&quot;&gt;
+          &lt;duration&gt;100&lt;/duration&gt;
+          &lt;v u=&quot;0&quot; v=&quot;0.5&quot; /&gt;
+          &lt;v u=&quot;0.5&quot; v=&quot;0.5&quot; /&gt;
+          &lt;v u=&quot;0.5&quot; v=&quot;1&quot; /&gt;
+          &lt;v u=&quot;0&quot; v=&quot;1&quot; /&gt;
+        &lt;/frame&gt;
+        &lt;frame name=&quot;fourth&quot;&gt;
+          &lt;duration&gt;100&lt;/duration&gt;
+          &lt;v u=&quot;0.5&quot; v=&quot;0.5&quot; /&gt;
+          &lt;v u=&quot;1&quot; v=&quot;0.5&quot; /&gt;
+          &lt;v u=&quot;1&quot; v=&quot;1&quot; /&gt;
+          &lt;v u=&quot;0.5&quot; v=&quot;1&quot; /&gt;
+        &lt;/frame&gt;
+      &lt;/uvanimation&gt;
+    &lt;/params&gt;
+  &lt;/meshobj&gt;
+  &lt;sector name=&quot;space&quot;&gt;
+  &lt;!-- define all the stuff in space ...
+       and now one of the enemies right after we met him --&gt;
+    &lt;meshobj name=&quot;Kaboom&quot;&gt;
+      &lt;plugin&gt;crystalspace.mesh.loader.sprite.2d&lt;/plugin&gt;
+      &lt;params&gt;
+        &lt;v x=&quot;-1&quot; y=&quot;1&quot; /&gt;
+        &lt;v x=&quot;1&quot; y=&quot;1&quot; /&gt;
+        &lt;v x=&quot;1&quot; y=&quot;-1&quot; /&gt;
+        &lt;v x=&quot;-1&quot; y=&quot;-1&quot; /&gt;
+        &lt;uv u=&quot;0&quot; v=&quot;0&quot; /&gt;
+        &lt;uv u=&quot;1&quot; v=&quot;0&quot; /&gt;
+        &lt;uv u=&quot;1&quot; v=&quot;1&quot; /&gt;
+        &lt;uv u=&quot;0&quot; v=&quot;1&quot; /&gt;
+        &lt;color red=&quot;1&quot; green=&quot;1&quot; blue=&quot;1&quot; /&gt;
+        &lt;color red=&quot;1&quot; green=&quot;1&quot; blue=&quot;1&quot; /&gt;
+        &lt;color red=&quot;1&quot; green=&quot;1&quot; blue=&quot;1&quot; /&gt;
+        &lt;color red=&quot;1&quot; green=&quot;1&quot; blue=&quot;1&quot; /&gt;
+        &lt;lighting&gt;no&lt;/lighting&gt;
+        &lt;!-- show the animation, use the timings attached to
+             the frames, loop --&gt;
+        &lt;animate name=&quot;boom&quot;&gt;
+          &lt;timing&gt;0&lt;/timing&gt;
+          &lt;loop&gt;yes&lt;/loop&gt;
+        &lt;/animate&gt;
+      &lt;/params&gt;
+      &lt;move&gt;
+        &lt;v x=&quot;0&quot; y=&quot;0&quot; z=&quot;0&quot;&gt;
+      &lt;/move&gt;
+    &lt;/meshobj&gt;
+  &lt;/sector&gt;
+&lt;/world&gt;
+
+</pre></td></tr></table>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="MeshObject-SprCal3D.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="MeshObject-Spr3D.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="MeshObject.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

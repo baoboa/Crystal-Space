@@ -1,0 +1,455 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 2.4.4 Microsoft Visual C++ 8, 9 or 10</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 2.4.4 Microsoft Visual C++ 8, 9 or 10">
+<meta name="keywords" content="Crystal Space 2.1.0: 2.4.4 Microsoft Visual C++ 8, 9 or 10">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="MSVC7"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="cs_002dwinlibs.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="MinGW.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Building.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Platform-Instructions.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Running-The-Demos.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 2.4.4 Microsoft Visual C++ 8, 9 or 10 </h3>
+
+
+<p>Originally written by Philip Wyett <a href="mailto:philswyett@gmx.co.uk">philswyett@gmx.co.uk</a>.
+
+<em>Last updated 18 May 2012.</em>
+</p>
+<p>In order to successfully compile the Crystal Space 3D Software Development Kit
+(<small>SDK</small>), you will need a copy of <em>Microsoft Visual C++ 8 (<small>.NET 2005</small>)</em>,
+<em>Microsoft Visual C++ 9 (<small>.NET 2008</small>)</em>, or <em>Microsoft Visual C++ 10
+(<small>.NET 2010</small>)</em>. The <em>Express Editions</em> are perfectly suitable to compile
+Crystal Space (although some extra steps are required for the Express Edition of
+<small>MSVC</small> 8, more below).
+</p>
+<a name="1"></a>
+<h4 class="subsubheading"> Getting Extra Help </h4>
+
+<p>If you need help with Crystal Space and Visual C++ or just Crystal Space in
+general.  You can subscribe and then post a message to the Crystal Space
+mailing list.  To subscribe see the following site and fill in the form:
+</p>
+<p><a href="http://lists.sourceforge.net/lists/listinfo/crystal-main">http://lists.sourceforge.net/lists/listinfo/crystal-main</a>
+</p>
+<a name="2"></a>
+<h4 class="subsubheading"> Required/Optional External Libraries and Software </h4>
+
+<p>All the following libraries and Software Development Kits (<small>SDK</small>) unless
+stated are not required.  However, if you choose not to install them, at
+compile time you must follow the documented instructions of how to unload these
+projects from the Crystal Space build process.
+</p>
+<a name="3"></a>
+<h4 class="subsubheading"> Windows <small>SDK</small> - required for Microsoft Visual C++ 2005 Express Edition, Microsoft Visual Studio 2005 </h4>
+
+<p>The following does not apply if you are using a more recent version of Microsoft
+Visual C++.
+</p>
+<p>Microsoft Visual C++ 2005 Express Edition does not ship with a version of the
+Windows <small>SDK</small>. Microsoft Visual Studio 2005 (non-Express) ships with version 5.0
+of the Windows <small>SDK</small> which fails when building some applications (in particular,
+the resource compiler does not support the &quot;Vista&quot; version of the <small>ICO</small> file format).
+</p>
+<p>The Windows <small>SDK</small> can be found at the following URL:
+
+<a href="http://msdn.microsoft.com/en-us/windows/bb980924.aspx">http://msdn.microsoft.com/en-us/windows/bb980924.aspx</a>
+</p>
+<ul>
+<li>
+<em>Microsoft Visual C++ 2005 Express Edition</em>:
+With the exception of using the Windows <small>SDK</small> linked above instead of the
+Platform <small>SDK</small> linked in the following document, exactly follow these
+instructions to set up the <small>SDK</small>:
+
+
+<p><a href="http://msdn2.microsoft.com/en-us/vstudio/aa700755.aspx">http://msdn2.microsoft.com/en-us/vstudio/aa700755.aspx</a>
+</p>
+</li><li>
+<em>Microsoft Visual Studio 2005</em>:
+After installing the Windows <small>SDK</small>, configure Visual Studio to use the
+utilities from the newly installed <small>SDK</small>: Select &ldquo;Options&rdquo;, 
+&ldquo;Projects and Solutions&rdquo;, &ldquo;VC++ Directories&rdquo;. Select &ldquo;Executable files&rdquo;
+from &ldquo;Show directories for&rdquo;. Add the <tt>&lsquo;bin&rsquo;</tt> subdirectory of the Windows
+<small>SDK</small> installation directory at the top of the list. Repeat for &ldquo;x64&rdquo;
+platform if desired.
+</li></ul>
+
+<a name="4"></a>
+<h4 class="subsubheading"> cs-winlibs - Required </h4>
+
+<p>Before you attempt to compile Crystal Space, you must download
+and install the &ldquo;cs-winlibs&rdquo; archive.  This archive contains alot of the
+third party header, pre-built libraries and dll files used by Crystal
+Space, i.e. <tt>&lsquo;libz-cs.dll&rsquo;</tt>, <tt>&lsquo;libjpeg-cs.dll&rsquo;</tt>, <tt>&lsquo;libpng-cs.dll&rsquo;</tt>, 
+etc. See section <a href="cs_002dwinlibs.html#0">The &ldquo;cs-winlibs&rdquo; Packages</a>.
+</p>
+<p>Once you have downloaded the cs-winlibs package, execute the binary and
+follow the setup instructions.  You may want to select &ldquo;VC typical&rdquo; in the
+&ldquo;Select Components&rdquo; screen. You can further adjust the selection of installed 
+components depending on your actual set up (e.g. install MinGW-related 
+components if you plan to also use CrystalSpace with MinGW/MSYS).
+</p>
+<a name="5"></a>
+<h4 class="subsubheading"> Python - Optional </h4>
+
+<p>Crystal Space contains support for Python scripting and thus has projects
+within it requires that Python be installed on your system.  Make sure you add
+the Python <em>include</em> and <em>libs</em> directories to <small>MSVC</small> so that the
+compiler can see those files.  If you wish to compile with Python support you
+must install Python 2.2 or later, which can be obtained from:
+</p>
+<p><a href="http://www.python.org">http://www.python.org</a>
+</p>
+<a name="6"></a>
+<h4 class="subsubheading"> Compiling Crystal Space </h4>
+
+<p>To compile Crystal Space, you'll have to perform the following steps.  If
+anything doesn't work, see the Win32 <small>FAQ</small>, <a href="#MSVC8-FAQ">MSVC8 FAQ</a>.
+</p>
+<ol>
+<li>
+Load <tt>&lsquo;CS\mk\msvcN\wkstypical.sln&rsquo;</tt>, where <samp>&lsquo;N&rsquo;</samp> must be replaced with
+the version number of the MSVC version you use.
+
+</li><li>
+From the file menu select <em>Build-&gt;Build Solution</em>.  <em>Note</em>: If you
+want to build a debuggable version of Crystal Space, you should select the
+<em>Debug</em> build mode; otherwise select the <em>Release</em> build mode.  Do
+not use the special-purpose <em>ExtensiveMemDebug</em> build mode.
+
+</li><li>
+After a while the compilation should finish.  The signal for a
+successful build will be come in the form of the something similar to the
+following:
+
+<table><tr><td>&nbsp;</td><td><pre class="example">Build: 1 succeeded, 0 failed, 0 skipped
+</pre></td></tr></table></li></ol>
+
+<a name="7"></a>
+<h4 class="subsubheading"> Running the Demonstration Applications </h4>
+
+<p>The first app you should try is Walktest.  This program shows many of the
+features of the 3D engine.  You can run it by starting it from the windows
+explorer.  It should be at <tt>&lsquo;.../cs/walktest.exe&rsquo;</tt>.  Don't start it from
+other locations or from within Visual Studio.  It won't find the required files
+if you do.
+</p>
+<p>If you want to run a debug session, you first have to set the working
+directory.  First select the project you wish to debug and setting it as the
+startup project. Next open <em>Project-&gt;Properties-&gt;Debugging</em> and enter
+the base <tt>&lsquo;CS\&rsquo;</tt> directory as the working directory for debug sessions
+(for example, <tt>&lsquo;C:\CS\&rsquo;</tt>).  Be sure to to this for <em>Debug</em> and
+<em>Release</em> builds.
+</p>
+<p>You can now continue with the next platform-independent step.  The remaining
+Windows-specific sections are only important when you want to compile your own
+application using Crystal Space.
+</p>
+<a name="8"></a>
+<h4 class="subsubheading"> Structure of the Workspace </h4>
+
+<p><em>Note</em>: If you find bugs in the <small>MSVC</small> project or workspace files
+coming with Crystal Space, don't send fixes for these files to the developers.
+These files are generated automatically, so your fixes would be useless.
+Better, send a description of the bug to the mailing list.
+</p>
+<p>The Crystal Space workspace is divided into several projects.  They all exist
+as separate project files (<tt>&lsquo;*.vcproj&rsquo;</tt>).  The projects are collected
+together by workspaces <tt>&lsquo;*.sln&rsquo;</tt>.  A workspace will also ensure correct
+linking between the various projects.  There are several workspaces to choose
+from.  Most users should choose the <em>typical</em> workspace, but the others
+are available for the adventurous.
+</p>
+<ul>
+<li>
+<tt>&lsquo;wkstypical.sln&rsquo;</tt> &mdash; Builds the typical modules needed by most users of
+Crystal Space.
+
+</li></ul>
+
+<p>The workspace uses a prefix system for naming contained projects:
+</p>
+<ul>
+<li>
+<tt>&lsquo;app&rsquo;</tt> &mdash; Prefixes application projects.
+</li><li>
+<tt>&lsquo;lib&rsquo;</tt> &mdash; Prefixes library projects.
+</li><li>
+<tt>&lsquo;plg&rsquo;</tt> &mdash; Prefixes plugin module projects.
+</li><li>
+<tt>&lsquo;grp&rsquo;</tt> &mdash; Prefixes psuedo-groups of related projects.
+</li></ul>
+
+<p>The <em>Libraries</em> are C++ libraries that you can link into your own
+programs.  Some of these libraries are part of the core of Crystal Space.
+Their output are <tt>&lsquo;.lib&rsquo;</tt> files.
+</p>
+<p>The <em>Plugins</em> are also programming libraries, but they use a special
+mechanism called <small>SCF</small> as their interface to your program.  This separates
+their interface from the internals of the library and thus allows dynamic
+linking.  In fact, some of the <em>Libraries</em> also use <small>SCF</small>.  The rule
+for the <small>MSVC</small> workspace is simple: The <em>Plugins</em> are projects that
+build a dynamic library (<tt>&lsquo;.dll&rsquo;</tt>).  You can find more information in the
+section of this manual dealing with plug-in modules.  See section <a href="SCF-Chapter.html#0">Plugins, Reference counting, Interfaces (<small>SCF</small>)</a>.
+</p>
+<p>The <em>Applications</em> are programs using some of these libraries, so they
+produce <tt>&lsquo;.exe&rsquo;</tt> files.
+</p>
+<a name="9"></a>
+<h4 class="subsubheading"> Compiling Your Own Program Using Crystal Space </h4>
+
+<p>There is a <small>HOWTO</small> which explains how to create an <small>MSVC</small> project file
+for your own program which utilizes Crystal Space.
+See section <a href="HOWTO-Creating-External-MSVC-Application.html#0">Creating an External <small>MSVC</small> 8, 9 or 10 Application</a>.
+</p>
+<a name="10"></a>
+<h4 class="subsubheading"> Regenerating the MSVC project files. </h4>
+
+<p>The MSVC project files that are shipped with Crystal Space are generated from
+the <tt>&lsquo;Jamfile&rsquo;</tt> files that are used within the project.
+</p>
+<p>If you work inside Crystal Space and have modified one of the <tt>&lsquo;Jamfile&rsquo;</tt>
+files, you might want to regenerate the MSVC project files in order to get access
+to your changes.
+</p>
+<p>This is made using the <code>jam msvcgen</code> command that you have to run from the
+top-level directory of Crystal Space using <a href="MinGW.html#0"><small>MSYS</small></a>. For this, you
+therefore need to have installed <small>MSYS</small> before.
+</p>
+<p>You also need to have a Perl interpretor installed on your system. This can be for
+example &ldquo;ActiveState Perl&rdquo; that you can install using its Perl Package Manager.
+</p>
+<p>Once the Perl interpretor is installed, you would need to re-run the
+<code>./configure</code> script in order for it to detect your Perl interpretor. If it
+fails to do so, you can force it using e.g.:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">./configure PERL='/c/Program Files/ActiveState/Perl/whatever'
+</pre></td></tr></table>
+
+<a name="11"></a>
+<h4 class="subsubheading"> Frequently Asked Questions (<small>FAQ</small>) </h4>
+<p><a name="MSVC8-FAQ"></a>
+</p>
+<p>This is the list of frequently asked questions for the Win32 port of Crystal
+Space.  Please consult this list if you are having difficulty building or using
+the project.
+</p>
+<a name="12"></a>
+<h4 class="subsubheading"> Building </h4>
+
+<ul>
+<li>
+Q1. <em>I'm using the Visual C++ 2005 Express Edition and I get a lot of 
+&ldquo;file not found&rdquo; errors for <tt>&lsquo;windef.h&rsquo;</tt> and others. What is wrong?</em>
+
+<p>Q2. <em>I'm using the Visual C++ 2005 Express Edition and I get a lot of 
+&ldquo;unresolved symbol&rdquo; errors for names like 
+<code>SHGetSpecialFolderLocation@12</code>. What is wrong?</em>
+</p>
+<p>A. These errors indicate a lacking or an incomplete installation of the 
+Platform SDK. Exactly follow the instructions given on Microsoft's 
+&ldquo;Using Visual C++ 2005 Express Edition with the Microsoft Platform SDK&rdquo; 
+page:
+<a href="http://msdn.microsoft.com/vstudio/express/visualc/usingpsdk/">http://msdn.microsoft.com/vstudio/express/visualc/usingpsdk/</a>
+Also, the instructions don't say that, but if you have Visual C++ open while 
+applying those changes you need to restart it. 
+</p>
+</li><li> 
+Q. <em>I get &quot;Errors in post link&quot; and later &quot;file not found&quot; errors.</em>
+
+<p>A. Some problems with non-latin directory names have been reported (e.g.
+Hebrew).  If your <tt>&lsquo;CS&rsquo;</tt> directory is under such a directory, try to move it
+to a directory which name has only Latin characters in it.
+</p>
+</li><li>
+Q. <em>Where are the <tt>&lsquo;zlib.h&rsquo;</tt>, <tt>&lsquo;png.h&rsquo;</tt> and <tt>&lsquo;jpeglib.h&rsquo;</tt> files?</em>
+
+<p>A. Those files are not part of the Crystal Space project, but they are
+required to build it.  You must get a version of the following packages, most
+of which can be easily found on the Internet.  You can download precompiled
+versions of these libraries i.e. <em>cs-winlibs</em> or grab the source code and
+compile it yourself if you prefer.  See section <a href="External-Libraries.html#0">External Libraries</a>.
+</p>
+</li><li>
+Q. <em>Where are the files <tt>&lsquo;libpng.lib&rsquo;</tt> and <tt>&lsquo;zlib.lib&rsquo;</tt>?</em>
+
+<p>A. Just look above at the question about <tt>&lsquo;zlib.h&rsquo;</tt> and <tt>&lsquo;png.h&rsquo;</tt>.
+It's the same problem, and if you have already done what is explained there,
+I can't do much for you!
+</p>
+</li><li>
+Q. <em>How can I reduce build times?</em>
+
+<p>A. Build only the projects you will need. You must build all the Crystal Space
+libraries, however those you may not need can be unloaded (Right click on the
+project you wish unload from the build process and click on Unload). <em>Be
+very careful when unloading projects as some of Crystal Spaces projects e.g.
+some plugins are dependent on others</em>.
+</p>
+</li><li>
+Q. <em>How can I reduce build sizes?</em>
+
+<p>A. Build only the projects you will need.
+</p>
+<p>A. Turning off precompiled headers tends to save a large amount of file space
+while increasing build times somewhat.
+</p>
+</li><li>
+Q. <em>It seems that there is a missing source file in the project.</em>
+
+<p>A. For Crystal Space the MSVC project files are generated once every 24 hours, 
+so normally all missing sources should have been added after that time.  If 
+you can't wait that long, or the file is still missing, contact one of the 
+Crystal Space developers.
+</p>
+<p>For third party projects it's usually the best idea to contact one of it's
+developers, they should be able to tell you which file is missing.
+</p></li></ul>
+
+<a name="13"></a>
+<h4 class="subsubheading"> Executing </h4>
+
+<ul>
+<li>
+Q. <em>I just get a black screen.</em>
+
+<p>A. When I start <tt>&lsquo;walktest&rsquo;</tt> I just get a black screen, maybe with some
+text output, but after a few seconds it drops back to the normal windows
+screen without an error.
+</p>
+<p>This shouldn't happen any more, because in most cases now, <tt>&lsquo;walktest&rsquo;</tt> will
+display proper error messages.  Anyway, you should make sure you have set an
+appropriate directory set (see above).  Make sure you have specified the map
+file in <tt>&lsquo;walktest.cfg&rsquo;</tt> as <samp>&lsquo;Walktest.Settings.WorldFile=&rsquo;</samp> (also keep
+in mind, that your current directory is, where the executable sits.)
+</p>
+</li><li>
+Q. <em>I get the following (or similar) errors:</em>
+
+<table><tr><td>&nbsp;</td><td><pre class="example">WARNING: could not load plugin
+  `crystalspace.graphics3d.opengl'
+WARNING: failed to initialize plugin
+  `crystalspace.engine.3d'
+FATAL: No iGraphics3D plug-in loaded!
+FATAL: No iGraphics2D plug-in loaded!
+Error initializing system!
+</pre></td></tr></table>
+<p>A. You probably did not compile everything. Compiling only the <tt>&lsquo;.exe&rsquo;</tt>
+file is not sufficient!  You must also compile all plug-ins you want to use.
+In the above example the OpenGL renderer is missing.
+</p>
+<p>If you are certain that everything is compiled, make sure your working
+directory is set to <tt>&lsquo;CS\&rsquo;</tt>.  To do this go to the <em>Project</em> menu.
+Select <em>Settings</em> and go to the <em>Debug</em> tab.  Change the debug
+executable to <tt>&lsquo;X:\CS\appname&rsquo;</tt> where <tt>&lsquo;X:&rsquo;</tt> is the drive letter where
+the Crystal Space project is installed.  Next set the working directory to
+<tt>&lsquo;X:\CS&rsquo;</tt>.  Click <small>OK</small> and you should be all set.
+</p>
+<p>If after doing this, you are still getting the same error, make sure that you 
+have the <tt>&lsquo;libz-cs.dll&rsquo;</tt> installed, the <small>VFS</small> plugin is dependent upon it.
+</p></li></ul>
+
+<a name="14"></a>
+<h4 class="subsubheading"> Miscellaneous </h4>
+
+<ul>
+<li>
+Q. <em>My last update did compile, but now I got a new version from the
+<small>SVN</small> repository and everything seems to be broken.</em>
+
+<p>A. When working with Crystal Space, always keep in mind, that this is a
+multiplatform project.  So sometimes not all features will work correct on all
+platforms.  Sometimes a specific port may even be broken due to changes in
+other ports.  Since the introduction of <small>SVN</small> (see <a href="Where-to-Get.html#SVN">SVN</a>) this is usually
+only for a short time, so if you got your version out of <small>SVN</small>, it usually
+pays off, to post a message describing the problems to the Crystal Space
+Mailing List describing you problem and include the exact error messages.  If
+you wait a while, this will probably be fixed, or at least be worked around.
+See section <a href="Mailing-Lists.html#0">Mailing Lists</a>.
+</p>
+</li><li>
+Q. <em>I have a problem that you haven't solved here!</em>
+
+<p>A. Try sending a note to the Crystal Space mailing list and asking your
+question there.  See section <a href="Mailing-Lists.html#0">Mailing Lists</a>.  Be sure to include any pertinent
+information, such as the operating system you are using, the compiler, which
+version of Crystal Space, and any special configuration information.
+</p></li></ul>
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="cs_002dwinlibs.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="MinGW.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Building.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Platform-Instructions.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Running-The-Demos.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 2.4.2.2 Library Prerequisites</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 2.4.2.2 Library Prerequisites">
+<meta name="keywords" content="Crystal Space 2.1.0: 2.4.2.2 Library Prerequisites">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Debian-Libraries"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Debian-3D-Display.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Debian-Building.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Building.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Debian.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Running-The-Demos.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h4 class="subsubsection"> 2.4.2.2 Library Prerequisites </h4>
+
+<a name="1"></a>
+<h4 class="subsubheading"> Basic libraries </h4>
+
+<p>These are most of the <a href="External-Libraries.html#0">external libraries</a> that are either
+needed for Crystal Space, or may be used in optional plugins. Since Debian packages
+are available for those libraries, you can easily install the below packages from
+the terminal as <code>root</code> or using <code>sudo</code>:
+</p>
+<p><code>
+apt-get install build-essential autoconf libtool pkg-config jam
+subversion swig doxygen bison flex libcppunit-dev
+libx11-dev mesa-common-dev libxaw7-dev libgl1-mesa-dev libxext-dev libxxf86vm-dev
+libxrender-dev nvidia-current-dev nvidia-cg-toolkit
+zlib1g-dev libfreetype6-dev libjpeg-dev libmng-dev libpng12-dev liblcms-dev
+libcairo-dev libcairomm-1.0-dev libgtk2.0-dev libwxbase2.8-dev libwxgtk2.8-dev
+libasound-dev libopenal-dev libogg-dev libvorbis-dev libspeex-dev
+python-dev libode-dev lib3ds-dev libcal3d-dev
+</code>
+</p>
+<a name="2"></a>
+<h4 class="subsubheading"> Other libraries </h4>
+
+<p>Some additional libraries are recommended for Crystal Space, but they do
+not have available Debian packages. Therefore, you have to build and install them
+manually as described in this section.
+</p>
+<ul>
+<li>
+<strong>CEGUI</strong>
+
+<p>The Crazy Eddie's GUI is used in many applications where there is a graphical user
+interface, such as <code>viewmesh</code>.
+</p>
+<p>There is a Debian package for CEGUI, but it is probably not enough up-to-date for
+Crystal Space, which needs the 0.7 version or higher. Therefore you will neeed to
+install the package manually.
+</p>
+<p>For that, install at first the PCRE library which is a needed dependency of CEGUI:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">sudo apt-get install libpcre3-dev
+</pre></td></tr></table>
+<p>Then download the latest version of the CEGUI library at
+<a href="http://sourceforge.net/projects/crayzedsgui/files/">http://sourceforge.net/projects/crayzedsgui/files/</a>
+</p>
+<p>Extract the files to a temporary folder, compile and install the library:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">./configure
+make
+sudo make install
+</pre></td></tr></table>
+</li><li>
+<strong>BULLET</strong>
+
+<p>The Bullet library allows to use advanced physical simulation effects such
+as soft bodies and ragdolls.
+</p>
+<p>You can download the latest version of the Bullet library at
+<a href="http://code.google.com/p/bullet/downloads/">http://code.google.com/p/bullet/downloads/</a>
+</p>
+<p>Then extract the files to a temporary folder, compile and install the library:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">./configure
+make
+sudo make install
+</pre></td></tr></table>
+</li><li>
+<strong>ASSIMP</strong>
+
+<p>The <a href="Assimp-importer.html#0">Open Asset Import Library</a> can be used to load
+transparently in Crystal Space assets from a
+<a href="http://assimp.sourceforge.net/main_features_formats.html">wide list of different 3D file formats</a>.
+</p>
+<p>First, install the Boost libraries, which are needed by Assimp.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">sudo apt-get install libboost-dev
+</pre></td></tr></table>
+<p>Then download either the last official release from the
+<a href="http://assimp.sourceforge.net/main_downloads.html">official web page</a>,
+or the latest version from its Subversion repository:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">svn co https://assimp.svn.sourceforge.net/svnroot/assimp/trunk assimp_trunk
+</pre></td></tr></table>
+<p>Then configure, compile and install the library:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">cmake . -G &quot;Unix Makefiles&quot;
+make
+sudo make install
+</pre></td></tr></table>
+</li></ul>
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Debian-3D-Display.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Debian-Building.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Building.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Debian.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Running-The-Demos.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

@@ -1,0 +1,386 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.12.1.3 Shader Conditions and Processing Instructions Reference</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.12.1.3 Shader Conditions and Processing Instructions Reference">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.12.1.3 Shader Conditions and Processing Instructions Reference">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Shader-Conditions-and-Processing-Instructions-Reference"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Shader-Variables.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Alpha-Textures.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Shaders.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h4 class="subsubsection"> 4.12.1.3 Shader Conditions and Processing Instructions Reference </h4>
+
+<a name="1"></a>
+<h3 class="subheading"> General Syntax </h3>
+
+<p>Shader conditions and processing instructions are specified via <small>XML</small> 
+processing instructions, that is <code>&lt;?...?&gt;</code>.  Some instructions only
+consist of a single instruction, others consist of a pair and enclose a
+block of <small>XML</small>.  All tags opened in such a block must be properly closed
+according to the node hierarchy, and all closing tags must be matched by
+an opening tag inside such a block.
+</p>
+<p>In an instruction string, `<code>&lt;</code>' can be replaced with `<code>&amp;lt;</code>'
+and `<code>&gt;</code>' can be replaced with `<code>&amp;gt;</code>'.
+</p>
+<a name="2"></a>
+<h3 class="subheading"> Shader Processing Instructions </h3>
+
+<p>Shader processing instructions are evaluated at parse time; notably, a shader
+condition as described below does <em>not</em> influence whether a processing
+instruction is processed or not.  In order to visually distinguish the 
+parse-time evaluated processing instructions from the run-time evaluated
+conditions, all processing instructions start with an uppercase letter by
+convention.
+</p>
+<a name="3"></a>
+<h4 class="subsubheading"> Templates </h4>
+
+<p>Syntax for template definition:
+</p><table><tr><td>&nbsp;</td><td><pre class="example">&lt;?Template [TemplateName] {ParameterName} {ParameterName} ...?&gt;
+{XML}
+&lt;?Endtemplate?&gt;
+</pre></td></tr></table>
+<p>Syntax for template invokation:
+</p><table><tr><td>&nbsp;</td><td><pre class="example">&lt;?[TemplateName] {Parameter} {Parameter} ...?&gt;
+</pre></td></tr></table> 
+
+<p>A template is available for invokation after the closing <code>Endtemplate</code>.
+</p>
+<p>If a template is defined with a name of an already existing definition, the
+new definition overrides the old definition after the closing <code>Endtemplate</code>.
+</p>
+<p>If a template definition is parsed. template invokations inside template 
+definitions are immediately expanded.  However, note that <em>nested</em> 
+template definitions are not parsed unless the containing template is invoked.
+This means that nested template invokations are not immediately expanded.
+</p>
+<p>Templates support parameters.  Each parameter has a name, and placeholders in 
+the template contents block are substituted with the parameter's values.
+A placeholder has the form <samp>&lsquo;$Parameter$&rsquo;</samp> or <samp>&lsquo;$&quot;Parameter$&rsquo;</samp>.  The
+first form substitutes the placeholders with the verbatim parameter value.
+The second form substitutes the placeholders with a &ldquo;quoted&rdquo; string:
+it is formatted such that it can be passed as a parameter to a template
+invokation, preserving contained spaces (see below).  
+To specify a single dollar sign in the contents block use <samp>&lsquo;$$&rsquo;</samp>.
+</p>
+<p>The parameter values specified in the template invokation are associated with
+the definition's parameter names by position.  Parameter values are 
+space-separated.  To specify a parameter that contains spaces, the string
+must be surrounded by quotes.  A quote character in such a quoted string is
+represented as <samp>&lsquo;\&quot;&rsquo;</samp>, a backslash character as <samp>&lsquo;\\&rsquo;</samp>.
+</p>
+<p>Syntax for weak template definition:
+</p><table><tr><td>&nbsp;</td><td><pre class="example">&lt;?TemplateWeak [TemplateName] {ParameterName} {ParameterName} ...?&gt;
+{XML}
+&lt;?Endtemplate?&gt;
+</pre></td></tr></table>
+<p>Weak templates behave the same way as &ldquo;normal&rdquo; templates, except in the case
+of a definition with the name as an already existing definition: the new
+definition is ignored.
+</p>
+<a name="4"></a>
+<h4 class="subsubheading"> Generators </h4>
+
+<p>Syntax for generation:
+</p><table><tr><td>&nbsp;</td><td><pre class="example">&lt;?Generate [Variable] [Start] [End] {Step} ?&gt;
+{XML}
+&lt;?Endgenerate?&gt;
+</pre></td></tr></table>
+<p><samp>&lsquo;Generate&rsquo;</samp> instructions let internally run an integer counter, starting 
+at <samp>&lsquo;Start&rsquo;</samp>, adding <samp>&lsquo;Step&rsquo;</samp> on each iteration, until the counter
+is greater (for a positive <samp>&lsquo;Step&rsquo;</samp>) respectively smaller (for a 
+negative <samp>&lsquo;Step&rsquo;</samp>) than <samp>&lsquo;End&rsquo;</samp>. Each iteration replicates the
+contents block.
+</p>
+<p>If <samp>&lsquo;Step&rsquo;</samp> is not specified, it defaults to <code>1</code> if 
+<samp>&lsquo;Start&rsquo;</samp> &lt;= <samp>&lsquo;End&rsquo;</samp> or to <code>-1</code> if <samp>&lsquo;Start&rsquo;</samp> &gt; <samp>&lsquo;End&rsquo;</samp>.
+<samp>&lsquo;Step&rsquo;</samp> = <code>0</code>, <samp>&lsquo;Step&rsquo;</samp> &gt; <code>0</code> and <samp>&lsquo;Start&rsquo;</samp> &gt; <samp>&lsquo;End&rsquo;</samp>,
+<samp>&lsquo;Step&rsquo;</samp> &lt; <code>0</code> and <samp>&lsquo;Start&rsquo;</samp> &lt;= <samp>&lsquo;End&rsquo;</samp> result in an error. 
+</p>
+<p>Certain placeholders in the contents block, in the same form as placeholders
+for a <samp>&lsquo;Template&rsquo;</samp> parameter with the name of <samp>&lsquo;Variable&rsquo;</samp> will be
+replaced with the counter value of an iteration.
+</p>
+<p>(Semantically, using a <samp>&lsquo;Generate&rsquo;</samp> instruction is equivalent to defining
+a template with a single parameter named <samp>&lsquo;Variable&rsquo;</samp>, with the same 
+contents as the <samp>&lsquo;Generate&rsquo;</samp> instruction, and invoking it once for each 
+value of the counter, iterating as described above.) 
+</p>
+<a name="5"></a>
+<h4 class="subsubheading"> Inclusions </h4>
+
+<p>Syntax for inclusion:
+</p><table><tr><td>&nbsp;</td><td><pre class="example">&lt;?Include [Filename] ?&gt;
+</pre></td></tr></table> 
+
+<p><samp>&lsquo;Filename&rsquo;</samp> is the <small>VFS</small> path to the file to be included.  The file
+needs to be an <small>XML</small> file with a node <code>include</code> at the root.  All
+contents of this <code>include</code> node will treated as if appearing in the 
+including document at the point of the <samp>&lsquo;Include&rsquo;</samp> processing instruction.
+Shader processing instructions and shader conditions will be handled normally.
+</p>
+<a name="6"></a>
+<h4 class="subsubheading"> Static Conditions </h4>
+
+<p>Syntax for a symbol definition:
+</p><table><tr><td>&nbsp;</td><td><pre class="example">&lt;?Define [Symbol] ?&gt;
+</pre></td></tr></table> 
+
+<p>Syntax for a symbol undefinition:
+</p><table><tr><td>&nbsp;</td><td><pre class="example">&lt;?Undef [Symbol] ?&gt;
+</pre></td></tr></table> 
+
+<p><samp>&lsquo;Define&rsquo;</samp> adds <samp>&lsquo;Symbol&rsquo;</samp> to a global symbol table.  <samp>&lsquo;Undef&rsquo;</samp> 
+removes <samp>&lsquo;Symbol&rsquo;</samp> from that table.  The presence of a symbol in that 
+table can be tested with the statements below.
+</p>
+<p>Syntax for symbol testing:
+</p><table><tr><td>&nbsp;</td><td><pre class="example">&lt;?SIfDef|SIfNDef [Symbol] ?&gt;
+{XML}
+{&lt;?SElsIfDef|SElsIfNDef [Symbol] ?&gt;}
+{XML}
+{&lt;?SElsIfDef|SElsIfNDef [Symbol] ?&gt;}
+{XML}
+...
+{&lt;?SElse ?&gt;}
+{XML}
+&lt;?SEndIf ?&gt;
+</pre></td></tr></table>
+<p><samp>&lsquo;SIfDef&rsquo;</samp> tests for the presence of a symbol in the global symbol table,
+<samp>&lsquo;SIfNDef&rsquo;</samp> for the absence.  If the test succeeds, the contents of the 
+block up to the next <samp>&lsquo;SElsIfDef&rsquo;</samp>, <samp>&lsquo;SElsIfNDef&rsquo;</samp>, <samp>&lsquo;SElse&rsquo;</samp> or 
+<samp>&lsquo;SEndIf&rsquo;</samp> are used in the document.  If the test does not succeed, the 
+behaviour depends on the instruction that follows: if it is the <samp>&lsquo;SEndIf&rsquo;</samp>, 
+nothing will be used in the document.  If it is the <samp>&lsquo;SElse&rsquo;</samp>, the contents
+of the block from  <samp>&lsquo;SElse&rsquo;</samp> to <samp>&lsquo;SEndIf&rsquo;</samp> will be used.  If the next
+instruction is <samp>&lsquo;SElsIfDef&rsquo;</samp> or <samp>&lsquo;SElsIfNDef&rsquo;</samp>, the <samp>&lsquo;Symbol&rsquo;</samp>
+specified there will be tested for presence or absence again; which block is
+used in the document depends on the result of the test and the following
+instruction in the same way as for <samp>&lsquo;SIfDef&rsquo;</samp> or <samp>&lsquo;SIfNDef&rsquo;</samp>.
+</p>
+<p>Every <samp>&lsquo;SIfDef&rsquo;</samp> or <samp>&lsquo;SIfNDef&rsquo;</samp> is matched by one <samp>&lsquo;SEndIf&rsquo;</samp>.
+An <samp>&lsquo;SElse&rsquo;</samp> instruction is optional and must only be followed by the
+<samp>&lsquo;SEndIf&rsquo;</samp>. 
+</p>
+<a name="7"></a>
+<h3 class="subheading"> Shader Conditions </h3>
+
+<p>Shader conditions are evaluated at run time.  They can be treated as if
+re-evaluated every time a shader is used.  In order to visually distinguish 
+the run-time evaluated conditions from the parse-time evaluated processing 
+instructions, all conditions start with a lowercase letter by convention.
+</p>
+<p>Syntax for conditons:
+</p><table><tr><td>&nbsp;</td><td><pre class="example">&lt;?if [Expression] ?&gt;
+{XML}
+{&lt;?elsif [Expression] ?&gt;}
+{XML}
+{&lt;?elsif [Expression] ?&gt;}
+{XML}
+...
+{&lt;?else ?&gt;}
+{XML}
+&lt;?endif ?&gt;
+</pre></td></tr></table>
+<p><samp>&lsquo;if&rsquo;</samp> tests whether <samp>&lsquo;Expression&rsquo;</samp> evaluates to the boolean value 
+<code>true</code>.  <samp>&lsquo;Expression&rsquo;</samp> not evaluating to a boolean value results in 
+an error.  (Expressions can evaluate to different types, see below.) 
+If the test succeeds, the contents of the block up to the next <samp>&lsquo;elsif&rsquo;</samp>, 
+<samp>&lsquo;else&rsquo;</samp>, or <samp>&lsquo;endif&rsquo;</samp> are used in the document.  If the test does not 
+succeed, the behaviour depends on the instruction that follows: if it is the 
+<samp>&lsquo;endif&rsquo;</samp>, nothing will be used in the shader.  If it is the <samp>&lsquo;else&rsquo;</samp>, 
+the contents of the block from <samp>&lsquo;else&rsquo;</samp> to <samp>&lsquo;endif&rsquo;</samp> will be used.  
+If the next instruction is <samp>&lsquo;elsif&rsquo;</samp>, the <samp>&lsquo;Expression&rsquo;</samp> specified there
+will be evaluated and tested the same way as it would for an <samp>&lsquo;if&rsquo;</samp>; 
+which block is used in the document depends on the result of the test and the 
+following instruction in the same way as for <samp>&lsquo;if&rsquo;</samp>.
+</p>
+<p>Every <samp>&lsquo;ifdef&rsquo;</samp> is matched by one <samp>&lsquo;endif&rsquo;</samp>.  An <samp>&lsquo;else&rsquo;</samp> instruction 
+is optional and must only be followed by the <samp>&lsquo;endif&rsquo;</samp>. 
+</p>
+<a name="8"></a>
+<h4 class="subsubheading"> Expression Syntax </h4>
+
+<table><tr><td>&nbsp;</td><td><pre class="example">      expr ::= (expr) | expr op expr | '!' expr | identifier | number
+        op ::= '||' | '&amp;&amp;' | '==' | '!=' | '&lt;' | '&gt;' | '&lt;=' | '&gt;='
+identifier ::= ident-string | ident-string '.' identifier
+</pre></td></tr></table>
+<p><samp>&lsquo;ident-string&rsquo;</samp> can be an arbitrary character string.  To specify a string 
+with spaces double quotes must be put around the string.
+</p>
+<p><samp>&lsquo;number&rsquo;</samp> can be an integer or float number.
+</p>
+<a name="9"></a>
+<h4 class="subsubheading"> Expression Operators </h4>
+
+<table>
+<tr><td><p> Operator </p></td><td><p> Priority </p></td><td><p> Description </p></td><td><p> Operand type(s)
+</p></td></tr>
+<tr><td><p> <code>!</code> </p></td><td><p> 1 </p></td><td><p> Unary logical <small>NOT</small> </p></td><td><p> boolean
+</p></td></tr>
+<tr><td><p> <code>&gt;=</code> </p></td><td><p> 2 </p></td><td><p> Binary greater equal </p></td><td><p> integer, float
+</p></td></tr>
+<tr><td><p> <code>&lt;=</code> </p></td><td><p> 2 </p></td><td><p> Binary lesser equal </p></td><td><p> integer, float
+</p></td></tr>
+<tr><td><p> <code>&gt;</code> </p></td><td><p> 2 </p></td><td><p> Binary greater </p></td><td><p> integer, float
+</p></td></tr>
+<tr><td><p> <code>&lt;</code> </p></td><td><p> 2 </p></td><td><p> Binary lesser </p></td><td><p> integer, float
+</p></td></tr>
+<tr><td><p> <code>==</code> </p></td><td><p> 3 </p></td><td><p> Binary equal </p></td><td><p> integer, float, boolean
+</p></td></tr>
+<tr><td><p> <code>!=</code> </p></td><td><p> 3 </p></td><td><p> Binary not equal </p></td><td><p> integer, float, boolean
+</p></td></tr>
+<tr><td><p> <code>&amp;&amp;</code> </p></td><td><p> 4 </p></td><td><p> Binary logical <small>AND</small> </p></td><td><p> boolean
+</p></td></tr>
+<tr><td><p> <code>||</code> </p></td><td><p> 5 </p></td><td><p> Binary logical <small>OR</small> </p></td><td><p> boolean
+</p></td></tr>
+</table>
+
+<p>Lower priority means higher precedence.
+</p>
+<p>Both operands must have types compatible to each others.  The type `boolean'
+is only compatible to `boolean' itself. `integer', `float' are compatible
+to each other.  If one operand is a `float' but the other is not, this other
+operand gets converted to `float' before evaluation of the operation.
+</p>
+<a name="10"></a>
+<h4 class="subsubheading"> Expression Identifiers </h4>
+
+<p><samp>&lsquo;identifier&rsquo;</samp> identifies a built-in constant or shader variable.
+</p>
+<p>Identifiers are build of names separated by dots, forming a hierarchy.  The
+leftmost name is the top-level name.  Subsequent names are also called 
+&ldquo;members&rdquo; of the name left of them.
+</p>
+<p>Top-level names are:
+</p>
+<dl compact="compact">
+<dt> <code>consts</code></dt>
+<dd><p>Constants.  Available members are the boolean constants <samp>&lsquo;true&rsquo;</samp> and 
+<samp>&lsquo;false&rsquo;</samp>, as well as integer constants consisting of the enumerants of
+the <code>csLightType</code> enum, the <code>csLightAttenuationMode</code> enum and the
+<code>csFogMode</code> enum.
+</p></dd>
+<dt> <code>vars</code></dt>
+<dd><p>Shader variables.  Members are all possible names of shader variables.
+Each such member will evaluate to a boolean value, which is <code>true</code> if
+a shader variable of the specified name exists in the set of shader variables
+used for rendering, or <code>false</code> if not.
+</p></dd>
+</dl>
+
+<p>Furthermore, shader variable names have members themselves:
+</p><dl compact="compact">
+<dt> <code>int</code></dt>
+<dd><p>The integer value of the shader variable, or <code>0</code> if the variable doesn't 
+exist.
+</p></dd>
+<dt> <code>float</code></dt>
+<dd><p>The float value of the shader variable, or <code>0.0</code> if the variable doesn't 
+exist.
+</p></dd>
+<dt> <code>x</code></dt>
+<dd><p>The `x' component of the vector value of the shader variable, or <code>0.0</code> 
+the variable doesn't exist.
+</p></dd>
+<dt> <code>y</code></dt>
+<dd><p>The `y' component of the vector value of the shader variable, or <code>0.0</code> 
+the variable doesn't exist.
+</p></dd>
+<dt> <code>z</code></dt>
+<dd><p>The `z' component of the vector value of the shader variable, or <code>0.0</code> 
+the variable doesn't exist.
+</p></dd>
+<dt> <code>w</code></dt>
+<dd><p>The `w' component of the vector value of the shader variable, or <code>0.0</code> 
+the variable doesn't exist.
+</p></dd>
+<dt> <code>buffer</code></dt>
+<dd><p>A boolean value indicating whether the variable contains a buffer, or 
+<code>false</code> if the variable doesn't exist. 
+</p></dd>
+<dt> <code>texture</code></dt>
+<dd><p>A boolean value indicating whether the variable contains a buffer, or 
+<code>false</code> if the variable doesn't exist. 
+</p></dd>
+</dl>
+
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Shader-Variables.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Alpha-Textures.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Shaders.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

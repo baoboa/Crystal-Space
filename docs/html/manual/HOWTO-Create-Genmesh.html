@@ -1,0 +1,233 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.10.4 Creating a Genmesh Mesh</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.10.4 Creating a Genmesh Mesh">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.10.4 Creating a Genmesh Mesh">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="HOWTO-Create-Genmesh"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Writing-MeshObjects.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="HOWTO-Mesh-LightAnim.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="MeshObject.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 4.10.4 Creating a Genmesh Mesh </h3>
+
+<p>This section describes how to create a Genmesh mesh.
+</p>
+<a name="1"></a>
+<h4 class="subsubheading"> What is Genmesh? </h4>
+
+<p>A <samp>&lsquo;Genmesh&rsquo;</samp> mesh object (see section <a href="MeshObject-Genmesh.html#0">Genmesh Mesh Object</a>) is a generic
+triangle mesh object. Genmeshes also support animation
+(see section <a href="GenMesh-Animation.html#0">GenMesh Animation</a>).
+</p>
+<p>Genmeshes are very useful for static or semi-static geometry (chests,
+doors, candles, swords, etc.) which can sometimes require a lot of detail.
+</p>
+<p>Genmeshes use vertex lighting (or stencil if you use a stencil lighting
+shader). You can also use lightmaps on genmeshes with the <samp>&lsquo;lighter2&rsquo;</samp>
+application. See section <a href="Using-lighter2.html#0">Using <code>lighter2</code></a>.
+</p>
+<p>Genmesh objects always have to be created through a factory. So, first
+you create the actual geometry in a genmesh factory and then you create one
+or more instances from that factory. This is a great way to save memory.
+This does mean that it is not possible to HardTransform genmeshes. It is
+only possible to HardTransform Genmesh factories.
+</p>
+<a name="2"></a>
+<h4 class="subsubheading"> Creating a Genmesh in a Map </h4>
+
+<p>Here is an example of how to create a cube genmesh in a map file:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">&lt;meshfact name=&quot;cubeFact&quot;&gt;
+  &lt;plugin&gt;crystalspace.mesh.loader.factory.genmesh&lt;/plugin&gt;
+  &lt;params&gt;
+    &lt;v x=&quot;-0.1&quot; y=&quot;0.1&quot; z=&quot;0.1&quot; u=&quot;0&quot; v=&quot;0&quot; /&gt;
+    &lt;v x=&quot;-0.1&quot; y=&quot;0.1&quot; z=&quot;-0.1&quot; u=&quot;1&quot; v=&quot;0&quot; /&gt;
+    &lt;v x=&quot;0.1&quot; y=&quot;0.1&quot; z=&quot;-0.1&quot; u=&quot;0&quot; v=&quot;1&quot; /&gt;
+    &lt;v x=&quot;0.1&quot; y=&quot;0.1&quot; z=&quot;0.1&quot; u=&quot;1&quot; v=&quot;1&quot; /&gt;
+    &lt;v x=&quot;-0.1&quot; y=&quot;-0.1&quot; z=&quot;0.1&quot; u=&quot;1&quot; v=&quot;0&quot; /&gt;
+    &lt;v x=&quot;-0.1&quot; y=&quot;-0.1&quot; z=&quot;-0.1&quot; u=&quot;0&quot; v=&quot;1&quot; /&gt;
+    &lt;v x=&quot;0.1&quot; y=&quot;-0.1&quot; z=&quot;-0.1&quot; u=&quot;1&quot; v=&quot;1&quot; /&gt;
+    &lt;v x=&quot;0.1&quot; y=&quot;-0.1&quot; z=&quot;0.1&quot; u=&quot;0&quot; v=&quot;0&quot; /&gt;
+    &lt;t v1=&quot;0&quot; v2=&quot;3&quot; v3=&quot;1&quot; /&gt;
+    &lt;t v1=&quot;3&quot; v2=&quot;2&quot; v3=&quot;1&quot; /&gt;
+    &lt;t v1=&quot;4&quot; v2=&quot;5&quot; v3=&quot;7&quot; /&gt;
+    &lt;t v1=&quot;5&quot; v2=&quot;6&quot; v3=&quot;7&quot; /&gt;
+    &lt;t v1=&quot;0&quot; v2=&quot;4&quot; v3=&quot;3&quot; /&gt;
+    &lt;t v1=&quot;4&quot; v2=&quot;7&quot; v3=&quot;3&quot; /&gt;
+    &lt;t v1=&quot;1&quot; v2=&quot;6&quot; v3=&quot;5&quot; /&gt;
+    &lt;t v1=&quot;1&quot; v2=&quot;2&quot; v3=&quot;6&quot; /&gt;
+    &lt;t v1=&quot;0&quot; v2=&quot;1&quot; v3=&quot;5&quot; /&gt;
+    &lt;t v1=&quot;0&quot; v2=&quot;5&quot; v3=&quot;4&quot; /&gt;
+    &lt;t v1=&quot;2&quot; v2=&quot;3&quot; v3=&quot;7&quot; /&gt;
+    &lt;t v1=&quot;2&quot; v2=&quot;7&quot; v3=&quot;6&quot; /&gt;
+    &lt;autonormals /&gt;
+  &lt;/params&gt;
+&lt;/meshfact&gt;
+&lt;sector name=&quot;bla&quot;&gt;
+  &lt;meshobj name=&quot;cube&quot;&gt;
+    &lt;plugin&gt;crystalspace.mesh.loader.genmesh&lt;/plugin&gt;
+    &lt;params&gt;
+      &lt;factory&gt;cubeFact&lt;/factory&gt;
+      &lt;material&gt;mosaic&lt;/material&gt;
+    &lt;/params&gt;
+    &lt;move&gt;
+      &lt;v x=&quot;1&quot; y=&quot;0&quot; z=&quot;3&quot; /&gt;
+    &lt;/move&gt;
+  &lt;/meshobj&gt;
+&lt;/sector&gt;
+</pre></td></tr></table>
+<p>In this example we define a box by specifying the eight corner vertices
+and the twelve triangles. The <code>&lt;autonormals&gt;</code> tag specifies that normals
+will be created automatically (to give the box a smooth appearance). The
+normals are used for lighthing. It is also possible to specify normals
+manually. Note that with every vertex we also specify a texture coordinate
+(uv coordinate).
+</p>
+<p>To create a genmesh box you can actually use a short-hand notation:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">&lt;meshfact name=&quot;cubeFact&quot;&gt;
+  &lt;plugin&gt;crystalspace.mesh.loader.factory.genmesh&lt;/plugin&gt;
+  &lt;params&gt;
+    &lt;box&gt;
+      &lt;min x=&quot;-0.1&quot; y=&quot;-0.1&quot; z=&quot;-0.1&quot; /&gt;
+      &lt;max x=&quot;0.1&quot; y=&quot;0.1&quot; z=&quot;0.1&quot; /&gt;
+    &lt;/box&gt;
+    &lt;autonormals /&gt;
+    &lt;lighting&gt;true&lt;/lighting&gt;
+  &lt;/params&gt;
+&lt;/meshfact&gt;
+</pre></td></tr></table>
+<p>This is a quick way to make boxes in a map file.
+</p>
+<a name="3"></a>
+<h4 class="subsubheading"> Creating a Genmesh Programmatically </h4>
+
+<p>Here we create the same genmesh programmatically:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">// First create the factory:
+csRef&lt;iMeshFactoryWrapper&gt; fact = engine-&gt;CreateMeshFactory (
+  &quot;crystalspace.mesh.object.genmesh&quot;, &quot;cubeFact&quot;);
+csRef&lt;iGeneralFactoryState&gt; factstate = scfQueryInterface&lt;iGeneralFactoryState&gt; (
+  fact-&gt;GetMeshObjectFactory ());
+factstate-&gt;SetVertexCount (8);
+factstate-&gt;GetVertices ()[0].Set (-0.1, 0.1, 0.1);
+factstate-&gt;GetTexels ()[0].Set (0, 0);
+factstate-&gt;GetVertices ()[1].Set (-0.1, 0.1, -0.1);
+factstate-&gt;GetTexels ()[1].Set (1, 0);
+...
+factstate-&gt;SetTriangleCount (12);
+factstate-&gt;GetTriangles ()[0].Set (0, 3, 1);
+factstate-&gt;GetTriangles ()[1].Set (3, 2, 1);
+...
+factstate-&gt;CalculateNormals ();
+
+// Now create an instance:
+csRef&lt;iMeshWrapper&gt; mesh =
+  engine-&gt;CreateMeshWrapper (fact, &quot;cube&quot;);
+mesh-&gt;GetMeshObject ()-&gt;SetMaterialWrapper (myMaterial);
+csRef&lt;iGeneralMeshState&gt; meshstate = scfQueryInterface&lt;iGeneralMeshState&gt; (
+  mesh-&gt;GetMeshObject ());
+meshstate-&gt;SetLighting (true);
+...
+</pre></td></tr></table>
+<p>This will basically create the same cube as in the map file example.
+</p>
+<p>However, there is a much easier way by using the <samp>&lsquo;GeneralMeshBuilder&rsquo;</samp>
+class:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">using namespace CS::Geometry;
+Box box (csVector3 (-.1, -.1, -.1), csVector3 (.1, .1, .1));
+
+// Now we make a factory and a mesh at once.
+csRef&lt;iMeshWrapper&gt; mesh = GeneralMeshBuilder::CreateFactoryAndMesh (
+      engine, room, &quot;cube&quot;, &quot;cubeFact&quot;, &amp;box);
+mesh-&gt;GetMeshObject ()-&gt;SetMaterialWrapper (myMaterial);
+csRef&lt;iGeneralMeshState&gt; meshstate = scfQueryInterface&lt;iGeneralMeshState&gt; (
+  mesh-&gt;GetMeshObject ());
+meshstate-&gt;SetLighting (true);
+</pre></td></tr></table>
+<a name="4"></a>
+<h4 class="subsubheading"> Include Files </h4>
+
+<p>The include files useful for this section are:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">#include &lt;imesh/genmesh.h&gt;
+#include &lt;cstool/genmeshbuilder.h&gt;
+</pre></td></tr></table>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Writing-MeshObjects.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="HOWTO-Mesh-LightAnim.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="MeshObject.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

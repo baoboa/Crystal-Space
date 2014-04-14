@@ -1,0 +1,151 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.2.3.2 Loading The Map</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.2.3.2 Loading The Map">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.2.3.2 Loading The Map">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Simple-Loading-The-Map"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Simple-Base-Code.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Simple-Locating-the-Camera.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Tutorial-Simple-Map.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h4 class="subsubsection"> 4.2.3.2 Loading The Map </h4>
+
+<p>Here we add the code to load a map. In this example we will load the
+<samp>&lsquo;flarge&rsquo;</samp> map which is included with Crystal Space.
+</p>
+<p>In the second tutorial we already mentioned <small>VFS</small> (see section <a href="VFS.html#0">Virtual File System (<small>VFS</small>)</a>). This
+is important in this case too since we are going to load the map from
+the virtual filesystem. To do this we first add the new <code>LoadMap()</code>
+routine just before the <code>OnInitialize()</code> function:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">bool Simple::LoadMap ()
+{
+  // Set VFS current directory to the level we want to load.
+  csRef&lt;iVFS&gt; VFS (csQueryRegistry&lt;iVFS&gt; (object_reg));
+  VFS-&gt;ChDir (&quot;/lev/flarge&quot;);
+  // Load the level file which is called 'world'.
+  if (!loader-&gt;LoadMapFile (&quot;world&quot;))
+    ReportError(&quot;Error couldn't load level!&quot;);
+  return true;
+}
+</pre></td></tr></table>
+<p>This code first uses <code>iVFS::ChDir()</code> to set the current
+directory in the virtual file system to <tt>&lsquo;/lev/flarge&rsquo;</tt>. In the
+case of <samp>&lsquo;flarge&rsquo;</samp> this <em>mount point</em> exists already in the
+configuration file <tt>&lsquo;vfs.cfg&rsquo;</tt>. If this is not the case for your own levels,
+you can either modify <tt>&lsquo;vfs.cfg&rsquo;</tt>, provide your own <tt>&lsquo;vfs.cfg&rsquo;</tt>, or
+else call <code>iVFS::Mount()</code>
+to map a physical file path (can be a <small>ZIP</small> archive file as well)
+to a virtual directory.
+</p>
+<p>The call to <code>iLoader::LoadMapFile()</code> will take the given filename
+(in this case <tt>&lsquo;world&rsquo;</tt>) and open it from the current <small>VFS</small>
+directory. Then, it will parse that file and create the geometry which
+is specified there.
+</p>
+<p>If loading is successful, then you must call <code>iEngine::Prepare()</code> to
+make sure that the necessary setup work is done (i.e. textures are registered
+and so on). This is demonstrated in the code below, which you add to the
+<code>Application()</code> method, following the <code>SetRectangle()</code> invocation.
+We also add code to initialize collision detection for geometry in the map
+which was just loaded.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">bool Simple::Application ()
+{
+  ...
+  view-&gt;SetRectangle (0, 0, g2d-&gt;GetWidth (), g2d-&gt;GetHeight ());
+
+  // Here we load our world from a map file.
+  if (!LoadMap ()) return false;
+
+  // Initialize collision objects for all loaded objects.
+  csColliderHelper::InitializeCollisionWrappers (cdsys, engine);
+
+  engine-&gt;Prepare ();
+
+  Run();
+  ...
+}
+</pre></td></tr></table>
+<p>So, we now have geometry loaded into the world, but we haven't set the current
+sector or the camera's position in the world. Often, maps contain information
+specifying where the camera should be placed when the map is first loaded, so
+we will use this information if present. This is the topic of the next section.
+</p>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Simple-Base-Code.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Simple-Locating-the-Camera.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Tutorial-Simple-Map.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

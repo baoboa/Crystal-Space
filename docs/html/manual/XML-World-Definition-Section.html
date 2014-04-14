@@ -1,0 +1,185 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 5.4.2.3 World Definition Section</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 5.4.2.3 World Definition Section">
+<meta name="keywords" content="Crystal Space 2.1.0: 5.4.2.3 World Definition Section">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="XML-World-Definition-Section"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="XML-World-Element-Section.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="XML-Action-Section.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="XML-File-Format.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Internals.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h4 class="subsubsection"> 5.4.2.3 World Definition Section </h4>
+
+<p>This section describes the world definition section.
+</p>
+<a name="1"></a>
+<h4 class="subsubheading"> Sector Section </h4>
+
+<p>A map file usually contains at least one sector. A sector is an infinite
+area of space which you can populate with mesh objects and lights. Using
+portals you can connect different sectors.
+</p>
+<p>Note that while a sector is in fact infinite, in practice it is usually
+bounded by some geometry. For an outside level there is usually
+a sky box or sky dome which marks the outermost geometry. In case of indoor
+type levels there are usually sector walls.
+</p>
+<p>Here is an example sector:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">&lt;sector name=&quot;room&quot;&gt;
+  &lt;meshobj name=&quot;walls&quot;&gt;
+    &lt;plugin&gt;crystalspace.mesh.loader.genmesh&lt;/plugin&gt;
+    &lt;zfill /&gt;
+    &lt;params&gt;
+      ...
+    &lt;/params&gt;
+  &lt;/meshobj&gt;
+  &lt;light&gt;
+    &lt;center x=&quot;0&quot; y=&quot;3&quot; z=&quot;0&quot;/&gt;
+    &lt;radius&gt;40&lt;/radius&gt;
+    &lt;color red=&quot;1&quot; green=&quot;1&quot; blue=&quot;1&quot;/&gt;
+  &lt;/light&gt;
+&lt;/sector&gt;
+</pre></td></tr></table>
+<p>In the above example we create a sector called <samp>&lsquo;room&rsquo;</samp> which contains
+one mesh object (the outer walls of the sector) and one light. Any type
+of mesh object can be placed in a sector. In this example we use the
+<samp>&lsquo;genmesh&rsquo;</samp> mesh object.
+</p>
+<p>There are some other things you can specify in a sector. By default a
+sector will use the <samp>&lsquo;frustvis&rsquo;</samp> visibility culler. This visibility culler
+will only do frustum culling. For small sectors (i.e. a small number of
+objects) this is usually sufficient. If you have a large sector with lots
+of objects then you should probably use <samp>&lsquo;dynavis&rsquo;</samp> instead. Like this:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">&lt;cullerp&gt;crystalspace.culling.dynavis&lt;/cullerp&gt;
+</pre></td></tr></table>
+<p>In addition to using <samp>&lsquo;meshobj&rsquo;</samp> for specifying mesh objects in a sector
+there are also some other techniques that you can use.
+</p>
+<ul class="toc">
+<li>
+<samp>&lsquo;meshref&rsquo;</samp>: with <samp>&lsquo;meshref&rsquo;</samp> you can directly create a mesh object
+from a factory. This sounds similar to <samp>&lsquo;meshobj&rsquo;</samp> but the main difference
+is that you can create hierarchical mesh objects from hierarchical mesh
+factories with this. The disadvantage is that it is not possible to supply
+mesh object specific parameters to the created mesh objects (i.e. you cannot
+supply a <samp>&lsquo;params&rsquo;</samp> or <samp>&lsquo;paramsfile&rsquo;</samp> with <samp>&lsquo;meshref&rsquo;</samp>).
+
+</li><li>
+<samp>&lsquo;meshlib:&rsquo;</samp> normally a library contains mesh factories. But it is possible
+to define mesh objects in libraries too. These mesh objects will be placed
+in the engine but not in any sector. To actually link such an object to
+a sector you have to use <samp>&lsquo;meshlib&rsquo;</samp> then. It is possible to supply
+additional parameters using <samp>&lsquo;params&rsquo;</samp> or <samp>&lsquo;paramsfile&rsquo;</samp> with
+<samp>&lsquo;meshlib&rsquo;</samp>. These will be used in addition to the parameters already
+supplied to the mesh object as defined in the library. Note that once you
+added an object to a sector using <samp>&lsquo;meshlib&rsquo;</samp> you cannot add it to other
+sectors. This technique is not an alternative for using mesh factories.
+</li></ul>
+
+<p>A sector can also contain fog like this:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">&lt;fog red=&quot;.5&quot; green=&quot;.5&quot; blue=&quot;.5&quot; density=&quot;.01&quot; /&gt;
+</pre></td></tr></table>
+<p>Finally a sector can contain nodes. A node represents something that has
+a position. In addition a node can contain keys and addons. Crystal Space
+itself doesn't use nodes but an application using Crystal Space can use
+them for whatever purpose it needs. Here is an example:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">&lt;node name=&quot;monster&quot;&gt;
+    &lt;position x=&quot;10&quot; y=&quot;3&quot; z=&quot;12&quot; /&gt;
+    &lt;key name=&quot;spawn&quot; value=&quot;100&quot; /&gt;
+&lt;/node&gt;
+</pre></td></tr></table>
+<p>Sectors can contain keys and addons.
+</p>
+<a name="2"></a>
+<h4 class="subsubheading"> Collection Specification </h4>
+
+<p>With collections it is possible to group related objects (like textures,
+materials, mesh objects, mesh factories, sectors, sequences, triggers,
+shared variables, <small class="dots">...</small>).
+Collections are not a geometrical concept. It is possible to define a collection which
+contains all wall geometry and a collection which contains all moving geometry.
+Usually though, collections represent some area in the world. You can use
+collections to dynamically load/unload parts of the world. This is useful
+if you have really big worlds that don't fit in memory at once.
+</p>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="XML-World-Element-Section.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="XML-Action-Section.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="XML-File-Format.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Internals.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

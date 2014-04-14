@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: C.5.2 iEvent Changes</title>
+
+<meta name="description" content="Crystal Space 2.1.0: C.5.2 iEvent Changes">
+<meta name="keywords" content="Crystal Space 2.1.0: C.5.2 iEvent Changes">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Api1_005f0-iEvent-Changes"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Api1_005f0-New-Event-System.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Api1_005f0-Input-Helper-Changes.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Release-Notes-1_005f0.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Licenses.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> C.5.2 <code>iEvent</code> Changes </h3>
+
+<a name="1"></a>
+<h4 class="subsubheading"> Property Bags </h4>
+
+<p>The <code>iEvent::Find()</code> method was renamed to <code>Retrieve()</code> and exhibits
+different return value semantics. Rather than returning a mere boolean result,
+it now returns one of the <samp>&lsquo;csEventError&rsquo;</samp> enumeration constants.  Of
+particular note, in the case of success, <code>csEventErrNone</code> is returned,
+which has a value of 0. This success value could be misinterpreted as &ldquo;false&rdquo;
+by the unwary when fixing code to deal with this semantic change. Conditionals
+which test if retrieval of an attribute succeeded must be changed to take this
+new semantic into account. For instance, code such as the following:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">iEvent* ev = ...;
+if (ev-&gt;Find(...))
+{
+  ...
+}
+</pre></td></tr></table>
+
+<p>must be changed to perform an explicit test on the return value of
+<code>Retrieve()</code>, rather than relying upon default boolean semantics:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">if (ev-&gt;Retrieve(...) == csEventErrNone)
+{
+  ...
+}
+</pre></td></tr></table>
+<a name="2"></a>
+<h4 class="subsubheading"> Mouse, Joystick, and Command event properties </h4>
+
+<p>The <samp>&lsquo;union&rsquo;</samp> containing the <samp>&lsquo;Mouse&rsquo;</samp>, <samp>&lsquo;Joystick&rsquo;</samp>, and <samp>&lsquo;Command&rsquo;</samp>
+structures has been removed; all event attributes are now stored and accessed
+using the <code>Add()</code> and <code>Retrieve()</code> mechanisms.  To ease access to
+event data, use the static methods of the <samp>&lsquo;csMouseEventHelper&rsquo;</samp>, 
+<samp>&lsquo;csJoystickEventHelper&rsquo;</samp>, and <samp>&lsquo;csCommandEventHelper&rsquo;</samp> classes.  
+For example, code such as the following:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">iEvent* ev = ...;
+let X = ev-&gt;Mouse.X;
+</pre></td></tr></table>
+
+<p>should be changed to:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">iEvent* ev = ...;
+let X = csMouseEventHelper::GetX(ev);
+</pre></td></tr></table>
+
+<p>See the <small>API</small> documentation for details.
+</p>
+<a name="3"></a>
+<h4 class="subsubheading"> Multiple mice </h4>
+
+<p>There is now support for handling input from more than one mouse.
+You can retrieve the identity (basis 0) of the mouse producing a 
+mouse event with <code>csMouseEventHelper::GetNumber()</code>.
+</p>
+<a name="4"></a>
+<h4 class="subsubheading"> Joystick and Mouse axes </h4>
+
+<p>Joysticks can now have up to <samp>&lsquo;CS_MAX_JOYSTICK_AXES&rsquo;</samp> axes,
+and mice can have up to <samp>&lsquo;CS_MAX_MOUSE_AXES&rsquo;</samp>.  Their values should
+be accessed using the <code>csJoystickEventHelper::GetAxis()</code>
+and <code>csMouseEventHelper::GetAxis()</code> functions, respectively,
+where both devices and axes are enumerated basis 0.
+Each helper class also has <code>GetX()</code> and <code>GetY()</code> methods
+available; for joystick events, these are deprecated.
+</p>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Api1_005f0-New-Event-System.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Api1_005f0-Input-Helper-Changes.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Release-Notes-1_005f0.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Licenses.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

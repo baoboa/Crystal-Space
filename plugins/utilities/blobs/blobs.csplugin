@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!-- blobs.csplugin -->
+<plugin>
+  <scf>
+    <classes>
+      <class>
+        <name>crystalspace.utilities.blobs</name>
+        <implementation>csBlobManager</implementation>
+        <description>Blob Manager</description>
+      </class>
+    </classes>
+  </scf>
+</plugin>

@@ -1,0 +1,266 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 1.6 Feature List</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 1.6 Feature List">
+<meta name="keywords" content="Crystal Space 2.1.0: 1.6 Feature List">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Feature-List"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="DocGuide.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Where-to-Get.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="CS-Introduction.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="CS-Introduction.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Building.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h2 class="section"> 1.6 Feature List </h2>
+
+<p>The first feature to mention here is that Crystal Space is an Open Source
+project (or a Free Software project, depending on your religion) that is
+freely available under the <small>GNU</small> Lesser General Public License
+(<small>GNU LGPL</small>). See section <a href="Licenses.html#0">Licenses</a>. This means a number of things for developers,
+but perhaps most important is that any program you write may freely link to the
+Crystal Space libraries.
+</p>
+<p>The second important feature of Crystal Space is that it is written to run
+under a wide variety of hardware and software platforms. As of this writing,
+Crystal Space has been known to run on the following systems. Note that if a
+system is listed here it does not necessarily mean that it is 100% supported:
+</p>
+<ul>
+<li>
+Microsoft&reg; Windows (<small>XP</small>/Vista/7)
+
+</li><li>
+Unix&reg; like Operating Systems (<small>GNU</small>
+Linux&reg;, FreeBSD&reg;, etc.)
+
+</li><li>
+Apple&reg; Mac OS&reg; X
+</li></ul>
+
+
+<p>Here are just some of Crystal Space's features, in no particular order.
+This documentation is normally marked after the fact. The most useful
+documentation comes first.
+</p>
+
+<ul>
+<li>
+Geometric utility library with handy classes, such as 2D and 3D vectors,
+matrices, transforms, quaternions, kdtree, axis aligned and oriented bounding
+box routines, rectangle subdivision, etc. See section <a href="csGeom.html#0">Geometry Library (<code>csGeom</code>)</a>.
+
+</li><li>
+General utility library with templated arrays, smart pointers,
+hash maps, object registry, plugin manager, radix sort, bit array, optimized
+allocators, strings, command-line parsing, configuration files, and more. 
+See section <a href="csUtil.html#0">Utility Library (<code>csUtil</code>)</a>. See section <a href="The-Basics.html#0">Basics and Overview</a>. See section <a href="Configuration-File.html#0">Configuration File</a>.
+
+</li><li>
+Higher level tool library containing things example procedural
+textures (plasma, fire, and water), full screen effects, collider support,
+texture generation tools, etc.
+
+</li><li>
+Graphics utility library with simple tools to compute mipmaps, color 
+quantization, calculation of color gradients, and more.
+
+</li><li>
+Shared Class Facility <small>SCF</small> allowing for proper decoupling of interface
+and implementation. It also allows for dynamically loadable modules.
+It provides a flexible plug-in system which is used extensively by Crystal 
+Space itself, but also allows third-party creation of plugins. See section <a href="SCF.html#0">Shared Class Facility (<small>SCF</small>)</a>.
+See section <a href="SCF.html#0">Shared Class Facility (<small>SCF</small>)</a>. See section <a href="The-Basics.html#0">Basics and Overview</a>. See section <a href="HOWTO-Create-Your-Own-Plugin.html#0">Create Your Own Plugin</a>.
+
+</li><li>
+Virtual file system and transparent support for <small>ZIP</small> files. This
+allows cross-platform access to game data files. See section <a href="VFS.html#0">Virtual File System (<small>VFS</small>)</a>.
+
+</li><li>
+Flexible and extensible event system.
+
+</li><li>
+Full screen effects (fading, whiteout, etc).
+
+</li><li>
+Level of Detail <small>LOD</small>. See section <a href="Level-of-Detail.html#0">Level of Detail</a>.
+
+</li><li>
+Various types of mesh objects: particle meshes, terrain mesh, triangle meshes,
+haze mesh (bit like volumetric light), <small class="dots">...</small>.
+<small class="dots">...</small>.
+See section <a href="MeshObject.html#0">Mesh Object Plug-In System</a>.  See section <a href="MeshObject-Genmesh.html#0">Genmesh Mesh Object</a>.
+See section <a href="HOWTO-Create-Genmesh.html#0">Creating a Genmesh Mesh</a>.
+
+</li><li>
+Animated 3D models (3D sprites) using frame based animation. See section <a href="Animation.html#0">Animating your Objects</a>.
+See section <a href="MeshObject-Spr3D.html#0">Sprite3D Mesh Object</a>.
+
+</li><li>
+Animated 3D models (AniMesh) using a skeletal animation system with good support
+for hardware skinning.
+
+</li><li>
+Animated Cal3D models using skeletal based animation using the 
+<tt>&lsquo;sprcal3d&rsquo;</tt> plugin. See section <a href="MeshObject-SprCal3D.html#0">SpriteCal3D Mesh Object</a>.
+
+</li><li>
+2D animations.
+
+</li><li>
+Quake <small>MD3</small> and <small>MDL</small> to Crystal Space convertor.
+See section <a href="md32spr-Tutorial.html#0"><code>md32spr</code> Tutorial</a>. Additionally, Crystal Space can read <small>MD2</small>
+and <small>3DS</small> models directly.
+
+</li><li>
+Crystal Space native windowing system using CEGUI.
+
+</li><li>
+Cross-platform support for hardware rendering (via OpenGL) as well as a special
+&ldquo;null&rdquo; renderer for applications like game servers. See section <a href="3D-Renderer.html#0">The Rendering System</a>.
+
+</li><li>
+Supports various common image formats (<small>BMP</small>, <small>DDS</small>, <small>GIF</small>, <small>JPG</small>, 
+<small>MNG</small>, <small>PNG</small>, <small>TGA</small>).
+
+</li><li>
+Portals and sectors which allow for flexible world creation.
+See section <a href="Portal-Engine.html#0">Portal Engine</a>.
+
+</li><li>
+Visibility culling based on kd-tree with coverage buffers (Dynavis).
+See section <a href="Visibility-Culling.html#0">Visibility Culling In Detail</a>.
+
+</li><li>
+Lighting: static, pseudo-dynamic, dynamic, halos, shadows, stencil shadows.
+See section <a href="Lighting.html#0">Lighting</a>. See section <a href="HOWTO-Pseudo-DynLight.html#0">Pseudo-dynamic Lights</a>.
+
+</li><li>
+Multiple cameras. See section <a href="HOWTO-Camera-Movement.html#0">Camera Movement</a>.
+
+</li><li>
+Powerful material support. Shaders and textures can be assigned arbitrarily 
+to materials, allowing great flexibility. Shaders support <small>CG</small>, <small>ARB</small>, and
+<samp>&lsquo;fixed function&rsquo;</samp> language. See section <a href="Texture-Mapping.html#0">Texture Mapping</a>.
+
+</li><li>
+Procedural textures. See section <a href="ProcTextures.html#0">Procedural Texture System</a>. See section <a href="Texture-Mapping.html#0">Texture Mapping</a>.
+
+</li><li>
+Cross-platform support for sound rendering. Supports <small>WAV</small> and <small>OGG</small>
+sounds. See section <a href="Sound-Drivers.html#0">Sound Plugins</a>.
+
+</li><li>
+Terrain engine with support for texture splatting (blending multiple materials 
+on a terrain) and Level Of Detail <small>LOD</small>. See section <a href="MeshObject-TerrFunc.html#0">Terrain Mesh Object</a>.
+
+</li><li>
+Particle system to make fire, explosions, rain, snow, fountains, and much
+more. See section <a href="MeshObject-Particles.html#0">Particles Mesh Object</a>.
+
+</li><li>
+Collision detection (using <small>OPCODE</small>) or full physics using
+the <small>ODE</small> or <small>BULLET</small> external libraries.
+See section <a href="Basic-Collision-Detection.html#0">Basic Collision Detection</a>. See section <a href="Physics-ODE.html#0">Physics using ODE</a>.
+
+</li><li>
+Powerful sequence manager to control movement, animation and other
+features in a world. See section <a href="Sequence-Manager.html#0">Sequence Manager</a>.
+
+</li><li>
+Built-in support for TrueType fonts. See section <a href="HOWTO-Use-custom-font.html#0">Using a Custom Font</a>.
+
+</li><li>
+Unicode text output.
+
+</li><li>
+<small>XML</small>-based map format. See section <a href="XML-File-Format.html#0">Format of Map File (<small>XML</small>)</a>,
+See section <a href="Tutorial-Simple-Map.html#0">Simple Tutorial 3: Map Loading, Collision Detection</a>.
+
+</li><li>
+Scripting bindings (Python, Perl, Java). See section <a href="Scripting-Languages.html#0">Scripting Languages</a>.
+
+</li><li>
+Plugin for integrated movie recording. See section <a href="HOWTO-Recording-Movies.html#0">Recording Movies</a>.
+
+</li><li>
+Pull-down console that you can integrate in your own games.
+See section <a href="Config-Console.html#0">Console Configuration</a>.
+
+</li><li>
+Debugging systems.
+</li></ul>
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="DocGuide.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Where-to-Get.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="CS-Introduction.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="CS-Introduction.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Building.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

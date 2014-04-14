@@ -1,0 +1,277 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.9.4 Portal Engine</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.9.4 Portal Engine">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.9.4 Portal Engine">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Portal-Engine"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="HOWTO-Render-Priorities.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Cameras-and-Matrices.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Engine.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 4.9.4 Portal Engine </h3>
+
+
+<p><em>Written by Jorrit Tyberghein,
+<a href="mailto:jorrit.tyberghein@gmail.com">jorrit.tyberghein@gmail.com</a>.</em>
+</p>
+<p>The world in Crystal Space is defined with <em>Sectors</em>. A sector is
+an infinite area of space that itself does not represent geometry but can
+contain objects that represent geometry. There are various types of
+objects that you can put in a sector (see section <a href="MeshObject.html#0">Mesh Object Plug-In System</a>).
+</p>
+<p>A sector is in principle an infinite area of space. But usually the
+sector has logical bounds which are made from some mesh object. In this
+discussion we will use the genmesh mesh object to make sector boundaries.
+</p>
+<p>You can define multiple sectors and connect them together by using
+portals in a portal container (see section <a href="MeshObject-Portal-Container.html#0">Portal Container Mesh Object</a>).
+</p>
+<p>Assume that you want to define a large room with a pillar in the middle of the
+room.  You can do this two ways; either with four sectors, or with one sector.
+First let us define it with four sectors.
+</p>
+
+<p>As seen from above, the sectors would look something like this:
+</p>
+<p><img src="usingcs/engine/portal1.png" alt="usingcs/engine/portal1">
+</p>
+
+<p>Sector S1 is composed of eight polygons (including the top and bottom polygon
+for its roof and floor, as well as the three polygons at the east side).  The
+two polygons adjacent to sectors S2 and S4 are portals to the respective
+sectors.  All the other polygons are texture mapped as normal.
+</p>
+
+<p>Sectors S2 and S4 have six polygons each.  Their west polygons are again
+portals to sector S1.  Their east polygons are portals to sector S3.
+</p>
+
+<p>Sector S3 is defined as is sector S1.
+</p>
+<p>Another way to define this room using just the same four sectors could be done
+as follows:
+</p>
+<p><img src="usingcs/engine/portal2.png" alt="usingcs/engine/portal2">
+</p>
+
+<p>To the person standing in this room this makes no difference at all.
+</p>
+<p>There are many other ways to define this room using the four sectors.  One
+important thing to note is that four is the minimum number of Sectors that you
+need to define this room if you want to render the polygons using Z-fill
+mode (this means that the Z-buffer is updated but not tested). If you want
+to be able to render using Z-fill mode a sector has to be <em>convex</em>.
+</p>
+<p>An easier way to define this room is by using only one Sector and one GenMesh
+to define the pillar, as shown below.
+</p>
+<p><img src="usingcs/engine/thing.png" alt="usingcs/engine/thing">
+</p>
+<p>Again this makes no difference for the person standing in this room. For a
+simple situation like this you should avoid the overhead of portals as 3D
+hardware is fast enough to just render everything anyway. Portals are mainly
+useful when you are creating complicated and large worlds. For example, if you
+have a large outside world with buildings then you could model the outside
+as one sector and the inside of every building as another sector.
+</p>
+<p>Using Things like this make it easier to define worlds. If they are small
+enough they will also enhance performance.
+</p>
+<p>With Sectors, Portals, and GenMeshes you can describe virtually any world that
+you want.
+</p>
+<a name="1"></a>
+<h4 class="subsubheading"> Sectors </h4>
+
+<p>In this section I will describe Sectors a bit more thoroughly.  As stated
+before sectors represent infinite space. You can fill a sector with geometry
+by using mesh objects (see section <a href="MeshObject.html#0">Mesh Object Plug-In System</a>).
+</p>
+<p>With a sector there is always an associated visibility culler. Currently
+Crystal Space supports two cullers:
+</p><ul class="toc">
+<li>
+<samp>&lsquo;frustvis&rsquo;</samp>: This is the default visibility culler that is used if no
+other is specified. It only does frustum culling. It is the best culler to
+use for simple sectors that don't have a lot of objects or else for sectors
+that are big but where all objects are small. For such sectors it doesn't
+make much sense to try to do more complicated visibility culling so
+frustum cullling (testing if an object is visible in the current view)
+is more than enough.
+</li><li>
+<samp>&lsquo;dynavis&rsquo;</samp>: This is a more advanced visibility culler that does
+frustum culling in addition to trying to avoid rendering objects that
+are obscured by other objects (see section <a href="Visibility-Culling.html#0">Visibility Culling In Detail</a>). This culler
+is mainly useful when you have big complex sectors with lots of objects
+and when objects have a good chance of occluding (hiding) other objects.
+</li></ul>
+
+<a name="2"></a>
+<h4 class="subsubheading"> GenMeshes </h4>
+
+<p>A GenMesh is one of the basic building blocks to create geometry in
+Crystal Space. A GenMesh is basically a triangle mesh.
+</p>
+<p>GenMeshes (and other mesh objects for that matter) can be rendered using
+Z-fill or Z-use mode. With Z-fill the previous contents of the Z-buffer
+(where that GenMesh is rendered) is just overwritten. With Z-use the
+previous contents is checked in order to see if the GenMesh is in front
+or behind the polygons that are already on screen. If you have a convex
+object (like the outer polygons of a room) then you can use Z-fill because
+the polygons will not overlap. GenMeshes which are then inside those walls
+will need to use Z-use in order not to overwrite each other.
+</p>
+<p>Note that polygons have a visible side and an invisible side (backface
+culling).
+</p>
+<a name="3"></a>
+<h4 class="subsubheading"> Polygons </h4>
+
+<p>GenMeshes are made of 3D triangles. The vertices of triangles are oriented
+clockwise.  This fact is used for backface culling; a
+triangle has only one visible side.
+</p>
+<p>Triangles are drawn with a texture.  How the texture is mapped on the polygon
+depends on a the uv mapping.  This is general enough so that you can
+translate, rotate, scale, and mirror the texture in every possible direction.
+The texture is tiled across the polygon surface.
+</p>
+<a name="4"></a>
+<h4 class="subsubheading"> Portal Containers </h4>
+
+<p>A special kind of object is the portal container. It also has polygons
+but every polygon is a portal to another sector (or the same sector in case of
+a mirror or other space warping transformation).
+</p>
+<a name="5"></a>
+<h4 class="subsubheading"> Portals </h4>
+
+<p>A Portal is a special kind of polygon.
+</p>
+<p>Instead of texture mapping a portal polygon, the engine will recursively
+draw the sector that this portal points to.  After this, if the texture is
+semi-transparent, the texture will be mapped over the already rendered
+sector.
+</p>
+<p>Portals can also transform space.  This feature can be used to implement
+mirrors or reflecting surfaces.
+</p>
+<p>Note that when there is a portal from sector A to sector B you should probably
+also define a portal from sector B to sector A.  Adjacent polygons of
+different sectors are not shared so you need to set a portal on each of them.
+Otherwise you will have the effect that you can see from sector A to sector B
+but not the other way around.
+</p>
+<p>A special feature of portals is that you could (in theory) have a portal from
+sector A to sector B, but instead of going back to sector A from sector B you
+could set the portal to point at sector C which (in this example) would be a
+sector which has the same world space coordinates as sector A.  This is
+perfectly possible (although maybe not desirable) with Crystal Space.  An
+important result of this is that a given world space coordinate can belong to
+more than one sector!  A corollary of this is that you always need a current
+sector reference together with a world space coordinate to really know where
+you are.
+</p>
+<p>Portals in Crystal Space can solve the problem of polygon sorting if you
+structure your world strictly with convex sectors (not really recommended for
+practical worlds).  All polygons
+in the current sector are certainly visible (unless they are behind the view
+plane) and do not overlap, so they can just be drawn in any order without
+overdraw and without conflicts.  If a portal polygon is reached, all polygons
+in that other sector are behind all the polygons in the current sector.  In
+fact portals are an explicit form of <small>BSP</small> tree.  The advantages of this
+approach are summarized below.
+</p>
+<ul>
+<li>
+Space warping can be used as described above.
+
+</li><li>
+In theory it would be rather easy to make dynamic worlds.  Because the portals
+are explicit it is easy to define them so that certain sectors can move and
+transform in certain ways.
+Note that static lighting makes this a bit difficult in some cases.
+</li></ul>
+
+<p>One disadvantage a portal engine is that it can be more difficult to define
+worlds. If you want to be able to use <small>ZFILL</small> mode you must make all
+sectors convex. If you don't care about that then you can use <small>ZUSE</small> too.
+</p>
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="HOWTO-Render-Priorities.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Cameras-and-Matrices.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Engine.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

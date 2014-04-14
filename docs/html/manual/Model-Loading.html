@@ -1,0 +1,158 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.16.4 Loading 3DS and MD2 Models</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.16.4 Loading 3DS and MD2 Models">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.16.4 Loading 3DS and MD2 Models">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Model-Loading"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Binary-XML.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Sound-System.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Map-Loader.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 4.16.4 Loading <small>3DS</small> and <small>MD2</small> Models </h3>
+
+<p>Crystal Space can read <small>3DS</small> and <small>MD2</small> models natively.
+</p>
+<a name="1"></a>
+<h4 class="subsubheading"> Loading Models From World File </h4>
+
+<p>From a world file you can do it as follows:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">&lt;meshfact name=&quot;my3ds&quot;&gt;
+  &lt;plugin&gt;crystalspace.mesh.loader.factory.genmesh.3ds&lt;/plugin&gt;
+  &lt;paramsfile&gt;/data/my3ds.3ds&lt;/paramsfile&gt;
+&lt;/meshfact&gt;
+&lt;meshfact name=&quot;mymd2&quot;&gt;
+  &lt;plugin&gt;crystalspace.mesh.loader.factory.sprite.3d.md2&lt;/plugin&gt;
+  &lt;paramsfile&gt;/data/mymd2.md2&lt;/paramsfile&gt;
+&lt;/meshfact&gt;
+...
+&lt;sector name=&quot;room&quot;&gt;
+  &lt;meshobj name=&quot;my3dsMesh&quot;&gt;
+    &lt;plugin&gt;crystalspace.mesh.loader.genmesh&lt;/plugin&gt;
+    &lt;params&gt; &lt;factory&gt;my3ds&lt;/factory&gt; &lt;/params&gt;
+    &lt;move&gt; &lt;v x=&quot;0&quot; y=&quot;0.3&quot; z=&quot;15&quot; /&gt; &lt;/move&gt;
+  &lt;/meshobj&gt;
+  &lt;meshobj name=&quot;mymd2Mesh&quot;&gt;
+    &lt;plugin&gt;crystalspace.mesh.loader.sprite.3d&lt;/plugin&gt;
+    &lt;params&gt;
+      &lt;factory&gt;mymd2&lt;/factory&gt;
+      &lt;action&gt;wave&lt;/action&gt;
+      &lt;material&gt;mymd2_material&lt;/material&gt;
+    &lt;/params&gt;
+    &lt;move&gt; &lt;v x=&quot;-2&quot; y=&quot;0.3&quot; z=&quot;15&quot; /&gt; &lt;/move&gt;
+  &lt;/meshobj&gt;
+&lt;/sector&gt;
+</pre></td></tr></table>
+<p>The <small>3DS</small> loader will create genmesh factories. It supports multiple materials
+(will be converted to genmesh submeshes). The <small>MD2</small> loader will create 3D
+sprite factories with animation (actions and frames). Note that in both cases
+you must load the materials used in the models seperatelly (in the textures/materials
+section of the world file). Note that in case of the <small>MD2</small> loader there will
+be no material associated with the factory so you need to set a material (and
+usually an action too) in the mesh object.
+</p>
+<a name="2"></a>
+<h4 class="subsubheading"> Loading Models From Code </h4>
+
+<p>Both model loading plugins above support the <code>iModelLoader</code> interface. Using
+that interface it is very easy to load a <small>3DS</small> or <small>MD2</small> model from code.
+Here is an example using the <small>3DS</small> model loader:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">#include &quot;imap/modelload.h&quot;
+
+void LoadModel ()
+{
+  csRef&lt;iPluginManager&gt; plugin_mgr = csQueryRegistry&lt;iPluginManager&gt; (object_reg);
+  csRef&lt;iModelLoader&gt; loader = csLoadPlugin&lt;iModelLoader&gt; (plugin_mgr,
+			&quot;crystalspace.mesh.loader.factory.genmesh.3ds&quot;);
+  iMeshFactoryWrapper* ff = loader-&gt;Load (&quot;model&quot;, &quot;/lib/model.3ds&quot;);
+  if (!ff)
+  {
+    ...
+  }
+}
+</pre></td></tr></table>
+<p>Or you can use the <code>iLoader-&gt;Load()</code> method which will automatically
+recognize the model and can also load Crystal Space <small>XML</small> files:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">#include &quot;imap/loader.h&quot;
+
+void LoadModel ()
+{
+  csRef&lt;iLoader&gt; loader = csQueryRegistry&lt;iLoader&gt; (object_reg);
+  iBase* result;
+  if (!loader-&gt;Load (&quot;/lib/model.3ds&quot;, result))
+  {
+    // Error!
+    ...
+  }
+  csRef&lt;iMeshFactoryWrapper&gt; ff = scfQueryInterface&lt;iMeshFactoryWrapper&gt; (result);
+  if (ff)
+  {
+    ...
+  }
+}
+</pre></td></tr></table>
+
+
+<hr size="1">
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

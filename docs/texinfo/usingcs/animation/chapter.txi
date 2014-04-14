@@ -1,0 +1,31 @@
+@c -*-texinfo-*-
+@node Animation, Map Loader, Collision Detection, Using Crystal Space
+@section Animating your Objects
+@cindex animation
+@cindex sequence manager
+@cindex particle systems
+
+This section presents most of the animation-related features of Crystal Space.
+
+The first sub-sections present the animation systems that are available for the
+specific meshes of the type AniMesh, Sprite3D, SpriteCal3D and GenMesh. This is
+followed by sub-sections on animations made through sockets, through the general
+sequence manager, and through procedurally animated textures.
+
+@menu
+* Animation Blending Trees::
+* Sprite3D Animation::
+* SpriteCal3D Animation::
+* GenMesh Animation::
+* Socket Animation::
+* Sequence Manager::
+* ProcTextures:: Procedural Texture System
+@end menu
+
+@importss{usingcs,animation,blendingtrees.txi}
+@importss{usingcs,animation,sprite3danim.txi}
+@importss{usingcs,animation,sprcal3danim.txi}
+@importss{usingcs,animation,genmeshanim.txi}
+@importss{usingcs,animation,sockets.txi}
+@importss{usingcs,animation,sequence.txi}
+@importss{usingcs,animation,proctex.txi}

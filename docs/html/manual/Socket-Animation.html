@@ -1,0 +1,181 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.15.5 Socket Animation</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.15.5 Socket Animation">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.15.5 Socket Animation">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Socket-Animation"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="GenMesh-Animation.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Sequence-Manager.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Animation.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 4.15.5 Socket Animation </h3>
+
+<p>When you have an animated actor you often want that actor to hold something
+in its hands.  Or put a helmet on its head. For this purpose Crystal Space
+has the concept of <em>sockets</em>.  Basically a socket is a triangle of the
+mesh on which you can attach other meshes.  So when the triangle moves (because
+the model animates) the other mesh (like a weapon) will move with it.
+At this moment both 3D sprites (see section <a href="MeshObject-Spr3D.html#0">Sprite3D Mesh Object</a>, and Cal3D sprites
+(see section <a href="MeshObject-SprCal3D.html#0">SpriteCal3D Mesh Object</a>) support this feature. For AniMeshes, see the
+<a href="Animesh-General.html#0">specific section</a> on that topic.
+</p>
+<a name="1"></a>
+<h4 class="subsubheading"> Defining the Socket </h4>
+
+<p>To define the socket you can specify it in the mesh factory file of the model.
+For Cal3D models this happens with something like this:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">&lt;meshfact name=&quot;model&quot;&gt;
+  ...
+  &lt;params&gt;
+    ...
+    &lt;socket name=&quot;lefthand&quot; tri=&quot;3&quot; mesh=&quot;0&quot; submesh=&quot;1&quot; /&gt;
+    &lt;socket name=&quot;righthand&quot; tri=&quot;5&quot; mesh=&quot;0&quot; submesh=&quot;2&quot; /&gt;
+  &lt;/params&gt;
+&lt;/meshfact&gt;
+</pre></td></tr></table>
+<p>Basically you have to find out the mesh, submesh, and triangle that specifies
+the place where you want to attach things.  In the example above we created
+two sockets, one for the left hand and one for the right hand.
+</p>
+<p>For Spr3D models you have to do it like this:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">&lt;meshfact name=&quot;model&quot;&gt;
+  ...
+  &lt;params&gt;
+    ...
+    &lt;socket name=&quot;lefthand&quot; tri=&quot;3&quot; /&gt;
+    &lt;socket name=&quot;righthand&quot; tri=&quot;5&quot; /&gt;
+  &lt;/params&gt;
+&lt;/meshfact&gt;
+</pre></td></tr></table>
+<p>So it is the same but Spr3D doesn't have the concept of meshes and submeshes.
+</p>
+<a name="2"></a>
+<h4 class="subsubheading"> Attaching a Mesh to a Socket </h4>
+
+<p>With this function you can attach a mesh to a socket for a Cal3D model:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">bool AttachMesh (iMeshWrapper* actorMesh, const char* socketName,
+	const char* objectFactoryName)
+{
+  csRef&lt;iSpriteCal3DState&gt; cal3dstate = scfQueryInterface&lt;iSpriteCal3DState&gt; (
+  	actorMesh-&gt;GetMeshObject ());
+  if (!cal3dstate) return false;
+  iSpriteCal3DSocket* socket = cal3dstate-&gt;FindSocket (socketName);
+  if (!socket) return false;
+  iMeshFactoryWrapper* objectFactory = engine-&gt;GetMeshFactories ()
+  	-&gt;FindByName (objectFactoryName);
+  if (!objectFactory) return false;
+  csRef&lt;iMeshWrapper&gt; object = engine-&gt;CreateMeshWrapper (objectFactory,
+  	objectFactoryName);
+  object-&gt;QuerySceneNode ()-&gt;SetParent (actorMesh-&gt;QuerySceneNode ());
+  socket-&gt;SetMeshWrapper (object);
+  // Set a relative transform to correct the orientation of the object
+  // relative to the socket orientation.
+  csTransform trans = ...;
+  socket-&gt;SetTransform (trans);
+  return true;
+}
+</pre></td></tr></table>
+<p>For Spr3D it is exactly the same except that you have to use
+<code>iSpriteSocket</code> instead of <code>iSpriteCal3DSocket</code> and you can't
+currently change the relative transform.
+</p>
+<a name="3"></a>
+<h4 class="subsubheading"> Detaching a Mesh from a Socket </h4>
+
+<p>To remove a mesh from a socket you can do this:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">bool DetachMesh (iMeshWrapper* actorMesh, const char* socketName)
+{
+  csRef&lt;iSpriteCal3DState&gt; cal3dstate = scfQueryInterface&lt;iSpriteCal3DState&gt; (
+  	actorMesh-&gt;GetMeshObject ());
+  if (!cal3dstate) return false;
+  iSpriteCal3DSocket* socket = cal3dstate-&gt;FindSocket (socketName);
+  if (!socket) return false;
+  iMeshWrapper* object = socket-&gt;GetMeshWrapper ();
+  if (!object) return false;
+  object-&gt;QueryScene ()-&gt;SetParent (0);
+  socket-&gt;SetMeshWrapper (0);
+  engine-&gt;RemoveObject (object);
+  return true;
+}
+</pre></td></tr></table>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="GenMesh-Animation.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Sequence-Manager.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Animation.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 3.1.4 Console Commands</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 3.1.4 Console Commands">
+<meta name="keywords" content="Crystal Space 2.1.0: 3.1.4 Console Commands">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Walktest-Console-Commands"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Walktest-Command-Line-Options.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Walktest-General.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Running-The-Demos.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Walktest.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 3.1.4 Console Commands </h3>
+
+<p>As soon as you run Walktest, you see the world that is loaded, and you can move
+about in it.  Pressing <kbd>Tab</kbd> replaces your view with a console into which
+you can type commands.  Pressing <kbd>Tab</kbd> again clears the console and returns
+you to the view of the map.
+</p>
+<p>To get a fairly current list of the commands, press <kbd>Tab</kbd> to get the
+console then type <kbd>help</kbd>.
+</p>
+<p>Many of the commands are used to show or set internal variables.  For example,
+<kbd>coordshow</kbd> will show whether the coordinate display is currently enabled
+or not. Use <kbd>coordshow on</kbd> or <kbd>coordshow off</kbd> to change the state.
+A command that accepts <kbd>on</kbd> or <kbd>off</kbd> also accepts <kbd>toggle</kbd> to
+change the current state. This is useful when bound to a key, so that you
+don't have to have one key to turn a feature on and another to turn it off.
+</p>
+<p>Some of the commands are bound to single keypresses, so they can be invoked
+when not in console mode.  This is controlled by the
+<tt>&lsquo;/data/config/autoexec.cfg&rsquo;</tt> file, and is indicated alongside the
+description of the full command inside square brackets.
+</p>
+
+<p>Commands are of various types:
+</p> 
+<ul>
+<li>
+General commands, <small>DO</small> something instead of changing a variable.  How the
+argument is interpreted depends on the command
+
+</li><li>
+Boolean commands have either an on or off state.  When you just type the
+command without arguments it will show you the current state of the command (on
+or off).  To turn the state on just use: on, yes, true, or 1 as the first
+argument of the command.  To turn it off use: off, no, false, or 0.  To toggle
+a state use toggle.  Example: stats toggle to turn on and off the Statistics
+display.
+
+</li><li>
+Value commands has some value associated with it.  Typing the command without
+arguments will show the current value.  Just type the value after the command
+to change it.  Using a <samp>&lsquo;++&rsquo;</samp> or <samp>&lsquo;--&rsquo;</samp> operator before the value will
+increase or decrease the value with the given amount.  Example (gamma
+command doesn't exist, this is only an example):
+
+<ul>
+<li> <samp>&lsquo;gamma&rsquo;</samp>: show current gamma value 
+</li><li> <samp>&lsquo;gamma 1.5&rsquo;</samp>: set gamma to 1.5 
+</li><li> <samp>&lsquo;gamma ++0.05&rsquo;</samp>: increase gamma with 0.05 
+</li><li> <samp>&lsquo;gamma --0.05&rsquo;</samp>: decrease gamma with 0.05 
+</li></ul>
+</li></ul>
+
+<p>If there is a key name after the command name in square brackets, this is the
+default binding and the shortcut can be used when <em>not</em> in console mode.
+</p>
+<p>The commands have been broken down into categories, but some commands defy
+categorisation.  If you can't find what you're looking for, keep looking!
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top"><a href="Walktest-General.html#0">3.1.4.1 General Commands</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="Walktest-Movement.html#0">3.1.4.2 Movement Commands</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="Walktest-Special-Effects.html#0">3.1.4.3 Special Effects</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="Walktest-Recording.html#0">3.1.4.4 Recording and Playback Commands</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="Walktest-Views.html#0">3.1.4.5 Views Commands</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="Walktest-Meshes.html#0">3.1.4.6 Mesh Manipulation Commands</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="Walktest-Lighting.html#0">3.1.4.7 Lighting Commands</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="Walktest-Statistics.html#0">3.1.4.8 Statistics Commands</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="Walktest-Debugging.html#0">3.1.4.9 Debugging Commands</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+</table>
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Walktest-Command-Line-Options.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Walktest-General.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Running-The-Demos.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Walktest.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

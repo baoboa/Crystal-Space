@@ -1,0 +1,611 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 2.1 Directory Hierarchy</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 2.1 Directory Hierarchy">
+<meta name="keywords" content="Crystal Space 2.1.0: 2.1 Directory Hierarchy">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Directory-Hierarchy"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Building.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Requirements.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Building.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Building.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Running-The-Demos.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h2 class="section"> 2.1 Directory Hierarchy </h2>
+
+<p>This section is intended to explain the general CS directory structure.
+Crystal Space consists of the following directories:
+</p>
+<dl compact="compact">
+<dt> <code>CS</code></dt>
+<dd><p>The main directory for Crystal Space.  You can choose any path for it, as long
+as it is supported by your operating system.  If you choose to build the
+project within this directory, then this is where the built applications and
+plugin modules are deposited.  The file <tt>&lsquo;vfs.cfg&rsquo;</tt> also resides in this
+directory.
+</p>
+</dd>
+<dt> <code>CS/out</code></dt>
+<dd><p>This directory is used by the build process if you build the project using
+&ldquo;make&rdquo; or &ldquo;jam&rdquo; within the source tree.  It is also possible&mdash;indeed
+recommended&mdash;to build the project in some other location.  This directory will
+contain all object files, static link libraries, and other generated files
+needed for building the project.
+</p>
+</dd>
+<dt> <code>CS/apps</code></dt>
+<dd><p>Contains the source code for applications shipped with Crystal Space.
+See section <a href="Applications-Overview.html#0">Applications Overview</a>.
+</p>
+<dl compact="compact">
+<dt> <code>CS/apps/tests</code></dt>
+<dd><p>Applications for testing specific features of the project reside here.
+</p></dd>
+<dt> <code>CS/apps/tutorial</code></dt>
+<dd><p>Various tutorial applications can be found here.
+</p></dd>
+</dl>
+
+</dd>
+<dt> <code>CS/bin</code></dt>
+<dd><p>Miscellaneous scripts used by the project maintainers.
+</p>
+</dd>
+<dt> <code>CS/data</code></dt>
+<dd><p>Location of data files and maps distributed with Crystal Space.
+</p>
+<dl compact="compact">
+<dt> <code>CS/data/config-apps</code></dt>
+<dd><p>Configuration (<tt>&lsquo;.cfg&rsquo;</tt>) files for applications in Crystal Space.
+</p>
+</dd>
+<dt> <code>CS/data/config-plugins</code></dt>
+<dd><p>Configuration (<tt>&lsquo;.cfg&rsquo;</tt>) files for plugins in Crystal Space.
+</p>
+</dd>
+<dt> <code>CS/data/renderlayers</code></dt>
+<dd><p>Description of the render layers of the render managers that are available
+within Crystal Space.
+</p>
+</dd>
+<dt> <code>CS/data/shader</code></dt>
+<dd><p>This important directory contains shaders and other related information
+which is used by the Crystal Space engine.
+</p>
+<p>This directory contains the shaders that are defined using the shader weaver,
+by combining shader snippets.
+</p>
+</dd>
+<dt> <code>CS/data/shader-snippets</code></dt>
+<dd><p>This directory contains the snippets that are combined by the shader weaver,
+in order to create more complex shaders.
+</p>
+</dd>
+<dt> <code>CS/data/shader-old</code></dt>
+<dd><p>This directory contains the shaders that do not use the shader weaver.
+</p></dd>
+</dl>
+
+</dd>
+<dt> <code>CS/docs</code></dt>
+<dd><p>The root of the Crystal Space documentation hierarchy.  There are several
+subdirectories.
+</p>
+<dl compact="compact">
+<dt> <code>CS/docs/texinfo</code></dt>
+<dd><p>Texinfo is the master format for all Crystal Space documentation.  This
+directory and its subdirectories contain all of the Texinfo source and images
+which comprise the Crystal Space manual.  Most users need not concern
+themselves with this directory since the Texinfo documentation is
+automatically converted to <small>HTML</small> which is more accessible to the general
+user.  Documentation writers and maintainers, however, may be interested in
+this directory.
+</p>
+</dd>
+<dt> <code>CS/docs/html/manual</code></dt>
+<dd><p>This directory contains the <small>HTML</small> conversion of the Texinfo Crystal Space
+manual.  Most users will want to browse the file
+<tt>&lsquo;CS/docs/html/manual/index.html&rsquo;</tt>.
+</p>
+</dd>
+<dt> <code>CS/docs/html/api</code></dt>
+<dd><p>This directory contains the Crystal Space <small>SDK</small>'s public <small>API</small> reference
+manual. Most users will want to browse the file
+<tt>&lsquo;CS/docs/html/api/index.html&rsquo;</tt>.
+</p>
+</dd>
+<dt> <code>CS/docs/support</code></dt>
+<dd><p>This directory contains support scripts and templates for automatically
+generating documentation.
+</p></dd>
+</dl>
+
+</dd>
+<dt> <code>CS/include</code></dt>
+<dd><p>These are the public Crystal Space header files.  These headers will be
+installed as part of the <small>SDK</small> when you invoke <samp>&lsquo;make install&rsquo;</samp> or
+<samp>&lsquo;jam install&rsquo;</samp>.
+</p>
+</dd>
+<dt> <code>CS/libs</code></dt>
+<dd><p>Here is where the utility-like modules reside which you can link into your
+applications or plugins.  There are relatively few such libraries since most of
+Crystal Space's functionality is provided in the form of plugin modules.
+</p>
+<dl compact="compact">
+<dt> <code>CS/libs/csgeom</code></dt>
+<dd><p>The geometry module. Various geometry related functions and classes can be
+found here: matrices, vectors, transforms, clipper, planes, etc.
+</p>
+</dd>
+<dt> <code>CS/libs/csgfx</code></dt>
+<dd><p>The graphics module. Here you will find bumpmapping, mipmapping, quantizers,
+and routines to support loading an image file (through the various image
+loading plug-ins).
+</p>
+</dd>
+<dt> <code>CS/libs/cstool</code></dt>
+<dd><p>This module contains high-level utility functions which rely upon the other
+modules, and possibly upon plugin modules.  It is possible to write programs
+without utilizing this module, but it does provide several convenience classes
+for common cases and is, therefore, quite valuable.
+</p>
+</dd>
+<dt> <code>CS/libs/csutil</code></dt>
+<dd><p>This module contains various low-level utilities.  The utilities include an
+archiver, configuration manager, virtual clock, scheduler, strings, hash
+tables, <small>SCF</small> (see section <a href="SCF.html#0">Shared Class Facility (<small>SCF</small>)</a>), <small>MD5</small> algorithm, command-line parser, event
+structures, and many others.
+</p>
+<dl compact="compact">
+<dt> <code>CS/libs/csutil/generic</code></dt>
+<dd><p>Generic implementations of possibly platform-specific functionality.
+</p></dd>
+<dt> <code>CS/libs/csutil/macosx</code></dt>
+<dd><p>MacOS/X-specific functionality.
+</p></dd>
+<dt> <code>CS/libs/csutil/unix</code></dt>
+<dd><p>Unix-specific functionality.
+</p></dd>
+<dt> <code>CS/libs/csutil/win32</code></dt>
+<dd><p>Windows-specific functionality.
+</p></dd>
+</dl>
+
+</dd>
+<dt> <code>CS/libs/csplugincommon</code></dt>
+<dd><p>A collection of convenience modules which eliminate much of the drudgery
+associated with implementing <small>SCF</small> interfaces in certain types of common
+plugin modules. For example, the <samp>&lsquo;csGraphics2D&rsquo;</samp> class in
+<tt>&lsquo;csplugincommon/canvas&rsquo;</tt> implements the <samp>&lsquo;iGraphics2D&rsquo;</samp> interface and
+provides much of the functionality common to most canvases.  Likewise, the
+<samp>&lsquo;csGraphics3D&rsquo;</samp> class in <tt>&lsquo;csplugincommon/render3d&rsquo;</tt> implements the
+<samp>&lsquo;iGraphics3D&rsquo;</samp> interface and provides much functionality common to
+renderers. You are not required to utilize these implementations when authoring
+your own plugins, but they are available for your convenience and may prove to
+be handy time-savers.
+</p>
+<dl compact="compact">
+<dt> <code>CS/libs/csplugincommon/canvas</code></dt>
+<dd><p>Common canvas functionality.
+</p></dd>
+<dt> <code>CS/libs/csplugincommon/directx</code></dt>
+<dd><p>Common Direct-X functionality.
+</p></dd>
+<dt> <code>CS/libs/csplugincommon/imageloader</code></dt>
+<dd><p>Common image loader functionality.
+</p></dd>
+<dt> <code>CS/libs/csplugincommon/macosx</code></dt>
+<dd><p>Common MacOS/X functionality.
+</p></dd>
+<dt> <code>CS/libs/csplugincommon/opengl</code></dt>
+<dd><p>Common OpenGL functionality.
+</p></dd>
+<dt> <code>CS/libs/csplugincommon/particlesys</code></dt>
+<dd><p>Common particle system functionality.
+</p></dd>
+<dt> <code>CS/libs/csplugincommon/render3d</code></dt>
+<dd><p>Common renderer functionality.
+</p></dd>
+<dt> <code>CS/libs/csplugincommon/renderstep</code></dt>
+<dd><p>Common render-loop functionality.
+</p></dd>
+<dt> <code>CS/libs/csplugincommon/shader</code></dt>
+<dd><p>Common shader functionality.
+</p></dd>
+<dt> <code>CS/libs/csplugincommon/soundloader</code></dt>
+<dd><p>Common sound loader functionality.
+</p></dd>
+<dt> <code>CS/libs/csplugincommon/soundrenderer</code></dt>
+<dd><p>Common sound renderer functionality.
+</p></dd>
+<dt> <code>CS/libs/csplugincommon/win32</code></dt>
+<dd><p>Common Microsoft Windows functionality.
+</p></dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+<dt> <code>CS/mk</code></dt>
+<dd><p>This directory contains support facilities for the configuration and build
+systems.
+</p>
+<dl compact="compact">
+<dt> <code>CS/mk/autoconf</code></dt>
+<dd><p>Handy Autoconf utility macros which may be of use to external projects based
+upon Crystal space.
+</p></dd>
+<dt> <code>CS/mk/jam</code></dt>
+<dd><p>Handy Jam rules which may be of use to external projects based upon Crystal
+Space.
+</p></dd>
+<dt> <code>CS/mk/msvcgen</code></dt>
+<dd><p>Component for automatic generation of Visual C++ project files based upon
+information gleaned from Jamfiles project-wide.
+</p></dd>
+<dt> <code>CS/mk/msvc</code></dt>
+<dd><p>Project files for Microsoft Windows using <small>MSVC</small> 6.0 and 7.0.
+</p></dd>
+</dl>
+
+</dd>
+<dt> <code>CS/plugins</code></dt>
+<dd><p>Dynamically loaded plug-ins. Communication with these modules is performed
+strictly via <small>SCF</small> interfaces. See section <a href="SCF.html#0">Shared Class Facility (<small>SCF</small>)</a>.
+</p>
+<dl compact="compact">
+<dt> <code>CS/plugins/utilities/bugplug</code></dt>
+<dd><p>Crystal Space debugger.
+</p>
+</dd>
+<dt> <code>CS/plugins/collide</code></dt>
+<dd><p>Collision detection plugins.
+</p>
+<dl compact="compact">
+<dt> <code>CS/plugins/collide/opcode</code></dt>
+<dd><p>This is the Opcode collision detection plugin which is based upon the Opcode
+library.
+</p></dd>
+</dl>
+
+</dd>
+<dt> <code>CS/plugins/console</code></dt>
+<dd><p>Various console plugins for input/output.  A console is often overlaid atop the
+3D display.
+</p>
+</dd>
+<dt> <code>CS/plugins/cscript</code></dt>
+<dd><p>The Crystal Script plugins. Crystal Script plugins allow programmers to
+interact with the Crystal Space engine via a scripting language.
+</p>
+<dl compact="compact">
+<dt> <code>CS/plugins/cscript/csjava</code></dt>
+<dd><p>Java interface.
+</p>
+</dd>
+<dt> <code>CS/plugins/cscript/csperl5</code></dt>
+<dd><p>Perl5 interface.
+</p>
+</dd>
+<dt> <code>CS/plugins/cscript/cspython</code></dt>
+<dd><p>Python interface.
+</p></dd>
+</dl>
+
+</dd>
+<dt> <code>CS/plugins/csparser</code></dt>
+<dd><p>A plugin which parses structured map files and imports the map into the
+3D engine. The standard map file format is <small>XML</small>, however the parser can
+parse any structured document which can be represented by an <samp>&lsquo;iDocument&rsquo;</samp>
+interface.
+</p>
+<dl compact="compact">
+<dt> <code>CS/plugins/csparser/services</code></dt>
+<dd><p>Crystal Space format loader services.
+</p></dd>
+</dl>
+
+</dd>
+<dt> <code>CS/plugins/culling</code></dt>
+<dd><p>Visibility culling plug-ins.
+</p>
+<dl compact="compact">
+<dt> <code>CS/plugins/culling/dynavis</code></dt>
+<dd><p>Dynavis visibility culling system.
+</p></dd>
+<dt> <code>CS/plugins/culling/frustvis</code></dt>
+<dd><p>Frustvis visibility culling system (default culler if no other is selected).
+</p></dd>
+</dl>
+
+</dd>
+<dt> <code>CS/plugins/device</code></dt>
+<dd><p>Hardware device plugins.
+</p>
+<dl compact="compact">
+<dt> <code>CS/plugins/device/joystick</code></dt>
+<dd><p>Joystick support.
+</p></dd>
+</dl>
+
+</dd>
+<dt> <code>CS/plugins/engine</code></dt>
+<dd><p>The 3D <em>engine</em> which drives Crystal Space.
+</p>
+<dl compact="compact">
+<dt> <code>CS/plugins/engine/3d</code></dt>
+<dd><p>The 3D engine plugin.
+</p></dd>
+</dl>
+
+</dd>
+<dt> <code>CS/plugins/filesys</code></dt>
+<dd><p>Filesystem-related plugins.
+</p>
+<dl compact="compact">
+<dt> <code>CS/plugins/filesys/vfs</code></dt>
+<dd><p>Virtual filesystem, <small>VFS</small>.  See section <a href="VFS.html#0">Virtual File System (<small>VFS</small>)</a>.
+</p></dd>
+</dl>
+
+</dd>
+<dt> <code>CS/plugins/font</code></dt>
+<dd><p>Collection of font servers.
+</p>
+<dl compact="compact">
+<dt> <code>CS/plugins/font/server/csfont</code></dt>
+<dd><p>Standard (bitmapped) Crystal Space font server.
+</p></dd>
+<dt> <code>CS/plugins/font/server/freefont</code></dt>
+<dd><p>FreeType (version 2) font server.
+</p></dd>
+<dt> <code>CS/plugins/font/server/fontplex</code></dt>
+<dd><p>Font server multiplexer.
+</p></dd>
+</dl>
+
+</dd>
+<dt> <code>CS/plugins/mesh</code></dt>
+<dd><p>Various mesh object implementations (see section <a href="MeshObject.html#0">Mesh Object Plug-In System</a>).  For every mesh
+object there is typically one implementation in <tt>&lsquo;object/&rsquo;</tt> and one or more
+loader/saver plugins in <tt>&lsquo;persist/&rsquo;</tt>.  <tt>&lsquo;persist/standard/&rsquo;</tt> is the
+loader in Crystal Space format.
+</p>
+</dd>
+<dt> <code>CS/plugins/physics</code></dt>
+<dd><p>Plug-ins relating to the physics of motion.
+</p>
+<dl compact="compact">
+<dt> <code>CS/plugins/physics/odedynam</code></dt>
+<dd><p><small>ODE</small> dynamics.
+</p></dd>
+<dt> <code>CS/plugins/physics/bullet</code></dt>
+<dd><p>Bullet physics.
+</p></dd>
+</dl>
+
+</dd>
+<dt> <code>CS/plugins/reporter</code></dt>
+<dd><p>Reporter.
+</p>
+</dd>
+<dt> <code>CS/plugins/sequence</code></dt>
+<dd><p>This is the sequence manager which is useful for managing timed sequences
+of events such as for demos.
+</p>
+</dd>
+<dt> <code>CS/plugins/sndsys</code></dt>
+<dd><p>All sound-related plugins (see section <a href="Sound-System.html#0">Sound System</a>).
+</p>
+</dd>
+<dt> <code>CS/plugins/stdrep</code></dt>
+<dd><p>Standard reporter listener.
+</p>
+</dd>
+<dt> <code>CS/plugins/video</code></dt>
+<dd><p>All rendering- and graphics-related plugins.
+</p>
+<dl compact="compact">
+<dt> <code>CS/plugins/video/canvas</code></dt>
+<dd><p>The 2D driver component which manages creation of the Crystal Space window used
+for rendering and also supports limited 2D drawing capabilities (including 2D
+pixmaps).
+</p>
+<dl compact="compact">
+<dt> <code>CS/plugins/video/canvas/common</code></dt>
+<dd><p>Common code for 2D drivers.
+</p>
+</dd>
+<dt> <code>CS/plugins/video/canvas/macosx</code></dt>
+<dd><p>MacOS/X OpenGL graphics driver.
+</p>
+</dd>
+<dt> <code>CS/plugins/video/canvas/null2d</code></dt>
+<dd><p>A do-nothing 2D canvas.
+</p>
+</dd>
+<dt> <code>CS/plugins/video/canvas/openglwin</code></dt>
+<dd><p>OpenGL 2D driver for Windows.
+</p>
+</dd>
+<dt> <code>CS/plugins/video/canvas/openglx</code></dt>
+<dd><p>OpenGL 2D driver for X11.
+</p>
+</dd>
+<dt> <code>CS/plugins/video/canvas/xextf86vm</code></dt>
+<dd><p>X-extension driver (X11).
+</p>
+</dd>
+<dt> <code>CS/plugins/video/canvas/xwindow</code></dt>
+<dd><p>X-window X11 driver.
+</p></dd>
+</dl>
+
+</dd>
+<dt> <code>CS/plugins/video/loader</code></dt>
+<dd><p>Loaders for various graphics file formats.
+</p>
+</dd>
+<dt> <code>CS/plugins/video/renderer</code></dt>
+<dd><p>The 3D rasterizer component is required by the 3D engine but may also be
+used in a standalone environment. It requires a 2D canvas.
+</p>
+<dl compact="compact">
+<dt> <code>CS/plugins/video/renderer/common</code></dt>
+<dd><p>Common code for 3D rasterizers.
+</p>
+</dd>
+<dt> <code>CS/plugins/video/renderer/null</code></dt>
+<dd><p>A do-nothing renderer (required when working only with 2D graphics).
+</p>
+</dd>
+<dt> <code>CS/plugins/video/renderer/opengl</code></dt>
+<dd><p>OpenGL renderer.
+</p></dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+<dt> <code>CS/scripts</code></dt>
+<dd><p>This directory contains scripts that are used for several different purposes:
+exporting data from 3D editors, creating skeleton of projects based on Crystal
+Space, packaging Crystal Space, or using the script bindings of the API.
+</p>
+<dl compact="compact">
+<dt> <code>CS/scripts/blender</code></dt>
+<dd><p>Export script for the &ldquo;Blender&rdquo; 3D modeling editor.
+</p>
+</dd>
+<dt> <code>CS/scripts/cs-config</code></dt>
+<dd><p>Generation of the <tt>&lsquo;cs-config&rsquo;</tt> configuration tool that can be used to
+detect the presence of Crystal Space on a given system.
+</p>
+</dd>
+<dt> <code>CS/scripts/glextgen</code></dt>
+<dd><p>Generation of the OpenGL extensions.
+</p>
+</dd>
+<dt> <code>CS/scripts/jamtemplate</code></dt>
+<dd><p>Generation of the skeleton of a project based on Crystal Space and using
+the &ldquo;jam&rdquo; build system.
+</p>
+</dd>
+<dt> <code>CS/scripts/java</code></dt>
+<dd><p>Example of an application written using the Java bindings (although these
+are currently no more supported...).
+</p>
+</dd>
+<dt> <code>CS/scripts/maketemplate</code></dt>
+<dd><p>Generation of the skeleton of a project based on Crystal Space and using
+the &ldquo;make&rdquo; build system.
+</p>
+</dd>
+<dt> <code>CS/scripts/max</code></dt>
+<dd><p>Export script for the &ldquo;3ds Max&rdquo; 3D modeling editor.
+</p>
+</dd>
+<dt> <code>CS/scripts/maya</code></dt>
+<dd><p>Export script for the &ldquo;Maya&rdquo; 3D modeling editor.
+</p>
+</dd>
+<dt> <code>CS/scripts/packaging</code></dt>
+<dd><p>Generation of packages for the distribution of Crystal Space.
+</p>
+</dd>
+<dt> <code>CS/scripts/perl5</code></dt>
+<dd><p>Example of an application written using the Perl bindings (although these
+are currently no more supported...).
+</p>
+</dd>
+<dt> <code>CS/scripts/python</code></dt>
+<dd><p>Tools for the generation of the Python bindings, along with application
+examples using those bindings.
+</p>
+</dd>
+<dt> <code>CS/scripts/xml</code></dt>
+<dd><p>XML schema of the Crystal Space map file format. This is unfortunately mostly
+obsolete...
+</p>
+</dd>
+</dl>
+</dd>
+</dl>
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Building.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Requirements.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Building.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Building.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Running-The-Demos.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

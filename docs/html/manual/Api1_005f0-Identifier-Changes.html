@@ -1,0 +1,513 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: C.5.6 Identifier Changes</title>
+
+<meta name="description" content="Crystal Space 2.1.0: C.5.6 Identifier Changes">
+<meta name="keywords" content="Crystal Space 2.1.0: C.5.6 Identifier Changes">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Api1_005f0-Identifier-Changes"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Api1_005f0-String-Changes.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Api1_005f0-Texture-and-Material-Related-Changes.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Release-Notes-1_005f0.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Licenses.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> C.5.6 Identifier Changes </h3>
+
+<a name="1"></a>
+<h3 class="subheading"> Naming Normalization </h3>
+
+<p>The following <small>SCF</small> class names have been normalized in order to be
+consistent with the names of all other available &ldquo;null&rdquo; and &ldquo;multiplexer&rdquo;
+plugins:
+</p>
+<ul>
+<li>
+<code>crystalspace.mesh.object.nullmesh</code> =&gt;
+<code>crystalspace.mesh.object.null</code>
+</li><li>
+<code>crystalspace.graphics2d.null2d</code> =&gt;
+<code>crystalspace.graphics2d.null</code>
+</li><li>
+<code>crystalspace.documentsystem.multiplex</code> =&gt;
+<code>crystalspace.documentsystem.multiplexer</code>
+</li><li>
+<code>crystalspace.graphic.image.io.multiplex</code> =&gt;
+<code>crystalspace.graphic.image.io.multiplexer</code>
+</li></ul>
+
+<p>For <small>API</small> consistency and uniformity between container classes, the
+following methods have been renamed:
+</p>
+<ul>
+<li>
+<code>csArray&lt;&gt;::Length()</code> =&gt; <code>csArray&lt;&gt;::GetSize()</code>
+</li><li>
+<code>csArray&lt;&gt;::SetLength()</code> =&gt; <code>csArray&lt;&gt;::SetSize()</code>
+</li><li>
+<code>csHash&lt;&gt;::DeleteAll()</code> =&gt; <code>csHash&lt;&gt;::Empty()</code>
+</li><li>
+<code>csHash&lt;&gt;::In()</code> =&gt; <code>csHash&lt;&gt;::Contains()</code>
+</li><li>
+<code>csHash&lt;&gt;::PutFirst()</code> =&gt; <code>csHash&lt;&gt;::PutUnique()</code>
+</li><li>
+<code>csList&lt;&gt;::FetchPrev()</code> =&gt; <code>csList&lt;&gt;::FetchPrevious()</code>
+</li><li>
+<code>csList&lt;&gt;::HasPrev()</code> =&gt; <code>csList&lt;&gt;::HasPrevious()</code>
+</li><li>
+<code>csSet&lt;&gt;::DeleteAll()</code> =&gt; <code>csSet&lt;&gt;::Empty()</code>
+</li><li>
+<code>csSet&lt;&gt;::In()</code> =&gt; <code>csSet&lt;&gt;::Contains()</code>
+</li><li>
+<code>csString::Clear()</code> =&gt; <code>csString::Empty()</code>
+</li><li>
+<code>csString::FindReplace()</code> =&gt; <code>csString::ReplaceAll()</code>
+</li><li>
+<code>csString::FindStr()</code> =&gt; <code>csString::Find()</code>
+</li><li>
+<code>csString::Reclaim()</code> =&gt; <code>csString::ShrinkBestFit()</code>
+</li><li>
+<code>iString::FindReplace()</code> =&gt; <code>iString::ReplaceAll()</code>
+</li><li>
+<code>iString::FindStr()</code> =&gt; <code>iString::Find()</code>
+</li><li>
+<code>iStringArray::DeleteAll()</code> =&gt; <code>iStringArray::Empty()</code>
+</li><li>
+<code>iStringSet::Clear()</code> =&gt; <code>iStringSet::Empty()</code>
+</li></ul>
+
+
+<p>In most cases, the old names listed above are still recognized for backward
+compatibility, but they are deprecated, so you probably ought to convert to the
+new <small>API</small> at some point. The <small>API</small> of most of the container classes also
+has been expanded, so you may want to study the <small>API</small> reference manual to
+learn about newly available functionality.
+</p>
+<p>Likewise, the following global functions have been renamed:
+</p>
+<ul>
+<li>
+<code>csFindReplace()</code> =&gt; <code>csReplaceAll()</code>
+</li></ul>
+
+<p>For consistency with like-named methods in other <small>SCF</small> interfaces, the
+following <samp>&lsquo;iImage&rsquo;</samp> methods have been renamed:
+</p>
+<ul>
+<li>
+<code>GetKeycolor()</code> =&gt; <code>GetKeyColor()</code>
+</li><li>
+<code>HasKeycolor()</code> =&gt; <code>HasKeyColor()</code>
+</li></ul>
+
+<p>Various methods in <samp>&lsquo;csIntersect3&rsquo;</samp> have been renamed in order to improve
+consistency and clarity.  In addition, some arguments have been reversed order
+so that, for example, a method named <code>SegmentTriangle()</code> will receive
+first the segment argument followed by the triangle argument.
+</p>
+<ul>
+<li>
+<code>AxisPlane()</code> =&gt; <code>SegmentAxisPlane()</code>
+</li><li>
+<code>IntersectPolygon()</code> =&gt; <code>PlanePolygon()</code> (plane version)
+</li><li>
+<code>IntersectPolygon()</code> =&gt; <code>SegmentPolygon()</code> (segment version)
+</li><li>
+<code>IntersectSegment()</code> =&gt; <code>SegmentFrustum()</code>
+</li><li>
+<code>IntersectTriangle()</code> =&gt; <code>SegmentTriangle()</code>
+</li><li>
+<code>Plane()</code> =&gt; <code>SegmentPlane()</code>
+</li><li>
+<code>Planes()</code> =&gt; <code>SegmentPlanes()</code> (segment version)
+</li><li>
+<code>Planes()</code> =&gt; <code>ThreePlanes()</code> (three planes version)
+</li><li>
+<code>XFrustum()</code> =&gt; <code>SegmentXFrustum()</code>
+</li><li>
+<code>XPlane()</code> =&gt; <code>SegmentXPlane()</code>
+</li><li>
+<code>YFrustum()</code> =&gt; <code>SegmentYFrustum()</code>
+</li><li>
+<code>YPlane()</code> =&gt; <code>SegmentYPlane()</code>
+</li><li>
+<code>Z0Plane()</code> =&gt; <code>SegmentZ0Plane()</code>
+</li><li>
+<code>ZPlane()</code> =&gt; <code>SegmentZPlane()</code>
+</li></ul>
+
+<p>In addition to that the function <code>csMath3::FindIntersection()</code> has been
+removed and is replaced with a new <code>csIntersect3::TriangleTriangle()</code>
+routine which is faster and more correct.
+</p>
+
+<p>The same improvements have been made to <code>csIntersect2</code>:
+</p>
+<ul>
+<li>
+<code>IntersectPolygon()</code> =&gt; <code>PlanePolygon()</code> (plane version)
+</li><li>
+<code>Lines()</code> =&gt; <code>LineLine()</code> (plane version)
+</li><li>
+<code>Plane()</code> =&gt; <code>SegmentPlane()</code>
+</li><li>
+<code>PlaneNoTest()</code> =&gt; <code>SegmentPlaneNoTest()</code>
+</li><li>
+<code>Planes()</code> =&gt; <code>PlanePlane()</code>
+</li><li>
+<code>Segments()</code> =&gt; <code>SegmentSegment()</code> (plane version)
+</li></ul>
+
+<p>The following configuration control macros (most of which are emitted to
+<tt>&lsquo;csconfig.h&rsquo;</tt> by the Crystal Space <tt>&lsquo;configure&rsquo;</tt> script) have been
+renamed in order to improve internal naming consistency, and to conform more
+closely to naming scheme used by Autoconf.
+</p>
+<ul>
+<li>
+<code>CS_HAS_CAL3D</code> =&gt; <code>CS_HAVE_CAL3D</code>
+</li><li>
+<code>CS_HAS_CMATH_H</code> =&gt; <code>CS_HAVE_CMATH_H</code>
+</li><li>
+<code>CS_HAS_GLHANDLEARB_T</code> =&gt; <code>CS_HAVE_GLHANDLEARB_T</code>
+</li><li>
+<code>CS_HAS_INT64_C</code> =&gt; <code>CS_HAVE_INT64_C</code>
+</li><li>
+<code>CS_HAS_INTMAX_T</code> =&gt; <code>CS_HAVE_INTMAX_T</code>
+</li><li>
+<code>CS_HAS_INTPTR_T</code> =&gt; <code>CS_HAVE_INTPTR_T</code>
+</li><li>
+<code>CS_HAS_INTTYPES_H</code> =&gt; <code>CS_HAVE_INTTYPES_H</code>
+</li><li>
+<code>CS_HAS_MACHINE_SOUNDCARD_H</code> =&gt; <code>CS_HAVE_MACHINE_SOUNDCARD_H</code>
+</li><li>
+<code>CS_HAS_MEMORY_MAPPED_IO</code> =&gt; <code>CS_HAVE_MEMORY_MAPPED_IO</code>
+</li><li>
+<code>CS_HAS_POSIX_MMAP</code> =&gt; <code>CS_HAVE_POSIX_MMAP</code>
+</li><li>
+<code>CS_HAS_REGEX</code> =&gt; <code>CS_HAVE_REGEX</code>
+</li><li>
+<code>CS_HAS_SOUNDCARD_H</code> =&gt; <code>CS_HAVE_SOUNDCARD_H</code>
+</li><li>
+<code>CS_HAS_STDINT_H</code> =&gt; <code>CS_HAVE_STDINT_H</code>
+</li><li>
+<code>CS_HAS_SYS_PARAM_H</code> =&gt; <code>CS_HAVE_SYS_PARAM_H</code>
+</li><li>
+<code>CS_HAS_SYS_SOUNDCARD_H</code> =&gt; <code>CS_HAVE_SYS_SOUNDCARD_H</code>
+</li><li>
+<code>CS_HAS_WCHAR_H</code> =&gt; <code>CS_HAVE_WCHAR_H</code>
+</li><li>
+<code>CS_RTLD_NOW_AVAILABLE</code> =&gt; <code>CS_HAVE_RTLD_NOW</code>
+</li></ul>
+
+
+<p>Likewise, the same normalization has been applied to the
+<samp>&lsquo;CS_USE_FAKE_feature&rsquo;</samp> macros published by the <tt>&lsquo;configure&rsquo;</tt> script, and
+the boolean sense of these control macros has been reversed to account for the
+name change.
+</p>
+<ul>
+<li>
+<code>CS_USE_FAKE_EXPLICIT_KEYWORD</code> =&gt;
+<code>CS_HAVE_CXX_KEYWORD_EXPLICIT</code>
+</li><li>
+<code>CS_USE_FAKE_MATH_H_FLOAT_FUNCS</code> =&gt;
+<code>CS_HAVE_MATH_H_FLOAT_FUNCS</code>
+</li><li>
+<code>CS_USE_FAKE_SOCKLEN_TYPE</code> =&gt; <code>CS_HAVE_SOCKLEN_T</code>
+</li><li>
+<code>CS_USE_FAKE_TYPENAME_KEYWORD</code> =&gt;
+<code>CS_HAVE_CXX_KEYWORD_TYPENAME</code>
+</li><li>
+<code>CS_USE_FAKE_WCHAR_TYPE</code> =&gt; <code>CS_HAVE_WCHAR_T</code>
+</li><li>
+<code>CS_USE_FAKE_WCSLEN</code> =&gt; <code>CS_HAVE_WCSLEN</code>
+</li></ul>
+
+<p>For consistency with like-named macros (such as <samp>&lsquo;CS_PROCESSOR_NAME&rsquo;</samp> and
+<samp>&lsquo;CS_PROCESSOR_arch&rsquo;</samp>), the following control macros have been renamed:
+</p>
+<ul>
+<li>
+<code>CS_PROCSIZE</code> =&gt; <code>CS_PROCESSOR_SIZE</code>
+</li></ul>
+
+<p>The <code>csOrdering&lt;&gt;</code> template has been renamed to the more general
+<code>csComparator&lt;&gt;</code> to reflect the fact that this template can perform both
+ordering and equality comparisons.
+</p>
+<a name="2"></a>
+<h3 class="subheading"> Pollution Reduction </h3>
+
+<p>In order to avoid polluting the top-level system include directory, the Crystal
+Space header tree is now installed (via <samp>&lsquo;make install&rsquo;</samp> or
+<samp>&lsquo;jam install&rsquo;</samp>) in a subdirectory named <tt>&lsquo;crystalspace&rsquo;</tt>, rather than
+being installed directly in the top-level system directory. For example,
+assuming the default installation location, the Crystal Space headers are now
+installed in <tt>&lsquo;/usr/local/include/crystalspace&rsquo;</tt>. Previously, they would
+have been deposited directly into <tt>&lsquo;/usr/local/include&rsquo;</tt>. The
+<samp>&lsquo;cs-config&rsquo;</samp> utility script properly returns the new header location in
+response to the <samp>&lsquo;--includedir&rsquo;</samp>, <samp>&lsquo;--cflags&rsquo;</samp>, and <samp>&lsquo;--cxxflags&rsquo;</samp>
+options, so this relocation should be mostly transparent to external projects.
+</p>
+<p>The following global header files have been renamed in order to avoid possible
+conflict with headers installed by other packages.
+</p>
+<ul>
+<li>
+<code>platform.h</code> =&gt; <code>csplatform.h</code>
+</li><li>
+<code>qint.h</code> =&gt; <code>csqint.h</code>
+</li><li>
+<code>qsqrt.h</code> =&gt; <code>csqsqrt.h</code>
+</li><li>
+<code>volatile.h</code> =&gt; <code>csconfig.h</code>
+</li></ul>
+
+<p>The following symbols have been renamed in order to avoid pollution of the
+global namespace.
+</p>
+<ul>
+<li>
+<code>BadBraces</code> =&gt; <code>csrxBadBraces</code>
+</li><li>
+<code>BadPattern</code> =&gt; <code>csrxBadPattern</code>
+</li><li>
+<code>BadRepetition</code> =&gt; <code>csrxBadRepetition</code>
+</li><li>
+<code>big_endian_float()</code> =&gt; <code>csBigEndianFloat()</code>
+</li><li>
+<code>big_endian_long()</code> =&gt; <code>csBigEndianLong()</code>
+</li><li>
+<code>big_endian_longlong()</code> =&gt; <code>csBigEndianLongLong()</code>
+</li><li>
+<code>big_endian_short()</code> =&gt; <code>csBigEndianShort()</code>
+</li><li>
+<code>COMP_BC</code> =&gt; <code>CS_COMPILER_BCC</code>
+</li><li>
+<code>COMP_GCC</code> =&gt; <code>CS_COMPILER_GCC</code>
+</li><li>
+<code>COMP_VC</code> =&gt; <code>CS_COMPILER_MSVC</code>
+</li><li>
+<code>convert_endian()</code> =&gt; <code>csConvertEndian()</code>
+</li><li>
+<code>DO_MMX</code> =&gt; <code>CS_HAVE_MMX</code>
+</li><li>
+<code>DO_NASM</code> =&gt; <code>CS_HAVE_NASM</code>
+</li><li>
+<code>double2longlong()</code> =&gt; <code>csDoubleToLongLong()</code>
+</li><li>
+<code>ErrBraces</code> =&gt; <code>csrxErrBraces</code>
+</li><li>
+<code>ErrBrackets</code> =&gt; <code>csrxErrBrackets</code>
+</li><li>
+<code>ErrCharType</code> =&gt; <code>csrxErrCharType</code>
+</li><li>
+<code>ErrCollate</code> =&gt; <code>csrxErrCollate</code>
+</li><li>
+<code>ErrEscape</code> =&gt; <code>csrxErrEscape</code>
+</li><li>
+<code>ErrParentheses</code> =&gt; <code>csrxErrParentheses</code>
+</li><li>
+<code>ErrRange</code> =&gt; <code>csrxErrRange</code>
+</li><li>
+<code>ErrSpace</code> =&gt; <code>csrxErrSpace</code>
+</li><li>
+<code>ErrSubReg</code> =&gt; <code>csrxErrSubReg</code>
+</li><li>
+<code>ErrUnknown</code> =&gt; <code>csrxErrUnknown</code>
+</li><li>
+<code>float2long()</code> =&gt; <code>csFloatToLong()</code>
+</li><li>
+<code>float2short()</code> =&gt; <code>csFloatToShort()</code>
+</li><li>
+<code>get_le_float16()</code> =&gt; <code>csGetLittleEndianFloat16()</code>
+</li><li>
+<code>get_le_float32()</code> =&gt; <code>csGetLittleEndianFloat32()</code>
+</li><li>
+<code>get_le_long()</code> =&gt; <code>csGetLittleEndianLong()</code>
+</li><li>
+<code>get_le_short()</code> =&gt; <code>csGetLittleEndianShort()</code>
+</li><li>
+<code>IgnoreCase</code> =&gt; <code>csrxIgnoreCase</code>
+</li><li>
+<code>little_endian_float()</code> =&gt; <code>csLittleEndianFloat()</code>
+</li><li>
+<code>little_endian_long()</code> =&gt; <code>csLittleEndianLong()</code>
+</li><li>
+<code>little_endian_longlong()</code> =&gt; <code>csLittleEndianLongLong()</code>
+</li><li>
+<code>little_endian_short()</code> =&gt; <code>csLittleEndianShort()</code>
+</li><li>
+<code>long2float()</code> =&gt; <code>csLongToFloat()</code>
+</li><li>
+<code>longlong2double()</code> =&gt; <code>csLongLongToDouble()</code>
+</li><li>
+<code>MemEntry</code> =&gt; <code>csMemTrackerEntry</code>
+</li><li>
+<code>MemoryMapFile()</code> =&gt; <code>csMemoryMapFile()</code>
+</li><li>
+<code>MemoryMapWindow()</code> =&gt; <code>csMemoryMapWindow()</code>
+</li><li>
+<code>MemTrackerInfo</code> =&gt; <code>csMemTrackerInfo</code>
+</li><li>
+<code>MemTrackerModule</code> =&gt; <code>csMemTrackerModule</code>
+</li><li>
+<code>MemTrackerRegistry</code> =&gt; <code>csMemTrackerRegistry</code>
+</li><li>
+<code>MKDIR()</code> =&gt; <code>CS_MKDIR()</code>
+</li><li>
+<code>mmioInfo</code> =&gt; <code>csMemMapInfo</code>
+</li><li>
+<code>__NEED_GENERIC_ISDIR</code> =&gt; <code>CS_USE_CUSTOM_ISDIR</code>
+</li><li>
+<code>__NEED_OPENDIR_PROTOTYPE</code> =&gt; <code>CS_WIN32_USE_CUSTOM_OPENDIR</code>
+</li><li>
+<code>NewLine</code> =&gt; <code>csrxNewLine</code>
+</li><li>
+<code>NoError</code> =&gt; <code>csrxNoError</code>
+</li><li>
+<code>NoMatch</code> =&gt; <code>csrxNoMatch</code>
+</li><li>
+<code>NotBOL</code> =&gt; <code>csrxNotBOL</code>
+</li><li>
+<code>NotEOL</code> =&gt; <code>csrxNotEOL</code>
+</li><li>
+<code>OS_DOS</code> =&gt; <code>CS_PLATFORM_DOS</code>
+</li><li>
+<code>OS_MACOSX</code> =&gt; <code>CS_PLATFORM_MACOSX</code>
+</li><li>
+<code>OS_UNIX</code> =&gt; <code>CS_PLATFORM_UNIX</code>
+</li><li>
+<code>OS_WIN32</code> =&gt; <code>CS_PLATFORM_WIN32</code>
+</li><li>
+<code>PATH_DELIMITER</code> =&gt; <code>CS_PATH_DELIMITER</code>
+</li><li>
+<code>PATH_SEPARATOR</code> =&gt; <code>CS_PATH_SEPARATOR</code>
+</li><li>
+<code>PROC_arch</code> =&gt; <code>CS_PROCESSOR_arch</code> (where <samp>&lsquo;arch&rsquo;</samp> is
+<samp>&lsquo;X86&rsquo;</samp>, <samp>&lsquo;M68K&rsquo;</samp>, etc.)
+</li><li>
+<code>ProcEventHandler()</code> =&gt; <code>csProcTexEventHandler</code>
+</li><li>
+<code>QInt()</code> =&gt; <code>csQint()</code>
+</li><li>
+<code>QInt16()</code> =&gt; <code>csQfixed16()</code>
+</li><li>
+<code>QInt24()</code> =&gt; <code>csQfixed24()</code>
+</li><li>
+<code>QInt8()</code> =&gt; <code>csQfixed8()</code>
+</li><li>
+<code>qisqrt()</code> =&gt; <code>csQisqrt()</code>
+</li><li>
+<code>QRound()</code> =&gt; <code>csQround()</code>
+</li><li>
+<code>qsqrt()</code> =&gt; <code>csQsqrt()</code>
+</li><li>
+<code>RegisterMemoryTrackerModule()</code> =&gt; <code>mtiRegisterModule()</code>
+</li><li>
+<code>set_le_float16()</code> =&gt; <code>csSetLittleEndianFloat16()</code>
+</li><li>
+<code>set_le_float32()</code> =&gt; <code>csSetLittleEndianFloat32()</code>
+</li><li>
+<code>set_le_long()</code> =&gt; <code>csSetLittleEndianLong()</code>
+</li><li>
+<code>set_le_short()</code> =&gt; <code>csSetLittleEndianShort()</code>
+</li><li>
+<code>short2float()</code> =&gt; <code>csShortToFloat()</code>
+</li><li>
+<code>TEMP_DIR</code> =&gt; <code>CS_TEMP_DIR</code>
+</li><li>
+<code>TEMP_FILE</code> =&gt; <code>CS_TEMP_FILE</code>
+</li><li>
+<code>UnMemoryMapFile()</code> =&gt; <code>csUnMemoryMapFile()</code>
+</li><li>
+<code>WIN32_VOLATILE</code> =&gt; <code>CS_WIN32_CSCONFIG</code>
+</li></ul>
+
+<a name="3"></a>
+<h4 class="subsubheading"> <samp>&lsquo;iConfig&rsquo;</samp> Renamed </h4>
+
+<p>The <samp>&lsquo;iConfig&rsquo;</samp> interface has been renamed to the more fitting 
+<samp>&lsquo;iPluginConfig&rsquo;</samp>, and the containing header from <tt>&lsquo;iutil/config.h&rsquo;</tt> to
+<code>iutil/pluginconfig.h</code>. Other changes have not been made.
+</p>
+<a name="4"></a>
+<h4 class="subsubheading"> <code>csRenderMeshHolderSingle</code> Renamed </h4>
+
+<p><samp>&lsquo;csRenderMeshHolderSingle&rsquo;</samp> has been renamed to <samp>&lsquo;csRenderMeshHolder&rsquo;</samp>
+as a consequence of the removal of <samp>&lsquo;csRenderMeshHolderMultiple&rsquo;</samp>.
+</p>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Api1_005f0-String-Changes.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Api1_005f0-Texture-and-Material-Related-Changes.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Release-Notes-1_005f0.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Licenses.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

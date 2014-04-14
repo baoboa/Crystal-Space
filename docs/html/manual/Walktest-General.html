@@ -1,0 +1,180 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 3.1.4.1 General Commands</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 3.1.4.1 General Commands">
+<meta name="keywords" content="Crystal Space 2.1.0: 3.1.4.1 General Commands">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Walktest-General"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Walktest-Console-Commands.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Walktest-Movement.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Running-The-Demos.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Walktest-Console-Commands.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h4 class="subsubsection"> 3.1.4.1 General Commands </h4>
+
+<p>These are probably the most useful commands.  The others commands can be
+grouped into types or related commands.
+</p>
+<dl compact="compact">
+<dt> <code>quit [<kbd>q</kbd>]</code></dt>
+<dd><p>Exit the program. 
+</p>
+</dd>
+<dt> <code>about</code></dt>
+<dd><p>Display the version string.
+</p>
+</dd>
+<dt> <code>bind key command</code></dt>
+<dd><p>Bind a key to a command.  The given key can be anything like <kbd>alt-c</kbd>,
+<kbd>shift-pgdn</kbd>, <kbd>home</kbd>, <kbd>ctrl-space</kbd>, etc.  The command can be
+anything that you can execute in the console.  If you only give a key this
+command will show the current command that is bound to that key.  If you give
+no parameters then all current key-bindings will be listed.  Note that if you
+bind a key which has already been bound then the old key-binding will be
+removed.
+</p>
+<p>This command is used extensively in <tt>&lsquo;/data/config/autoexec.cfg&rsquo;</tt> to set up
+the key bindings for walktest.
+</p>
+<p>Note that pressing a key executes the command once only, unless the modifier
+<samp>&lsquo;status&rsquo;</samp> is given.  For example, bind <kbd>left</kbd> rotate_left will execute
+only one rotate_left command when the left arrow is pressed, but bind
+<kbd>status-left</kbd> rotate_left will continue to rotate while the key is pressed.
+</p>
+<p>The modifiers are <kbd>status</kbd> (as described above), <kbd>shift</kbd>, <kbd>ctrl</kbd>,
+<kbd>alt</kbd>.  The <kbd>shift</kbd> modifier must be used.  Bind <kbd>S</kbd> is not the
+same as bind-<kbd>shift-s</kbd>.
+</p>
+<p>The special key names are <kbd>left</kbd>, <kbd>up</kbd>, <kbd>down</kbd>, <kbd>right</kbd>,
+<kbd>pgup</kbd>, <kbd>pgdn</kbd>, <kbd>enter</kbd>, <kbd>f1</kbd> to <kbd>f10</kbd>
+</p>
+</dd>
+<dt> <code>console [<kbd>Tab</kbd>]</code></dt>
+<dd><p>Toggle console visibility.  Not useful in itself, but bound to the <kbd>Tab</kbd>
+key.
+</p>
+</dd>
+<dt> <code>coordset sector,x,y,z</code></dt>
+<dd><p>Jump to location, specified as a sector name and X, Y, Z coordinates.
+</p>
+</dd>
+<dt> <code>coordshow Boolean [<kbd>Control C</kbd>]</code></dt>
+<dd><p>Enable/disable display of coordinate at runtime.  Note that enabling the
+coordinates display automatically disables the statistics display.
+</p>
+</dd>
+<dt> <code>coordsave [<kbd>Shift C</kbd>]</code></dt>
+<dd><p>Save the current sector and location in <small>VFS</small> file <tt>&lsquo;/tmp/walktest.cam&rsquo;</tt>.
+</p>
+</dd>
+<dt> <code>coordload [<kbd>c</kbd>]</code></dt>
+<dd><p>Restore the saved position from <small>VFS</small> file <tt>&lsquo;/tmp/walktest.cam&rsquo;</tt>.  Note
+that the position will always be restored but the orientation of the camera
+will only be restored if <samp>&lsquo;move3d&rsquo;</samp> is set.
+</p>
+</dd>
+<dt> <code>exec name</code></dt>
+<dd><p>Run a script, one line per frame. The name must be a <small>VFS</small> path.
+</p>
+</dd>
+<dt> <code>extension str</code></dt>
+<dd><p>Perform a Graphics extension command in the 2D canvas plugin.  This is
+plugin-dependant.  Currently the X11 port is the only port that has extensions
+(<samp>&lsquo;sim_pal&rsquo;</samp>, <samp>&lsquo;sim_grey&rsquo;</samp>, and <samp>&lsquo;sim_332&rsquo;</samp>).  They are used when
+simulating 15/16-bit display mode on a 8-bit display
+</p>
+</dd>
+<dt> <code>s_fog r,g,b,density</code></dt>
+<dd><p>If no arguments are given this command will show the fog settings for the
+current sector.  Otherwise you can set the fog level for this sector.  Syntax
+is <samp>&lsquo;s_fog r,g,b,density&rsquo;</samp>.
+</p>
+</dd>
+<dt> <code>snd_play name</code></dt>
+<dd><p>Play named sound as <tt>&lsquo;name.wav&rsquo;</tt> as an ephemeral sound.
+</p>
+</dd>
+<dt> <code>snd_volume Value</code></dt>
+<dd><p>Change the master volume. Value between 0 and 1.
+</p>
+</dd>
+<dt> <code>help</code></dt>
+<dd><p>Usage message, listing these commands in a slightly more terse form.
+</p></dd>
+</dl>
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Walktest-Console-Commands.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Walktest-Movement.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Running-The-Demos.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Walktest-Console-Commands.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

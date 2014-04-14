@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.12.3.5 Instructions for Texture Mapper</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.12.3.5 Instructions for Texture Mapper">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.12.3.5 Instructions for Texture Mapper">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Texture-Mapping-Instructions"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Texture-Mapping-Together.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Texture-Mapping-Animations.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Texture-Mapping.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h4 class="subsubsection"> 4.12.3.5 Instructions for Texture Mapper </h4>
+
+<p>In the Crystal Space map file,
+the <samp>&lsquo;orig&rsquo;</samp>, <samp>&lsquo;first&rsquo;</samp>, and <samp>&lsquo;second&rsquo;</samp> vertex keywords describe the
+texture plane.  What Crystal Space does internally is to create a
+transformation matrix/vector which translates object space (3D coordinates) to
+texture space (<em>u,v</em> coordinates).  Here is how this works.
+</p>
+
+<p>First a few definitions:
+</p>
+<ul>
+<li>
+<code>orig</code> vector is <em>Vo</em>
+</li><li>
+<code>first</code> vector is <em>V1</em>
+</li><li>
+<code>second</code> vector is <em>V2</em>
+</li><li>
+<code>firstlen</code> is <em>L1</em>
+</li><li>
+<code>secondlen</code> is <em>L2</em>
+</li><li>
+Length of
+<em>V1 - Vo</em>
+is <em>l1</em>
+</li><li>
+Length of
+<em>V2 - Vo</em>
+is <em>l2</em>
+</li></ul>
+
+<p><em>Vo</em>, <em>V1</em> and <em>V2</em> are vertices in object space.  These define
+the local coordinate system for texture space.  So we have the following
+mapping:
+</p>
+<blockquote><p><em>Vo</em> ==&gt; (<em>0</em>,<em>0</em>)<br>
+<em>V1</em> ==&gt; (<em>L1</em>,<em>0</em>)<br>
+<em>V2</em> ==&gt; (<em>0</em>,<em>L2</em>)
+</p></blockquote>
+
+<p>It is important to realize that the coordinate (0,0) in texture space is the
+top-left coordinate of the texture and (1,1) is the bottom-right corner.  The
+coordinate (2,2) is thus the bottom-right corner of a tiled texture (2x2
+times).
+</p>
+<p>The conversion to the matrix happens as follows:
+</p>
+<blockquote><p><em>Vu = (len1 / l1) * (V1-Vo)</em><br>
+<em>Vv = (len2 / l2) * (V2-Vo)</em>
+</p></blockquote>
+<table><tr><td>&nbsp;</td><td><pre class="example">      / Vu.x Vv.x 1 \
+Mot = | Vu.y Vv.y 1 |
+      \ Vu.z Vv.z 1 /
+</pre></td></tr></table>
+
+<p>The last column represents the <em>W</em> texture component which is not used.
+</p>
+<blockquote><p><em>Vot = &lt;Vo.x Vo.y Vo.z&gt;</em>
+</p></blockquote>
+
+
+<p>So <em>Mot</em> and <em>Vot</em> are the transformation matrix/vector to go from
+object to texture space.  Use these as follows:
+</p>
+<blockquote><p><em>T = Mot * (O - Vot)</em>
+</p></blockquote>
+
+
+<p>With <em>O</em> being the object space vector that you want to convert and
+<em>T</em> the texture space vector.  Only the <em>x</em> and <em>y</em> components
+are used of <em>T</em>.  <em>x</em> represents <em>u</em> and <em>y</em> represents
+<em>v</em>.
+</p>
+<p>Using the last equation you can convert every point of your polygon to texture
+space.
+</p>
+
+<hr size="1">
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

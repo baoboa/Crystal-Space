@@ -1,0 +1,435 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: C.12 Release Notes from 0.16 to 0.17</title>
+
+<meta name="description" content="Crystal Space 2.1.0: C.12 Release Notes from 0.16 to 0.17">
+<meta name="keywords" content="Crystal Space 2.1.0: C.12 Release Notes from 0.16 to 0.17">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Release-Notes-17"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Release-Notes-18.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Licenses.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Licenses.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h2 class="appendixsec"> C.12 Release Notes from 0.16 to 0.17 </h2>
+
+<p>This section documents the major changes between versions 0.16 and 0.17 of
+Crystal Space.
+</p>
+<a name="1"></a>
+<h3 class="subheading"> Signature Change: NextFrame(elapsed_time/current_time) </h3>
+
+<p><code>csSystemDriver::NextFrame()</code> no longer accepts <samp>&lsquo;elapsed_time&rsquo;</samp> and
+<samp>&lsquo;current_time&rsquo;</samp> arguments, so you have to change the prototype of your own
+subclassed version of <code>NextFrame()</code> and call the following three lines in
+the order below (only if you need the elapsed and current time, of course):
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">void MySubclass::NextFrame()
+{
+  SysSystemDriver::NextFrame();
+  cs_time elapsed_time, current_time;
+  GetElapsedTime(elapsed_time,current_time);
+  ...
+</pre></td></tr></table>
+<a name="2"></a>
+<h3 class="subheading"> Signature Change: HandleEvent(csEvent) </h3>
+
+<p>The argument of <code>csSystemDriver::HandleEvent()</code> has changed from a
+<samp>&lsquo;csEvent*&rsquo;</samp> parameter to an <samp>&lsquo;iEvent*&rsquo;</samp>.  Update your subclassed
+versions if present.
+</p>
+<a name="3"></a>
+<h3 class="subheading"> Materials Versus Textures </h3>
+
+<p>Crystal Space 0.17 supports <em>materials</em> in the sense that the <small>API</small> is
+ready for it.  There is no real material support though.  A material currently
+just corresponds with a texture.  Here are a few short remarks about the
+changes:
+</p>
+<ul>
+<li>
+<code>csTextureHandle()</code> was renamed to <code>csTextureWrapper()</code>.
+
+</li><li>
+New class: <code>csMaterialWrapper</code>
+
+</li><li>
+The methods <code>SetTexture()</code> and <code>GetTexture()</code> were renamed to
+<code>SetMaterial()</code> and <code>GetMaterial()</code>, respectively, in many places.
+
+</li><li>
+The methods
+<code>SetTextureHandle()</code> and <code>GetTextureHandle()</code> were renamed to
+<code>SetMaterialWrapper()</code> and <code>GetMaterialWrapper()</code>, respectively.
+</li></ul>
+
+<p>In general, in most places where you used to use <code>SetTexture()</code> or
+<code>GetTexture()</code> you now need to use the material versions.  There are few
+places where you deal directly with textures.  The material system sits on top
+of the texture system and is what you should use in most cases.
+</p>
+<p><samp>&lsquo;csWorld&rsquo;</samp> now has a <code>GetMaterials()</code> function which you probably
+should use wherever you used <code>GetTextures()</code> in the past.
+</p>
+<p>In the loader you can find a new function, <code>csLoader::FindMaterial()</code>,
+which will find a material with the given name.  If not found it tries to find
+a texture with of the same name and, if found, will automatically then create
+a material from that texture.
+</p>
+<p>The <code>csLoader::LoadTexture()</code> method is a bit special.  As before, it
+loads a texture (and returns a <samp>&lsquo;csTextureWrapper&rsquo;</samp>) but it also adds a
+material with the same name to the material list.  You can then fetch that
+material from that list with code similar to the following:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">csLoader::LoadTexture(world,&quot;myTexture&quot;,&quot;/lib/std/stone4.gif&quot;);
+csMaterialWrapper* m =
+  world-&gt;GetMaterials()-&gt;FindByName(&quot;myTexture&quot;);
+</pre></td></tr></table>
+<a name="4"></a>
+<h3 class="subheading"> Collision Detection Plugin </h3>
+
+<p>This is a very significant change.  The <small>RAPID</small> collision detection system
+has been completely removed from the engine and is now available through a
+plug-in module.  This change will most likely require the most complicated
+changes to your code.
+</p>
+<p>The first thing you need to add to your application is code to load the
+plugin.  You can do this with the following code:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">char const* p = Config-&gt;GetStr (
+  &quot;YourGame&quot;,
+  &quot;COLLDET_PLUGIN&quot;,
+  &quot;crystalspace.colldet.rapid&quot;);
+collide_system =
+  LOAD_PLUGIN(this, p, &quot;CollDet&quot;, iCollideSystem);
+if (!collide_system)
+{
+  Printf(MSG_FATAL_ERROR,
+    &quot;No Collision Detection plugin found!\n&quot;);
+  return false;
+}
+</pre></td></tr></table>
+<p>This code loads the rapid collision detection plugin by default (which is the
+only one we have now) but it also reads an entry from your config file so that
+the user can possibly change it.  If you don't want that then you can just
+hardcode the <samp>&lsquo;p&rsquo;</samp> pointer with the name of the <small>RAPID</small> plugin.
+</p>
+<p>Note that you need to store the value of <samp>&lsquo;collide_system&rsquo;</samp> some place
+where it can be accessed by the routines that need to do the collision
+detection.
+</p>
+<p>Then the class <samp>&lsquo;csRAPIDCollider&rsquo;</samp> has been removed from csengine.  Instead
+there is a new class, <samp>&lsquo;csCollider&rsquo;</samp>.  This class encapsulates an
+<samp>&lsquo;iCollider&rsquo;</samp> (which is something that is returned from
+<samp>&lsquo;collide_system&rsquo;</samp>).  This is the easiest way to use the new collision
+detection system as it more closely resembles what was possible with
+<samp>&lsquo;csRAPIDCollider&rsquo;</samp>.  To make a <samp>&lsquo;csCollider&rsquo;</samp> you can use the following
+code:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">iPolygonMesh* mesh =
+  QUERY_INTERFACE(object, iPolygonMesh);
+csCollider* collider =
+  new csCollider(*object, collide_system, mesh);
+</pre></td></tr></table>
+<p><samp>&lsquo;object&rsquo;</samp> can be a sector, sprite, thing, or your own object that supports
+the <samp>&lsquo;iPolygonMesh&rsquo;</samp> interface.  The new collider will be attached (through
+the <samp>&lsquo;csObject&rsquo;</samp> system) to the object.  This is similar to what happened
+with the old <samp>&lsquo;csRAPIDCollider&rsquo;</samp> class.
+</p>
+<p>To do collision detection you need to find the colliders (or have them stored
+somewhere) and then you can do:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">bool rc = collide_system-&gt;Collide(
+  col1-&gt;GetCollider(), trans1,
+  col2-&gt;GetCollider(), trans2);
+</pre></td></tr></table>
+
+<p>Or:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">bool rc = col1-&gt;Collide(*object2, trans1, trans2);
+</pre></td></tr></table>
+<p>With <samp>&lsquo;col1&rsquo;</samp> and <samp>&lsquo;col2&rsquo;</samp> are the colliders (<samp>&lsquo;csCollider&rsquo;</samp>) and
+<samp>&lsquo;object2&rsquo;</samp> is the second object.  <samp>&lsquo;trans1&rsquo;</samp> and <samp>&lsquo;trans2&rsquo;</samp> are the
+respective transformations.
+</p>
+<p>Note that before you call this you probably want to initialize the collision
+system like this:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">collide_system-&gt;ResetCollisionPairs();
+collide_system-&gt;SetOneHitOnly(<var>true</var>/<var>false</var>);
+</pre></td></tr></table>
+<p>The argument for the second function depends on whether or not you
+are interested in receiving more than one hit.
+</p>
+<p>Note that <code>ResetCollisionPairs()</code> is important. Every call
+to <code>Collide()</code> will add additional collision pairs to this array.
+So you have to reset it if you are no longer interested in that.
+</p>
+<p>Note that <code>csRAPIDCollider::Report()</code> is gone. If you want that
+functionality you have to do it on your own (which is not difficult).
+</p>
+<a name="5"></a>
+<h3 class="subheading"> Texture Mapping Changes </h3>
+
+<p>The way engine defines and uses texturing has changed.  There are four polygon
+texturing types now:
+</p>
+<dl compact="compact">
+<dt> <code>POLYTXT_NONE</code></dt>
+<dd><p>No texturing.  Useful when using materials without textures.  It defines no
+texturing parameters at all thus saves memory.
+</p>
+</dd>
+<dt> <code>POLYTXT_FLAT</code></dt>
+<dd><p>Flat-shading.  Only the angle between light and polygon normal is considered
+if <samp>&lsquo;CS_POLY_LIGHTING&rsquo;</samp> flag is set, and entire polygon is painted with one
+lighting value.  Every vertex has an <small>U/V</small> pair associated.
+</p>
+</dd>
+<dt> <code>POLYTXT_GOURAUD</code></dt>
+<dd><p>Every polygon vertex has a color and those colors are interpolated across
+scanlines.
+</p>
+</dd>
+<dt> <code>POLYTXT_LIGHTMAP</code></dt>
+<dd><p>A polygon which has an associated lightmap and a texture plane.
+</p></dd>
+</dl>
+
+<p>Now it is possible to define and use objects which have flat-color but still
+receive light with Gouraud as well as without Gouraud interpolation; in
+general this open a whole new area for experimenting.
+</p>
+<p>In practice this means that <samp>&lsquo;csGouraudShaded&rsquo;</samp> is gone and has been
+replaced with <samp>&lsquo;csPolyTexGouraud&rsquo;</samp>.  <samp>&lsquo;csLightMapped&rsquo;</samp> has also gone and
+is replaced with <samp>&lsquo;csPolyTexLightMap&rsquo;</samp>.
+</p>
+<a name="6"></a>
+<h3 class="subheading"> Sound Changes </h3>
+
+<p>Merged sound buffers into sound sources.  We now have 3D and non-3D sound
+sources.  Non-3D sources are what were formerly sound buffers.  As a parameter
+to <samp>&lsquo;Renderer-&gt;CreateSource()&rsquo;</samp> you can indicate if you want a 3D or non-3D
+source.
+</p>
+<p>The sound loader is now a plugin and must be loaded as such.  It uses the
+<samp>&lsquo;iSoundLoader&rsquo;</samp> interface.  A loaded sound data block is represented by
+<samp>&lsquo;iSoundData&rsquo;</samp>.
+</p>
+<p>If you use standard Crystal Space libraries to load sounds, this is all you
+need to be aware of.  Otherwise you should also know how to load a sound
+without <samp>&lsquo;csParser&rsquo;</samp>.
+</p>
+<p>To load a sound the sound loader now needs some information describing the
+format of the sound.  This information can be queried from the sound renderer.
+Also, a sound can be optionally be loaded as <em>stream</em>.  This is currently
+not useful for anything, but will instead affect performance and memory in a
+negative way.  It is intended as a future option to load background music.
+All member functions of <samp>&lsquo;iSoundData&rsquo;</samp> are intended for private use (of
+course you may use them, but I don't think they are useful).  To load a sound,
+perform the following steps.
+</p>
+<ol>
+<li>
+Load the file buffer from a <small>VFS</small> path.  See section <a href="VFS.html#0">Virtual File System (<small>VFS</small>)</a>.
+
+</li><li>
+Ask the sound renderer for the format descriptor (<samp>&lsquo;csSoundFormat&rsquo;</samp>).
+
+</li><li>
+Pass both the file data and the format to the sound loader, using <samp>&lsquo;false&rsquo;</samp>
+for streaming (the default).  After that, you may delete the file data.
+</li></ol>
+
+<a name="7"></a>
+<h3 class="subheading"> Thing and Sprite Changes (csMovable) </h3>
+
+<p>The movement system of Things and Sprites has been merged into one class
+called <samp>&lsquo;csMovable&rsquo;</samp>.  Thus, all functions such as <code>SetPosition()</code>,
+<code>SetTransform()</code>, and so on, have been removed from <samp>&lsquo;csThing&rsquo;</samp> and
+<samp>&lsquo;csSprite&rsquo;</samp>.  Instead there is a function <code>GetMovable()</code> (both for
+Things and Sprites) which returns the <samp>&lsquo;csMovable&rsquo;</samp> for that object.  There
+is also a new function called <code>csMovable::UpdateMove()</code>&ndash;which resembles
+the original <code>csThing::Transform()</code> somewhat&ndash;which you <em>must</em> call
+after updating the position and/or transformation of the movable which belongs
+to the object.
+</p>
+<p>In addition to the changes related to <samp>&lsquo;csMovable&rsquo;</samp> the linked list of sky
+and thing objects in a sector has also been replaced by a <samp>&lsquo;csVector&rsquo;</samp> and
+things are now also kept in a global list in the <samp>&lsquo;csWorld&rsquo;</samp>, just like
+sprites.  This means that sprites and things look a lot more like each other
+now with regards to movement and placement in sectors.  This means that
+functions such as <code>AddThing()</code>, <code>GetNumThings()</code>,
+<code>RemoveThing()</code> and <code>GetFirstThing()</code> are now gone, as are the
+similar methods for sky objects.  Instead, you should work through the new
+public <samp>&lsquo;skies&rsquo;</samp> and <samp>&lsquo;things&rsquo;</samp> vectors.  In addition to this the
+<code>GetNext()</code> and <code>GetParent()</code> functions have been removed from
+<samp>&lsquo;csPolygonSet&rsquo;</samp>.
+</p>
+
+<p>Given the old code to operate on things:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">csThing* thing = new csThing(world);
+sector-&gt;AddThing(thing);
+thing-&gt;SetPosition(csVector3(0,0,3));
+thing-&gt;SetTransform(csMatrix3());
+thing-&gt;Transform();
+...
+sector-&gt;RemoveThing(thing);
+delete thing;
+</pre></td></tr></table>
+
+<p>It will need to be converted to the following:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">csThing* thing = new csThing(world);
+world-&gt;things.Push(thing);
+csMovable&amp; move = thing-&gt;GetMovable();
+move.SetSector(sector);
+move.SetPosition(csVector3(0,0,3));
+move.SetTransform(csMatrix3());
+move.UpdateMove();
+...
+world-&gt;RemoveThing(thing);
+</pre></td></tr></table>
+
+<p>Given the old to operate on sprites:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">csSprite3D* sprite = new csSprite3D(world);
+world-&gt;sprites.Push(sprite);
+sprite-&gt;MoveToSector(sector);
+sprite-&gt;SetPosition(csVector3(0,0,3));
+sprite-&gt;SetTransform(csMatrix3());
+</pre></td></tr></table>
+
+<p>It will need to be transformed to:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">csSprite3D* sprite = new csSprite3D(world);
+world-&gt;sprites.Push(sprite);
+csMovable&amp; move = sprite-&gt;GetMovable();
+move.SetSector(sector);
+move.SetPosition(csVector3(0,0,3));
+move.SetTransform(csMatrix3());
+move.UpdateMove();
+</pre></td></tr></table>
+
+<p>Especially note the new call to <code>UpdateMove()</code>.
+</p>
+<a name="8"></a>
+<h3 class="subheading"> <small>API</small> Changes: csCamera </h3>
+
+<p>The function <code>SetFOV()</code> now needs an extra parameter which is the width
+of the display.  This is needed for calculating the angle of the <small>FOV</small>
+(<em>field of view</em>).  In addition, there are now new <code>SetFOVAngle()</code>
+and <code>GetFOVAngle()</code> functions.  <code>GetFOVAngle()</code> used to be in
+<code>csRenderView()</code>.
+</p>
+<a name="9"></a>
+<h3 class="subheading"> <small>API</small> Changes: csWorld </h3>
+
+<p>Here is a list of the more significant <small>API</small> changes to <samp>&lsquo;csWorld&rsquo;</samp>.
+</p>
+<ul>
+<li>
+Added <code>csWorld::FindLight(char const* name)</code>.
+
+</li><li>
+Removed <code>csWorld::NewSector()</code>.  Use <code>world-&gt;CreateCsSector()</code>
+instead.
+
+</li><li>
+Removed <code>csWorld::GetThing()</code>.  Use <code>world-&gt;things.FindByName()</code>
+instead.
+
+</li><li>
+Removed the method <code>csWorld::GetSpriteTemplate()</code>.  Instead, use this
+expression: <code>world-&gt;sprite_templates.FindByName()</code>
+
+</li><li>
+Removed the method <code>csWorld::GetThingTemplate()</code>.  Instead, use this
+expression: <code>world-&gt;thing_templates.FindByName()</code> instead.
+
+</li><li>
+Added <code>csWorld::UnlinkCollection()</code> and
+<code>csWorld::RemoveCollection()</code>.
+
+</li><li>
+Added <code>csWorld::GetBeginDrawFlags()</code>.  This is a very important function
+that you <em>must</em> invoke when calling <code>iGraphics3D::BeginDraw()</code> in
+your application just before you give control to the engine for drawing.
+</li></ul>
+
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Release-Notes-18.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Licenses.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Licenses.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.7 Virtual File System (VFS)</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.7 Virtual File System (VFS)">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.7 Virtual File System (VFS)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="VFS"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Threading.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="VFS-Details.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h2 class="section"> 4.7 Virtual File System (<small>VFS</small>) </h2>
+
+
+<p><em>Written by Andrew Zabolotny, <a href="mailto:bit@eltech.ru">bit@eltech.ru</a>.</em>
+</p>
+<p>Since many even basic concepts in file systems on different operating systems
+often differ, you often should take care to use the right path separators on
+the right platform, search on different &ldquo;drives&rdquo;, &ldquo;mounts&rdquo; and so on for
+required files.  This library achieves the goal of making the file system
+appear &ldquo;the same&rdquo; on various operating systems, and adds many bonus
+features such as archive support and overlaid directories.
+</p>
+<p>Each &ldquo;directory&rdquo; on the <small>VFS</small> <em>virtual volume</em> is mapped to some
+<em>real-world</em> directory or <small>ZIP</small> archive. Additionally, you can make
+one &ldquo;virtual directory&rdquo; map to several real-world directories (and/or
+<small>ZIP</small> files) at one time, thus covering such cases as having files either
+on compact disc (<small>CD</small>) or hard disk (depending upon the user's choice),
+distributing data file updates (thus overriding some files on write-only
+media) and so on.
+</p>
+<p>The Virtual File System is driven by a configuration file.
+See section <a href="VFS-Configuration-File.html#0">Configuration File (<tt>&lsquo;vfs.cfg&rsquo;</tt>)</a>.
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top"><a href="VFS-Details.html#0">4.7.1 Details</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="VFS-Configuration-File.html#0">4.7.2 Configuration File (<tt>&lsquo;vfs.cfg&rsquo;</tt>)</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+</table>
+
+<hr size="1">
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

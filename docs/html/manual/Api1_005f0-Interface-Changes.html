@@ -1,0 +1,286 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: C.5.12 Interface Changes</title>
+
+<meta name="description" content="Crystal Space 2.1.0: C.5.12 Interface Changes">
+<meta name="keywords" content="Crystal Space 2.1.0: C.5.12 Interface Changes">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Api1_005f0-Interface-Changes"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Api1_005f0-vfs-Changes.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Api1_005f0-Random-Number-Generator-Changes.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Release-Notes-1_005f0.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Licenses.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> C.5.12 Interface Changes </h3>
+
+<a name="1"></a>
+<h4 class="subsubheading"> <samp>&lsquo;iDocument&rsquo;</samp> Changes </h4>
+
+<p>The <code>iDocument::Parse()</code> method now accepts an optional argument
+indicating whether or not extraneous whitespace in <samp>&lsquo;CS_NODE_TEXT&rsquo;</samp> nodes
+should be condensed.  Most implementations of <samp>&lsquo;iDocument&rsquo;</samp> will attempt to
+respect this option if possible.  For implementations where it does not make
+sense, the option will be ignored.
+</p>
+<p>Previously, <small>XML</small>-based implementations of the <samp>&lsquo;iDocument&rsquo;</samp> interface
+condensed whitespace in <samp>&lsquo;CS_NODE_TEXT&rsquo;</samp> nodes at <code>Parse()</code> time.  This
+is no longer the case.  Whitespace is now preserved by default.  If the new
+behavior is unsuitable for your case, use the new argument to
+<code>iDocument::Parse()</code> to indicate that whitespace should be condensed.
+This change was made in order to conform to the latest <small>XML</small> specification
+which states that <small>XML</small> scanners must preserve whitespace by default.
+Consult the following documents for more information regarding this issue.
+</p>
+
+<p><a href="http://www.w3.org/TR/REC-xml/#sec-white-space">http://www.w3.org/TR/REC-xml/#sec-white-space</a><br>
+<a href="http://www.xml.com/axml/notes/AllWSAlways.html">http://www.xml.com/axml/notes/AllWSAlways.html</a>
+</p>
+<a name="2"></a>
+<h4 class="subsubheading"> Mesh Factory Changes </h4>
+
+<p>The mesh factory interfaces (<samp>&lsquo;iGeneralFactoryState&rsquo;</samp>,
+<samp>&lsquo;iHazeFactoryState&rsquo;</samp>, <samp>&lsquo;iInstancingFactoryState&rsquo;</samp>,
+<samp>&lsquo;iLightningFactoryState&rsquo;</samp>, <samp>&lsquo;iSprite2DFactoryState&rsquo;</samp>,
+<samp>&lsquo;iThingFactoryState&rsquo;</samp> and <samp>&lsquo;iSprite3DFactoryState&rsquo;</samp> no longer have the 
+following methods. Use the methods with same name from 
+<samp>&lsquo;iMeshObjectFactory&rsquo;</samp> instead:
+</p>
+<ul>
+<li>
+<code>SetMaterialWrapper()</code>
+</li><li>
+<code>GetMaterialWrapper()</code>
+</li><li>
+<code>SetMixMode()</code>
+</li><li>
+<code>GetMixMode()</code>
+</li></ul>
+
+<a name="3"></a>
+<h4 class="subsubheading"> <samp>&lsquo;iGeneralMeshState&rsquo;</samp>, <samp>&lsquo;iRainState&rsquo;</samp>, <samp>&lsquo;iInstancingMeshState&rsquo;</samp> Changes </h4>
+
+<p>From <samp>&lsquo;iGeneralMeshState&rsquo;</samp>, <samp>&lsquo;iInstancingMeshState&rsquo;</samp>, 
+<samp>&lsquo;iRainState&rsquo;</samp> and <samp>&lsquo;iParticle&rsquo;</samp> the following methods have been 
+removed. Use the methods with the same name from <samp>&lsquo;iMeshObject&rsquo;</samp> instead.
+</p>
+<ul>
+<li>
+<code>SetColor()</code>
+</li><li>
+<code>GetColor()</code>
+</li><li>
+<code>SetMaterialWrapper()</code>
+</li><li>
+<code>GetMaterialWrapper()</code>
+</li><li>
+<code>SetMixMode()</code>
+</li><li>
+<code>GetMixMode()</code>
+</li><li>
+<code>GetRenderMeshes()</code>
+</li></ul>
+
+<a name="4"></a>
+<h4 class="subsubheading"> <samp>&lsquo;iImage&rsquo;</samp> Changes </h4>
+
+<p>The <samp>&lsquo;iImage&rsquo;</samp> interface has been reduced to a level where it merely serves
+as a container for pixel data; however, the image editing functionality was
+only relocated, not removed.
+</p>
+<p>Forbidding direct manipulation of an <samp>&lsquo;iImage&rsquo;</samp>'s pixel data has the 
+following consequences:
+</p>
+<ul>
+<li>
+The <code>Clone()</code> function was removed. The
+<samp>&lsquo;csImageMemory&rsquo;</samp> class provides a constructor that copies the pixel data
+from another <samp>&lsquo;iImage&rsquo;</samp> object, providing a functionality equal to 
+<code>Clone()</code>.
+
+</li><li>
+To edit the pixel data of an image, create a clone of an image (e.g. a
+<samp>&lsquo;csImageMemory&rsquo;</samp> as mentioned above) and manipulate the data in the newly
+cerated instance.
+
+</li><li>
+If the image data is needed in another
+format, as the <code>SetFormat()</code> call has been removed from the interface.
+
+</li><li>
+The image editing functionality found in methods such as <code>Rescale()</code>,
+<code>Sharpen()</code> was moved into the <samp>&lsquo;csImageManipulate&rsquo;</samp> class.
+
+</li><li>
+The <code>CopyXXX()</code> method that copied an image into another are now provided
+by <samp>&lsquo;csImageMemory&rsquo;</samp>.
+</li></ul>
+
+<p>As a side-effect of these changes, the <samp>&lsquo;csImageFile&rsquo;</samp> and 
+<samp>&lsquo;csImageMemory&rsquo;</samp> were merged and the former removed.
+</p>
+<a name="5"></a>
+<h4 class="subsubheading"> <code>iImageIO::Load()</code> Parameter Change </h4>
+
+<p><code>iImageIO::Load()</code> now requires the image source data in an 
+<samp>&lsquo;iDataBuffer&rsquo;</samp> object, instead of separate <samp>&lsquo;buffer&rsquo;</samp> and <samp>&lsquo;size&rsquo;</samp>
+parameters.
+</p>
+<a name="6"></a>
+<h4 class="subsubheading"> <samp>&lsquo;iLight&rsquo;</samp> Changes </h4>
+
+<p>The <samp>&lsquo;iLight&rsquo;</samp> and its implementation (<samp>&lsquo;csLight&rsquo;</samp>) have been extended to
+also handle spot- and directional-lights. Note that the accual computation of
+lighting does not yet support these, however the engine can now store and
+handle the required data.
+</p>
+<p>There have also been two smaller changes to the interface to make it more
+coherent. The influence radius have been renamed <em>cut-off</em> distance, and
+thus the methods <code>GetInfluenceRadius()</code> and <code>SetInfluenceRadius()</code>
+have been renamed accordingly to <code>GetCutoffDistance()</code> and
+<code>SetCutoffDistance()</code>, respectively.  Also, <code>SetAttenuation()</code> has
+been renamed to <code>SetAttenuationMode()</code> in order to avoid confusion with
+other similary named methods.  For the <code>CS_ATTN_LINEAR</code> attenuation type
+the specification has changed slightly. As a default, the distance where light
+goes out is same as the cut-off distance, but this can be changed by altering
+the first attenuation constant. See comments in
+<tt>&lsquo;CS/include/iengine/light.h&rsquo;</tt> for exact details of the different
+attenuation modes.
+</p>
+<a name="7"></a>
+<h4 class="subsubheading"> <samp>&lsquo;iParticleState&rsquo;</samp> Changes </h4>
+
+<p>From <samp>&lsquo;iParticleState&rsquo;</samp>, the following methods have been removed.
+Use the methods with the same name from <samp>&lsquo;iMeshObject&rsquo;</samp> instead.
+</p>
+<ul>
+<li>
+<code>SetColor()</code>
+</li><li>
+<code>GetColor()</code>
+</li><li>
+<code>SetMaterialWrapper()</code>
+</li><li>
+<code>GetMaterialWrapper()</code>
+</li></ul>
+
+<a name="8"></a>
+<h4 class="subsubheading"> <samp>&lsquo;iMaterialList&rsquo;</samp> Change </h4>
+
+<p>The function <code>iMaterialList::NewMaterial()</code> now needs an additional
+name parameter. It is not recommended to change the name later.
+</p>
+<a name="9"></a>
+<h4 class="subsubheading"> <samp>&lsquo;iObjectModel&rsquo;</samp> Change </h4>
+
+<p>The function <samp>&lsquo;iObjectModel::GetObjectBoundingBox()&rsquo;</samp> only has one
+parameter now. The optional <samp>&lsquo;type&rsquo;</samp> parameter has been removed as it
+was not implemented anywhere. In addition to that the constants
+<code>CS_BBOX_NORMAL</code>, <code>CS_BBOX_ACCURATE</code>, and <code>CS_BBOX_MAX</code>
+are also removed.
+</p>
+<a name="10"></a>
+<h4 class="subsubheading"> <samp>&lsquo;iSprite3DState&rsquo;</samp> Changes </h4>
+
+<p>Some methods from <samp>&lsquo;iSprite3DState&rsquo;</samp> have been removed that basically 
+provided functionality which was also already available through 
+<samp>&lsquo;iMeshObject&rsquo;</samp>:
+</p>
+<ul>
+<li>
+<code>SetBaseColor()</code>. Use <code>SetColor()</code> from <samp>&lsquo;iMeshObject&rsquo;</samp>.
+</li><li>
+<code>GetBaseColor()</code>. Use <code>GetColor()</code> from <samp>&lsquo;iMeshObject&rsquo;</samp>.
+</li></ul>
+
+<p>Likewise, the <code>GetFactory()</code> method has been removed from 
+<samp>&lsquo;iThingState&rsquo;</samp>. Equivalent functionality can be achieved by using
+<code>GetFactory()</code> from <samp>&lsquo;iMeshObject&rsquo;</samp> and querying the returned object
+for the <samp>&lsquo;iThingFactoryState&rsquo;</samp> interface. Example:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">  csRef&lt;iThingFactoryState&gt; thing_fact_state =
+  	scfQueryInterface&lt;iThingFactoryState&gt; (mesh-&gt;GetMeshObject ()
+	-&gt;GetFactory ());
+</pre></td></tr></table>
+<a name="11"></a>
+<h4 class="subsubheading"> <code>iTextureManager::FreeImages()</code> Removal </h4>
+
+<p><code>iTextureManager::FreeImages()</code> has been removed.  It was used to release
+the <samp>&lsquo;iImage&rsquo;</samp> objects associated with textures with the purpose of freeing
+up memory.  This happens automatically now; the images associated with a
+texture are released by the renderer as soon as the image data is converted
+into the internal texture format (that is, uploaded to the graphics hardware).
+</p>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Api1_005f0-vfs-Changes.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Api1_005f0-Random-Number-Generator-Changes.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Release-Notes-1_005f0.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Licenses.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 6.1.1.1 Contents</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 6.1.1.1 Contents">
+<meta name="keywords" content="Crystal Space 2.1.0: 6.1.1.1 Contents">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="MacOS_002fX-Contents"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="MacOS_002fX-Details.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="MacOS_002fX-Run_002dLoop.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Internals.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="MacOS_002fX-Details.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Contributing.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h4 class="subsubsection"> 6.1.1.1 Contents </h4>
+
+<p>The root components of the MacOS/X port of Crystal Space are contained within
+these directories:
+</p>
+<ul>
+<li> <code>CS/libs/csutil/macosx</code>
+</li><li> <code>CS/plugins/sound/driver/coreaudio</code>
+</li><li> <code>CS/plugins/video/canvas/macosx/common</code>
+</li><li> <code>CS/plugins/video/canvas/macosx/opengl</code>
+</li></ul>
+
+<p>Functionally, this port is comprised of two types of platform-specific modules:
+</p>
+<ul>
+<li>
+The core components which provide low-level platform-specific functionality to
+the Crystal Space engine.  These files and resources are located in
+<tt>&lsquo;CS/libs/csutil/macosx&rsquo;</tt>.
+
+</li><li>
+The platform-specific audio and video driver modules.  The files and resources
+comprising audio and video plugins reside in the appropriate subdirectories of
+<tt>&lsquo;CS/plugins&rsquo;</tt>, as indicated above.
+</li></ul>
+
+<p>The core components provide low-level, platform-specific functionality which
+Crystal Space requires.  This includes interfaces to the underlying operating
+system as well as higher-level event-loop processing as provided by Cocoa's
+<samp>&lsquo;NSApplication&rsquo;</samp> class.  The files comprising this module are:
+</p>
+<dl compact="compact">
+<dt> <code>OSXAssistant.h</code></dt>
+<dd><p>Two files share this name.  The first file resides in
+<tt>&lsquo;CS/include/csutil/macosx&rsquo;</tt> and declares the abstract <samp>&lsquo;iOSXAssistant&rsquo;</samp>
+interface.  This interface declares methods which may be useful to canvases, as
+well as methods which are used by the Objective-C application delegate.  The
+second file resides in <tt>&lsquo;CS/libs/csutil/macosx&rsquo;</tt> and declares
+<samp>&lsquo;OSXAssistant&rsquo;</samp> which is a concrete subclass implementing the
+<samp>&lsquo;iOSXAssistant&rsquo;</samp> interface.
+</p>
+</dd>
+<dt> <code>OSXAssistant.cpp</code></dt>
+<dd><p>Concrete implementation of the <samp>&lsquo;iOSXAssistant&rsquo;</samp> interface.
+</p>
+</dd>
+<dt> <code>OSXDelegate.m</code></dt>
+<dt> <code>OSXDelegate.h</code></dt>
+<dd><p>Implements an Objective-C application delegate.  It is responsible for handling
+application-wide Cocoa events and provides convenience facilities for event
+interpretation on behalf of plugin modules such as 2D drivers which are the
+focus of keyboard and mouse events.
+</p>
+</dd>
+<dt> <code>OSXLoadLibrary.m</code></dt>
+<dt> <code>OSXLoadLibrary.h</code></dt>
+<dd><p>Functions which provide dynamic linking facilities of plugin modules.
+</p>
+</dd>
+<dt> <code>OSXDynamicLibrary.cpp</code></dt>
+<dd><p>A thin C++ wrapper over the Objective-C plugin loading facilities.  The
+interface between the C++ and Objective-C facilities is implemented via a
+pure-C bridge, thus allowing Crystal Space's C++ Shared Class Facility
+(see section <a href="SCF.html#0">Shared Class Facility (<small>SCF</small>)</a>) to successfully load plugin modules via the Objective-C dynamic
+linking facility.
+</p>
+</dd>
+<dt> <code>OSXMenu.m</code></dt>
+<dt> <code>OSXMenu.h</code></dt>
+<dd><p>A utility which generates the application's main menu from information
+contained in a configuration file (<tt>&lsquo;CS/data/macosx.cfg&rsquo;</tt>).
+</p>
+</dd>
+<dt> <code>OSXConfigFile.cpp</code></dt>
+<dt> <code>OSXConfigFile.h</code></dt>
+<dd><p>A thin pure-C wrapper over Crystal Space's C++ configuration file class.  This
+wrapper allows the Objective-C <tt>&lsquo;OSXMenu&rsquo;</tt> implementation to utilize the
+C++ configuration class.
+</p>
+</dd>
+<dt> <code>OSXTime.cpp</code></dt>
+<dd><p>Platform-specific implementation of <code>csGetTicks()</code> and <code>csSleep()</code>.
+</p>
+</dd>
+<dt> <code>OSXUsername.m</code></dt>
+<dd><p>Platform-specific functionality for retrieving the username of the logged-in
+user.
+</p>
+</dd>
+<dt> <code>OSXGetUsername.cpp</code></dt>
+<dt> <code>OSXGetUsername.h</code></dt>
+<dd><p>Implementation of Crystal Space's <code>csGetUsername()</code> function.  This is a
+C++ cover over the functionality provided by <tt>&lsquo;OSXUsername.m&rsquo;</tt>.
+</p>
+</dd>
+<dt> <code>OSXInstPath.m</code></dt>
+<dd><p>Platform-specific functionality for retrieving and interpreting the
+configuration option <samp>&lsquo;CrystalSpaceRoot&rsquo;</samp>.
+</p>
+</dd>
+<dt> <code>OSXInstallPath.cpp</code></dt>
+<dt> <code>OSXInstallPath.h</code></dt>
+<dd><p>Implementation of Crystal Space's <code>csGetInstallPath()</code> function.  This is
+a C++ cover over <tt>&lsquo;OSXInstPath.m&rsquo;</tt>, and also provides additional
+functionality (such as checking the <samp>&lsquo;CRYSTAL&rsquo;</samp> environment variable).
+</p>
+</dd>
+<dt> <code>csosdefs.h</code></dt>
+<dd><p>Platform-specific definition of operating system services which allows Crystal
+Space to access such services in a uniform manner from platform to platform.
+Located in <tt>&lsquo;CS/include/csutil/macosx&rsquo;</tt>.
+</p>
+</dd>
+<dt> <code>macosx.cfg</code></dt>
+<dd><p>A configuration file which defines platform-specific settings such as the menu
+layout appropriate for the application.  This file is actually located in the
+<tt>&lsquo;CS/data/config&rsquo;</tt> directory which is typically mounted at the virtual
+location <tt>&lsquo;/config/&rsquo;</tt> (see section <a href="VFS.html#0">Virtual File System (<small>VFS</small>)</a>).
+</p></dd>
+</dl>
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="MacOS_002fX-Details.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="MacOS_002fX-Run_002dLoop.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Internals.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="MacOS_002fX-Details.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Contributing.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

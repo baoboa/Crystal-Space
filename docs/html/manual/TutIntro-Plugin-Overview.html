@@ -1,0 +1,191 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.1.2 Plugin Overview</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.1.2 Plugin Overview">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.1.2 Plugin Overview">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="TutIntro-Plugin-Overview"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="TutIntro-Plugins-and-Modules.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="TutIntro-Basic-Concepts.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="The-Basics.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 4.1.2 Plugin Overview </h3>
+
+<p>This section presents a quick overview of the plug-ins provided by Crystal
+Space. More detailed descriptions of these facilities may be found in later
+sections.
+</p>
+<ul>
+<li>
+<em>VFS</em> (Virtual File System)
+
+<p><small>VFS</small> serves as the basic module for file access for all parts of Crystal
+Space.  It allows one to map &ldquo;virtual&rdquo; directories to &ldquo;real&rdquo; ones; to map
+several real directories together as a single virtual directory; and to treat
+<tt>&lsquo;.zip&rsquo;</tt> files like subdirectories.  See section <a href="VFS.html#0">Virtual File System (<small>VFS</small>)</a>.
+</p>
+</li><li>
+<em>Graphics Drivers</em>
+
+<p>The graphics modules provide &ldquo;low-level&rdquo; graphics output. This includes
+drawing pixels, lines and text, but also drawing polygons and polygon meshes
+to support hardware acceleration. See section <a href="3D-Renderer.html#0">The Rendering System</a>. The graphics
+drivers themselves uses a &ldquo;canvas&rdquo; plugin specific to the operating
+system and/or the graphics driver in order to open a window or setup the
+graphics base system.
+</p>
+</li><li>
+<em>Sound Drivers</em>
+
+<p>The sound modules allow you to load and play sound effects and music. 3d
+effects are supported, as well as different ways to the same sound file.
+See section <a href="Sound-Drivers.html#0">Sound Plugins</a>.
+</p>
+</li><li>
+<em>3D Engine</em>
+
+<p>This is the core of Crystal Space. It is the main driving force behind
+CS. See section <a href="Engine.html#0">The 3D Engine</a>.
+</p>
+</li><li>
+<em>Mesh Objects</em>
+
+<p>Mesh objects are 3D objects that can be used and displayed by the engine.
+Examples are 3D sprites, 2D sprites, particle systems, terrain mesh, ....
+This functionality used to be in the engine but has been removed from the
+engine for greater flexibility. See section <a href="MeshObject.html#0">Mesh Object Plug-In System</a>.
+</p>
+</li><li>
+<em>Map Loader</em>
+
+<p>This plug-in provides map loading capabilities for your game. In addition
+it also contains functions to load mesh objects, textures, and sounds.
+See section <a href="Map-Loader.html#0">Loading Maps and Models</a>.
+</p>
+</li><li>
+<em>Image Loaders</em>
+
+<p>In many cases you don't have to use these plugins directly as they
+are used automatically by the Map Loader. However in some cases you
+might want to access the image loaders in your own application. These
+plugins are responsible for loading various types of images (GIF,
+PNG, JPG, ...).
+</p>
+</li><li>
+<em>Collision Detection</em>
+
+<p>There is currently one collision plug-in using <small>OPCODE</small>.
+Collision is based on testing for intersection of two objects.
+</p>
+</li><li>
+<em>Console Output</em> and <em>Console Input</em>
+
+<p>These plug-in modules can be used for console-like text input and output,
+similar to the console in Quake.
+</p>
+</li><li>
+<em>Scripting</em>
+
+<p>The scripting plug-in modules allow support for Python, Java, and Perl.
+</p>
+</li><li>
+<em>Font Server</em>
+
+<p>The font server can be used to display different fonts in your application.
+</p>
+</li><li>
+<em>Reporter</em>
+
+<p>The reporter plugin is used by all plugins in Crystal Space to report
+about errors, warnings, and other notification messages. A game or
+application can also use the reporter to report messages. You can set up
+a listener to listen to messages that arrive on the reporter or you can
+use the standard reporter listener plugin below.
+</p>
+</li><li>
+<em>Standard Reporter Listener</em>
+
+<p>This plugin listens to messages that arrive at the reporter and
+displays them in some manner. It is the easiest way to handle
+messages from the reporter. You can control what should happen with
+each type of message and to what output device it should go (i.e. things
+like output console, standard output, and so on).
+</p>
+</li></ul>
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="TutIntro-Plugins-and-Modules.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="TutIntro-Basic-Concepts.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="The-Basics.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

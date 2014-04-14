@@ -1,0 +1,7 @@
+SubDir TOP data lodtest ;
+
+{
+local files = shield [ Wildcard kwartz* lod* *.jpg ] ;
+InstallData $(files) : data lodtest ;
+FileListEntriesData $(files) : lodtest : data-demo ;
+}

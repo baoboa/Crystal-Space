@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.9.8.5 Visibility Culling</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.9.8.5 Visibility Culling">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.9.8.5 Visibility Culling">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="VIS-visibility-culling"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="VIS-sector-structure.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="VIS-view-frustum-culling.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Visibility-Culling.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h4 class="subsubsection"> 4.9.8.5 Visibility Culling </h4>
+
+<p>Ok, here it comes. Given the above structure with sectors and entities
+we can define how we want to calculate optimal (or near optimal) visibility.
+</p>
+<p>When speaking about culling we are mainly speaking about three
+types of geometry:
+</p>
+<ul>
+<li>
+<em>World Geometry</em>
+
+<p>World geometry is the basic geometry that makes up the world.
+In general world geometry are big polygons that define large boundaries
+in some world or level. They usually represent walls, floors, and
+ceilings.
+</p>
+</li><li>
+<em>Detail Objects</em>
+
+<p>Detail objects are entities which are too detailed (i.e. too
+many small polygons or triangles) to be included in the processor
+intensive visibility calculations. So we mark them as detail and
+we process them on a higher level for visibility (mostly by treating
+their bounding box instead of the object itself). Curved surfaces,
+sprites, and some genmeshes are all detail objects.
+</p>
+</li><li>
+<em>Culling Objects</em>
+
+<p>Culling objects are invisible objects. Their only purpose is to cull
+geometry. So they are in fact the reverse of detail objects. In general
+culling objects should be large and have few polygons. These polygons
+will be included in visibility testing. You can add a culling object
+inside a detail object. The detail object will not participate in culling
+objects behind it (it will itself be culled by its bounding box however)
+but the culling object inside will take care of culling what is hidden
+by the detail object. Culling objects are only useful for detail objects
+that are sufficiently large and in sectors where there is a sufficient
+number of other entities (i.e. objects or portals) to be culled.
+A question here is whether or not it is possible (easy) to generate culling
+objects automatically from detail objects.
+</p></li></ul>
+
+<hr size="1">
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

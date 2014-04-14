@@ -1,0 +1,15 @@
+SubDir TOP apps tutorial ;
+
+SubInclude TOP apps tutorial avatartest ;
+SubInclude TOP apps tutorial mazing ;
+SubInclude TOP apps tutorial pathtut ;
+SubInclude TOP apps tutorial phystut ;
+SubInclude TOP apps tutorial phystut2 ;
+SubInclude TOP apps tutorial pysimp ;
+SubInclude TOP apps tutorial shadertut ;
+SubInclude TOP apps tutorial simpcd ;
+SubInclude TOP apps tutorial simpcd2 ;
+SubInclude TOP apps tutorial simple1 ;
+SubInclude TOP apps tutorial simple2 ;
+SubInclude TOP apps tutorial simplept ;
+SubInclude TOP apps tutorial simpmap ;

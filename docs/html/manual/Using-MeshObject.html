@@ -1,0 +1,293 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.10.2 Using Mesh Objects</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.10.2 Using Mesh Objects">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.10.2 Using Mesh Objects">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Using-MeshObject"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="MeshObject-Concepts.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Writing-MeshObjects.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="MeshObject.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 4.10.2 Using Mesh Objects </h3>
+
+<p><em>Written by Jorrit Tyberghein,
+<a href="mailto:jorrit.tyberghein@gmail.com">jorrit.tyberghein@gmail.com</a>.</em>
+</p>
+<p>This section explains how to use Mesh Objects in general.  It doesn't go into
+detail about the specific Mesh Object Types that Crystal Space supports.
+</p>
+<a name="1"></a>
+<h4 class="subsubheading"> General </h4>
+
+<p>When the engine works with instances of Mesh Objects it does so through the
+<samp>&lsquo;iMeshWrapper&rsquo;</samp> interface.  <samp>&lsquo;iMeshWrapper&rsquo;</samp> holds the reference to the
+<samp>&lsquo;iMeshObject&rsquo;</samp> instances implementing the particular type of Mesh Object.
+<samp>&lsquo;iMeshWrapper&rsquo;</samp> is responsible for deciding when to draw a Mesh Object and
+when to light it.  <samp>&lsquo;iMeshWrapper&rsquo;</samp> also manages the position of the object
+in the world and manages possible hierarchical transformations (i.e.
+<samp>&lsquo;iMeshWrapper&rsquo;</samp> has an array of <samp>&lsquo;iMeshWrapper&rsquo;</samp> children).
+</p>
+<a name="2"></a>
+<h4 class="subsubheading"> Loading From Map File </h4>
+
+<p>The easiest way to use Mesh Objects is to simply specify them in the map file
+for your level.  There are two things that you need to do for that.  First you
+have to specify an entry at top-level (directly inside the <samp>&lsquo;world&rsquo;</samp>
+statement) like this (this example uses the <em>fountain</em> plug-in to make a
+fountain):
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">&lt;meshfact name=&quot;particlesFactory&quot;&gt;
+  &lt;plugin&gt;crystalspace.mesh.loader.factory.particles&lt;/plugin&gt;
+  &lt;params /&gt;
+&lt;/meshfact&gt;
+</pre></td></tr></table>
+<p>This will use the <em>mesh object loader</em> plug-in which is identified by the
+<small>SCF</small> name mentioned by the <samp>&lsquo;plugin&rsquo;</samp> statement to load a factory
+(type <samp>&lsquo;iMeshObjectFactory&rsquo;</samp>) and register it with the engine.  There are no
+parameters for the fountain's Mesh Object Factory so that's why the
+<samp>&lsquo;params&rsquo;</samp> block is empty.  But you still have to specify it.  Other mesh
+object factories may accept parameters.
+</p>
+<p>With particle systems you have the option of specifying the parameters
+in the factory and/or the mesh object. The advantage of specifying it in
+the factory is that it then becomes easier to reuse the factory for
+different particle system instances. In this example however, we define
+the particle system in the mesh object. We still need the empty mesh
+factory however.
+</p>
+<p>To place a fountain in some room (sector) you use a <samp>&lsquo;meshobj&rsquo;</samp>
+statement, within the definition of a room or sector, like this:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">&lt;meshobj name=&quot;fountain&quot;&gt;
+  &lt;plugin&gt;crystalspace.mesh.loader.particles&lt;/plugin&gt;
+  &lt;params&gt;
+    &lt;factory&gt;particlesFactory&lt;/factory&gt;
+    &lt;material&gt;spark&lt;/material&gt;
+    &lt;particlesize x=&quot;0.025&quot; y=&quot;0.025&quot; /&gt;
+    &lt;transformmode&gt;local&lt;/transformmode&gt;
+    &lt;mixmode&gt;
+      &lt;add /&gt;
+    &lt;/mixmode&gt;
+
+    &lt;emitter type=&quot;cone&quot;&gt;
+      &lt;enabled/&gt;
+      &lt;initialttl min=&quot;3&quot; max=&quot;3&quot; /&gt;
+      &lt;emissionrate&gt;100&lt;/emissionrate&gt;
+      &lt;position x=&quot;0&quot; y=&quot;0&quot; z=&quot;0&quot; /&gt;
+      &lt;placement&gt;center&lt;/placement&gt;
+      &lt;extent x=&quot;0&quot; y=&quot;1&quot; z=&quot;0&quot; /&gt;
+      &lt;coneangle&gt;0.2&lt;/coneangle&gt;
+      &lt;initialvelocity x=&quot;0&quot; y=&quot;1&quot; z=&quot;0&quot; /&gt;
+    &lt;/emitter&gt;
+    &lt;effector type=&quot;force&quot;&gt;
+      &lt;acceleration x=&quot;0&quot; y=&quot;-0.1&quot; z=&quot;0&quot; /&gt;
+    &lt;/effector&gt;
+  &lt;/params&gt;
+  &lt;ztest /&gt;
+  &lt;priority&gt;alpha&lt;/priority&gt;
+  &lt;move&gt;
+    &lt;v x=&quot;-10&quot; y=&quot;-1&quot; z=&quot;14&quot;/&gt;
+    &lt;matrix&gt;
+      &lt;rot x=&quot;1.5&quot;/&gt;
+    &lt;/matrix&gt;
+  &lt;/move&gt;
+&lt;/meshobj&gt;
+</pre></td></tr></table>
+<p>This code fragment uses the <samp>&lsquo;crystalspace.mesh.loader.particles&rsquo;</samp> loader
+plug-in named to load a Mesh Object (type
+<samp>&lsquo;iMeshObject&rsquo;</samp>) and register it with the engine (while placing it in the
+current sector).  In this case there are many parameters.  The first parameter
+should always be the name of the factory.  This is true for all Mesh Objects
+regardless of their type.  For a complete list of parameters available, you
+should refer to the fountain documentation.
+</p>
+<p>The <samp>&lsquo;move&rsquo;</samp> statement is outside of the <samp>&lsquo;params&rsquo;</samp> block.  The reason
+for this is that the position of Mesh Objects is controlled by the engine and
+not by the Mesh Object itself.
+</p>
+<p>In addition to the above statements you can also nest other <samp>&lsquo;meshobj&rsquo;</samp>
+statements to create a hierarchy of Mesh Objects (not shown in the example
+above).  If you do that, then the <samp>&lsquo;move&rsquo;</samp> statement must be interpreted
+relative to the parent.
+</p>
+<p>When you have Mesh Objects loaded into Crystal Space using the map file syntax
+illustrated above, then you can query the parameters from your application by
+using the standard <small>API</small> in the <samp>&lsquo;iEngine&rsquo;</samp> interface.
+</p>
+<a name="3"></a>
+<h4 class="subsubheading"> Using Directly From Code </h4>
+
+<p>You can also create Mesh Objects directly from your application. The engine
+has a few convenience functions you can use for that
+(<code>iEngine::CreateMeshwrapper()</code> and <code>iEngine::CreateMeshFactory()</code>).
+But here we show you the full way to create meshes from code:
+</p>
+<ul>
+<li>
+Load the Mesh Object Type with <code>csLoadPlugin</code> (preferably after
+checking if it is already loaded, by calling <code>csQueryPluginClass</code>).
+
+</li><li>
+Create at least one Mesh Object Factory by calling <code>NewFactory()</code> on the
+Mesh Object Type instance.
+
+</li><li>
+If the factory has parameters you can call <code>scfQueryInterface</code> to get a
+handle to the <samp>&lsquo;iSomethingFactoryState&rsquo;</samp> interface (replace <em>Something</em>
+with whatever the type name of the Mesh Object is).  Then you set the
+parameters you want on that factory.
+
+</li><li>
+Create one or more Mesh Object instances by using one of your factories and
+calling <code>NewInstance()</code> on them.
+
+</li><li>
+If the object has parameters you use <code>scfQueryInterface</code> to get a handle
+to the <samp>&lsquo;iSomethingState&rsquo;</samp> interface (replace <em>Something</em> with whatever
+the type name of the Mesh Object is).  Then set the parameters you want on the
+Mesh Object.
+
+</li><li>
+For every instance of <samp>&lsquo;iMeshObject&rsquo;</samp> you need to create a
+<samp>&lsquo;iMeshWrapper&rsquo;</samp> instance for the engine.  Then you set up the
+<samp>&lsquo;iMeshWrapper&rsquo;</samp> by placing it in the sector that you want it and setup its
+position and rotation (transformation).
+</li></ul>
+
+<p>Here is a code example for creating an instance of the genmesh plug-in.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">void Initialize ()
+{
+  ...
+  // First create the factory:
+  csRef&lt;iMeshFactoryWrapper&gt; fact = engine-&gt;CreateMeshFactory (
+    &quot;crystalspace.mesh.object.genmesh&quot;, &quot;cubeFact&quot;);
+  csRef&lt;iGeneralFactoryState&gt; factstate = scfQueryInterface&lt;iGeneralFactoryState&gt; (
+    fact-&gt;GetMeshObjectFactory ());
+
+  csEllipsoid ellips (csVector3 (0, 0, 0), csVector3 (1, 1, 1));
+  factstate-&gt;GenerateSphere (ellips, 8);
+  factstate-&gt;CalculateNormals ();
+  ...
+}
+...
+void SetupWorld ()
+{
+  ...
+  // Make a ball using the genmesh plug-in.
+  csRef&lt;iMeshWrapper&gt; ball =
+    engine-&gt;CreateMeshWrapper (fact, &quot;ball&quot;, room, csVector3 (-3, 5, -3));
+  csRef&lt;iGeneralMeshState&gt; ballstate = scfQueryInterface&lt;iGeneralMeshState&gt; (
+    ball-&gt;GetMeshObject ());
+  ballstate-&gt;SetMaterialWrapper (myMaterial);
+  ...
+}
+</pre></td></tr></table>
+<p>This example will load a ball using the plug-in and place it at (-3,5,-3) in
+<samp>&lsquo;room&rsquo;</samp>.
+</p>
+<p><code>iGeneralFactoryState</code> and <code>iGeneralMeshState</code> are the state
+interfaces for setting the characteristics of genmesh Mesh Objects.
+</p>
+<p><a name="Generic-Mesh-Creation-Code"></a>
+</p><a name="4"></a>
+<h4 class="subsubheading"> Generic Mesh Creation Code </h4>
+
+<p>In general you should use the following code to create any kind of mesh:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">  // First create the factory:
+  csRef&lt;iMeshFactoryWrapper&gt; fact = engine-&gt;CreateMeshFactory (
+	&quot;crystalspace.mesh.object.meshtype&quot;, &quot;factoryName&quot;);
+  csRef&lt;iMeshtypeFactoryState&gt; factstate = scfQueryInterface&lt;
+  	iMeshtypeFactoryState&gt; (fact-&gt;GetMeshObjectFactory ());
+  ...
+  // Then make one or more meshes:
+  csRef&lt;iMeshWrapper&gt; mesh = engine-&gt;CreateMeshWrapper (
+  	fact, &quot;meshName&quot;, sector, csVector3 (-3, 5, -3));
+  csRef&lt;iMeshtypeObjectState&gt; meshstate = scfQueryInterface&lt;
+  	iMeshtypeObjectState&gt; (mesh-&gt;GetMeshObject ());
+  ...
+</pre></td></tr></table>
+<p>Replace <samp>&lsquo;meshtype&rsquo;</samp> with the correct mesh type (like <samp>&lsquo;genmesh&rsquo;</samp>,
+<small class="dots">...</small>). Replace <code>iMeshtypeFactoryState</code> with the
+correct factory state and <code>iMeshtypeObjectState</code> with the correct
+object state.
+</p>
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="MeshObject-Concepts.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Writing-MeshObjects.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="MeshObject.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

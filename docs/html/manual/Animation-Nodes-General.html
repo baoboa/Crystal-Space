@@ -1,0 +1,184 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.15.1.1 General concepts and examples</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.15.1.1 General concepts and examples">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.15.1.1 General concepts and examples">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Animation-Nodes-General"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Animation-Blending-Trees.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Animation-Nodes.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Animation-Blending-Trees.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h4 class="subsubsection"> 4.15.1.1 General concepts and examples </h4>
+
+<p>In an animation blending tree, the combination of animations is made by creating
+a tree of animation nodes that will blend the position and orientation of each
+bone of the skeleton of the Animesh, hence the name of the method. The structure
+of the tree, i.e. the choice of animation nodes and the way they are combined,
+will affect the behavior of the animation.
+</p>
+<p>Each leaf of the blending tree is either a raw animation sequence (user-defined
+by an artist or acquired by technologies such as motion capture), or a procedural
+node, i.e. a node dynamically generating an animation. The other nodes in the
+tree are used for the combination of sub-trees in order to achieve complex
+animations and behaviors.
+</p>
+<a name="1"></a>
+<h4 class="subsubheading"> First example: a windmill </h4>
+
+<p>A windmill is extremely simple since it has a priori only a single animation: the
+wheel turning. This animation will be defined in a very simple animation sequence
+(a <code>CS::Animation::iSkeletonAnimation</code>), with e.g. two key frames.
+</p>
+<p>In order to animate the mesh of your windmill, you would create a blending tree
+containing a single animation node, a <code>CS::Animation::iSkeletonAnimationNodeFactory</code>,
+that would simply play the wheel animation. Before that, you need to configure the
+<code>CS::Animation::iSkeletonAnimationNodeFactory</code> in order to play cyclically,
+otherwise the animation will be stopped after it has been played once.
+</p>
+<p>The blending tree has a single node and looks like this:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">   CS::Animation::iSkeletonAnimationNode
+</pre></td></tr></table>
+<p>Now, say that there is more wind, and that you want to change the speed of the
+rotation of the wheel. For that, you would access the <code>CS::Animation::iSkeletonAnimationNode</code>
+in the blending tree (using e.g. <code>CS::Animation::iSkeletonAnimNode::FindNode()</code>),
+and change the animation speed with <code>CS::Animation::iSkeletonAnimNode::SetPlaybackSpeed()</code>.
+</p>
+<a name="2"></a>
+<h4 class="subsubheading"> Second example: debugging your windmill </h4>
+
+<p>Event if the first windmill example is very simple, it might just not work and
+your wheel just don't do what you want. A way to analyze a bit further what is
+going on is to use a <code>CS::Animation::iSkeletonDebugNode</code>. With this node,
+you would be able to display the structure of the skeleton of your mesh, and
+hopefully to understand your problem.
+</p>
+<p>In order to use the <samp>&lsquo;Debug&rsquo;</samp> node, you would just add it at the top of your
+blending tree, i.e. the root, with the the <code>CS::Animation::iSkeletonAnimationNode</code>
+as a child node. Now, when the animation is played, both nodes are activated,
+and you can either animate your windmill and visualize the skeleton.
+</p>
+<p>The structure of the blending tree now looks like this:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">     CS::Animation::iSkeletonDebugNode
+                      |
+                      |
+   CS::Animation::iSkeletonAnimationNode
+</pre></td></tr></table>
+<a name="3"></a>
+<h4 class="subsubheading"> Third example: dynamic behavior </h4>
+
+<p>Now, say that you have several different animations of your wheel turning at
+various speed, e.g. with the wheel starting to roll out when the speed is high.
+You may use a <code>CS::Animation::iSkeletonSpeedNode</code> that will take all these
+animations as input child nodes, and combine them in order to generate a new
+animation, whatever the rotation speed asked by the user.
+</p>
+<p>Say also, that you want to attach some pieces of tissue to the wheel, and that
+you want those pieces to ba animated through soft body physical simulation. For
+that, you would use a <code>CS::Animation::iSkeletonRagdollNode</code> in order to
+create the physical rigid bodies that will represent the wheel (you would need
+to provide the collision model of your animesh for that). Then you would create
+a Genmesh animated by the soft body controller, and attach it to the rigid bodies
+of your wheel.
+</p>
+<p>Now, the structure of the blending tree looks like this:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">                                    CS::Animation::iSkeletonDebugNode
+                                                     |
+                                                     |
+                                   CS::Animation::iSkeletonRagdollNode
+                                                     |
+                                                     |
+                                    CS::Animation::iSkeletonSpeedNode
+                                                     |
+                          ----------------------------------------------------------
+                          |                                                        |
+       CS::Animation::iSkeletonAnimationNode                    CS::Animation::iSkeletonAnimationNode
+             ('normal speed' animation)                                 ('high speed' animation)
+</pre></td></tr></table>
+<a name="4"></a>
+<h4 class="subsubheading"> Other examples </h4>
+
+<p>Other examples of setup of animations trees and general Animesh usage can be
+found in the <code>avatartest</code> application. The <code>csbias</code> demo is also another
+interesting example.
+</p>
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Animation-Blending-Trees.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Animation-Nodes.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Animation-Blending-Trees.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

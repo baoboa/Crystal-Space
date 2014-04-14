@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: C.5.18.1 Explosion</title>
+
+<meta name="description" content="Crystal Space 2.1.0: C.5.18.1 Explosion">
+<meta name="keywords" content="Crystal Space 2.1.0: C.5.18.1 Explosion">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Api1_005f0-PartConv-Explo"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Api1_005f0-Particle-system-changes.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Api1_005f0-PartConv-Rain.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Api1_005f0-Particle-system-changes.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Licenses.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h4 class="subsubsection"> C.5.18.1 Explosion </h4>
+
+<p>To convert the old explosion particle system to new particles you
+can use a sphere emitter with a very small radius and with particle
+placement in center. Set a very small duration and a high emission rate
+so that all particles will appear to be created at once. Using
+a linear color effector you can obtain the fading of the particles (use
+either alpha mixmode or add depending no the kind of fading you want).
+Here is an example of how the old explosion can be emulated using
+the new particle system (in code): Note that this is not an attempt to
+make a realistic or even nice looking explosion. It is just an attempt
+to emulate the ugly old explosion particle system from the past:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">  // Create the factory.
+  csRef&lt;iMeshFactoryWrapper&gt; mfw = engine-&gt;CreateMeshFactory (
+	&quot;crystalspace.mesh.object.particles&quot;, &quot;explosion&quot;);
+  if (!mfw) return;
+
+  // Create the mesh and setup material, mixmode, and color.
+  csRef&lt;iMeshWrapper&gt; exp = engine-&gt;CreateMeshWrapper (mfw, &quot;boing&quot;,
+	sector, center));
+  exp-&gt;SetZBufMode(CS_ZBUF_TEST);
+  exp-&gt;SetRenderPriority (engine-&gt;GetAlphaRenderPriority ());
+  exp-&gt;GetMeshObject()-&gt;SetMaterialWrapper (mat);
+  exp-&gt;GetMeshObject()-&gt;SetMixMode (CS_FX_ALPHA);
+  exp-&gt;GetMeshObject()-&gt;SetColor (csColor (1, 1, 0));
+
+  // Find/load the built-in emitter factory. From this factory we
+  // can access some of the standard built-in emitters.
+  csRef&lt;iParticleBuiltinEmitterFactory&gt; emit_factory = 
+      csLoadPluginCheck&lt;iParticleBuiltinEmitterFactory&gt; (
+        object_reg, &quot;crystalspace.mesh.object.particles.emitter&quot;, false);
+  // Find/load the built-in effector factory. From this factory we
+  // can access some of the standard built-in effectors.
+  csRef&lt;iParticleBuiltinEffectorFactory&gt; eff_factory = 
+      csLoadPluginCheck&lt;iParticleBuiltinEffectorFactory&gt; (
+        object_reg, &quot;crystalspace.mesh.object.particles.effector&quot;, false);
+
+  // Create a sphere emitter where we will have a quick burst of
+  // all the particles from the center.
+  csRef&lt;iParticleBuiltinEmitterSphere&gt; sphereemit = emit_factory-&gt;
+    CreateSphere ();
+  sphereemit-&gt;SetRadius (0.1);
+  sphereemit-&gt;SetParticlePlacement (CS_PARTICLE_BUILTIN_CENTER);
+  sphereemit-&gt;SetPosition (csVector3 (0, 0, 0));
+  sphereemit-&gt;SetInitialVelocity (csVector3 (1, 0, 0), csVector3 (3, 3, 3));
+  sphereemit-&gt;SetUniformVelocity (false);
+  sphereemit-&gt;SetDuration (0.1f);
+  sphereemit-&gt;SetEmissionRate (1000.0f);
+  sphereemit-&gt;SetInitialTTL (1.0f, 1.0f);
+
+  // Create a lincolor effector to fade out the particles.
+  csRef&lt;iParticleBuiltinEffectorLinColor&gt; lincol = eff_factory-&gt;
+    CreateLinColor ();
+  lincol-&gt;AddColor (csColor4 (1,1,1,1), 1.0f);
+  lincol-&gt;AddColor (csColor4 (1,1,1,0), 0.0f);
+
+  // Setup the real particle system and add the emitter and effector
+  // we created above.
+  csRef&lt;iParticleSystem&gt; partstate =
+  	scfQueryInterface&lt;iParticleSystem&gt; (exp-&gt;GetMeshObject ());
+  partstate-&gt;SetParticleSize (csVector2 (0.15f, 0.15f));
+  partstate-&gt;SetRotationMode (CS_PARTICLE_ROTATE_VERTICES);
+  partstate-&gt;SetIntegrationMode (CS_PARTICLE_INTEGRATE_BOTH);
+  partstate-&gt;AddEmitter (sphereemit);
+  partstate-&gt;AddEffector (lincol);
+
+  // Make sure that the particle mesh and factories are removed
+  // when all particles are gone (approx 1 second).
+  Sys-&gt;Engine-&gt;DelayedRemoveObject (1100, exp);
+  Sys-&gt;Engine-&gt;DelayedRemoveObject (1101, mfw);
+</pre></td></tr></table>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Api1_005f0-Particle-system-changes.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Api1_005f0-PartConv-Rain.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Api1_005f0-Particle-system-changes.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Licenses.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

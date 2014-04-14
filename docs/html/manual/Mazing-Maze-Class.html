@@ -1,0 +1,431 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.2.4.5 Maze Class</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.2.4.5 Maze Class">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.2.4.5 Maze Class">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Mazing-Maze-Class"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Mazing-RoomCoordinate-Class.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Mazing-Player-Class.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Tutorial-Mazing.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h4 class="subsubsection"> 4.2.4.5 Maze Class </h4>
+
+<p>The <code>Maze</code> class is responsible for managing the game world. To do that
+it keeps track of a three dimensional grid of sectors. Every sector represents
+a node in the maze (a room). Nodes are connected using portals. Here is the
+class declaration:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">class Maze
+{
+private:
+  AppMazing* app;
+  iSector* rooms[MAZE_DIMENSION][MAZE_DIMENSION][MAZE_DIMENSION];
+  csArray&lt;RoomCoordinate&gt; connections[MAZE_DIMENSION][MAZE_DIMENSION]
+  	[MAZE_DIMENSION];
+  bool occupied[MAZE_DIMENSION][MAZE_DIMENSION][MAZE_DIMENSION];
+
+public:
+  Maze (AppMazing* app);
+
+  iSector* GetSector (int x, int y, int z) const
+  {
+    return rooms[x][y][z];
+  }
+  iSector* GetSector (const RoomCoordinate&amp; rc) const
+  {
+    return rooms[rc.x][rc.y][rc.z];
+  }
+  bool CreateSector (int x, int y, int z);
+
+  const csArray&lt;RoomCoordinate&gt;&amp; GetConnections (const RoomCoordinate&amp; rc) const
+  {
+    return connections[rc.x][rc.y][rc.z];
+  }
+
+  void MakeConnection (const RoomCoordinate&amp; from, const RoomCoordinate&amp; to);
+
+  void FreeSpace (const RoomCoordinate&amp; rc);
+  void OccupySpace (const RoomCoordinate&amp; rc);
+  bool IsSpaceFree (const RoomCoordinate&amp; rc) const;
+
+  bool CreateGeometry ();
+  bool CreateWallOrPortal (iGeneralFactoryState* factory_state,
+  	const csVector3&amp; v1, const csVector3&amp; v2,
+  	const csVector3&amp; v3, const csVector3&amp; v4,
+	CS::Geometry::TextureMapper* mapper,
+	bool do_portal,
+	const RoomCoordinate&amp; source,
+	const RoomCoordinate&amp; dest);
+  bool CreateRoom (iMaterialWrapper* wall_material,
+  	int x, int y, int z,
+	char* portals);
+  bool CreateLight (const csColor&amp; color,
+  	int x, int y, int z);
+};
+</pre></td></tr></table>
+<p>The important data structures here are:
+</p>
+<ul>
+<li>
+<samp>&lsquo;rooms&rsquo;</samp>: this is a three dimensional arrays of pointers to <code>iSector</code>. Every
+sector is a node of the three dimensional maze.
+</li><li>
+<samp>&lsquo;connections&rsquo;</samp>: this is a three dimensional array of arrays of connections.
+Basically this means that for every node in the maze we keep an array (represented
+using a dynamic <code>csArray</code>) that holds coordinates of other nodes that are
+connected to this one.
+</li><li>
+<samp>&lsquo;occupied&rsquo;</samp>: to make things simple we avoid having more then one adversary
+in a single node. This three dimensional array tells us if a certain node is
+occupied or not.
+</li></ul>
+
+<p>The most important setup function in this class is <code>CreateGeometry()</code>. That
+one will do the actual creation of the maze. It is called from within the main
+applications <code>SetupGame()</code> method.
+</p>
+<p>I will show here the code of the <code>Maze</code> class in parts.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">Maze::Maze (AppMazing* app)
+{
+  Maze::app = app;
+  int x, y, z;
+  for (x = 0 ; x &lt; MAZE_DIMENSION ; x++)
+    for (y = 0 ; y &lt; MAZE_DIMENSION ; y++)
+      for (z = 0 ; z &lt; MAZE_DIMENSION ; z++)
+        occupied[x][y][z] = false;
+}
+
+void Maze::MakeConnection (const RoomCoordinate&amp; from, const RoomCoordinate&amp; to)
+{
+  CS_ASSERT (from.IsValid ());
+  CS_ASSERT (to.IsValid ());
+  connections[from.x][from.y][from.z].Push (to);
+}
+
+void Maze::FreeSpace (const RoomCoordinate&amp; rc)
+{
+  CS_ASSERT (rc.IsValid ());
+  occupied[rc.x][rc.y][rc.z] = false;
+}
+
+void Maze::OccupySpace (const RoomCoordinate&amp; rc)
+{
+  CS_ASSERT (rc.IsValid ());
+  occupied[rc.x][rc.y][rc.z] = true;
+}
+
+bool Maze::IsSpaceFree (const RoomCoordinate&amp; rc) const
+{
+  CS_ASSERT (rc.IsValid ());
+  return !occupied[rc.x][rc.y][rc.z];
+}
+</pre></td></tr></table>
+<p>First there is the constructor which simply initializes the <samp>&lsquo;occupied&rsquo;</samp>
+table so that all nodes are free. <code>MakeConnection()</code> will make a connection
+between two nodes. It is called during the creation of the world. The other
+functions are for managing the occupied space used by adversaries.
+</p>
+<p>The use of the <samp>&lsquo;CS_ASSERT&rsquo;</samp> macro is interesting. This macro will evalulate
+the expression and cause the program to abort (even print out a callstack)
+at runtime when the expression is not true. That means that you can use this to
+validate that things are as they should be. This macro only operates in debug mode.
+If your program is compiled in optimize/release mode it will do nothing. So feel
+free to use it as much as you can. It may help find bugs when the program is
+compiled in debug mode.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">bool Maze::CreateSector (int x, int y, int z)
+{
+  CS_ASSERT (RoomCoordinate::IsValid (x, y, z));
+  char sector_name[100];
+  sprintf (sector_name, &quot;room_%d_%d_%d&quot;, x, y, z);
+  rooms[x][y][z] = app-&gt;GetEngine ()-&gt;CreateSector (sector_name);
+  return rooms[x][y][z] != 0;
+}
+
+bool Maze::CreateWallOrPortal (iGeneralFactoryState* factory_state,
+  	const csVector3&amp; v1, const csVector3&amp; v2,
+  	const csVector3&amp; v3, const csVector3&amp; v4,
+	CS::Geometry::TextureMapper* mapper,
+	bool do_portal,
+	const RoomCoordinate&amp; source,
+	const RoomCoordinate&amp; dest)
+{
+  if (do_portal)
+  {
+    iPortal* portal;
+    csVector3 verts[4];
+    verts[0] = v1;
+    verts[1] = v2;
+    verts[2] = v3;
+    verts[3] = v4;
+    csRef&lt;iMeshWrapper&gt; portal_mesh = app-&gt;GetEngine ()-&gt;CreatePortal (0,
+    	GetSector (source), csVector3 (0, 0, 0),
+	GetSector (dest),
+    	verts, 4, portal);
+    MakeConnection (source, dest);
+    if (!portal_mesh)
+      return app-&gt;ReportError (&quot;Error creating portal mesh!&quot;);
+  }
+  else
+  {
+    CS::Geometry::TesselatedQuad (v1, v2, v4);
+    quad.SetLevel (5);
+    quad.SetMapper (mapper);
+    quad.Append (factory_state);
+  }
+  return true;
+}
+
+bool Maze::CreateRoom (iMaterialWrapper* wall_material,
+	int x, int y, int z, char* portals)
+{
+  iSector* room = GetSector (x, y, z);
+
+  using namespace CS::Geometry;
+  csRef&lt;iMeshFactoryWrapper&gt; walls_factory = GeneralMeshBuilder::
+    CreateFactory (app-&gt;GetEngine (), &quot;walls_factory&quot;);
+  csRef&lt;iMeshWrapper&gt; walls = GeneralMeshBuilder::CreateMesh (
+      app-&gt;GetEngine (), room, &quot;walls&quot;, walls_factory);
+  if (!walls)
+    return app-&gt;ReportError (&quot;Couldn't create the walls for the room!&quot;);
+
+  csRef&lt;iGeneralMeshState&gt; object_state = scfQueryInterface&lt;
+    iGeneralMeshState&gt; (walls-&gt;GetMeshObject ());
+  object_state-&gt;SetShadowReceiving (true);
+  walls-&gt;GetMeshObject ()-&gt;SetMaterialWrapper (wall_material);
+  csRef&lt;iGeneralFactoryState&gt; factory_state = scfQueryInterface&lt;
+    iGeneralFactoryState&gt; (walls_factory-&gt;GetMeshObjectFactory ());
+
+  DensityTextureMapper mapper (.3);
+
+  float sx = float (x) * ROOM_DIMENSION;
+  float sy = float (y) * ROOM_DIMENSION;
+  float sz = float (z) * ROOM_DIMENSION;
+  float rd = ROOM_DIMENSION / 2.0;
+  csBox3 box (
+  	csVector3 (sx-rd, sy-rd, sz-rd),
+  	csVector3 (sx+rd, sy+rd, sz+rd));
+
+  RoomCoordinate start_rc (x, y, z);
+  if (!CreateWallOrPortal (factory_state, 
+    	box.GetCorner (CS_BOX_CORNER_xYz),
+    	box.GetCorner (CS_BOX_CORNER_XYz),
+    	box.GetCorner (CS_BOX_CORNER_XYZ),
+    	box.GetCorner (CS_BOX_CORNER_xYZ),
+	&amp;mapper,
+	portals[PORTAL_UP] == '#',
+	start_rc, RoomCoordinate (x+0, y+1, z+0)))
+    return false;
+  if (!CreateWallOrPortal (factory_state,
+    	box.GetCorner (CS_BOX_CORNER_xyZ),
+    	box.GetCorner (CS_BOX_CORNER_XyZ),
+    	box.GetCorner (CS_BOX_CORNER_Xyz),
+    	box.GetCorner (CS_BOX_CORNER_xyz),
+	&amp;mapper,
+	portals[PORTAL_DOWN] == '#',
+	start_rc, RoomCoordinate (x+0, y-1, z+0)))
+    return false;
+  if (!CreateWallOrPortal (factory_state,
+    	box.GetCorner (CS_BOX_CORNER_XyZ),
+    	box.GetCorner (CS_BOX_CORNER_xyZ),
+    	box.GetCorner (CS_BOX_CORNER_xYZ),
+    	box.GetCorner (CS_BOX_CORNER_XYZ),
+	&amp;mapper,
+	portals[PORTAL_FRONT] == '#',
+	start_rc, RoomCoordinate (x+0, y+0, z+1)))
+    return false;
+  if (!CreateWallOrPortal (factory_state,
+    	box.GetCorner (CS_BOX_CORNER_xyz),
+    	box.GetCorner (CS_BOX_CORNER_Xyz),
+    	box.GetCorner (CS_BOX_CORNER_XYz),
+    	box.GetCorner (CS_BOX_CORNER_xYz),
+	&amp;mapper,
+	portals[PORTAL_BACK] == '#',
+	start_rc, RoomCoordinate (x+0, y+0, z-1)))
+    return false;
+  if (!CreateWallOrPortal (factory_state,
+    	box.GetCorner (CS_BOX_CORNER_xyZ),
+    	box.GetCorner (CS_BOX_CORNER_xyz),
+    	box.GetCorner (CS_BOX_CORNER_xYz),
+    	box.GetCorner (CS_BOX_CORNER_xYZ),
+	&amp;mapper,
+	portals[PORTAL_LEFT] == '#',
+	start_rc, RoomCoordinate (x-1, y+0, z+0)))
+    return false;
+  if (!CreateWallOrPortal (factory_state,
+    	box.GetCorner (CS_BOX_CORNER_Xyz),
+    	box.GetCorner (CS_BOX_CORNER_XyZ),
+    	box.GetCorner (CS_BOX_CORNER_XYZ),
+    	box.GetCorner (CS_BOX_CORNER_XYz),
+	&amp;mapper,
+	portals[PORTAL_RIGHT] == '#',
+	start_rc, RoomCoordinate (x+1, y+0, z+0)))
+    return false;
+
+  return true;
+}
+
+bool Maze::CreateLight (const csColor&amp; color,
+  	int x, int y, int z)
+{
+  float sx = float (x) * ROOM_DIMENSION;
+  float sy = float (y) * ROOM_DIMENSION;
+  float sz = float (z) * ROOM_DIMENSION;
+  csRef&lt;iLight&gt; light = app-&gt;GetEngine ()
+  	-&gt;CreateLight (0, csVector3 (sx, sy, sz), ROOM_DIMENSION * 1.5, color);
+  if (!light) return false;
+  GetSector (x, y, z)-&gt;GetLights ()-&gt;Add (light);
+  return true;
+}
+
+bool Maze::CreateGeometry ()
+{
+  // Load the texture we are going to use for all walls.
+  if (!app-&gt;GetLoader ()-&gt;LoadTexture (&quot;wall_texture&quot;, &quot;/lib/std/stone4.gif&quot;))
+    return app-&gt;ReportError (&quot;Error loading 'stone4' texture!&quot;);
+
+  iMaterialWrapper* wall_material = app-&gt;GetEngine ()-&gt;GetMaterialList ()
+  	-&gt;FindByName (&quot;wall_texture&quot;);
+
+  int x, y, z;
+  for (x = 0 ; x &lt; MAZE_DIMENSION ; x++)
+    for (y = 0 ; y &lt; MAZE_DIMENSION ; y++)
+      for (z = 0 ; z &lt; MAZE_DIMENSION ; z++)
+        if (!CreateSector (x, y, z))
+	  return false;
+
+  if (!CreateRoom (wall_material, 0, 0, 0, &quot;....#.&quot;)) return false;
+  if (!CreateRoom (wall_material, 0, 0, 1, &quot;....##&quot;)) return false;
+  if (!CreateRoom (wall_material, 0, 0, 2, &quot;#..#.#&quot;)) return false;
+  if (!CreateRoom (wall_material, 1, 0, 0, &quot;...##.&quot;)) return false;
+  if (!CreateRoom (wall_material, 1, 0, 1, &quot;....##&quot;)) return false;
+  if (!CreateRoom (wall_material, 1, 0, 2, &quot;..#..#&quot;)) return false;
+  if (!CreateRoom (wall_material, 2, 0, 0, &quot;#.#.#.&quot;)) return false;
+  if (!CreateRoom (wall_material, 2, 0, 1, &quot;....##&quot;)) return false;
+  if (!CreateRoom (wall_material, 2, 0, 2, &quot;.....#&quot;)) return false;
+
+  if (!CreateRoom (wall_material, 0, 1, 0, &quot;#..#..&quot;)) return false;
+  if (!CreateRoom (wall_material, 0, 1, 1, &quot;...##.&quot;)) return false;
+  if (!CreateRoom (wall_material, 0, 1, 2, &quot;.#.#.#&quot;)) return false;
+  if (!CreateRoom (wall_material, 1, 1, 0, &quot;..#.#.&quot;)) return false;
+  if (!CreateRoom (wall_material, 1, 1, 1, &quot;#.#..#&quot;)) return false;
+  if (!CreateRoom (wall_material, 1, 1, 2, &quot;..##..&quot;)) return false;
+  if (!CreateRoom (wall_material, 2, 1, 0, &quot;.#..#.&quot;)) return false;
+  if (!CreateRoom (wall_material, 2, 1, 1, &quot;....##&quot;)) return false;
+  if (!CreateRoom (wall_material, 2, 1, 2, &quot;#.#..#&quot;)) return false;
+
+  if (!CreateRoom (wall_material, 0, 2, 0, &quot;.#.#..&quot;)) return false;
+  if (!CreateRoom (wall_material, 0, 2, 1, &quot;...#..&quot;)) return false;
+  if (!CreateRoom (wall_material, 0, 2, 2, &quot;...#..&quot;)) return false;
+  if (!CreateRoom (wall_material, 1, 2, 0, &quot;..##..&quot;)) return false;
+  if (!CreateRoom (wall_material, 1, 2, 1, &quot;.###..&quot;)) return false;
+  if (!CreateRoom (wall_material, 1, 2, 2, &quot;..##..&quot;)) return false;
+  if (!CreateRoom (wall_material, 2, 2, 0, &quot;..#...&quot;)) return false;
+  if (!CreateRoom (wall_material, 2, 2, 1, &quot;..#...&quot;)) return false;
+  if (!CreateRoom (wall_material, 2, 2, 2, &quot;.##...&quot;)) return false;
+
+  if (!CreateLight (csColor (1, 0, 0), 0, 0, 0)) return false;
+  if (!CreateLight (csColor (0, 0, 1), 0, 0, 2)) return false;
+  if (!CreateLight (csColor (0, 1, 0), 1, 0, 1)) return false;
+  if (!CreateLight (csColor (1, 1, 0), 1, 1, 1)) return false;
+  if (!CreateLight (csColor (0, 1, 1), 0, 1, 1)) return false;
+  if (!CreateLight (csColor (1, 1, 1), 2, 1, 2)) return false;
+  if (!CreateLight (csColor (1, 0, 0), 1, 2, 1)) return false;
+  if (!CreateLight (csColor (0, 0, 1), 0, 2, 0)) return false;
+  if (!CreateLight (csColor (0, 1, 0), 2, 2, 0)) return false;
+
+  return true;
+}
+</pre></td></tr></table>
+<p>These functions create the actual geometry of the world. The main function
+here is <code>CreateGeometry()</code>. This function will first load the wall texture
+and then it will create all the sectors for the maze. After that it will call
+<code>CreateRoom()</code> to create one of the nodes in the maze. The final parameter
+of <code>CreateRoom()</code> is a string describing the connections to neighbour
+nodes. Finally this function will also create a few lights using the
+<code>CreateLight()</code> method.
+</p>
+<p>The <code>CreateRoom()</code> function will create one genmesh mesh (see section <a href="MeshObject-Genmesh.html#0">Genmesh Mesh Object</a>)
+for the solid walls and then it will use <code>iEngine::CreatePortal()</code> to create
+the individual portals to neighbour nodes wherever there needs to be a connection.
+This is done in the <code>CreateWallOrPortal()</code> function. This function will
+either add a wall polygon to the wall genmesh or else it will create a portal.
+</p>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Mazing-RoomCoordinate-Class.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Mazing-Player-Class.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Tutorial-Mazing.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

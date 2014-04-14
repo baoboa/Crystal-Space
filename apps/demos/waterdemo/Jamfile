@@ -1,0 +1,6 @@
+SubDir TOP apps demos waterdemo ;
+
+Description waterdemo : "water surface shader demonstration" ;
+Application waterdemo : [ Wildcard *.cpp *.h ] ;
+LinkWith waterdemo : crystalspace ;
+FileListEntryApplications waterdemo : app-demo ;

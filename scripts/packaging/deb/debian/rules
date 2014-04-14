@@ -1,0 +1,89 @@
+#!/usr/bin/make -f
+
+#
+# Crystal Space 3D - Deb based GNU Linux distribution build rules
+#
+
+export DEB_BUILD_OPTIONS := nocheck
+
+#
+# Crystal Space 3D release version number
+#
+VERSION = 2.0.0
+
+#
+# GNU Linux distribution being built for
+#
+# Options: debian (default), dfsg or custom etc.
+#
+# Note: Derived distributions should not really change this but
+#       amend the end of the version string in the 'changelog' file.
+#
+DISTRIBUTION = debian
+
+#
+# Host archicture
+#
+DEB_HOST_ARCH ?= $(shell dpkg-architecture -qDEB_HOST_ARCH)
+COMPILER_FLAGS = 
+ifeq ($(DEB_HOST_ARCH),powerpc)
+	COMPILER_FLAGS = CFLAGS='-Wa,-mregnames'
+endif
+
+%:
+	dh $@
+
+#
+# Crystal Space 3D configure arguments
+#
+override_dh_auto_configure:
+	sh configure $(COMPILER_FLAGS) --prefix=/usr --sysconfdir=/etc --enable-cpu-specific-optimizations=no --enable-shared
+
+#
+# Override auto install
+#
+override_dh_auto_install:
+	$(MAKE) DESTDIR=$(CURDIR)/debian/libcrystalspace-2.0 install_lib install_plugin
+	$(MAKE) DESTDIR=$(CURDIR)/debian/libcrystalspace-dev install_include
+	$(MAKE) DESTDIR=$(CURDIR)/debian/crystalspace install_bin
+	$(MAKE) DESTDIR=$(CURDIR)/debian/crystalspace-data install_data install_config
+	$(MAKE) DESTDIR=$(CURDIR)/debian/crystalspace-doc install_doc
+
+	# Move /usr/bin/cs-config* files to libcrystalspace-dev package
+	mkdir $(CURDIR)/debian/libcrystalspace-dev/usr/bin && \
+		mv $(CURDIR)/debian/crystalspace/usr/bin/cs-config* \
+		$(CURDIR)/debian/libcrystalspace-dev/usr/bin
+
+	# Remove useless files from crystalspace-data package
+	-rm -rf $(CURDIR)/debian/crystalspace-data/usr/share/crystalspace-*/build
+
+	# Move .dbg files from /usr/lib to libcrystalspace-dbg package
+	mkdir -p $(CURDIR)/debian/libcrystalspace-dbg/usr/lib/debug/usr/lib && \
+		mv $(CURDIR)/debian/libcrystalspace-2.0/usr/lib/*.dbg \
+		$(CURDIR)/debian/libcrystalspace-dbg/usr/lib/debug/usr/lib
+
+	# Remove .dbg files generated during build
+	rm $(CURDIR)/debian/crystalspace/usr/bin/*.dbg
+	rm $(CURDIR)/debian/libcrystalspace-2.0/usr/lib/crystalspace-2.0/*.dbg
+
+	# Fix extra-license-file lintian warnings:
+	-rm $(CURDIR)/debian/crystalspace-doc/usr/share/doc/crystalspace-*/LICENSE
+
+#
+# Override shared lib
+#
+override_dh_makeshlibs:
+	dh_makeshlibs -V 'libcrystalspace-2.0 (>= 2.0.0+${DISTRIBUTION}-1)'
+
+#
+# Get original source
+#
+get-orig-source:
+	@cd $(CURDIR); \
+	wget http://www.crystalspace3d.org/downloads/release/crystalspace-src-${VERSION}.tar.bz2; \
+	tar fjx crystalspace-src-${VERSION}.tar.bz2; \
+	rm -f crystalspace-src-${VERSION}.tar.bz2; \
+	mv crystalspace-src-${VERSION} crystalspace-${VERSION}; \
+	tar -cf ../crystalspace_${VERSION}+${DISTRIBUTION}.orig.tar crystalspace-${VERSION}; \
+	rm -rf crystalspace-${VERSION}; \
+	gzip -9fn ../crystalspace_${VERSION}+${DISTRIBUTION}.orig.tar

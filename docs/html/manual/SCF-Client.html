@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.3.1.6 Client Side</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.3.1.6 Client Side">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.3.1.6 Client Side">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="SCF-Client"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="SCF-Versions.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="SCF-Meta-Info.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="SCF.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h4 class="subsubsection"> 4.3.1.6 Client Side </h4>
+
+<p>Now let's explain how to use all this mess from client side.  First, we should
+be able to create objects that implement the interfaces we want.  For this, you
+should use the <code>scfCreateInstance()</code> macro.  It receives two arguments:
+the name of external class, and the name of the interface it implements.  So,
+if we know class <samp>&lsquo;MyGraphics3D&rsquo;</samp> implements the <samp>&lsquo;iGraphics3D&rsquo;</samp>
+interface, we can write:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">csRef&lt;iGraphics3D&gt; G3D = scfCreateInstance&lt;iGraphics3D&gt; (&quot;MyGraphics3D&quot;);
+if (!G3D)
+{
+  fprintf(stderr,
+    &quot;Failed to create an instance of iGraphics3D!\n&quot;);
+  abort();
+}
+</pre></td></tr></table>
+<p>Now you can use the object any way you like, just like standard C++:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">G3D-&gt;BeginDraw();
+G3D-&gt;DrawLine(...);
+G3D-&gt;DrawPolygon(...);
+G3D-&gt;EndDraw();
+</pre></td></tr></table>
+<p>When you are done using the <samp>&lsquo;G3D&rsquo;</samp> pointer (say, when program exits), the
+reference you own for the object should be released.  This happens
+automatically when the <code>csRef&lt;&gt;</code> goes out of scope.  If you are not using
+<code>csRef&lt;&gt;</code>, but are instead using a plain pointer, <samp>&lsquo;iGraphics3D*&rsquo;</samp>,
+then you must manually release the reference when you are done with it by
+calling <code>G3D-&gt;DecRef()</code>.  After this you can not use <samp>&lsquo;G3D&rsquo;</samp> anymore;
+you should create another instance of <samp>&lsquo;iGraphics3D&rsquo;</samp> if needed.
+</p>
+<p>To query an object to see if it implements an interface, you should use the
+<code>scfQueryInterface</code> macro. It also receives two arguments, first being
+the object you are querying for the embedded interface, and second being the
+name of the interface you desire. Example:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">csRef&lt;iHalo&gt; halo = scfQueryInterface&lt;iHalo&gt; (G3D);
+if (!halo)
+{
+  fprintf(stderr,
+    &quot;3D graphic driver doesn't support halos!\n&quot;);
+  return;
+}
+</pre></td></tr></table>
+<hr size="1">
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

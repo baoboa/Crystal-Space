@@ -1,0 +1,5 @@
+crystalspace (2.0.0+debian-1ubuntu1) lucid; urgency=low
+
+  * Initial 2.0.0 release.
+
+ -- Philip Wyett <philip.wyett@cohere-technology.co.uk>  Tue, 08 Nov 2011 21:49:31 +0100

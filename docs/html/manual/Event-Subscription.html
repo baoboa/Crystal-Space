@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.4.3 Subscription</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.4.3 Subscription">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.4.3 Subscription">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Event-Subscription"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Event-Scheduling.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Frame-phase-events.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Event-System.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 4.4.3 Subscription </h3>
+
+<p>The event scheduling system is invoked by calling the 
+<code>csEventQueue::RegisterListener()</code> or <code>csEventQueue::Subscribe()</code> 
+methods (or, if you are inheriting from <samp>&lsquo;csBaseEventHandler&rsquo;</samp>,
+<code>csBaseEventHandler::RegisterQueue()</code>).  For each of these, the arguments 
+of interest are the <samp>&lsquo;csEventID&rsquo;</samp> and <code>csEventID[]</code> parameters.  
+(Note that the <code>RegisterListener()</code> form with no <samp>&lsquo;csEventID&rsquo;</samp> argument 
+does not subscribe the listener to anything, and must be followed by a call to
+<code>Subscribe()</code> if you ever want the handler to receive any events.)  For
+each <samp>&lsquo;csEventID&rsquo;</samp> (arrays are terminated by <samp>&lsquo;CS_EVENTLIST_END&rsquo;</samp>), these
+functions will subscribe the event handler to that event name <em>as well as
+all of its children</em>.  Note, however, that it will only retrieve from the event
+handler the ordering lists (the <code>Prec()</code> and <code>Succ()</code> methods) for
+the event name to which it is <em>explicitly</em> subscribed; if you wish to have
+one set of ordering constraints for both <samp>&lsquo;crystalspace.input.keyboard&rsquo;</samp> and
+<samp>&lsquo;crystalspace.input.mouse&rsquo;</samp> but a different set for
+<samp>&lsquo;crystalspace.input.joystick&rsquo;</samp>, you <strong>should not</strong> simply subscribe to
+<samp>&lsquo;crystalspace.input&rsquo;</samp> and have the <code>Prec()</code> and <code>Succ()</code>
+functions return different values for each of <samp>&lsquo;.keyboard&rsquo;</samp>, <samp>&lsquo;.mouse&rsquo;</samp>,
+and <samp>&lsquo;.joystick&rsquo;</samp>; rather, you should subscribe to each of those three event
+names individually.  This restriction helps us avoid the introduction of
+hard-to-detect circular ordering rules.
+</p>
+<p>Also note that you should use the <code>Subscribe()</code> and <code>Unsubscribe()</code> 
+methods to add and remove events from the set of events a handler wishes to 
+receive.  You should only <code>Unsubscribe()</code> from the particular 
+events to which you have <code>Subscribe()</code>d; the behavior is undefined 
+otherwise (e.g., if you subscribe to <samp>&lsquo;crystalspace.input&rsquo;</samp> and 
+subsequently unsubscribe from <samp>&lsquo;crystalspace.input.joystick&rsquo;</samp>).
+</p>
+<hr size="1">
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

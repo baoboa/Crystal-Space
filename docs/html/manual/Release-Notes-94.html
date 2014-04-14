@@ -1,0 +1,288 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: C.8 Release Notes from 0.92 to 0.94</title>
+
+<meta name="description" content="Crystal Space 2.1.0: C.8 Release Notes from 0.92 to 0.94">
+<meta name="keywords" content="Crystal Space 2.1.0: C.8 Release Notes from 0.92 to 0.94">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Release-Notes-94"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Release-Notes-96.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Release-Notes-92.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Licenses.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h2 class="appendixsec"> C.8 Release Notes from 0.92 to 0.94 </h2>
+
+<p>This section documents the major changes between versions 0.92 and 0.94 of
+Crystal Space.
+</p>
+<a name="1"></a>
+<h3 class="subheading"> Loader and Saver Changes </h3>
+
+<p>All plugins implementing <samp>&lsquo;iLoaderPlugin&rsquo;</samp> will have to be changed
+since the material and mesh factory lists are now replaced with a
+<samp>&lsquo;iLoaderContext&rsquo;</samp> parameter.
+</p>
+<p>This change also means that <code>iTerrFuncState::LoadMaterialGroup()</code>
+now expects an <samp>&lsquo;iLoaderContext&rsquo;</samp> instead of <samp>&lsquo;iMaterialList&rsquo;</samp>.
+</p>
+<p><em>Warning</em>: This loader change means that the searching restricted
+on the current region now actually works. This means that by default
+when loading a map it will <em>only</em> find objects defined in this map.
+</p>
+<p>The <samp>&lsquo;iSaverPlugin&rsquo;</samp> interface has also changed. It now uses an
+<samp>&lsquo;iFile&rsquo;</samp> parameter instead of <samp>&lsquo;iStrVector&rsquo;</samp>.
+</p>
+<a name="2"></a>
+<h3 class="subheading"> iCamera Changes </h3>
+
+<p>Added <code>iCamera::SetFarPlane()</code> and changed <code>iCamera::GetFarPlane()</code>
+to return a pointer to the far plane. This function will return null if
+no far plane is used.
+</p>
+<p>The following constants have been renamed in order to avoid pollution of the
+global namespace:
+</p>
+<ul>
+<li>
+<code>VEC_FORWARD</code> =&gt; <code>CS_VEC_FORWARD</code>
+</li><li>
+<code>VEC_BACKWARD</code> =&gt; <code>CS_VEC_BACKWARD</code>
+</li><li>
+<code>VEC_RIGHT</code> =&gt; <code>CS_VEC_RIGHT</code>
+</li><li>
+<code>VEC_LEFT</code> =&gt; <code>CS_VEC_LEFT</code>
+</li><li>
+<code>VEC_UP</code> =&gt; <code>CS_VEC_UP</code>
+</li><li>
+<code>VEC_DOWN</code> =&gt; <code>CS_VEC_DOWN</code>
+</li><li>
+<code>VEC_ROT_RIGHT</code> =&gt; <code>CS_VEC_ROT_RIGHT</code>
+</li><li>
+<code>VEC_ROT_LEFT</code> =&gt; <code>CS_VEC_ROT_LEFT</code>
+</li><li>
+<code>VEC_TILT_RIGHT</code> =&gt; <code>CS_VEC_TILT_RIGHT</code>
+</li><li>
+<code>VEC_TILT_LEFT</code> =&gt; <code>CS_VEC_TILT_LEFT</code>
+</li><li>
+<code>VEC_TILT_UP</code> =&gt; <code>CS_VEC_TILT_UP</code>
+</li><li>
+<code>VEC_TILT_DOWN</code> =&gt; <code>CS_VEC_TILT_DOWN</code>
+</li></ul>
+
+<a name="3"></a>
+<h3 class="subheading"> Engine Changes </h3>
+
+<p>Far plane handling in the engine has changed. Polygons are no longer
+clipped exactly to the far plane but instead the polygons are rejected
+which are fully behind the far plane.
+</p>
+<p><code>iEngine::LoadMeshFactory()</code> and <code>iEngine::LoadMeshWrapper()</code>
+used to have a <samp>&lsquo;classId&rsquo;</samp> parameter. That parameter has now been removed.
+</p>
+<a name="4"></a>
+<h3 class="subheading"> Various Changes </h3>
+
+<p><code>csPlane3::ClipPolygon()</code> will now by default consider the
+polygon to be visible on the negative side of the plane
+(<code>csPlane3::Classify()</code>) as opposed to the positive side like
+it used to be. It now has a third parameter <samp>&lsquo;reversed&rsquo;</samp> which
+you can set to <code>true</code> so that it behaves again as before.
+</p>
+<a name="5"></a>
+<h3 class="subheading"> Various Constant Changes </h3>
+
+<p>The following constants have been renamed in order to avoid pollution of the
+global namespace:
+</p>
+<ul>
+<li>
+<code>BOX_CORNER_xy</code> =&gt; <code>CS_BOX_CORNER_xy</code>
+</li><li>
+<code>BOX_CORNER_xY</code> =&gt; <code>CS_BOX_CORNER_xY</code>
+</li><li>
+<code>BOX_CORNER_Xy</code> =&gt; <code>CS_BOX_CORNER_Xy</code>
+</li><li>
+<code>BOX_CORNER_XY</code> =&gt; <code>CS_BOX_CORNER_XY</code>
+</li><li>
+<code>BOX_EDGE_xy_Xy</code> =&gt; <code>CS_BOX_EDGE_xy_Xy</code>
+</li><li>
+<code>BOX_EDGE_Xy_xy</code> =&gt; <code>CS_BOX_EDGE_Xy_xy</code>
+</li><li>
+<code>BOX_EDGE_Xy_XY</code> =&gt; <code>CS_BOX_EDGE_Xy_XY</code>
+</li><li>
+<code>BOX_EDGE_XY_xy</code> =&gt; <code>CS_BOX_EDGE_XY_Xy</code>
+</li><li>
+<code>BOX_EDGE_XY_xY</code> =&gt; <code>CS_BOX_EDGE_XY_xY</code>
+</li><li>
+<code>BOX_EDGE_xY_XY</code> =&gt; <code>CS_BOX_EDGE_xY_XY</code>
+</li><li>
+<code>BOX_EDGE_xY_xy</code> =&gt; <code>CS_BOX_EDGE_xY_xy</code>
+</li><li>
+<code>BOX_EDGE_xy_XY</code> =&gt; <code>CS_BOX_EDGE_xy_xY</code>
+</li><li>
+<code>BOX_CORNER_xyz</code> =&gt; <code>CS_BOX_CORNER_xyz</code>
+</li><li>
+<code>BOX_CORNER_xyZ</code> =&gt; <code>CS_BOX_CORNER_xyZ</code>
+</li><li>
+<code>BOX_CORNER_xYz</code> =&gt; <code>CS_BOX_CORNER_xYz</code>
+</li><li>
+<code>BOX_CORNER_xYZ</code> =&gt; <code>CS_BOX_CORNER_xYZ</code>
+</li><li>
+<code>BOX_CORNER_Xyz</code> =&gt; <code>CS_BOX_CORNER_Xyz</code>
+</li><li>
+<code>BOX_CORNER_XyZ</code> =&gt; <code>CS_BOX_CORNER_XyZ</code>
+</li><li>
+<code>BOX_CORNER_XYz</code> =&gt; <code>CS_BOX_CORNER_XYz</code>
+</li><li>
+<code>BOX_CORNER_XYZ</code> =&gt; <code>CS_BOX_CORNER_XYZ</code>
+</li><li>
+<code>BOX_SIDE_x</code> =&gt; <code>CS_BOX_SIDE_x</code>
+</li><li>
+<code>BOX_SIDE_X</code> =&gt; <code>CS_BOX_SIDE_X</code>
+</li><li>
+<code>BOX_SIDE_y</code> =&gt; <code>CS_BOX_SIDE_y</code>
+</li><li>
+<code>BOX_SIDE_Y</code> =&gt; <code>CS_BOX_SIDE_Y</code>
+</li><li>
+<code>BOX_SIDE_z</code> =&gt; <code>CS_BOX_SIDE_z</code>
+</li><li>
+<code>BOX_SIDE_Z</code> =&gt; <code>CS_BOX_SIDE_Z</code>
+</li><li>
+<code>BOX_INSIDE</code> =&gt; <code>CS_BOX_INSIDE</code>
+</li><li>
+<code>BOX_EDGE_Xyz_xyz</code> =&gt; <code>CS_BOX_EDGE_Xyz_xyz</code>
+</li><li>
+<code>BOX_EDGE_xyz_Xyz</code> =&gt; <code>CS_BOX_EDGE_xyz_Xyz</code>
+</li><li>
+<code>BOX_EDGE_xyz_xYz</code> =&gt; <code>CS_BOX_EDGE_xyz_xYz</code>
+</li><li>
+<code>BOX_EDGE_xYz_xyz</code> =&gt; <code>CS_BOX_EDGE_xYz_xyz</code>
+</li><li>
+<code>BOX_EDGE_xYz_XYz</code> =&gt; <code>CS_BOX_EDGE_xYz_XYz</code>
+</li><li>
+<code>BOX_EDGE_XYz_xYz</code> =&gt; <code>CS_BOX_EDGE_XYz_xYz</code>
+</li><li>
+<code>BOX_EDGE_XYz_Xyz</code> =&gt; <code>CS_BOX_EDGE_XYz_Xyz</code>
+</li><li>
+<code>BOX_EDGE_Xyz_XYz</code> =&gt; <code>CS_BOX_EDGE_Xyz_XYz</code>
+</li><li>
+<code>BOX_EDGE_Xyz_XyZ</code> =&gt; <code>CS_BOX_EDGE_Xyz_XyZ</code>
+</li><li>
+<code>BOX_EDGE_XyZ_Xyz</code> =&gt; <code>CS_BOX_EDGE_XyZ_Xyz</code>
+</li><li>
+<code>BOX_EDGE_XyZ_XYZ</code> =&gt; <code>CS_BOX_EDGE_XyZ_XYZ</code>
+</li><li>
+<code>BOX_EDGE_XYZ_XyZ</code> =&gt; <code>CS_BOX_EDGE_XYZ_XyZ</code>
+</li><li>
+<code>BOX_EDGE_XYZ_XYz</code> =&gt; <code>CS_BOX_EDGE_XYZ_XYz</code>
+</li><li>
+<code>BOX_EDGE_XYz_XYZ</code> =&gt; <code>CS_BOX_EDGE_XYz_XYZ</code>
+</li><li>
+<code>BOX_EDGE_XYZ_xYZ</code> =&gt; <code>CS_BOX_EDGE_XYZ_xYZ</code>
+</li><li>
+<code>BOX_EDGE_xYZ_XYZ</code> =&gt; <code>CS_BOX_EDGE_xYZ_XYZ</code>
+</li><li>
+<code>BOX_EDGE_xYZ_xYz</code> =&gt; <code>CS_BOX_EDGE_xYZ_xYz</code>
+</li><li>
+<code>BOX_EDGE_xYz_xYZ</code> =&gt; <code>CS_BOX_EDGE_xYz_xYZ</code>
+</li><li>
+<code>BOX_EDGE_xYZ_xyZ</code> =&gt; <code>CS_BOX_EDGE_xYZ_xyZ</code>
+</li><li>
+<code>BOX_EDGE_xyZ_xYZ</code> =&gt; <code>CS_BOX_EDGE_xyZ_xYZ</code>
+</li><li>
+<code>BOX_EDGE_xyZ_xyz</code> =&gt; <code>CS_BOX_EDGE_xyZ_xyz</code>
+</li><li>
+<code>BOX_EDGE_xyz_xyZ</code> =&gt; <code>CS_BOX_EDGE_xyz_xyZ</code>
+</li><li>
+<code>BOX_EDGE_xyZ_XyZ</code> =&gt; <code>CS_BOX_EDGE_xyZ_XyZ</code>
+</li><li>
+<code>BOX_EDGE_XyZ_xyZ</code> =&gt; <code>CS_BOX_EDGE_XyZ_xyZ</code>
+</li><li>
+<code>POL_FRONT</code> =&gt; <code>CS_POL_FRONT</code>
+</li><li>
+<code>POL_BACK</code> =&gt; <code>CS_POL_BACK</code>
+</li><li>
+<code>POL_SAME_PLANE</code> =&gt; <code>CS_POL_SAME_PLANE</code>
+</li><li>
+<code>POL_SPLIT_NEEDED</code> =&gt; <code>CS_POL_SPLIT_NEEDED</code>
+</li><li>
+<code>DECLARE_TYPED_QUEUE</code> =&gt; <code>CS_DECLARE_TYPED_QUEUE</code>
+</li><li>
+<code>DECLARE_TYPED_QUEUE_BASE</code> =&gt; <code>CS_DECLARE_TYPED_QUEUE_BASE</code>
+</li></ul>
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Release-Notes-96.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Release-Notes-92.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Licenses.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

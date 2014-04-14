@@ -1,0 +1,219 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 2.2 Requirements</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 2.2 Requirements">
+<meta name="keywords" content="Crystal Space 2.1.0: 2.2 Requirements">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Requirements"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Directory-Hierarchy.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="External-Libraries.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Building.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Building.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Running-The-Demos.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h2 class="section"> 2.2 Requirements </h2>
+
+<p>To utilize Crystal Space you need at least the following resources.
+</p>
+<p><strong>Hardware</strong>: To fully utilize the 3D engine a 3D-accelerated graphics
+card is highly recommended. The minimum recommended processor on the
+x86 architecture is one of the i586 family (Pentium).
+</p>
+<p><strong>Operating System</strong>: You will need to be running a supported Operating
+System.  Currently Crystal Space supports: Windows (32 and 64 bit), Unix
+(<small>GNU</small>/Linux, FreeBSD, etc.), and MacOS/X.
+</p>
+<p><strong>Development Environment</strong>: You may build Crystal Space yourself, or you
+may download a pre-built <small>SDK</small> package.  If you are using the <small>SVN</small>
+version of Crystal Space, then you will need to build it yourself.  To do so
+you will need a supported C++ compiler such as the <small>GNU</small> Compiler Collection
+(<small>GCC</small> - versions known to work well are 3.4 and above, with the exception
+of versions 4.0.0 and 4.0.1 which produce buggy code for Crystal Space) or 
+Microsoft Visual C++, version 8.0 (aka .net 2005) and above (versions 6 to
+7.1 are not supported).  If you plan to use the scripting
+capabilities of Crystal Space you will also need an interpreter for each
+scripting language you use.
+</p>
+<p><strong>Crystal Space Package</strong>: The latest release of Crystal Space can be
+downloaded from:
+</p>
+
+<p><a href="http://www.crystalspace3d.org/main/Download">http://www.crystalspace3d.org/main/Download</a>
+</p>
+<p>The release includes all of the source code, some pre-generated documentation,
+and a few example data files.  Alternately, you can download the latest
+<small>SVN</small> snapshot, which is often a great improvement over the latest release,
+and often as, or more, stable.
+</p>
+
+<p><a href="http://www.crystalspace3d.org/cvs-snapshots/">http://www.crystalspace3d.org/cvs-snapshots/</a>
+</p>
+<p>You can also checkout the source directly from the <small>SVN</small> repository.
+Directions for doing this can be found here:
+</p>
+
+<p><a href="http://www.crystalspace3d.org/main/Subversion">http://www.crystalspace3d.org/main/Subversion</a>
+</p>
+<p><strong>External Dependencies</strong>: Crystal Space can use a number of optional
+libraries and tools to provide a more robust set of features.  A brief list of
+the most important dependencies is presented here.  See section <a href="External-Libraries.html#0">External Libraries</a>.
+</p>
+<dl compact="compact">
+<dt> Z Library</dt>
+<dd><p>zlib is used for compression and archiving.
+</p>
+
+<p><a href="http://www.gzip.org/zlib/">http://www.gzip.org/zlib/</a>
+</p>
+</dd>
+<dt> <small>PNG</small> Library</dt>
+<dd><p>libpng is used for loading Portable Network Graphics image files.
+</p>
+
+<p><a href="http://www.libpng.org/pub/png/libpng.html">http://www.libpng.org/pub/png/libpng.html</a>
+</p>
+</dd>
+<dt> <small>JPEG</small> Library</dt>
+<dd><p>libjpeg is used for loading <em>Joint Photographics Experts Group</em> image
+files.
+</p>
+
+<p><a href="http://www.ijg.org/files/">http://www.ijg.org/files/</a>
+</p>
+</dd>
+<dt> X Window System</dt>
+<dd><p>This is needed to enable graphical output on a number of Unix-like operating 
+systems, most prominently <small>GNU</small>/Linux. It is <em>not</em> needed for Windows
+or MacOS/X.
+</p>
+</dd>
+<dt> OpenGL</dt>
+<dd><p>OpenGL is needed to provide accelerated 3D graphics <em>on all platforms</em>.
+</p>
+<p>Note that no special effort is usually needed to install the development 
+components on Windows or MacOS/X.
+</p>
+</dd>
+<dt> Jam</dt>
+<dd><p><a name="GettingJam"></a>
+Jam is a <tt>&lsquo;make&rsquo;</tt> replacement with a much more intuitive and expressive file
+format.  Internally, the Crystal Space build system is predicated upon Jam,
+however Crystal Space also features a <tt>&lsquo;make&rsquo;</tt> <em>emulation</em> layer which
+allows you to build and install the project using <tt>&lsquo;make&rsquo;</tt>, so there is no
+strict need to download or install Jam.  If, however, you plan to work on the
+Crystal Space build system or create your own external project based upon Jam,
+then you can download it from this location:
+</p>
+
+<p><a href="ftp://ftp.perforce.com/jam/">ftp://ftp.perforce.com/jam/</a>
+</p>
+
+<p>Jam documentation can be found at the Jam home page; see <tt>&lsquo;Jam.html&rsquo;</tt>,
+<tt>&lsquo;Jambase.html&rsquo;</tt>, and <tt>&lsquo;Jamfile.html&rsquo;</tt>.
+</p>
+
+<p><a href="http://www.perforce.com/jam/jam.html">http://www.perforce.com/jam/jam.html</a>
+</p>
+<p>Jam is included pre-built in the <tt>&lsquo;cs-winlibs&rsquo;</tt> convenience package
+(see section <a href="cs_002dwinlibs.html#0">The &ldquo;cs-winlibs&rdquo; Packages</a>), so Mingw and Cygwin users who use that package get Jam
+for free.  Other users will want to build it from source code.  For such users,
+once Jam has been downloaded, follow these simple steps to build and install
+it.  These instructions illustrate Jam 2.5, which is current as of this
+writing.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">unzip jam-2.5.zip
+cd jam-2.5
+make
+./jam0 install
+</pre></td></tr></table>
+<p>If you are a Unix user, then you will probably need to have administrator
+privilege to install the executable since it will be installed as
+<tt>&lsquo;/usr/local/bin/jam&rsquo;</tt>.  To gain administrator privilege, you can use the
+<samp>&lsquo;sudo&rsquo;</samp> command:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">sudo ./jam0 install
+</pre></td></tr></table>
+<p>If you want to install Jam at a location other than the default, then set the
+<samp>&lsquo;BINDIR&rsquo;</samp> variable to the directory in which you want it installed (this
+example shows it being installed in the user's private <tt>&lsquo;$HOME/bin&rsquo;</tt>
+directory):
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">./jam0 -sBINDIR=$HOME/bin install
+</pre></td></tr></table>
+</dd>
+</dl>
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Directory-Hierarchy.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="External-Libraries.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Building.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Building.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Running-The-Demos.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

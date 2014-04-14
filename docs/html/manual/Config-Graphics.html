@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.5.4.2 Graphics Configuration</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.5.4.2 Graphics Configuration">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.5.4.2 Graphics Configuration">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Config-Graphics"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Config-System.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Config-Engine.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Specific-Options.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h4 class="subsubsection"> 4.5.4.2 Graphics Configuration </h4>
+
+<p>This section describes the configuration keys used by the graphics drivers.
+Note that most drivers also accept some additional options that are not
+listed here. These options are specific to single drivers. You can have a
+look at the config files for these drivers to find out which options exist.
+</p>
+<dl compact="compact">
+<dt> <code>Video.ScreenWidth = &lt;width&gt;</code></dt>
+<dd><p>The default width of the display. What the real default is is system
+dependent but often it is 320. The width and height can also be set with
+the <code>-mode</code> commandline option.
+</p>
+</dd>
+<dt> <code>Video.ScreenHeight = &lt;height&gt;</code></dt>
+<dd><p>The default height of the display. What the real default is is system
+dependent but often it is 200. The width and height can also be set with
+the <code>-mode</code> commandline option.
+</p>
+</dd>
+<dt> <code>Video.ScreenDepth = &lt;depth&gt;</code></dt>
+<dd><p>This option is for all ports of Crystal Space where it is possible to control
+the depth of the display from within Crystal Space itself Use 15, or 16 here.
+Note that 15 is not supported by the Windows version.  Note also that the
+Windows version ignores the given depth if it is running in windowed mode.
+Finally, note that there is also an equivalent commandline option -depth.
+</p>
+<p>Special note for the X11 version: normally the X11 version will also
+ignore the <code>-depth</code> commandline option as it will open a window to
+match the given depth of the display. However if you give a negative depth
+it will simulate the given depth as well as possible. This is useful for
+debugging purposes.
+</p>
+</dd>
+<dt> <code>Video.FullScreen = &lt;yes/no&gt;</code></dt>
+<dd><p>This option is available with some drivers.  It is used to set the Crystal
+Space window to fullscreen.
+</p>
+</dd>
+<dt> <code>Video.WindowX = &lt;windowx&gt;</code></dt>
+<dd><p>Window X position relative to bottom-left corner (percentage of total screen
+size).  Only available with some drivers.
+</p>
+</dd>
+<dt> <code>Video.WindowY = &lt;windowy&gt;</code></dt>
+<dd><p>Window Y position relative to bottom-left corner (percentage of total screen
+size).  Only available with some drivers.
+</p>
+</dd>
+<dt> <code>Video.WindowW = &lt;width&gt;</code></dt>
+<dd><p>Absolute window size (without frame and titlebar).  Only available with some
+drivers.
+</p>
+</dd>
+<dt> <code>Video.WindowH = &lt;height&gt;</code></dt>
+<dd><p>Absolute window size (without frame and titlebar).  Only available with some
+drivers.
+</p></dd>
+</dl>
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Config-System.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Config-Engine.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Specific-Options.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

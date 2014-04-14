@@ -1,0 +1,248 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.9.14.2 Using the Volumetric Shadows Render Manager</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.9.14.2 Using the Volumetric Shadows Render Manager">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.9.14.2 Using the Volumetric Shadows Render Manager">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Using-Volumetric"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="About-Volumetric.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="MeshObject.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Volumetric-Shadows.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h4 class="subsubsection"> 4.9.14.2 Using the Volumetric Shadows Render Manager </h4>
+
+<a name="1"></a>
+<h4 class="subsubheading"> Considerations when using Volumetric Shadows </h4>
+
+<p>Although the volumetric shadows render manger can cope with opaque objects as 
+well, it is important to take into account the following, before choosing to 
+use this render manager for your current scene: 
+</p>
+<ul>
+<li> Because this render manager uses 3 render passes before rendering the 
+final scene it’s slower than the Parallel Split Shadow Maps render manager, 
+which only uses 1 such initial render pass. That is why the volumetric shadow
+render manager should only be used when translucent objects are present in the 
+scene and their shadowing effect needs to be more accurate than the one produced 
+by the Parallel Split Shadow Maps method.
+
+</li><li> At the moment only foliage (grass or trees) and hair are supported by this
+render manager. Volumetric transparent objects, like clouds and smoke, are not 
+yet supported because there is no Volumetric Render Manager in Crystal Space. 
+This Volumetric Render Manager would be responsible for rendering clouds and 
+smoke and the volumetric shadows render manager would be called afterward, 
+without needing any major modifications from the current version. 
+
+</li><li> The only type of mesh currently supported is <code>‘genmesh’</code>. Although 
+this is the most generic type of mesh used in Crystal Space, support for 
+materials from other types of meshes has to be added as well.
+
+</li><li>	At the moment only one light is supported. Support for multiple lights 
+could be added by using a 3D texture, because every light generates a maximum of
+up to 10 textures.
+</li></ul>
+
+<a name="2"></a>
+<h4 class="subsubheading"> The three render passes </h4>
+
+<ul>
+<li>	The first render pass gives depth information about the closest geometry 
+while rendering from the light’s perspective. This is done by using a standard 
+shadow mapping technique on a RGBA texture with 32-bit float channels.
+
+</li><li> The second render pass also gives depth information, but about the 
+furthest geometry from the light’s position. This is achieved by swapping the 
+<code>farplane</code> and the <code>nearplane</code> values while computing the viewing 
+frustum and then applying the standard shadow mapping technique.  
+
+</li><li> The third render pass uses MRTs (multiple render targets) in order to 
+produce between 1 and 8 textures. Each of these textures contains 4 opacity maps
+by storing them on each 32-bit channel available. The opacity maps store the 
+objects’ density at different locations using additive alpha blending.
+
+</li></ul>
+
+<a name="3"></a>
+<h4 class="subsubheading"> Selecting the Volumetric Shadows Render Manager </h4>
+
+<p>The simplest method to select the volumetric shadows render manager is to use 
+the following configuration option:
+</p><table><tr><td>&nbsp;</td><td><pre class="example">Engine.RenderManager.Default = crystalspace.rendermanager.osm
+</pre></td></tr></table>
+<p>Alternately, the volumetric shadows render manager can also be loaded manually 
+as follows:
+</p><table><tr><td>&nbsp;</td><td><pre class="example">csRef&lt;iRenderManager&gt; rm = csLoadPlugin&lt;iRenderManager&gt; (objectRegistry,
+  &quot;crystalspace.rendermanager.osm&quot;);
+</pre></td></tr></table>
+<p><em>Note</em>: When loading the volumetric shadows render manager manually the
+'CS/data/config/engine.cfg' configuration file will not, by default, be present
+in the configuration manager. This file specifies configuration options used by
+the volumetric shadows render manager. Be sure to define these configurations 
+option prior to loading the volumetric shadows render manager. This ca be done
+by:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">csRef&lt;iConfigManager&gt; cfg = 
+  csQueryRegistry&lt;iConfigManager&gt; (GetObjectRegistry());
+cfg-&gt;AddDomain 
+  (&quot;/config/engine.cfg&quot;, vfs, iConfigManager::ConfigPriorityPlugin);
+</pre></td></tr></table>
+<p>After being loaded, the engine must be instructed to use the volumetric shadows 
+render manager as follows:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">engine-&gt;SetRenderManager (rm);
+</pre></td></tr></table>
+<a name="4"></a>
+<h4 class="subsubheading"> Configuration options </h4>
+
+<p>The configuration options available for the volumetric shadow render manager via
+the 'CS/data/config/engine.cfg' file are:
+</p>
+<dl compact="compact">
+<dt> <code>RenderManager.OSM.ShadowMapResolution</code></dt>
+<dd><p>Choosing the texture resolution (defaults to <code>512</code>). This value is 
+used for both the opacity maps and the shadow maps needed by the 3 render 
+passes.
+</p>
+</dd>
+<dt> <code>RenderManager.OSM.ForceTextureNumber</code></dt>
+<dd><p>Choosing the desired number of textures for opacity maps, with values from 
+1 to 8 (defaults to <code>2</code>). The number of textures actually used could be 
+smaller than the desired one, because it is chosen as the minimum of the number 
+of available MRTs (multiple render targets) on the current GPU and the desired 
+number of textures. A bigger value for this variable produces better renderings, 
+but at a higher computational cost, so a compromise between performance and 
+visuals has to be done for the current scene by choosing a value for this 
+variable.
+</p>
+</dd>
+<dt> <code>RenderManager.OSM.Layers</code></dt>
+<dd><p>Setting the default Render Layers file. This should always be equal to <code>‘/data/renderlayers/lighting_default_osm.xml’</code>.
+</p>
+</dd>
+</dl>
+
+<a name="5"></a>
+<h4 class="subsubheading"> Recomputing the splitting ratio </h4>
+
+<p>The volumetric shadow render manager uses the Bounding Opacity Maps algorithm 
+(see section <a href="About-Volumetric.html#0">About Volumetric Shadows</a>) in order to achieve accurate volumetric shadows at 
+real-time performance. The advantage of this method is that it distributes the 
+opacity maps so that they follow the light’s distribution from the real-world. 
+In order to do this it uses a hybrid split function that sets a ratio
+between logarithmic and linear splitting. Determining the splitting ratio 
+represents the current bottleneck of this render manager, because it involves 
+using the CPU to do image processing on textures readback from the GPU. 
+Fortunately the splitting ratio only needs to be recomputed when the objects’ 
+density changes or new objects are brought into the light’s perspective. 
+For more information regarding how to recompute the splitting ratio see the 
+next section.
+</p>
+<a name="6"></a>
+<h4 class="subsubheading"> Debug Commands </h4>
+
+<p>The volumetric shadows render manager implements the <code>iDebugHelper</code> 
+interface and responds to the following debug commands:
+</p>
+<dl compact="compact">
+<dt> <code>reset_split_ratio</code></dt>
+<dd><p>Begins recomputing the splitting ratio. This causes the application to have only
+interactive and not real-time performance and should be called only when 
+necessarily. Refer to the above section for more information. 
+</p>
+</dd>
+<dt> <code>show_render_textures</code></dt>
+<dd><p>Toggles a display of the textures generated by the 3 render passes at the bottom
+of the screen. The first two textures correspond to the depth textures, the one
+that gives information about the furthest geometry is first and the one that 
+gives information about the closest points comes second. The rest of the 
+textures are opacity textures in a number depending on the available MRTs and 
+the desired number of textures. 
+</p>
+</dd>
+<dt> <code>show_opaque_objects</code></dt>
+<dd><p>Makes the volumetric shadow render manager work with opaque objects as well.
+</p>
+</dd>
+<dt> <code>hide_opaque_objects</code></dt>
+<dd><p>Makes the volumetric shadow render manager work only with translucent objects,
+which have the <code>alpha</code> rendering priority in Crystal Space.
+</p>
+</dd>
+</dl>
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="About-Volumetric.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="MeshObject.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Volumetric-Shadows.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

@@ -1,0 +1,33 @@
+@c -*-texinfo-*-
+@node cs-winlibs, MSVC7, Debian, Platform Instructions
+@subsection The ``cs-winlibs'' Packages
+@cindex Windows, Building
+
+Rather than having to manually install the
+@ref{External Libraries, external libraries needed for Crystal Space}, Microsoft
+Visual C++ 8/9/10, MinGW/MSYS, and Cygwin users can download a single package which
+contains all common headers, pre-built library files, and dynamic link 
+libraries in pre-compiled form, all in versions known to work with this
+particular release of Crystal Space.
+
+You can obtain it from the following location:
+
+@subheading 32-bit version
+@noindent
+@ifnottex
+@uref{http://www.crystalspace3d.org/downloads/cs-winlibs/cs-win32libs-2.1_002.exe}
+@end ifnottex
+@iftex
+@code{http://www.crystalspace3d.org/downloads/cs-winlibs/}@*
+@code{cs-win32libs-2.1_002.exe}
+@end iftex
+
+@subheading 64-bit version
+@noindent
+@ifnottex
+@uref{http://www.crystalspace3d.org/downloads/cs-winlibs/cs-winlibs-x64-2.1_002.exe}
+@end ifnottex
+@iftex
+@code{http://www.crystalspace3d.org/downloads/cs-winlibs/}@*
+@code{cs-winlibs-x64-2.1_002.exe}
+@end iftex

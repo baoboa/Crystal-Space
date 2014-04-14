@@ -1,0 +1,16 @@
+@c -*-texinfo-*-
+@node COLLADA, md32spr Tutorial, 3DSMax, Working with Engine Content
+@section Import from the COLLADA file format
+@cindex Generic import of models
+
+COLLADA is an open standard for the representation of 3D meshes. It is supported by the Khronos group
+which is also responsible of the OpenGL and OpenCL standards.
+
+COLLADA can be used to define 3D meshes, with their materials, skeletal and vertex animations, and
+physical properties of the objects, along with the scenes, lights and cameras.
+
+A COLLADA plugin exists for Crystal Space, along with the @file{collada2cs} application, and allowing
+to convert meshes from the COLLADA to the Crystal Space file formats.
+
+This plugin is however currently still limited, and can only load static meshes. To import animated
+meshes, or for a more generic way to deal with this file format, please see the @ref{Assimp importer}.

@@ -1,0 +1,4 @@
+SubDir TOP data hairtest ;
+
+InstallData [ Wildcard frankie* fur* krystal* *.layout *.xml ] : data hairtest ;
+FileListEntriesData [ Wildcard frankie* fur* krystal* *.layout *.xml ] : hairtest : data-demo ;

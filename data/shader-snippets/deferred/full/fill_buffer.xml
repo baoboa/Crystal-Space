@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Copyright (C) 2012 by Matthieu Kraus
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Library General Public
+  License as published by the Free Software Foundation; either
+  version 2 of the License, or (at your option) any later version.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  Library General Public License for more details.
+
+  You should have received a copy of the GNU Library General Public
+  License along with this library; if not, write to the Free
+  Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+-->
+<snippet type="compound">
+  <technique priority="100">
+    <snippet id="fill_gbuffer">
+      <technique priority="100">
+        <combiner name="cg" plugin="crystalspace.graphics3d.shader.combiner.glcg" />
+        <combiner name="glsl" plugin="crystalspace.graphics3d.shader.combiner.glsl" />
+
+        <input file="/shader-snippets/texCoord.inp" condition='vars."tex glow".texture' />
+
+        <input name="normal" type="normal_camera" defval="0,0,1" />
+        <input name="shininess" type="float" default="value" defval="32" />
+        <input name="surfaceDiffuse" type="rgba" default="value" defval="0,0,0,0" />
+        <input name="surfaceSpecular" type="rgb" default="value" defval="0,0,0" />
+        <input name="staticDiffuse" type="rgb" default="value" defval="0,0,0" />
+        <input name="staticSpecular" type="rgb" default="value" defval="0,0,0" />
+
+        <input name="texGlow" type="tex2d" default="complex" condition='vars."tex glow".texture'>
+          <block location="cg:pass">
+            <texture name="tex glow" destination="fragmentIn.texGlow" />
+          </block>
+      
+          <block location="glsl:pass">
+            <texture name="tex glow" destination="in_texGlow" />
+          </block>
+      
+          <block location="cg:fragmentIn">
+	    <uniform type="tex2d" name="texGlow" />
+          </block>
+      
+          <block location="glsl:inputs">
+            <uniform type="tex2d" name="in_texGlow" />
+          </block>
+
+          <block location="cg:fragmentMain">
+            texGlow = fragmentIn.texGlow;
+          </block>
+
+          <block location="glsl:fragmentMain">
+            #sampler_assign texGlow in_texGlow
+          </block>
+        </input>
+
+        <output name="outputNormal" type="rgba" />
+        <output name="outputDiffuse" type="rgba" />
+        <output name="outputSpecular" type="rgba" />
+        <output name="outputAmbient" type="rgba" />
+        <output name="outputStaticSpec" type="rgba" />
+
+        <block location="cg:fragmentMain">
+          normal = (normalize(normal) + 1.0) * 0.5;
+
+          <?if vars."tex glow".texture ?>
+            float3 glow = tex2D(texGlow, texCoord);
+          <?else?>
+            float3 glow = float3(0.0);
+          <?endif?>
+
+          outputNormal     = float4(normal, shininess);
+          outputDiffuse    = surfaceDiffuse;
+          outputSpecular   = float4(surfaceSpecular, glow.r);
+          outputAmbient    = float4(staticDiffuse,   glow.g);
+          outputStaticSpec = float4(staticSpecular,  glow.b);
+        </block>
+        <block location="glsl:fragmentMain">
+          normal = (normalize (normal) + 1.0) * 0.5;
+
+          <?if vars."tex glow".texture ?>
+            vec3 glow = texture2D(texGlow, texCoord);
+          <?else?>
+            vec3 glow = vec3(0.0);
+          <?endif?>
+
+          outputNormal     = vec4(normal, shininess);
+          outputDiffuse    = surfaceDiffuse;
+          outputSpecular   = vec4(surfaceSpecular, glow.r);
+          outputAmbient    = vec4(staticDiffuse,   glow.g);
+          outputStaticSpec = vec4(staticSpecular,  glow.b);
+        </block>
+      </technique>
+    </snippet>
+
+    <output snippet="fill_gbuffer" name="outputNormal"     to="color0" />
+    <output snippet="fill_gbuffer" name="outputDiffuse"    to="color1" />
+    <output snippet="fill_gbuffer" name="outputSpecular"   to="color2" />
+    <output snippet="fill_gbuffer" name="outputAmbient"    to="color3" />
+    <output snippet="fill_gbuffer" name="outputStaticSpec" to="color4" />
+  </technique>
+</snippet>

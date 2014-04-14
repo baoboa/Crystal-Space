@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.6 Basic Libraries</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.6 Basic Libraries">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.6 Basic Libraries">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Libraries"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Config-Mouse.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="csGeom.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h2 class="section"> 4.6 Basic Libraries </h2>
+
+<p>This chapter describes the features of the libraries which are linked into
+typical Crystal Space applications and plugins. For convenience, all of these
+libraries are contained in the primary <tt>&lsquo;crystalspace&rsquo;</tt> library, so it is
+not strictly necessary to distinguish them for actual usage, however, for
+developers working on Crystal Space itself, it is helpful to understand how
+these libraries are broken down and the relationship between them.
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top"><a href="csGeom.html#0">4.6.1 Geometry Library (<code>csGeom</code>)</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="csUtil.html#0">4.6.2 Utility Library (<code>csUtil</code>)</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+</table>
+
+<p>This section presents a quick overview of the libraries provided by Crystal
+Space. More detailed descriptions of these libraries may be found in later
+sections.
+</p>
+<dl compact="compact">
+<dt> cstool</dt>
+<dd><p>This library contains various high-level classes and utilities. They tend to
+be much more specialized than the general-purpose tools provided elsewhere and
+may even depend upon plugin modules (unlike the other libraries mentioned
+here).
+</p>
+</dd>
+<dt> csutil</dt>
+<dd><p>This library contains many low-level utilities including string and hash
+classes, to <small>ZIP</small> manipulation tools, plugin management and Unicode support
+modules.
+</p>
+</dd>
+<dt> <small>SCF</small> (Shared Class Facility)</dt>
+<dd><p><small>SCF</small> is actually a component of &ldquo;csutil&rdquo;, however, it is explained
+separately since it is both complex (compared to the rest of &ldquo;csutil&rdquo;) and
+fundamental to the understanding of plugin modules. See section <a href="SCF.html#0">Shared Class Facility (<small>SCF</small>)</a>.
+</p>
+</dd>
+<dt> csgeom</dt>
+<dd><p>A library for geometric operations. It provides 2D and 3D vectors, polygons
+and bounding boxes, 3D matrices and some other useful tools. See section <a href="csGeom.html#0">Geometry Library (<code>csGeom</code>)</a>.
+</p>
+</dd>
+<dt> csgfx</dt>
+<dd><p>Basic image support and graphical manipulation tools.
+</p></dd>
+</dl>
+
+<hr size="1">
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

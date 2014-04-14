@@ -1,0 +1,189 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.3.1.2 Using SCF</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.3.1.2 Using SCF">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.3.1.2 Using SCF">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="SCF-Using"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="SCF-Explained.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="SCF-Multiple-Interfaces.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="SCF.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h4 class="subsubsection"> 4.3.1.2 Using <small>SCF</small> </h4>
+
+<p>The only include header file you need to include to utilize <small>SCF</small>
+functionality is <tt>&lsquo;scf.h&rsquo;</tt>.  It contains a number of macros and functions
+that you will need for easier use of <small>SCF</small>.
+</p>
+<p>Much basic functionality of <small>SCF</small> is provided by a central object.  It can
+be accessed as <samp>&lsquo;iSCF::SCF&rsquo;</samp> and is of type <samp>&lsquo;iSCF*&rsquo;</samp> (which is also a
+valid <small>SCF</small> interface).  This object is global and can be accessed from
+<em>anywhere</em>, even from dynamic libraries (plugin modules).  It is used by
+several parts of <small>SCF</small>.  Note that this object is only available after
+calling <code>scfInitialize()</code>, the main initialization function of <small>SCF</small>.
+In typical use, however, you rarely need to interact directly with
+<samp>&lsquo;iSCF::SCF&rsquo;</samp>.  Instead, you invoke several convenient <small>SCF</small> macros which
+interact with <samp>&lsquo;iSCF::SCF&rsquo;</samp> on your behalf.
+</p>
+<p>All <small>SCF</small> classes should be derived from the basic interface <samp>&lsquo;iBase&rsquo;</samp>.
+This interface declares the bare minimum set of methods which all <small>SCF</small>
+classes should provide:
+</p>
+<dl compact="compact">
+<dt> <code>void IncRef()</code></dt>
+<dd><p>This function should be called each time you get a new reference to a object
+and store it for a long-time usage.  Rather than invoking this method manually,
+you can use a smart-pointer (<code>csRef&lt;&gt;</code>) to automate reference counting
+(see section <a href="Smart-Pointers.html#0">Correctly Using Smart Pointers</a>).
+</p>
+</dd>
+<dt> <code>void DecRef()</code></dt>
+<dd><p>Call this function to decrement the object's reference count.  When the
+reference count reaches zero, the object is deleted automatically.
+There should be one matching <code>DecRef()</code> for each <code>IncRef()</code>
+invocation.
+</p>
+</dd>
+<dt> <code>void AddRefOwner(void**)</code></dt>
+<dd><p>Call this function to set up a <em>weak reference</em> to the object .  A weak
+reference is one which is invalidated automatically when the referenced object
+is destroyed.  This is useful in cases when some object wants to hold a pointer
+to an <small>SCF</small> object without actually owning a reference to the <small>SCF</small>
+object.  Owning a reference prevents the <small>SCF</small> object from being destroyed,
+whereas holding a weak reference merely says that you are interested in this
+object as long as it is alive, but that you don't want to forcibly keep it
+alive.  The argument to this method is a pointer to a variable which can hold a
+pointer to an <small>SCF</small> object.  Rather than invoking this method manually, you
+typically would use a weak-reference template to automate the reference
+management (<tt>&lsquo;CS/include/csutil/weakref.h&rsquo;</tt>).
+</p>
+</dd>
+<dt> <code>void RemoveRefOwner(void**)</code></dt>
+<dd><p>Call this function to remove a weak reference to the object.
+</p>
+</dd>
+<dt> <code>void* QueryInterface(scfInterfaceID InterfaceID, int Version); This</code></dt>
+<dd><p>method will return a pointer to an interface. The <em>Interface ID</em> is
+synonymous to the name of the interface. You can get the <small>ID</small> of
+an interface by invoking <code>scfInterfaceTraits&lt;Interface&gt;::GetID()</code>.
+</p></dd>
+</dl>
+
+<p>To simplify things even further, <tt>&lsquo;scf.h&rsquo;</tt> provides several templates that
+provide default declarations and default implementations of these
+methods. There is also the <code>SCF_IMPLEMENT_FACTORY()</code> macro which will
+implement the factory function for your class which returns new instances of
+the class to callers.
+</p>
+<p>Example:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">// Abstract interface file (itest.h)
+struct iTest : public virtual iBase
+{
+  SCF_INTERFACE (iTest, 1, 0, 0);
+
+  virtual void Foo () = 0;
+};
+
+// Concrete implementation header (test.h)
+class Test : public scfImplementation1&lt;Test, iTest&gt;
+{
+public:
+  Test (iBase* p = 0);
+  virtual ~Test ();
+
+  virtual void Foo ();
+};
+
+// Concrete implementation source (test.cpp)
+SCF_IMPLEMENT_FACTORY(Test)
+
+Test::Test (iBase* p)
+  : scfImplementationType (this, p)
+{
+}
+Test::~Test ()
+{
+}
+
+void Test::Foo ()
+{
+  puts (&quot;Foo&quot;);
+}
+</pre></td></tr></table>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="SCF-Explained.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="SCF-Multiple-Interfaces.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="SCF.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

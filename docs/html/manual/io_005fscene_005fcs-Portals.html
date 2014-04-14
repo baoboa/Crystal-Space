@@ -1,0 +1,232 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 5.8.6 Exporting Portals</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 5.8.6 Exporting Portals">
+<meta name="keywords" content="Crystal Space 2.1.0: 5.8.6 Exporting Portals">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="io_005fscene_005fcs-Portals"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="io_005fscene_005fcs-Export-Animesh.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="io_005fscene_005fcs-ToDo.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Blender.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Internals.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 5.8.6 Exporting Portals </h3>
+
+<p>This section presents how portals can be created in order to link the different sectors of
+a virtual environment. Each <a href="http://wiki.blender.org/index.php/Doc:2.6/Manual/Interface/Scenes">Blender scene</a>
+in the file is exported as a Crystal Space sector, and the use of specific meshes allows to
+define portals between them.
+</p>
+<p>This is made using the <samp>&lsquo;Crystal Space Portal&rsquo;</samp> panel that is found in the
+<samp>&lsquo;Object Data&rsquo;</samp> context of the <samp>&lsquo;Properties&rsquo;</samp> window:
+</p>
+<p><img src="content/blender/io_scene_cs_portal.png" alt="content/blender/io_scene_cs_portal">
+</p>
+<a name="1"></a>
+<h4 class="subsubheading"> Creating portals </h4>
+
+<p>In order to define a portal, you must create two meshes that will be the source and the
+destination of the portal. Each mesh will be in a separate
+<a href="http://wiki.blender.org/index.php/Doc:2.6/Manual/Interface/Scenes">Blender scene</a>
+so that the portal will lead from the first scene to the second one (this is not a
+limitation and a portal is allowed to lead to the same sector than the starting one).
+</p>
+<p>You must pay attention to the shape of your source mesh as well as to the order of its
+vertices. The shape of the mesh will be used as the one of the Crystal Space portal, but
+one tricky problem is that the order of creation of the vertices will also define its
+orientation. For a correct behavior, be sure to create the vertices of your source mesh
+in clockwise order when you look at the portal.
+</p>
+<p>Unless you plan to create another portal to go back in the other direction, the actual
+shape of the destination mesh has no importance at all, only its position will be important.
+</p>
+<p>Once the two portal meshes are created, select the source mesh, go to the
+<samp>&lsquo;Crystal Space Portal&rsquo;</samp> panel, and activate the <samp>&lsquo;Portal&rsquo;</samp> checkbox. A text entry
+<samp>&lsquo;Destination mesh&rsquo;</samp> appears, you must now type into it the name of the destination mesh
+of the portal. Once done, the object will be exported as a portal instead of a mesh.
+</p>
+<p>You must also pay attention to the relative transform of the source and destination meshes
+since it will define the warping transform that is applied when crossing the portal. If the
+source and the destination of the portal are the same (i.e. there is no warping transform),
+then the two meshes should be at the same position.
+</p>
+<a name="2"></a>
+<h4 class="subsubheading"> The <samp>&lsquo;portaltut&rsquo;</samp> example file </h4>
+
+<p>As an example we will follow the making of the file <tt>&lsquo;portaltut.blend&rsquo;</tt> that can be
+found in the <a href="http://trac.crystalspace3d.org/trac/CS/browser/CSAssets/trunk/blender/">CS/browser/CSAssets/trunk/blender/</a> <small>SVN</small> repository.
+</p>
+<p>The example is split in three different scenes that will correspond to three different
+sectors in Crystal Space: two rooms <samp>&lsquo;roomA&rsquo;</samp> and <samp>&lsquo;roomB&rsquo;</samp>, to be linked by a
+transitional sector <samp>&lsquo;Corridor&rsquo;</samp>. The goal of this example will be to create the portals
+in order to travel from one room to the other.
+</p>
+<p>The walls of the rooms have already been created, and some holes have been dug that have to
+be replaced by the portals:
+</p>
+<p><img src="content/blender/portals_01.png" alt="content/blender/portals_01">
+</p>
+<p>Let's do the following steps:
+</p>
+<ul>
+<li>
+Position the cursor where the portal will be defined: in <samp>&lsquo;Edit&rsquo;</samp> mode, select the vertices
+at the boundary of the portal, the press <samp>&lsquo;Shift-S&rsquo;</samp> then <samp>&lsquo;Cursor to selected&rsquo;</samp>.
+
+<p><img src="content/blender/portals_02.png" alt="content/blender/portals_02">
+</p>
+</li><li>
+Create the source mesh of the portal: add a new dummy mesh, e.g. a cube, then go to
+<samp>&lsquo;Edit&rsquo;</samp> mode and remove all the vertices of the mesh.
+
+<p><img src="content/blender/portals_03.png" alt="content/blender/portals_03">
+</p>
+</li><li>
+Create the vertices of the source mesh: use <samp>&lsquo;Ctrl-LMB&rsquo;</samp> for all vertices, being sure to
+turn in clockwise order. You can create a face after that.
+
+<p><img src="content/blender/portals_04.png" alt="content/blender/portals_04">
+</p>
+</li><li>
+After a set of <samp>&lsquo;Shift-S&rsquo;</samp> operations, the vertices have been aligned to the walls, and
+the mesh has been renamed purposely <samp>&lsquo;PortalA2C&rsquo;</samp>.
+
+<p><img src="content/blender/portals_05.png" alt="content/blender/portals_05">
+</p>
+</li><li>
+Now we will create the destination mesh: in object mode, select your source mesh and duplicate it with
+<samp>&lsquo;Shift-D + LMB&rsquo;</samp>, create a link to it in the scene <samp>&lsquo;Corridor&rsquo;</samp> with <samp>&lsquo;Ctrl-L&rsquo;</samp>
+then <samp>&lsquo;Objects to scene&rsquo;</samp>, delete the copy in the first scene, then finally rename your
+destination mesh into <samp>&lsquo;PortalC2A&rsquo;</samp>.
+
+</li><li>
+Re-orient the vertices of the destination mesh: since the mesh is a copy of the original
+one, the vertices will be in counter-clockwise order when facing the portal. In order to fix
+this, go to <samp>&lsquo;Edit&rsquo;</samp> mode, select all the vertices and rotate them with <samp>&lsquo;R-X-180&rsquo;</samp>
+(or whatever rotation axis).
+
+<p><img src="content/blender/portals_06.png" alt="content/blender/portals_06">
+</p>
+</li><li>
+Now that both meshes have been created, we can define them as portals. Select the source mesh,
+go to the <samp>&lsquo;Crystal Space Portal&rsquo;</samp> panel (in the <samp>&lsquo;Object Data&rsquo;</samp> context of the
+<samp>&lsquo;Properties&rsquo;</samp> window), select the checkbox <samp>&lsquo;Portal&rsquo;</samp>, and enter the name of the
+destination mesh, i.e. <samp>&lsquo;PortalC2A&rsquo;</samp>. Repeat the same process for the destination mesh in
+order to define a portal back to the first room.
+
+<p><img src="content/blender/portals_07.png" alt="content/blender/portals_07">
+</p>
+</li><li>
+Repeat the process for the other portals leading to the second room. Here is the result once
+you press the <samp>&lsquo;Export and Run&rsquo;</samp> button:
+
+<p><img src="content/blender/portaltut_run.png" alt="content/blender/portaltut_run">
+</p>
+</li></ul>
+
+<a name="3"></a>
+<h4 class="subsubheading"> Troubleshooting </h4>
+
+<p>If some of the portals don't look ok while exporting Blender worlds, check that:
+</p>
+<ul>
+<li>
+the name of the destination mesh has been accepted, i.e. the error message
+<samp>&lsquo;ERROR: unknown mesh name&rsquo;</samp> does not appear in the portal tool panel.
+</li><li>
+there is no error message on the console.
+</li><li>
+you have defined the vertices of the portal in clockwise order (if done wrong, you
+may typically see some problems with the triangles of the portal).
+</li><li>
+the destination mesh is not linked at several places in the scenes (in this case, the
+script will randomly pick one of those linked meshes).
+</li><li>
+the relative position of the source and the destination mesh corresponds correctly
+to the warping transform of the portal (i.e. they are at the same position if the
+warping is an identity transform).
+</li></ul>
+
+<p>If you still have a defective portal after you have checked those points, it is highly
+probable that the relative transform of the source and destination mesh is causing
+the problem. A good hint in this case is to move the destination mesh at the same position
+and orientation than the source mesh in order to get a valid portal with an identity warping
+transform, then, starting from this configuration, move the destination mesh by small steps
+in order to visualize the changes.
+</p>
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="io_005fscene_005fcs-Export-Animesh.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="io_005fscene_005fcs-ToDo.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Blender.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Internals.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

@@ -1,0 +1,513 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.10.11 Particles Mesh Object</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.10.11 Particles Mesh Object">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.10.11 Particles Mesh Object">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="MeshObject-Particles"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="MeshObject-Terrain2-XML.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="MeshObject-Portal-Container.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="MeshObject.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 4.10.11 Particles Mesh Object </h3>
+
+<p><em>Written by M&aring;rten Svanfeldt,
+<a href="mailto:developer@svanfeldt.com">developer@svanfeldt.com</a>.</em>
+</p>
+<p>Particles is a general particle rendering and simple simulation plugin. It
+also contains a few simpler built-in implementations of particle emitters
+and effectors.
+</p>
+<a name="1"></a>
+<h4 class="subsubheading"> Basic Structure </h4>
+
+<p>The following <small>SCF</small> class names are used (for <code>csLoadPlugin</code>):
+</p>
+<ul>
+<li>
+Type plugin: <samp>&lsquo;crystalspace.mesh.object.particles&rsquo;</samp>
+</li><li>
+Loader plugin: <samp>&lsquo;crystalspace.mesh.loader.particles&rsquo;</samp>
+</li><li>
+Factory loader plugin: <samp>&lsquo;crystalspace.mesh.loader.factory.particles&rsquo;</samp>
+</li></ul>
+
+<p>Objects in this plugin implement the following <small>SCF</small> interfaces (get
+with <code>scfQueryInterface</code>):
+</p>
+<ul>
+<li>
+<em>MeshObject</em>
+<ul>
+<li>
+Implements <samp>&lsquo;iMeshObject&rsquo;</samp>
+</li><li>
+Implements <samp>&lsquo;iParticleSystem&rsquo;</samp>
+</li></ul>
+</li><li>
+<em>MeshObjectFactory</em>
+<ul>
+<li>
+Implements <samp>&lsquo;iMeshObjectFactory&rsquo;</samp>
+</li><li>
+Implements <samp>&lsquo;iParticleSystemFactory&rsquo;</samp>
+</li></ul>
+</li><li>
+<em>MeshObjectFactory</em>
+<ul>
+<li>
+Implements <samp>&lsquo;iMeshObjectType&rsquo;</samp>
+</li></ul>
+</li></ul>
+
+<a name="2"></a>
+<h4 class="subsubheading"> Factory State Interface </h4>
+
+<p>Use the <samp>&lsquo;iParticleSystemFactory&rsquo;</samp> <small>SCF</small> interface to access settings for
+a particle system factory.  The definition of this interface can be found in
+<tt>&lsquo;CS/include/imesh/particles.h&rsquo;</tt> and that is also the include file you need
+to include in your applications to use this plugin.  Using this interface you
+can access the material, default particle billboard setup, rotation mode, 
+emitters, effectors and various other configuration parameters for a 
+particle system factory.
+</p>
+<p>Notice that once a particle system have been created from a factory, changing
+the factory won't change the instance. So in the case of particle systems
+the factory should be viewed as a template rather than a &quot;parent&quot;.
+</p>
+<a name="3"></a>
+<h4 class="subsubheading"> Object State Interface </h4>
+
+<p>Use the <samp>&lsquo;iParticleSystem&rsquo;</samp> <small>SCF</small> interface to access settings for
+a particle system.  The definition of this interface can be found in
+<tt>&lsquo;CS/include/imesh/particles.h&rsquo;</tt> and that is also the include file you need
+to include in your applications to use this plugin.  Using this interface you
+can access the material, default particle billboard setup, rotation mode, 
+emitters, effectors and various other configuration parameters for a 
+particle system.
+</p>
+<p><a name="Particles-Factory-and-Object-Loader"></a>
+</p><a name="4"></a>
+<h4 class="subsubheading"> Factory and Object Loader </h4>
+
+<p>The factory and object loader in much recognize the same set of keywords.
+</p>
+<dl compact="compact">
+<dt> <code>&lt;renderorientation&gt;orientation&lt;/renderorientation&gt;</code></dt>
+<dd><p>Set how the particle billboards are oriented in relation to the world and the
+camera. See <a href="#Particles-billboard-setup">Particle billboard setup</a>.
+</p></dd>
+<dt> <code>&lt;rotationmode&gt;rotation&lt;/rotationmode&gt;</code></dt>
+<dd><p>Set how rotation of the particles affect the visual output. Valid values are
+<samp>&lsquo;none&rsquo;</samp>, <samp>&lsquo;texcoord&rsquo;</samp> and <samp>&lsquo;vertex&rsquo;</samp>. Default is no effect 
+(<samp>&lsquo;none&rsquo;</samp>).
+</p></dd>
+<dt> <code>&lt;sortmode&gt;sort&lt;/sortmode&gt;</code></dt>
+<dd><p>Control the particle front-to-back sorting mode. Valid values are
+<samp>&lsquo;none&rsquo;</samp>, <samp>&lsquo;distance&rsquo;</samp> and <samp>&lsquo;dot&rsquo;</samp>.
+</p></dd>
+<dt> <code>&lt;integrationmode&gt;integration&lt;/integrationmode&gt;</code></dt>
+<dd><p>Velocity to position integration mode. Valid values are
+<samp>&lsquo;none&rsquo;</samp>, <samp>&lsquo;linear&rsquo;</samp> and <samp>&lsquo;both&rsquo;</samp>. Default is <samp>&lsquo;linear&rsquo;</samp>.
+</p></dd>
+<dt> <code>&lt;commondirection x=&quot;&quot; y=&quot;&quot; z=&quot;&quot; /&gt;</code></dt>
+<dd><p>Set common direction. Common direction is used as a reference direction for
+billboard setup for a few particle billboard orientations.
+</p></dd>
+<dt> <code>&lt;transformmode&gt;tmode&lt;/transformmode&gt;</code></dt>
+<dd><p>Set the transform mode of the particle system and thereby the coordinate systems
+used. Valid values are <samp>&lsquo;local&rsquo;</samp>, <samp>&lsquo;localemitter&rsquo;</samp>, <samp>&lsquo;world&rsquo;</samp>.
+</p></dd>
+<dt> <code>&lt;individualsize&gt;yes/no&lt;/individualsize&gt;</code></dt>
+<dd><p>Determin if particle rendering should use the individual size associated with 
+each particle, or if the global &lt;particlesize&gt; property should be used.
+</p></dd>
+<dt> <code>&lt;particlesize x=&quot;&quot; y=&quot;&quot; /&gt;</code></dt>
+<dd><p>Set global particle size.
+</p></dd>
+<dt> <code>&lt;minbb&gt;<small class="dots">...</small>&lt;/minbb&gt;</code></dt>
+<dd><p>Set the minimum bounding box of the particles mesh. The particle system is only
+rendered when the bounding box is deemed visible (within frustum), and
+therefore it can sometimes be required to have a bigger bounding box than the
+current distribution of the particles.
+</p></dd>
+<dt> <code>&lt;emitter type=&quot;&quot;&gt;<small class="dots">...</small>&lt;/emitter&gt;</code></dt>
+<dd><p>Add a built-in emitter to the particles system.
+</p></dd>
+<dt> <code>&lt;effector type=&quot;&quot;&gt;<small class="dots">...</small>&lt;/effector&gt;</code></dt>
+<dd><p>Add a built-in effector to the particles system.
+</p></dd>
+</dl>
+
+
+<a name="5"></a>
+<h4 class="subsubheading"> Factory Loader </h4>
+
+<p>Also see the general documentation for keywords recognized both by factory and 
+object. 
+See <a href="#Particles-Factory-and-Object-Loader">Factory and Object Loader</a>.
+</p>
+<dl compact="compact">
+<dt> <code>&lt;deepcreation&gt;yes/no&lt;/deepcreation&gt;</code></dt>
+<dd><p>Enable or disable deep-copy on creation of particle systems.
+</p></dd>
+<dt> <code>&lt;material&gt;materialName&lt;/material&gt;</code></dt>
+<dd><p>Set the default material for particle system factory.
+</p></dd>
+<dt> <code>&lt;mixmode&gt;mixmode&lt;/mixmode&gt;</code></dt>
+<dd><p>Set the default mixmode for particle system factory.
+see section <a href="XMLServices-Mixmode.html#0">Parsing Mixmode</a>.
+</p></dd>
+</dl>
+
+<a name="6"></a>
+<h4 class="subsubheading"> Object Loader </h4>
+
+<p>Also see the general documentation for keywords recognized both by factory and 
+object. 
+See <a href="#Particles-Factory-and-Object-Loader">Factory and Object Loader</a>.
+</p>
+<dl compact="compact">
+<dt> <code>&lt;factory&gt;factoryName&lt;/factory&gt;</code></dt>
+<dd><p>Set the factory to use when creating the particle system.
+</p></dd>
+<dt> <code>&lt;material&gt;materialName&lt;/material&gt;</code></dt>
+<dd><p>Set the material for particle system.
+</p></dd>
+<dt> <code>&lt;mixmode&gt;mixmode&lt;/mixmode&gt;</code></dt>
+<dd><p>Set the mixmode for particle system.
+see section <a href="XMLServices-Mixmode.html#0">Parsing Mixmode</a>.
+</p></dd>
+<dt> <code>&lt;preadvance&gt;time&lt;/preadvance&gt;</code></dt>
+<dd><p>Advance the time of the particle system object by the given duration.
+This is useful to fill a particle system after its initial creation.
+</p></dd>
+</dl>
+
+<a name="7"></a>
+<h4 class="subsubheading"> Operation of particles </h4>
+<p>The particle system have three basic parts
+</p>
+<ul>
+<li> Particle update loop
+</li><li> Particle billboard setup
+</li><li> Handling of emitters and effectors
+</li></ul>
+
+<p>Apart from this the particles plugin also contains some management code to keep
+everything together and interface the rest of Crystal Space, as well as loading
+and saving from/to files.
+</p>
+<a name="8"></a>
+<h4 class="subsubheading"> Particle update loop </h4>
+<p>The main part of work related to particle creation and movement is done in the
+particle update loop. The update loop is called once per frame for every visible
+particle system.
+</p>
+<p>The steps of the update loop are:
+</p><ol>
+<li> Retirement of old particles. Particles time-to-live is decreased by
+current elapsed time, and those with zero or negative time-to-live are removed.
+</li><li> Emission of new particles. The emitters are polled one at a time to emit
+their particles into the system.
+</li><li> Apply physical (or non-physical) effects to particles. The effectors are
+ran one after another to apply their effect to the particles.
+</li><li> Position and orientation integration. Depending on the integration setting
+no integration or integration of position or position and rotation is done.
+</li></ol>
+
+<p><a name="Particles-billboard-setup"></a>
+</p><a name="9"></a>
+<h4 class="subsubheading"> Particle billboard setup </h4>
+<p>The second big part of particles plugin is the particle billboard setup. In 
+computations each particle is &quot;point-like&quot; however for rendering you have to
+give it an extent. 
+</p>
+<p>The particles plugin provides rendering in form of rectangular (quadratile) 
+areas of settable size and orientation relative to the camera.
+</p>
+<dl compact="compact">
+<dt> <samp>&lsquo;camface&rsquo;</samp></dt>
+<dd><p>The particle billboards always face the camera location, so the camera to
+particle vector is used as normal. The camera up vector is used as up-vector
+for the billboards.
+</p></dd>
+<dt> <samp>&lsquo;camface approx&rsquo;</samp></dt>
+<dd><p>The billboards are aligned with the camera plane, and camera up and right
+vectors are used as billboard vectors. This is the default mode and the mode
+most other particle systems in Crystal Space have.
+</p></dd>
+<dt> <samp>&lsquo;common&rsquo;</samp></dt>
+<dd><p>Use common up direction as up vector for particle and as <samp>&lsquo;camface&rsquo;</samp>
+face the camera properly. This makes the particles look like fixed around one
+axis.
+</p></dd>
+<dt> <samp>&lsquo;common approx&rsquo;</samp></dt>
+<dd><p>Approximative version of <samp>&lsquo;common&rsquo;</samp> mode. Common up direction is used
+as billboard up direction and camera forward vector as plane normal. This mode
+is equal to old <samp>&lsquo;Rain&rsquo;</samp> particle system.
+</p></dd>
+<dt> <samp>&lsquo;velocity&rsquo;</samp></dt>
+<dd><p>Almost the same as <samp>&lsquo;common&rsquo;</samp> mode, but instead of using a common direction
+the particle linear velocity is used as up direction.
+</p></dd>
+<dt> <samp>&lsquo;self&rsquo;</samp></dt>
+<dd><p>Orients particle billboard according to the coordinate base defined by the
+quaternion in the particle (it's internal orientation). Setup is such that
+xy-plane is the billboard plane and positive z-axis normal.
+</p></dd>
+<dt> <samp>&lsquo;self forward&rsquo;</samp></dt>
+<dd><p>Same as <samp>&lsquo;self&rsquo;</samp> mode, however particles are always facing camera. It is
+equivalent to two-sided particles.
+</p></dd>
+</dl>
+
+<a name="10"></a>
+<h4 class="subsubheading"> Emitters </h4>
+<p>Emitters are the entities responsible for emitting new particles into the
+particle system. Without any emitters there won't be any particles and nothing
+to see.
+</p>
+<p>In principle an emitter is any class implementing the interface 
+<samp>&lsquo;iParticleEmitter&rsquo;</samp>, so you can implement your own emitters, however for
+convenience there are a few built in emitter types. These can be accessed via
+the <samp>&lsquo;crystalspace.mesh.object.particles.emitter&rsquo;</samp> plugin class and interface
+<samp>&lsquo;iParticleBuiltinEmitterFactory&rsquo;</samp> interface.
+The built in emitters are also loadable via the normal particle loader using
+<code>&lt;emitter type=&quot;..&quot;&gt;</code> tags. The available types are:
+</p><ul>
+<li> <samp>&lsquo;sphere&rsquo;</samp>
+</li><li> <samp>&lsquo;box&rsquo;</samp>
+</li><li> <samp>&lsquo;cylinder&rsquo;</samp>
+</li><li> <samp>&lsquo;cone&rsquo;</samp>
+</li></ul>
+
+<p>Many of the options are same for several of the emitter types, so below is a
+description of all available options for the built in emitters and which type
+of emitters they apply to.
+</p>
+<table>
+<tr><td><p> Keyword </p></td><td><p> Applies to </p></td><td><p> Description
+</p></td></tr>
+<tr><td><p> <code>&lt;enabled&gt;yes/no&lt;/enabled&gt;</code>
+</p></td><td><p> <samp>&lsquo;all&rsquo;</samp>
+</p></td><td><p> Should the emitter emit particles at all.
+</p>
+</td></tr>
+<tr><td><p> <code>&lt;starttime&gt;time&lt;/starttime&gt;</code>
+</p></td><td><p> <samp>&lsquo;all&rsquo;</samp>
+</p></td><td><p> Start time of emitter relative to first time particle gets into view.
+</p>
+</td></tr>
+<tr><td><p> <code>&lt;duration&gt;time&lt;/duration&gt;</code>
+</p></td><td><p> <samp>&lsquo;all&rsquo;</samp>
+</p></td><td><p> Duration for which the emitter should be active.
+</p>
+</td></tr>
+<tr><td><p> <code>&lt;emissionrate&gt;rate&lt;/emissionrate&gt;</code>	
+</p></td><td><p> <samp>&lsquo;all&rsquo;</samp>
+</p></td><td><p> Emission rate in particles per second.
+</p>
+</td></tr>
+<tr><td><p> <code>&lt;initialttl min=&quot;&quot; max=&quot;&quot; /&gt;</code>
+</p></td><td><p> <samp>&lsquo;all&rsquo;</samp>
+</p></td><td><p> Initial TTL of the particles will be assigned randomly between min and max
+values.
+</p>
+</td></tr>
+<tr><td><p> <code>&lt;mass min=&quot;&quot; max=&quot;&quot; /&gt;</code>
+</p></td><td><p> <samp>&lsquo;all&rsquo;</samp>
+</p></td><td><p> Initial mass of the particles will be assigned randomly between min and max
+values.
+</p>
+</td></tr>
+<tr><td><p> <code>&lt;position x=&quot;&quot; y=&quot;&quot; z=&quot;&quot; /&gt;</code>
+</p></td><td><p> <samp>&lsquo;all&rsquo;</samp>
+</p></td><td><p> Emitter center position.
+</p>
+</td></tr>
+<tr><td><p> <code>&lt;placement&gt;place&lt;/placement&gt;</code>
+</p></td><td><p> <samp>&lsquo;all&rsquo;</samp>
+</p></td><td><p> Particle placement relative to emitter. Valid values <samp>&lsquo;center&rsquo;</samp>, 
+<samp>&lsquo;volume&rsquo;</samp>, <samp>&lsquo;surface&rsquo;</samp>. Default is <samp>&lsquo;center&rsquo;</samp>.
+</p>
+</td></tr>
+<tr><td><p> <code>&lt;uniformvelocity&gt;yes/no&lt;/uniformvelocity&gt;</code>
+</p></td><td><p> <samp>&lsquo;all&rsquo;</samp>
+</p></td><td><p> Sets if all particles should have the same uniform velocity vector or if
+only the magnitude should be used and direction should be emitter-specific.
+</p>
+</td></tr>
+<tr><td><p> <code>&lt;initialvelocity x=&quot;&quot; y=&quot;&quot; z=&quot;&quot;/&gt;</code>
+</p></td><td><p> <samp>&lsquo;all&rsquo;</samp>
+</p></td><td><p> Set initial linear velocity vector.
+</p>
+</td></tr>
+<tr><td><p> <code>&lt;initialangularvelocity x=&quot;&quot; y=&quot;&quot; z=&quot;&quot;/&gt;</code>
+</p></td><td><p> <samp>&lsquo;all&rsquo;</samp>
+</p></td><td><p> Set initial angular velocity vector.
+</p>
+</td></tr>
+<tr><td><p> <code>&lt;radius&gt;rad&lt;/radius&gt;</code>
+</p></td><td><p> <samp>&lsquo;sphere&rsquo;</samp>, <samp>&lsquo;cylinder&rsquo;</samp>
+</p></td><td><p> Radius of emitting sphere/cylinder
+</p>
+</td></tr>
+<tr><td><p> <code>&lt;extent x=&quot;&quot; y=&quot;&quot; z=&quot;&quot; /&gt;</code>
+</p></td><td><p> <samp>&lsquo;cylinder&rsquo;</samp>, <samp>&lsquo;cone&rsquo;</samp>
+</p></td><td><p> Extent vector defining the cone or cylinder
+</p>
+</td></tr>
+<tr><td><p> <code>&lt;coneangle&gt;angle&lt;/coneangle&gt;</code>
+</p></td><td><p> <samp>&lsquo;cone&rsquo;</samp>
+</p></td><td><p> Cone opening angle in radians
+</p>
+</td></tr>
+<tr><td><p> <code>&lt;box&gt;..&lt;/box&gt;</code>
+</p></td><td><p> <samp>&lsquo;box&rsquo;</samp>
+</p></td><td><p> Box emitter extents
+</p></td></tr>
+</table>
+
+<a name="11"></a>
+<h4 class="subsubheading"> Effectors </h4>
+<p>Just as emitters emit particles into the particle system, effectors put
+different kinds of effects on those who are already there, be it physical or
+non-physical effects.
+</p>
+
+<p>In principle an emitter is any class implementing the interface 
+<samp>&lsquo;iParticleEffector&rsquo;</samp>, so you can implement your own effectors, however for
+convenience there are a few built in effector types. These can be accessed via
+the <samp>&lsquo;crystalspace.mesh.object.particles.effector&rsquo;</samp> plugin class and
+<samp>&lsquo;iParticleBuiltinEffectorFactory&rsquo;</samp> interface.
+The built in effectors are also loadable via the normal particle loader using
+<code>&lt;effector type=&quot;..&quot;&gt;</code> tags. The available types are:
+</p><ul>
+<li> <samp>&lsquo;force&rsquo;</samp>
+</li><li> <samp>&lsquo;lincolor&rsquo;</samp>
+</li><li> <samp>&lsquo;forcefield&rsquo;</samp>
+</li></ul>
+
+<p><samp>&lsquo;Force&rsquo;</samp> effector loader recognize following keywords:
+</p><dl compact="compact">
+<dt> <code>&lt;acceleration x=&quot;&quot; y=&quot;&quot; z=&quot;&quot; /&gt;</code></dt>
+<dd><p>Add a constant acceleration to particles. Useful for example for gravity.
+</p></dd>
+<dt> <code>&lt;force x=&quot;&quot; y=&quot;&quot; z=&quot;&quot; /&gt;</code></dt>
+<dd><p>Add a constant force to particles.
+</p></dd>
+<dt> <code>&lt;randomacceleration&gt;mag&lt;/randomacceleration&gt;</code></dt>
+<dd><p>Add a random acceleration with given magnitude.
+</p></dd>
+<dt> <code>&lt;randomacceleration x=&quot;&quot; y=&quot;&quot; z=&quot;&quot; /&gt;</code></dt>
+<dd><p>Add a random acceleration with given magnitude in the form of a vector.
+</p></dd>
+</dl>
+
+<p><samp>&lsquo;Lincolor&rsquo;</samp> effector sets the color of particles based on their remaning
+TTL. It takes a fixed number of &quot;keypoints&quot; and then interpolates between them.
+<samp>&lsquo;Lincolor&rsquo;</samp> effector loader recognize following keywords:
+</p><dl compact="compact">
+<dt> <code>&lt;color red=&quot;&quot; green=&quot;&quot; blue=&quot;&quot; rtime=&quot;&quot;&gt;</code></dt>
+<dd><p>Set a keypoint color at given remaining time to live.
+</p></dd>
+</dl>
+
+<p><samp>&lsquo;Velocityfield&rsquo;</samp> effector is a more complicated and resource using way of giving
+intricate movements to the particles. It works by taking a function defining
+the velocity of particles as a function of position and time. It then integrates
+to the new particle positions. Each function can take a number of vector and
+scalar parameters that affects their output
+To be noted is that <samp>&lsquo;velocityfield&rsquo;</samp> effector does not change the particle
+velocities, so any &quot;external&quot; movement will be integrated as normally.
+<samp>&lsquo;Velocityfield&rsquo;</samp> effector loader recognize following keywords:
+</p><dl compact="compact">
+<dt> <code>&lt;type&gt;field-type&lt;/type&gt;</code></dt>
+<dd><p>Set the field function. Currently supported values are <samp>&lsquo;spiral&rsquo;</samp> and 
+<samp>&lsquo;radialpoint&rsquo;</samp>.
+</p></dd>
+<dt> <code>&lt;fparam&gt;value&lt;/fparam&gt;</code></dt>
+<dd><p>Specify a scalar parameter.
+</p></dd>
+<dt> <code>&lt;vparam x=&quot;&quot; y=&quot;&quot; z=&quot;&quot; /&gt;</code></dt>
+<dd><p>Specify a vector parameter.
+</p></dd>
+</dl>
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="MeshObject-Terrain2-XML.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="MeshObject-Portal-Container.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="MeshObject.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

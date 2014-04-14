@@ -1,0 +1,9 @@
+SubDir TOP data flarge ;
+
+InstallData world [ Wildcard *.png *.dds *.cslib ] : data maps flarge ;
+InstallData [ Wildcard factories : *.meshfact ] : data maps flarge factories ;
+InstallData [ Wildcard lightmaps : *.png ] : data maps flarge lightmaps ;
+
+FileListEntriesData world [ Wildcard *.png *.dds *.cslib ] : flarge : data-demo-maps ;
+FileListEntriesData [ Wildcard factories : *.meshfact ] : flarge factories : data-demo-maps ;
+FileListEntriesData [ Wildcard lightmaps : *.png ] : flarge lightmaps : data-demo-maps ;

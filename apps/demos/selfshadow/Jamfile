@@ -1,0 +1,7 @@
+SubDir TOP apps demos selfshadow ;
+
+Description selfshadowdemo : "Demonstrates the use of Self Shadowing RM." ;
+Application selfshadowdemo : [ Wildcard *.cpp *.h ] ;
+CFlags selfshadowdemo : $(COMPILER.C++FLAGS.EXCEPTIONS.ENABLE) ;
+LinkWith selfshadowdemo : crystalspace ;
+FileListEntryApplications selfshadowdemo : app-demo ;

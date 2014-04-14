@@ -1,0 +1,6 @@
+SubDir TOP plugins mesh animesh animnode noise ;
+
+Description noise : "Noise animation nodes plugin for an animated mesh object" ;
+Plugin noise : [ Wildcard *.cpp *.h ] ;
+LinkWith noise : crystalspace ;
+CompileGroups noise : meshes ;

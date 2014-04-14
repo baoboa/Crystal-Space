@@ -1,0 +1,249 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.10.19.4 Creating a Furmesh Mesh</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.10.19.4 Creating a Furmesh Mesh">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.10.19.4 Creating a Furmesh Mesh">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="HOWTO-Create-Furmesh"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Furmesh-Material.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Lighting-System.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Furmesh-Mesh.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h4 class="subsubsection"> 4.10.19.4 Creating a Furmesh Mesh </h4>
+
+<p><em>Written by Alexandru - Teodor Voicu,
+<a href="mailto:voicualexandruteodor@gmail.com">voicualexandruteodor@gmail.com</a>.</em>
+</p>
+<p>This section describes how to create a Furmesh mesh.
+</p>
+<a name="1"></a>
+<h4 class="subsubheading"> What is Furmesh? </h4>
+
+<p>A <samp>&lsquo;Furmesh&rsquo;</samp> mesh object (see section <a href="MeshObject-Furmesh.html#0">Furmesh Mesh Object</a>) is a generic
+triangle mesh object used for rendering both fur and hair. Furmeshes 
+also support animation via (see section <a href="Furmesh-Animation.html#0">Furmesh Animation</a>) and advanced 
+shaders via (see section <a href="Furmesh-Material.html#0">Furmesh Material</a>).
+</p>
+<p>Furmeshes have different performance when used on static objects or 
+dynamic objects, and so they can be used both for rendering long hairs 
+(having complex animations, based on bullet physics) and for rendering 
+furs, on bigger surfaces, but having just simple animations or being 
+static.
+</p>
+<p>Due to the high volume of geometry, furmeshes don't support any kind of 
+shadows.
+</p>
+<p>Furmesh objects always have to be created through a factory. So, first
+you create the actual furmesh factory and then you create one or more 
+instances from that factory. Furmesh factories can be created from 
+furmesh types or from map files.
+</p>
+<a name="2"></a>
+<h4 class="subsubheading"> Creating a Furmesh in a Map </h4>
+
+<p>Here is an example of how to create a furmesh for Krystal model in a 
+map file:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">&lt;meshfact name=&quot;krystal_furmesh_factory&quot;&gt;
+  &lt;plugin&gt;crystalspace.mesh.loader.factory.furmesh&lt;/plugin&gt;
+  &lt;params/&gt;
+&lt;/meshfact&gt;
+</pre></td></tr></table>
+<p>Having the furmesh object defined as:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">&lt;meshobj name=&quot;krystal_furmesh_object&quot;&gt;
+  &lt;plugin&gt;crystalspace.mesh.loader.furmesh&lt;/plugin&gt;
+  &lt;params&gt;
+    &lt;factory&gt;krystal_furmesh_factory&lt;/factory&gt;
+    &lt;strandwidth&gt;0.001&lt;/strandwidth&gt;
+    &lt;displacement&gt;0.02&lt;/displacement&gt;
+    &lt;densitymap&gt;krystal_skull_densitymap&lt;/densitymap&gt;
+    &lt;densityfactorguidefurs&gt;10&lt;/densityfactorguidefurs&gt;
+    &lt;densityfactorfurstrands&gt;120&lt;/densityfactorfurstrands&gt;
+    &lt;heightmap&gt;krystal_skull_heightmap&lt;/heightmap&gt;
+    &lt;heightfactor&gt;0.4&lt;/heightfactor&gt;
+    &lt;controlpointsdistance&gt;0.05&lt;/controlpointsdistance&gt;
+    &lt;positiondeviation&gt;0.005&lt;/positiondeviation&gt;
+    &lt;growtangents/&gt;
+    &lt;mixmode&gt;
+      &lt;copy /&gt;
+    &lt;/mixmode&gt;			
+    &lt;priority&gt;object&lt;/priority&gt;			
+  &lt;/params&gt;
+&lt;/meshobj&gt;
+</pre></td></tr></table>
+<p>The densitymap and the heightmap are textures that can be defined as 
+well in a map (library) file, by:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">&lt;textures&gt;
+  &lt;texture name='krystal_skull_densitymap'&gt;
+     &lt;file&gt;/lib/krystal/krystal_skull_densitymap.png&lt;/file&gt;
+  &lt;/texture&gt;
+  &lt;texture name='krystal_skull_heightmap'&gt;
+     &lt;file&gt;/lib/krystal/krystal_skull_heightmap.png&lt;/file&gt;
+   &lt;/texture&gt;	
+&lt;/textures&gt;
+</pre></td></tr></table>
+<p>However, this only sets the properties for a furmesh. Creating the 
+actual geometry can be done only programmatically, because other
+interfaces, for the furmesh animation and for the furmesh material
+have to be specify first.
+</p>
+<a name="3"></a>
+<h4 class="subsubheading"> Creating a Furmesh Programmatically </h4>
+
+<p>Here we create the actual furmesh programmatically, after setting the
+furmesh properties:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">// Load some fur
+rc = hairTest-&gt;loader-&gt;Load (&quot;/lib/krystal/krystal_furmesh.xml&quot;);
+if (!rc.success)
+  return hairTest-&gt;ReportError (&quot;Can't load krystal furmesh library!&quot;);
+
+csRef&lt;iMeshWrapper&gt; krystalFurmeshObject = 
+  hairTest-&gt;engine-&gt;FindMeshObject(&quot;krystal_furmesh_object&quot;);
+if (!krystalFurmeshObject)
+  return hairTest-&gt;ReportError (&quot;Can't find fur mesh object!&quot;);
+
+...  
+
+iSector* sector = hairTest-&gt;engine-&gt;FindSector(&quot;room&quot;);
+
+if (!sector)
+  return hairTest-&gt;ReportError(&quot;Could not find default room!&quot;);
+
+krystalFurmeshObject-&gt;GetMovable()-&gt;SetSector(sector);
+krystalFurmeshObject-&gt;GetMovable()-&gt;UpdateMove();
+
+...  
+
+csRef&lt;iMeshObject&gt; imo = krystalFurmeshObject-&gt;GetMeshObject();
+
+// Get reference to the iFurMesh interface
+furMesh = scfQueryInterface&lt;CS::Mesh::iFurMesh&gt;(imo);
+
+furMesh-&gt;SetFurMeshProperties(hairMeshProperties);
+
+furMesh-&gt;SetAnimesh(animesh);
+furMesh-&gt;SetMeshFactory(animeshFactory);
+furMesh-&gt;SetMeshFactorySubMesh(animesh -&gt; GetSubMesh(1)-&gt;GetFactorySubMesh());
+furMesh-&gt;GenerateGeometry(hairTest-&gt;view, hairTest-&gt;room);
+
+furMesh-&gt;SetGuideLOD(0);
+furMesh-&gt;SetStrandLOD(1);
+
+furMesh-&gt;SetAnimationControl(animationPhysicsControl);
+furMesh-&gt;StartAnimationControl();  
+...  
+</pre></td></tr></table>
+<p>In order to not use map files at all, we can create the furmesh factory 
+and furmesh object, programmatically, as well:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">csRef&lt;iMeshObjectFactory&gt; imof = furMeshType-&gt;NewFactory();
+
+csRef&lt;iMeshFactoryWrapper&gt; imfw = 
+  hairTest-&gt;engine-&gt;CreateMeshFactory(imof, &quot;hair_factory&quot;);
+
+csRef&lt;iMeshWrapper&gt; hairMesh = hairTest-&gt;engine-&gt;
+  CreateMeshWrapper (imfw, &quot;hair_mesh_wrapper&quot;, hairTest-&gt;room, csVector3 (0));
+
+...    
+  
+csRef&lt;iMeshObject&gt; imo = hairMesh-&gt;GetMeshObject();
+
+csRef&lt;CS::Mesh::iFurMeshState&gt; ifms = 
+  scfQueryInterface&lt;CS::Mesh::iFurMeshState&gt;(furMesh);
+
+ifms-&gt;SetStrandWidth(0.001);  
+ifms-&gt;SetDisplacement(0.02);
+...
+  
+// Get reference to the iFurMesh interface
+furMesh = scfQueryInterface&lt;CS::Mesh::iFurMesh&gt;(imo);
+...  
+</pre></td></tr></table>
+<a name="4"></a>
+<h4 class="subsubheading"> Include Files </h4>
+
+<p>The include files useful for this section are:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">#include &lt;imesh/furmesh.h&gt;
+</pre></td></tr></table>
+
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Furmesh-Material.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Lighting-System.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Furmesh-Mesh.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

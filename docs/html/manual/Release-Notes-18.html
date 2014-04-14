@@ -1,0 +1,523 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: C.11 Release Notes from 0.17 to 0.18</title>
+
+<meta name="description" content="Crystal Space 2.1.0: C.11 Release Notes from 0.17 to 0.18">
+<meta name="keywords" content="Crystal Space 2.1.0: C.11 Release Notes from 0.17 to 0.18">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Release-Notes-18"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Release-Notes-90.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Release-Notes-17.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Licenses.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h2 class="appendixsec"> C.11 Release Notes from 0.17 to 0.18 </h2>
+
+<p>This section documents the major changes between versions 0.17 and 0.18 of
+Crystal Space.
+</p>
+<a name="1"></a>
+<h3 class="subheading"> Name Change: csWorld =&gt; csEngine </h3>
+
+<p>The class <samp>&lsquo;csWorld&rsquo;</samp> has been renamed to <samp>&lsquo;csEngine&rsquo;</samp>.  Here is a
+summary of all the changes which result from this:
+</p>
+<ul>
+<li>
+<code>iWorld</code> becomes <code>iEngine</code>
+</li><li>
+<code>csWorld</code> becomes <code>csEngine</code>
+</li><li>
+<code>csWorldConfig</code> becomes <code>csEngineConfig</code>
+</li><li>
+<code>csWorldState</code> becomes <code>csEngineState</code>
+</li><li>
+<code>csWorldStateVector</code> becomes <code>csEngineStateVector</code>
+</li><li>
+<code>iworld.h</code> becomes <code>iengine.h</code>
+</li><li>
+<code>world.h</code> becomes <code>engine.h</code>
+</li></ul>
+
+<a name="2"></a>
+<h3 class="subheading"> csThingTemplate Removed </h3>
+
+<p>The class <samp>&lsquo;csThingTemplate&rsquo;</samp> has been removed.  Instead you use normal
+<samp>&lsquo;csThing&rsquo;</samp> instances and clone them using <code>csThing::MergeTemplate()</code>.
+The <samp>&lsquo;thing_templates&rsquo;</samp> list in <samp>&lsquo;csEngine&rsquo;</samp> is still there but it now
+contains instances of <samp>&lsquo;csThing&rsquo;</samp> instead of <samp>&lsquo;csThingTemplate&rsquo;</samp>.  This
+also means that <samp>&lsquo;csPolygonTemplate&rsquo;</samp> is removed.  Fixing applications for
+this change is not very hard.  It mostly means replacing <samp>&lsquo;csThingTemplate&rsquo;</samp>
+with <samp>&lsquo;csThing&rsquo;</samp> and then doing small modifications to the <small>API</small>.
+</p>
+<a name="3"></a>
+<h3 class="subheading"> Configuration File Changes </h3>
+
+<p>The configuration file format has changed significantly.  In contrast to the
+<small>INI</small> format used previously, Crystal Space now uses a flat format.
+Sections are gone.  Every configuration file is just a list of keys in the
+following format:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">; optional comment
+; (can also be several lines long)
+KeyName = Value
+</pre></td></tr></table>
+<p>Also, key names have been changed completely.  Keys are organized in a
+pseudo-hierarchical structure by using key names such as
+<samp>&lsquo;Engine.Lighting.Ambient.Red&rsquo;</samp>.  To convert your own configuration files to
+the new format, you should take all keys from all sections and rename them
+using the template <samp>&lsquo;ApplicationName.SectionName.KeyName&rsquo;</samp>.  This is only a
+suggestion.  You can choose whatever name you want, except that the initial
+<samp>&lsquo;ApplicationName.&rsquo;</samp> should be used in order to avoid naming collisions with
+keys in other configuration files.  This is done to give every option a unique
+name.  The same should be done for plugins
+(<samp>&lsquo;PluginName.SectionName.KeyName&rsquo;</samp>).
+</p>
+<p>Comments at the end of the file are preserved when saving the file.
+</p>
+<p>On the application side, things have also changed:
+</p>
+<ul>
+<li>
+The old <samp>&lsquo;csIniFile&rsquo;</samp> class still exists.  All these changes refer to the
+difference between <samp>&lsquo;csIniFile&rsquo;</samp> and <samp>&lsquo;csConfigFile&rsquo;</samp>, and the difference
+between <samp>&lsquo;iConfigFile&rsquo;</samp> and <samp>&lsquo;iConfigFileNew&rsquo;</samp>.  Sorry for this mess, but
+there were a few cases where I could not (yet) port modules to the new config
+system, so they still require the old system.  This will change soon.  The
+header files for the new system are <tt>&lsquo;CS/csutil/cfgfile.h&rsquo;</tt> and
+<tt>&lsquo;icfgnew.h&rsquo;</tt>.  The main system configuration file already uses the new
+system.
+
+</li><li>
+To read or write configuration keys, you now only pass the key name and default
+value, because sections no longer exist.  Be careful when porting, because the
+line:
+
+<table><tr><td>&nbsp;</td><td><pre class="example">const char *s = Config-&gt;GetStr(&quot;section&quot;, &quot;key&quot;);
+</pre></td></tr></table>
+<p>In your code may now be interpreted as:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">const char *s = Config-&gt;GetStr(&quot;key&quot;, &quot;default&quot;);
+</pre></td></tr></table>
+<p>The compiler will not complain about this.
+</p>
+</li><li>
+<code>GetYesNo()</code> and <code>SetYesNo()</code> have been renamed to <code>GetBool()</code>
+and <code>SetBool()</code>.
+
+</li><li>
+The <samp>&lsquo;dirty&rsquo;</samp> flag is now hidden inside the configuration file object. The
+<code>Save()</code> method respects this flag.
+
+</li><li>
+The section and data iterators have been merged into a single object. This
+iterator can be used to cycle through all options, or through all options
+in one <em>subsection</em>, which is the initial substring of the key name.
+For example, if you iterate all options in subsection <samp>&lsquo;Engine.Lighting.&rsquo;</samp>,
+you will get all options whose name begin with this string. Note the trailing
+dot. It is part of the subsection name. This is important if you have other
+options like <samp>&lsquo;Engine.LightingActivate&rsquo;</samp>, which would otherwise be
+enumerated as well. It is also important because you can ask an iterator for
+the <em>local</em> name of the current key, which is everything but the
+subsection name. For example, If your iterator loops through
+<samp>&lsquo;Engine.Lighting.&rsquo;</samp>, then the key <samp>&lsquo;Engine.Lighting.Ambient.Red&rsquo;</samp>
+would have the local name <samp>&lsquo;Ambient.Red&rsquo;</samp>. If you omit the trailing dot,
+this would be <samp>&lsquo;.Ambient.Red&rsquo;</samp>, which may not be what you want. To
+retrieve the local name, call <code>Iterator-&gt;GetName(true);</code>.
+
+</li><li>
+Convenience methods such as GetInt(), GetFloat(), and GetBool() have been
+added to the iterators.
+
+</li><li>
+The <code>Prev()</code> method of iterators has been removed because a new planned
+implementation of the <samp>&lsquo;iConfigFileNew&rsquo;</samp> interface is probably not able
+to implement this method. Also, it was never used.
+</li></ul>
+
+<a name="4"></a>
+<h3 class="subheading"> Mesh Object Plugins </h3>
+
+<p>Particle systems, 2D sprites, and 3D sprites are now no longer in the
+engine. This means that classes like <samp>&lsquo;csSprite3D&rsquo;</samp>, <samp>&lsquo;csSprite2D&rsquo;</samp>,
+<samp>&lsquo;csParticleSystem&rsquo;</samp>, etc., are no longer directly accessible and now
+have to be accessed through the new mesh object plugin system.
+</p>
+<p>In the engine the two primary mesh-related classes are now <samp>&lsquo;csMeshWrapper&rsquo;</samp>
+and <samp>&lsquo;csMeshFactoryWrapper&rsquo;</samp>.  The old <samp>&lsquo;csSprite&rsquo;</samp> class which was the
+superclass of all sprites has been replaced with <samp>&lsquo;csMeshWrapper&rsquo;</samp>
+<samp>&lsquo;csMeshFactoryWrapper&rsquo;</samp> is roughly similar to what <samp>&lsquo;csSpriteTemplate&rsquo;</samp>
+used to do except that it is now also a parent for particle system and 2D
+sprite instances.
+</p>
+<p>The explanation below mainly tells you how to port the original
+<samp>&lsquo;csSprite3D&rsquo;</samp> code to the new system.  The other stuff follows almost
+automatically from what you see below.
+</p>
+<p>Here is a list of things that are removed and which things
+you will have to use instead. More detailed info will come later:
+</p>
+<ul>
+<li>
+<code>csSprite</code> =&gt; <code>csMeshWrapper</code>
+</li><li>
+<code>csSprite2D</code> =&gt; <code>csMeshWrapper</code>, <code>iSprite2DState</code>
+</li><li>
+<code>csSprite3D</code> =&gt; <code>csMeshWrapper</code>, <code>iSprite3DState</code>
+</li><li>
+<code>csSpriteTemplate</code> =&gt; <code>csMeshFactoryWrapper</code>,
+<code>iSprite3DFactoryState</code>
+</li><li>
+<code>csFrame</code> =&gt; <code>iSpriteFrame</code>
+</li><li>
+<code>csSpriteAction</code> =&gt; <code>iSpriteAction</code>
+</li><li>
+<code>csSkeleton</code> =&gt; <code>iSkeleton</code>
+</li><li>
+<code>csSkeletonLimb</code> =&gt; <code>iSkeletonLimb</code>
+</li><li>
+<code>csSkeletonConnection</code> =&gt; <code>iSkeletonConnection</code>
+</li><li>
+<code>csSkeletonState</code> =&gt; <code>iSkeletonState</code>
+</li><li>
+<code>csSkeletonLimbState</code> =&gt; <code>iSkeletonLimbState</code>
+</li><li>
+<code>csSkeletonConnectionState</code> =&gt; <code>iSkeletonConnectionState</code>
+</li><li>
+<code>iSprite</code> =&gt; <code>iMeshWrapper</code>
+</li><li>
+<code>iSpriteTemplate</code> =&gt; <code>iMeshFactoryWrapper</code>
+</li><li>
+<code>csLoader::LoadSpriteTemplate()</code> =&gt; Use <tt>&lsquo;spr3dldr&rsquo;</tt> plugin to
+load factories
+</li><li>
+<code>csLoader::LoadSprite()</code> =&gt; Use <tt>&lsquo;spr3dldr&rsquo;</tt> plugin to load
+sprites
+</li><li>
+<code>csEngine::sprites</code> =&gt; <code>csEngine::meshes</code>
+</li><li>
+<code>csEngine::RemoveSprite</code> =&gt; <code>csEngine::RemoveMesh</code>
+</li><li>
+<code>csEngine::UnlinkSprite</code> =&gt; <code>csEngine::UnlinkMesh</code>
+</li><li>
+<code>csEngine::sprite_templates</code> =&gt; <code>csEngine::mesh_factories</code>
+</li><li>
+<code>csSector::sprites</code> =&gt; <code>csSector::meshes</code>
+</li></ul>
+
+<p>In addition to that the <samp>&lsquo;SPRITE&rsquo;</samp> keyword in map files is also no longer
+supported. Instead you should use the new <samp>&lsquo;MESHOBJ&rsquo;</samp> keyword.
+</p>
+<p>It is recommended that anyone who wants to convert to the new system should
+first to read the general documentation about the mesh object plugin system
+(see section <a href="MeshObject.html#0">Mesh Object Plug-In System</a>).  Read this very carefully.  A good understanding is
+required to perform a successful conversion.
+</p>
+<p>In addition to what is explained, there are also two convenience functions to
+create mesh factories and mesh objects:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">/**
+ * Convenience function to create a mesh factory from a
+ * given type.  The type plugin will only be loaded if
+ * needed.  'classId' is the SCF name of the plugin (like
+ * 'crystalspace.mesh.object.cube').  Returns NULL on
+ * failure.  The factory will be registered with the engine
+ * under the given name.  If there is already a factory with
+ * that name no new factory will be created but the found
+ * one is returned instead.  If the name is NULL then no
+ * name will be set and no check will happen if the factory
+ * already exists.
+ */
+virtual iMeshFactoryWrapper* CreateMeshFactory(
+  const char* classId, const char* name) = 0;
+
+/**
+ * Convenience function to create a mesh object for a given
+ * factory.  If 'sector' is NULL then the mesh object will
+ * not be set to a position.  Returns NULL on failure.  The
+ * object will be given the specified name.  'name' can be
+ * NULL if no name is wanted.  Different mesh objects can
+ * have the same name (in contrast with factory objects).
+ */
+virtual iMeshWrapper* CreateMeshObject(
+  iMeshFactoryWrapper* factory, const char* name,
+  iSector* sector, const csVector3&amp; pos) = 0;
+</pre></td></tr></table>
+<p>To see how to use them you can take a look at the Simple application.
+</p>
+<p>Here are a few examples of old code compared to new code:
+</p>
+
+<p>Old code:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">// Load a sprite template from disk.
+csSpriteTemplate* spritetmpl =
+  csLoader::LoadSpriteTemplate (engine, &quot;/lib/std/sprite1&quot;);
+// Add the sprite to the engine.
+csSprite3D* sprite = spritetmpl-&gt;NewSprite (engine);
+sprite-&gt;SetName (&quot;MySprite&quot;);
+engine-&gt;sprites.Push (sprite);
+sprite-&gt;GetMovable ().SetSector (room);
+csMatrix3 m; m.Identity (); m *= 5.;
+sprite-&gt;GetMovable ().SetTransform (m);
+sprite-&gt;GetMovable ().SetPosition (csVector3 (-3, 5, 3));
+sprite-&gt;GetMovable ().UpdateMove ();
+sprite-&gt;SetAction (&quot;default&quot;);
+sprite-&gt;InitSprite ();
+</pre></td></tr></table>
+
+<p>New code:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">// Load a sprite template from disk.
+csMeshFactoryWrapper* spritetmpl =
+  csLoader::LoadMeshObjectFactory (engine, &quot;/lib/std/sprite1&quot;);
+if (spritetmpl == NULL)
+{
+  Printf (MSG_FATAL_ERROR, &quot;Error loading mesh object factory!\n&quot;);
+  cleanup ();
+  exit (1);
+}
+// Add the sprite to the engine.
+iMeshWrapper* sprite = engine-&gt;CreateMeshObject (
+   QUERY_INTERFACE (spritetmpl, iMeshFactoryWrapper),
+  &quot;MySprite&quot;,
+  QUERY_INTERFACE (room, iSector),
+  csVector3 (-3, 5, 3));
+csMatrix3 m; m.Identity (); m *= 5.;
+sprite-&gt;GetMovable ()-&gt;SetTransform (m);
+sprite-&gt;GetMovable ()-&gt;UpdateMove ();
+iSprite3DState* spstate =
+  QUERY_INTERFACE (sprite-&gt;GetMeshObject (), iSprite3DState);
+spstate-&gt;SetAction (&quot;default&quot;);
+spstate-&gt;DecRef ();
+</pre></td></tr></table>
+<p>Keep in mind that for this to work <tt>&lsquo;/lib/std/sprite1&rsquo;</tt> has to be modified
+from old to new syntax, as well.
+</p>
+<p>Here is an example for sprite templates:
+</p>
+
+<p>Old syntax (sprite template):
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">SPRITE 'mySpriteTmpl' (
+  TEXNR ('xxx.gif')
+  FRAME (...)
+  ...
+)
+</pre></td></tr></table>
+
+<p>New syntax (mesh wrapper factory):
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">MESHOBJ 'mySpriteTmpl' (
+  PLUGIN ('crystalspace.mesh.loader.factory.sprite.3d')
+  PARAMS (
+    MATERIAL ('xxx')
+    FRAME (...)
+    ...
+  )
+)
+</pre></td></tr></table>
+<p>And here is an example for actual sprite instances:
+</p>
+
+<p>Old syntax (sprite):
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">SPRITE 'mySprite' (
+  TEXNR ('xxx.gif')
+  TEMPLATE ('mySpriteTmpl', 'someAction')
+  MOVE (...)
+)
+</pre></td></tr></table>
+
+<p>New syntax (mesh wrapper):
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">MESHOBJ 'mySprite' (
+  PLUGIN ('crystalspace.mesh.loader.sprite.3d')
+  PARAMS (
+    MATERIAL ('xxx')
+    FACTORY ('mySpriteTmpl')
+    ACTION ('someAction')
+  )
+  MOVE (...)
+)
+</pre></td></tr></table>
+<p>Here are some additional notes.
+</p>
+<ul>
+<li>
+Notice that <code>MOVE()</code> goes outside the <code>PARAMS()</code> block for a sprite.
+</li><li>
+Note that the new <samp>&lsquo;spr3d&rsquo;</samp> can not work with textures. It needs materials.
+So add a definition to the <samp>&lsquo;MATERIALS&rsquo;</samp> section.
+</li></ul>
+
+<a name="5"></a>
+<h3 class="subheading"> csPixmap Moved and Renamed </h3>
+
+<p><samp>&lsquo;csPixmap&rsquo;</samp> has moved to the new <tt>&lsquo;csfx&rsquo;</tt> library, so you will need to
+include the header file from that library.  Note that <samp>&lsquo;csPixmap&rsquo;</samp> is now
+also an abstract class so where you would, in the past, instantiate
+<samp>&lsquo;csPixmap&rsquo;</samp>, you now need to instantiate <samp>&lsquo;csSimplePixmap&rsquo;</samp>, instead.
+In arguments and variables it is recommended you still use <samp>&lsquo;csPixmap&rsquo;</samp> as
+it will allow you to use other kinds of pixmaps there, as well.
+</p>
+<a name="6"></a>
+<h3 class="subheading"> General Use of <small>SCF</small> Interfaces </h3>
+
+<p>In general it is now a good idea to use <small>SCF</small> interfaces to access objects
+instead of the normal classes wherever possible.  This applies mostly to the
+engine (i.e. use methods from <samp>&lsquo;iEngine&rsquo;</samp> rather than <samp>&lsquo;csEngine&rsquo;</samp>).
+Consequently, also use <samp>&lsquo;iMeshWrapper&rsquo;</samp> instead of <samp>&lsquo;csMeshWrapper&rsquo;</samp>, and
+<samp>&lsquo;iMaterialWrapper&rsquo;</samp> instead of <samp>&lsquo;csMaterialWrapper&rsquo;</samp>, and so on.  This
+will make the transition to version 1.0 easier when the engine will be fully
+accessible as a plugin.
+</p>
+<a name="7"></a>
+<h3 class="subheading"> Sound System Changes </h3>
+
+<p>There have been three main changes in the sound system:
+</p>
+<ul>
+<li>
+Some of the options in the configuration file have become redundant.  The
+others have been moved to <tt>&lsquo;CS/data/config/sound.cfg&rsquo;</tt>.  Have a look at this
+file to see which options remain.
+
+</li><li>
+As before, a sound can be loaded as a static or streamed sound, but this
+difference is now expressed by using different classes: <samp>&lsquo;iSoundData&rsquo;</samp> and
+<samp>&lsquo;iSoundStream&rsquo;</samp>. You can create any number of instances (sources) of a
+static sound, but only one instance of a streamed sound. In fact, whenever
+you play a static sound, a separate sound stream is created from it. The
+definition of a static sound is now explicitly &ldquo;a sound of which any
+number of instances can be created&rdquo;.
+
+</li><li>
+The system of 3D and non-3D sources has been changed a bit. Every sound source
+now has a new attribute, the 3D mode. This mode can also be changed after the
+source is created. It can be set to the following values:
+
+<dl compact="compact">
+<dt> <code>SOUND3D_DISABLE</code></dt>
+<dd><p>This will cause the sound source to produce no 3D effect. This is also the
+only mode in which the original stereo effects are preserved.  (This does not
+work correctly at the moment.)
+</p>
+</dd>
+<dt> <code>SOUND3D_ABSOLUTE</code></dt>
+<dd><p>This will interpret the position of the sound source and the listener as
+absolute coordinates and create the 3D effect based on this.
+</p>
+</dd>
+<dt> <code>SOUND3D_RELATIVE</code></dt>
+<dd><p>This will ignore the listener's position and interpret the position of the
+sound source as relative coordinated to the listener. In other words, it
+calculates the 3D effect as if the listener was positioned at (0,0,0)
+with default orientation.
+</p></dd>
+</dl>
+</li></ul>
+
+<a name="8"></a>
+<h3 class="subheading"> Miscellaneous Changes </h3>
+
+<p><code>iGraphics2D::WriteChar()</code> has been removed. Use <code>Write()</code> instead.
+</p>
+<p>All <code>UpdateLighting()</code> calls now accept <samp>&lsquo;iLight&rsquo;</samp> pointers intead
+of <samp>&lsquo;csLight&rsquo;</samp> pointers. In addition <code>csEngine::GetNearbyLights()</code>
+returns an array of <samp>&lsquo;iLight&rsquo;</samp> pointers.
+</p>
+<p>The obsolete <samp>&lsquo;CLights&rsquo;</samp> class (for uniform dynamic lighting) has been
+removed. It was not working properly anyway.
+</p>
+<p>The <code>csEngine::PrepareParticleSystems()</code> method has been removed.
+Instead, use the new <code>csEngine::PrepareMeshes()</code> method.
+</p>
+<p>The <code>csEngine::AdvanceSpriteFrames()</code> method has been renamed to
+<code>NextFrame()</code>.  In addition <code>UpdateParticleSystems()</code> has been
+removed and is now also handled by <code>csEngine::NextFrame()</code>.
+</p>
+<p>With the new mesh object plugin system the <samp>&lsquo;iParticle&rsquo;</samp> interface
+also changed a little. Check out the header to see the changes.
+</p>
+<p><code>FastSqrt()</code> is gone. Use <code>qsqrt()</code> instead. If you want
+to calculate <code>1/sqrt()</code> then use <code>qisqrt()</code>.
+</p>
+<p><samp>&lsquo;csRenderView&rsquo;</samp> has no public members anymore.  You need to access
+everything through <code>GetFoo()</code> and <code>SetFoo()</code> methods Check out the
+header for more details.
+</p>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Release-Notes-90.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Release-Notes-17.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Licenses.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

@@ -1,0 +1,292 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.2.1.1 Simple Header File</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.2.1.1 Simple Header File">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.2.1.1 Simple Header File">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Simple-Header-File"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Tutorial-Simple.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Simple-Event-Handling.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Tutorial-Simple.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h4 class="subsubsection"> 4.2.1.1 Simple Header File </h4>
+
+<p>It is good practice to always put definitions and declarations in header
+files as opposed to source files. In some cases it is even required. Here
+we will show the header file for a simple Crystal Space application.
+Although this is not strictly required, we use a class to encapsulate
+the application logic. Our <tt>&lsquo;simple.h&rsquo;</tt> header looks as follows:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">#ifndef __SIMPLE_H__
+#define __SIMPLE_H__
+
+#include &lt;crystalspace.h&gt;
+
+class Simple : public csApplicationFramework, public csBaseEventHandler
+{
+private:
+  csRef&lt;iEngine&gt; engine;
+  csRef&lt;iLoader&gt; loader;
+  csRef&lt;iGraphics3D&gt; g3d;
+  csRef&lt;iKeyboardDriver&gt; kbd;
+  csRef&lt;iVirtualClock&gt; vc;
+  csRef&lt;iRenderManager&gt; rm;
+  
+  csRef&lt;FramePrinter&gt; printer;
+
+public:
+  Simple ();
+  ~Simple ();
+
+  void OnExit ();
+  bool OnInitialize (int argc, char* argv[]);
+
+  bool Application ();
+  
+  void Frame ();
+  
+  bool SetupModules ();
+
+  CS_EVENTHANDLER_PHASE_LOGIC(&quot;application.simple1&quot;)
+};
+
+#endif // __SIMPLE1_H__
+</pre></td></tr></table>
+<p>In the <samp>&lsquo;Simple&rsquo;</samp> class we keep a number of references to important
+objects that we are going to need a lot. That way we don't have to get
+them every time when we need them. Other than that we have a constructor
+which will do the initialization of these variables, a destructor which
+will clean up the application, an initialization function which will
+be responsible for the full set up of Crystal Space and our application.
+</p>
+<p>Note that we use smart pointers (<code>csRef&lt;&gt;</code>) for several of those
+references. That makes it easier to manage reference counting. We let
+the smart pointer take care of this for us.
+</p>
+<p>The event handler macro is used because our tutorial application also
+needs to be an event handler (it inherits from <code>csBaseEventHandler</code> for
+that). The macro indicates the name of this event handler and specifies that
+the application wants to handle the frame event in the first (or 'logic')
+phase.
+</p>
+<p>In the source file <tt>&lsquo;simple.cpp&rsquo;</tt> we place the following:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">#include &quot;simple.h&quot;
+
+CS_IMPLEMENT_APPLICATION
+
+Simple::Simple ()
+{
+  SetApplicationName (&quot;CrystalSpace.Simple1&quot;);
+}
+
+Simple::~Simple ()
+{
+}
+
+void Simple::Frame ()
+{
+}
+
+bool Simple::OnInitialize(int argc, char* argv[])
+{
+  if (!csInitializer::RequestPlugins(GetObjectRegistry(),
+    CS_REQUEST_VFS,
+    CS_REQUEST_OPENGL3D,
+    CS_REQUEST_ENGINE,
+    CS_REQUEST_FONTSERVER,
+    CS_REQUEST_IMAGELOADER,
+    CS_REQUEST_LEVELLOADER,
+    CS_REQUEST_REPORTER,
+    CS_REQUEST_REPORTERLISTENER,
+    CS_REQUEST_END))
+    return ReportError(&quot;Failed to initialize plugins!&quot;);
+
+  csBaseEventHandler::Initialize(GetObjectRegistry());
+  csEventID events[] = {
+    csevFrame (GetObjectRegistry()),
+    csevKeyboardEvent (GetObjectRegistry()),
+    CS_EVENTLIST_END
+  };
+  if (!RegisterQueue(GetObjectRegistry(), events))
+    return ReportError(&quot;Failed to set up event handler!&quot;);
+
+  return true;
+}
+
+void Simple::OnExit()
+{
+}
+
+bool Simple::Application()
+{
+  if (!OpenApplication(GetObjectRegistry()))
+    return ReportError(&quot;Error opening system!&quot;);
+
+  if (SetupModules())
+  {
+    Run();
+  }
+
+  return true;
+}
+
+bool Simple::SetupModules ()
+{
+  g3d = csQueryRegistry&lt;iGraphics3D&gt; (GetObjectRegistry());
+  if (!g3d) return ReportError(&quot;Failed to locate 3D renderer!&quot;);
+
+  engine = csQueryRegistry&lt;iEngine&gt; (GetObjectRegistry());
+  if (!engine) return ReportError(&quot;Failed to locate 3D engine!&quot;);
+
+  vc = csQueryRegistry&lt;iVirtualClock&gt; (GetObjectRegistry());
+  if (!vc) return ReportError(&quot;Failed to locate Virtual Clock!&quot;);
+
+  kbd = csQueryRegistry&lt;iKeyboardDriver&gt; (GetObjectRegistry());
+  if (!kbd) return ReportError(&quot;Failed to locate Keyboard Driver!&quot;);
+
+  loader = csQueryRegistry&lt;iLoader&gt; (GetObjectRegistry());
+  if (!loader) return ReportError(&quot;Failed to locate Loader!&quot;);
+
+  return true;
+}
+
+/*---------------*
+ * Main function
+ *---------------*/
+int main (int argc, char* argv[])
+{
+  return csApplicationRunner&lt;Simple&gt;::Run (argc, argv);
+}
+</pre></td></tr></table>
+<p>This is almost the simplest possible application and it is absolutely useless.
+Also don't run it on an operating system where you can't kill a running
+application because there is no way to stop the application once it has
+started running.
+</p>
+<p>Even though this application is useless it already has a lot of features
+that are going to be very useful later. Here is a short summary of all
+the things and features it already has:
+</p>
+<ul>
+<li>
+It will open a window.
+
+</li><li>
+You can control the size of the window and the video driver used
+for that window with command-line options (<samp>&lsquo;-video&rsquo;</samp> and <samp>&lsquo;-mode&rsquo;</samp>
+command-line options).
+
+</li><li>
+It has the following plugins initialized and ready to use: engine, 3D
+renderer, canvas, reporter, reporter listener, font server, image loader,
+map loader, and <small>VFS</small>.
+</li></ul>
+
+<p>Before we start making this application more useful lets have a look at what
+actually happens here.
+</p>
+<p>Before doing anything at all, after including the necessary header files, we
+first need to use a few macros.  The CS_IMPLEMENT_APPLICATION macro is
+essential for every application using Crystal Space.  It makes sure that the
+<code>main()</code> routine is correctly linked and called on every platform.
+</p>
+<p><code>csInitializer::RequestPlugins()</code> will use the configuration file
+(which we are not using in this tutorial), the command-line and the
+requested plugins to find out which plugins to load. The command-line
+has highest priority, followed by the configuration file and lastly the
+requested plugins.
+</p>
+<p>This concludes the initialization pass.
+</p>
+<p>In <code>Simple::Application()</code> we open the window with a call
+to the function <code>csInitializer::OpenApplication()</code>. This sends
+the <samp>&lsquo;cscmdSystemOpen&rsquo;</samp> broadcast message to all components that are
+listening to the event queue.  One of the plugins that listens for this is
+the 3D renderer which will then open its window (or enable graphics
+on a non-windowing operating system).
+</p>
+<p>After that, we call <code>Simple::SetupModules()</code> to locate all the
+common objects that we will need later, and store references to them
+in our main class. Because we use <code>csRef&lt;&gt;</code> or smart pointers,
+we don't have to worry about invoking <code>IncRef()</code> and <code>DecRef()</code>
+manually.
+</p>
+<p>Finally we start the default main loop by calling <code>Run()</code>.
+</p>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Tutorial-Simple.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Simple-Event-Handling.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Tutorial-Simple.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

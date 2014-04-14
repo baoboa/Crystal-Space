@@ -1,0 +1,291 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.2.3.1 Minimal Base Code</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.2.3.1 Minimal Base Code">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.2.3.1 Minimal Base Code">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Simple-Base-Code"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Tutorial-Simple-Map.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Simple-Loading-The-Map.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Tutorial-Simple-Map.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h4 class="subsubsection"> 4.2.3.1 Minimal Base Code </h4>
+
+<p>To start, we first take the code of tutorial one
+and remove the code that creates geometry and initializes
+the default camera position. In addition we add a new <code>LoadMap()</code>
+function. This results in the following for <tt>&lsquo;simpmap.h&rsquo;</tt>:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">#ifndef __SIMPMAP_H__
+#define __SIMPMAP_H__
+
+#include &lt;crystalspace.h&gt;
+
+class Simple
+  : public csApplicationFramework, public csBaseEventHandler
+{
+private:
+  csRef&lt;iEngine&gt; engine;
+  csRef&lt;iLoader&gt; loader;
+  csRef&lt;iGraphics3D&gt; g3d;
+  csRef&lt;iKeyboardDriver&gt; kbd;
+  csRef&lt;iVirtualClock&gt; vc;
+  csRef&lt;iCollideSystem&gt; cdsys;
+  csRef&lt;iView&gt; view;
+  iSector* room;
+  csColliderActor collider_actor;
+ 
+  bool OnKeyboard (iEvent&amp;);
+  void ProcessFrame ();
+  void FinishFrame ();
+  bool LoadMap ();
+
+public:
+  Simple ();
+  ~Simple ();
+
+  void OnExit ();
+  bool OnInitialize (int argc, char* argv[]);
+  bool Application ();
+
+  CS_EVENTHANDLER_NAMES(&quot;application.simpmap&quot;)
+  CS_EVENTHANDLER_NIL_CONSTRAINTS
+};
+
+#endif // __SIMPMAP_H__
+</pre></td></tr></table>
+<p>Similarly, for <tt>&lsquo;simpmap.cpp&rsquo;</tt>:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">#include &quot;simpmap.h&quot;
+
+CS_IMPLEMENT_APPLICATION
+
+Simple::Simple ()
+{
+  SetApplicationName (&quot;CrystalSpace.SimpleMap&quot;);
+}
+
+Simple::~Simple ()
+{
+}
+
+void Simple::ProcessFrame ()
+{
+  // First get elapsed time from the virtual clock.
+  csTicks elapsed_time = vc-&gt;GetElapsedTicks ();
+
+  csVector3 obj_move (0);
+  csVector3 obj_rotate (0);
+
+  if (kbd-&gt;GetKeyState (CSKEY_SHIFT))
+  {
+    // If the user is holding down shift, the arrow keys will cause
+    // the camera to strafe up, down, left or right from it's
+    // current position.
+    if (kbd-&gt;GetKeyState (CSKEY_RIGHT))
+      obj_move = CS_VEC_RIGHT * 3.0f;
+    if (kbd-&gt;GetKeyState (CSKEY_LEFT))
+      obj_move = CS_VEC_LEFT * 3.0f;
+    if (kbd-&gt;GetKeyState (CSKEY_UP))
+      obj_move = CS_VEC_UP * 3.0f;
+    if (kbd-&gt;GetKeyState (CSKEY_DOWN))
+      obj_move = CS_VEC_DOWN * 3.0f;
+  }
+  else
+  {
+    // left and right cause the camera to rotate on the global Y
+    // axis; page up and page down cause the camera to rotate on the
+    // _camera's_ X axis (more on this in a second) and up and down
+    // arrows cause the camera to go forwards and backwards.
+    if (kbd-&gt;GetKeyState (CSKEY_RIGHT))
+      obj_rotate.Set (0, 1, 0);
+    if (kbd-&gt;GetKeyState (CSKEY_LEFT))
+      obj_rotate.Set (0, -1, 0);
+    if (kbd-&gt;GetKeyState (CSKEY_PGUP))
+      obj_rotate.Set (1, 0, 0);
+    if (kbd-&gt;GetKeyState (CSKEY_PGDN))
+      obj_rotate.Set (-1, 0, 0);
+    if (kbd-&gt;GetKeyState (CSKEY_UP))
+      obj_move = CS_VEC_FORWARD * 3.0f;
+    if (kbd-&gt;GetKeyState (CSKEY_DOWN))
+      obj_move = CS_VEC_BACKWARD * 3.0f;
+  }
+
+  collider_actor.Move (float (elapsed_time) / 1000.0f, 1.0f,
+    	obj_move, obj_rotate);
+
+  // Tell 3D driver we're going to display 3D things.
+  if (!g3d-&gt;BeginDraw (engine-&gt;GetBeginDrawFlags () | CSDRAW_3DGRAPHICS))
+    return;
+
+  // Tell the camera to render into the frame buffer.
+  view-&gt;Draw ();
+}
+
+void Simple::FinishFrame ()
+{
+  g3d-&gt;FinishDraw ();
+  g3d-&gt;Print (0);
+}
+
+bool Simple::OnKeyboard(iEvent&amp; ev)
+{
+  csKeyEventType eventtype = csKeyEventHelper::GetEventType(&amp;ev);
+  if (eventtype == csKeyEventTypeDown)
+  {
+    utf32_char code = csKeyEventHelper::GetCookedCode(&amp;ev);
+    if (code == CSKEY_ESC)
+    {
+      csRef&lt;iEventQueue&gt; q = 
+        csQueryRegistry&lt;iEventQueue&gt; (GetObjectRegistry());
+      if (q.IsValid()) 
+	q-&gt;GetEventOutlet()-&gt;Broadcast(csevQuit (GetObjectRegistry ()));
+    }
+  }
+  return false;
+}
+
+bool Simple::OnInitialize(int argc, char* argv[])
+{
+  if (!csInitializer::RequestPlugins(GetObjectRegistry(),
+    CS_REQUEST_VFS,
+    CS_REQUEST_OPENGL3D,
+    CS_REQUEST_ENGINE,
+    CS_REQUEST_FONTSERVER,
+    CS_REQUEST_IMAGELOADER,
+    CS_REQUEST_LEVELLOADER,
+    CS_REQUEST_REPORTER,
+    CS_REQUEST_REPORTERLISTENER,
+    CS_REQUEST_PLUGIN(&quot;crystalspace.collisiondetection.opcode&quot;,
+		iCollideSystem),
+    CS_REQUEST_END))
+    return ReportError(&quot;Failed to initialize plugins!&quot;);
+
+  csBaseEventHandler::Initialize(GetObjectRegistry());
+  if (!RegisterQueue(GetObjectRegistry(), csevAllEvents(GetObjectRegistry())))
+    return ReportError(&quot;Failed to set up event handler!&quot;);
+
+  return true;
+}
+
+void Simple::OnExit()
+{
+}
+
+bool Simple::Application()
+{
+  if (!OpenApplication(GetObjectRegistry()))
+    return ReportError(&quot;Error opening system!&quot;);
+
+  g3d = csQueryRegistry&lt;iGraphics3D&gt; (GetObjectRegistry());
+  if (!g3d) return ReportError(&quot;Failed to locate 3D renderer!&quot;);
+
+  engine = csQueryRegistry&lt;iEngine&gt; (GetObjectRegistry());
+  if (!engine) return ReportError(&quot;Failed to locate 3D engine!&quot;);
+
+  vc = csQueryRegistry&lt;iVirtualClock&gt; (GetObjectRegistry());
+  if (!vc) return ReportError(&quot;Failed to locate Virtual Clock!&quot;);
+
+  kbd = csQueryRegistry&lt;iKeyboardDriver&gt; (GetObjectRegistry());
+  if (!kbd) return ReportError(&quot;Failed to locate Keyboard Driver!&quot;);
+
+  loader = csQueryRegistry&lt;iLoader&gt; (GetObjectRegistry());
+  if (!loader) return ReportError(&quot;Failed to locate Loader!&quot;);
+
+  cdsys = csQueryRegistry&lt;iCollideSystem&gt; (GetObjectRegistry());
+  if (!cdsys) return ReportError (&quot;Failed to locate CD system!&quot;);
+
+  view.AttachNew(new csView (engine, g3d));
+  iGraphics2D* g2d = g3d-&gt;GetDriver2D ();
+  // We use the full window to draw the world.
+  view-&gt;SetRectangle (0, 0, g2d-&gt;GetWidth (), g2d-&gt;GetHeight ());
+
+  Run();
+
+  return true;
+}
+
+/*---------------*
+ * Main function
+ *---------------*/
+int main (int argc, char* argv[])
+{
+  return csApplicationRunner&lt;Simple&gt;::Run (argc, argv);
+}
+</pre></td></tr></table>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Tutorial-Simple-Map.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Simple-Loading-The-Map.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Tutorial-Simple-Map.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

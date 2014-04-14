@@ -1,0 +1,56 @@
+@c -*-texinfo-*-
+@node Blender, 3DSMax, Assimp importer, Working with Engine Content
+@section Making Levels and Models in Blender
+@cindex Blender
+@cindex Blender Exporter
+@cindex @code{blender2crystal}
+@cindex @code{io_scene_cs}
+
+Blender is one of the most popular open source 3D modelers available and can be used
+to create models and scenes for Crystal Space. You can find Blender here:
+
+@url{http://www.blender3d.org}
+
+To export your objects into Crystal Space, you will need to use the @code{io_scene_cs}
+add-on script. This script is valid for the Blender 2.6x series and above.
+
+If you want to use the Blender 2.4x series, then you should use the @code{blender2crystal}
+script instead (available from @url{http://leapingcat.org/blender2crystal})
+
+Another alternative solution, allowing to load directly the Blender files within Crystal Space
+without the need to export them previously, can be found with the @ref{Assimp importer}, although
+it produces generally less good results for Blender files.
+
+The @code{io_scene_cs} add-on script is still in Beta stage, although it works quite
+well with most objects and scenes. It can export:
+
+@itemize @bullet
+@item
+static meshes into Crystal Space @ref{MeshObject Genmesh, Genmesh meshes}
+@item
+animated meshes, along with their skeleton, morph targets, bone influences, animations
+and sockets, into Crystal Space @ref{MeshObject Animesh, Animesh meshes}
+@item
+materials and textures
+@item
+scenes with portals and multiple sectors
+@item
+groups of objects as instanced meshes
+@end itemize
+
+The following sections will guide you through the installation and usage of this script.
+
+@menu
+* io_scene_cs Installing:: Installing the @code{io_scene_cs} add-on script
+* io_scene_cs First Steps:: First Steps
+* io_scene_cs Export Scenes:: Exporting Scenes
+* io_scene_cs Export Genmesh:: Exporting Static Meshes
+* io_scene_cs Export Animesh:: Exporting Animated Meshes
+* io_scene_cs Portals:: Exporting Portals
+* io_scene_cs ToDo:: ToDo
+@end menu
+
+@importss{content,blender,install.txi}
+@importss{content,blender,tutorial.txi}
+@importss{content,blender,portals.txi}
+

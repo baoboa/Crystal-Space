@@ -1,0 +1,216 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.2.4.7 Adversary Class</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.2.4.7 Adversary Class">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.2.4.7 Adversary Class">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Mazing-Adversary-Class"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Mazing-Player-Class.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Mazing-Explosion-Class.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Tutorial-Mazing.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h4 class="subsubsection"> 4.2.4.7 Adversary Class </h4>
+
+<p>The <code>Adversary</code> class represents an enemy. For every enemy in the game
+we will have an adversary.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">class Adversary : public scfImplementationExt1&lt;Adversary,
+	csObject, scfFakeInterface&lt;Adversary&gt; &gt;
+{
+private:
+  csWeakRef&lt;iMeshWrapper&gt; mesh;
+  RoomCoordinate current_location;
+  AppMazing* app;
+
+  bool moving;
+  csVector3 start, end;
+  float remaining_seconds;
+
+public:
+  SCF_INTERFACE(Adversary, 1, 0, 0);
+
+  Adversary (AppMazing* app, iMeshWrapper* mesh, const RoomCoordinate&amp; rc);
+  virtual ~Adversary () { }
+
+  void ThinkAndMove (float elapsed_seconds);
+
+  iMeshWrapper* GetMesh () const { return mesh; }
+};
+</pre></td></tr></table>
+<p>This class declaration may look a bit strange. The reason for this
+is that we need to be able to find the correct <code>Adversary</code> instance
+starting from a Crystal Space mesh object. To do that Crystal Space provides
+the <code>csObject</code> system. With this system one can relate objects to each
+other (parent/child relationships). Note that this relation is purely
+organizational. It is not a visual hierarchical object. (see section <a href="Game-Data.html#0">Managing Game Specific Data</a>).
+What we want to do here is to attach the adversary instance to the mesh so
+that when we have a mesh we can go back to the adversary instance without
+having to scan all adversaries one by one. To do this we basically have
+to implement the <code>iObject</code> interface. Objects that implement that interface
+can be attached to other objects that also implement that interface. A mesh
+(<code>iMeshWrapper</code>) also implements <code>iObject</code> so that is very convenient
+here. To let our <code>Adversary</code> class implement <code>iObject</code> the easiest
+way is to inherit from <code>csObject</code>. And this is what the class inheritence
+above actually does. The <code>scfImplementationExt1</code> template makes it
+possible to let <code>Adversary</code> be an <small>SCF</small> class (which is needed to
+implement <code>iObject</code>) and extend from <code>csObject</code> as well. Finally
+we add a <code>scfFakeInterface&lt;Adversary&gt;</code> so that we can actually find out
+if an <code>iObject</code> instance is an adversary. How to do this will be shown
+later.
+</p>
+<p>In the class declaration itself we also need to specify a version of
+this class using <code>SCF_INTERFACE</code>. For our simple case this is actually
+not very useful but in general these versions can allow someone to be sure
+it gets the right version of the interface.
+</p>
+<p>The main function in this class is the <code>ThinkAndMove()</code> function. This
+function takes the elapsed seconds (since last frame) as a parameter and
+based on that it will calculate how and where to move the adversary.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">Adversary::Adversary (AppMazing* app,
+	iMeshWrapper* mesh, const RoomCoordinate&amp; rc) :
+	scfImplementationType (this)
+{
+  Adversary::app = app;
+  Adversary::mesh = mesh;
+  current_location = rc;
+  moving = false;
+}
+
+void Adversary::ThinkAndMove (float elapsed_seconds)
+{
+  if (!moving)
+  {
+    const csArray&lt;RoomCoordinate&gt;&amp; connections = app-&gt;GetMaze ()
+    	-&gt;GetConnections (current_location);
+    size_t moveto = (rand () &gt;&gt; 3) % connections.Length ();
+    if (app-&gt;GetMaze ()-&gt;IsSpaceFree (connections[moveto]))
+    {
+      start.x = float (current_location.x) * ROOM_DIMENSION;
+      start.y = float (current_location.y) * ROOM_DIMENSION;
+      start.z = float (current_location.z) * ROOM_DIMENSION;
+      app-&gt;GetMaze ()-&gt;FreeSpace (current_location);
+      current_location = connections[moveto];
+      app-&gt;GetMaze ()-&gt;OccupySpace (current_location);
+      end.x = float (current_location.x) * ROOM_DIMENSION;
+      end.y = float (current_location.y) * ROOM_DIMENSION;
+      end.z = float (current_location.z) * ROOM_DIMENSION;
+      remaining_seconds = ADVERSARY_MOVETIME;
+      moving = true;
+    }
+  }
+  else
+  {
+    remaining_seconds -= elapsed_seconds;
+    csVector3 new_pos;
+    if (remaining_seconds &lt;= 0)
+    {
+      moving = false;
+      new_pos = end;
+    }
+    else
+    {
+      csMath3::Between (end, start, new_pos,
+      	100.0 * remaining_seconds / ADVERSARY_MOVETIME, 0);
+    }
+    iMovable* movable = mesh-&gt;GetMovable ();
+    iSector* old_sector = movable-&gt;GetSectors ()-&gt;Get (0);
+    bool mirror;
+    iSector* new_sector = old_sector-&gt;FollowSegment (
+    	movable-&gt;GetTransform (), new_pos, mirror, true);
+    movable-&gt;SetSector (new_sector);
+    movable-&gt;GetTransform ().SetOrigin (new_pos);
+    movable-&gt;UpdateMove ();
+  }
+}
+</pre></td></tr></table>
+<p>An adversary can be in two states: either it is moving or else it is not
+moving. This state is set in the <samp>&lsquo;moving&rsquo;</samp> boolean variable. If the
+adversary is not moving the <code>ThinkAndMove()</code> will attempt a random
+connection from the current node it is occupying. If the destination node
+of that connection is free then it will initiate a move to that location
+and set <samp>&lsquo;moving&rsquo;</samp> to true. Otherwise it will do nothing (in which case
+next frame the test happens again).
+</p>
+<p>If the adversary is moving then <code>ThinkAndMove()</code> will calculate
+(based on how much time has elapsed since previous frame) how far the
+adversary should move between the original node and the new destination node.
+If it arrives at the destination the <code>moving</code> flag is set to false
+again.
+</p>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Mazing-Player-Class.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Mazing-Explosion-Class.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Tutorial-Mazing.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

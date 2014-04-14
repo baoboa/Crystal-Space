@@ -1,0 +1,201 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.3.1.7 Plugin Meta-Information</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.3.1.7 Plugin Meta-Information">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.3.1.7 Plugin Meta-Information">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="SCF-Meta-Info"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="SCF-Client.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="SCF-Meta-Info-Embedding.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="SCF.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h4 class="subsubsection"> 4.3.1.7 Plugin Meta-Information </h4>
+
+<p>It is possible and common to use <small>SCF</small> interfaces and objects directly via
+the C++ class names, via creation functions, or via facilities which return
+pointers to pure <small>SCF</small> interfaces.  However, when an external plugin modules
+publishes a class implementing an <small>SCF</small> interface, the client of that plugin
+can not access the object directly via C++.  This is where the <small>SCF</small>
+<em>class name</em> comes into play.  An <small>SCF</small> class name is an abitrary string
+assigned to the implementation.  The string is passed to
+<code>scfCreateInstance()</code> in order to create an instance of the named
+object.  If necessary, <small>SCF</small> will load the plugin which implements the named
+object in order to satisfy the request.  The <small>SCF</small> class name can be
+anything you like, though it is often useful to impose a hierarchical
+interpretation on the name.  For instance,
+<samp>&lsquo;crystalspace.graphics3d.opengl&rsquo;</samp>.
+</p>
+<p>The data which describes a plugin module, such as the <small>SCF</small> class names
+and C++ implementations which the plugin exports, is known as
+<em>meta-information</em>.  Each plugin has an associated meta-information
+resource which describes the plugin module.  This information can be accessed
+without even loading the plugin module.  At development time, the
+meta-information is maintained in an <small>XML</small>-format text file which has
+the same name as the plugin module, but with extension <tt>&lsquo;.csplugin&rsquo;</tt>.  Here
+is a sample meta-information resource for a plugin named <tt>&lsquo;myplugin&rsquo;</tt>
+(<tt>&lsquo;myplugin.so&rsquo;</tt> on Unix, <tt>&lsquo;myplugin.dll&rsquo;</tt> on Windows):
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;!-- myplugin.csplugin --&gt;
+&lt;plugin&gt;
+  &lt;scf&gt;
+    &lt;classes&gt;
+      &lt;class&gt;
+        &lt;name&gt;myproj.myplugin.foo1&lt;/name&gt;
+        &lt;implementation&gt;MyClass1&lt;/implementation&gt;
+        &lt;description&gt;My first custom foo class&lt;/description&gt;
+      &lt;/class&gt;
+      &lt;class&gt;
+        &lt;name&gt;myproj.myplugin.foo2&lt;/name&gt;
+        &lt;implementation&gt;MyClass2&lt;/implementation&gt;
+        &lt;description&gt;My second custom foo class&lt;/description&gt;
+        &lt;requires&gt;
+          &lt;class&gt;myproj.myplugin.bar1&lt;/class&gt;
+          &lt;class&gt;myproj.myplugin.bar2&lt;/class&gt;
+        &lt;/requires&gt;
+      &lt;/class&gt;
+    &lt;/classes&gt;
+  &lt;/scf&gt;
+&lt;/plugin&gt;
+</pre></td></tr></table>
+<p>The top-level node of a meta-information file is named <code>&lt;plugin&gt;</code>.  All
+<small>SCF</small>-related information is contained within an <code>&lt;scf&gt;</code> child node.
+Plugin modules can export multiple named <small>SCF</small> classes.  Each exported class
+is represented by a <code>&lt;class&gt;</code> node within the <code>&lt;classes&gt;</code> group.  The
+<code>&lt;name&gt;</code> node of a <code>&lt;class&gt;</code> is the class' <small>SCF</small> name.  The
+<code>&lt;implementation&gt;</code> node references the C++ class which actually implements
+the named <small>SCF</small> class.  This is the same name that is privided as an
+argument to the <code>SCF_IMPLEMENT_FACTORY()</code> macro.  When an <small>SCF</small> class
+depends upon other <small>SCF</small> classes, the dependencies are indicated via the
+optional <code>&lt;requires&gt;</code> group, which contains one <code>&lt;class&gt;</code> node per
+dependency.
+</p>
+<p>The above example meta-information resource indicates that the plugin exports
+two C++ classes, <samp>&lsquo;MyClass1&rsquo;</samp> and <samp>&lsquo;MyClass2&rsquo;</samp> under the <small>SCF</small> class
+names <samp>&lsquo;myproj.myplugin.foo1&rsquo;</samp> and <samp>&lsquo;myproj.myplugin.foo2&rsquo;</samp>,
+respectively.  Furthermore, the second exported class has a dependency upon two
+other <small>SCF</small> classes, <samp>&lsquo;myproj.myplugin.bar1&rsquo;</samp> and
+<samp>&lsquo;myproj.myplugin.bar2&rsquo;</samp>.  <small>SCF</small> will ensure that these other classes are
+loaded before it instantiates <samp>&lsquo;MyClass2&rsquo;</samp>.
+</p>
+<p>Meta-information in the <tt>&lsquo;.csplugin&rsquo;</tt> file is extensible; it is not
+restricted to <small>SCF</small>-only usage.  Plugin authors can choose to publish
+supplementary information about plugins in addition to the <small>SCF</small> information
+already published.  As a hypothetical example, image loading plugins might
+desire to publish <em>image indentification</em> information which would allow the
+image loading multiplexor to selectively request image loading plugins
+<em>on-demand</em>, rather than requesting all plugins unconditionally, even if
+they are not needed.  Here is a possible meta-information table for a <small>PNG</small>
+image loader (with the <code>&lt;scf&gt;</code> node collapsed to <samp>&lsquo;<small class="dots">...</small>&rsquo;</samp> for the
+sake of illustration):
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;!-- cspngimg.csplugin --&gt;
+&lt;plugin&gt;
+  &lt;scf&gt;...&lt;/scf&gt;
+  &lt;imageloader&gt;
+    &lt;imagetype&gt;
+      &lt;class&gt;crystalspace.graphic.image.io.png&lt;/class&gt;
+      &lt;identify&gt;
+        &lt;mimetype&gt;image/png&lt;/mimetype&gt;
+        &lt;extension&gt;png&lt;/extension&gt;
+        &lt;extension&gt;PNG&lt;/extension&gt;
+        &lt;scan length=&quot;4&quot; bytes=&quot;\0x89PNG&quot;/&gt;
+     &lt;/identify&gt;
+    &lt;/imagetype&gt;
+  &lt;/imageloader&gt;
+&lt;/plugin&gt;
+</pre></td></tr></table>
+<p>In this example, the <small>PNG</small> loader meta-information tells the multiplexor
+several different ways to identify a <small>PNG</small> image:
+</p>
+<ul>
+<li>
+By checking <small>MIME</small> type, if available.
+</li><li>
+By checking file extension, if available.
+</li><li>
+By checking for the <em>magic</em> identification string <samp>&lsquo;\0x89PNG&rsquo;</samp> in the
+raw image data.
+</li></ul>
+
+
+<p>If the multiplexor identifies the image as <small>PNG</small>, only then will it actually
+request the <small>PNG</small> loader plugin.
+</p>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="SCF-Client.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="SCF-Meta-Info-Embedding.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="SCF.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

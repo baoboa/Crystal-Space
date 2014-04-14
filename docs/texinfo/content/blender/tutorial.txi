@@ -1,0 +1,396 @@
+@c -*-texinfo-*-
+@node io_scene_cs First Steps, io_scene_cs Export Scenes, io_scene_cs Installing, Blender
+@subsection First Steps
+
+This section presents the main panel of the user interface of the @code{io_scene_cs}
+add-on script.
+
+@heading Main export panel
+
+The main @samp{Crystal Space Export} panel is placed in the @samp{Render} context of the
+@samp{Properties} (or @samp{Buttons}) window. Some other panels are also added in some
+other contexts of the @samp{Properties} window, they will be presented later.
+
+@picturess{content,blender,io_scene_cs_interface}
+
+The panel is composed of several buttons and controls to configure and run the exporter:
+
+@itemize @bullet
+@item
+@strong{Export as a CS library}: whether the scene should be exported as a @samp{library}
+or a @samp{world} file.
+@item
+@strong{Enable double sided meshes}: globally enable the setting of the @samp{double sided}
+property. If it is disabled, then all meshes that are exported will be single sided,
+whatever their specific setting.
+@item
+@strong{Export path}: path to the folder where the generated files will be put.
+@item
+@strong{Export}: export the scene to the specified path.
+@item
+@strong{Export and Run}: export the scene then run it in Crystal Space's @samp{walktest}.
+@item
+@strong{Console}: enable the @code{-console} flag of @samp{walktest}
+@item
+@strong{Verbose}: enable the @code{-verbose=-scf} flag of @samp{walktest}
+@item
+@strong{Silent}: enable the @code{-silent} flag of @samp{walktest}
+@end itemize
+
+If the @samp{CRYSTAL} environment variable is not defined or pointing to a directory
+containing the @samp{walktest} application, then most of these controls are not present and
+are replaced instead by the comment @samp{'walktest' isn't available!}. See the
+@ref{HOWTO Setting the CRYSTAL environment variable, dedicated section} in order to solve this.
+
+@heading The 'Export' button
+
+When you click on the @strong{Export} button, Blender will start working and writing
+informations about the export process on the
+@url{http://wiki.blender.org/index.php/Doc:2.6/Manual/Interface/Window_system/Console_window, Blender console},
+until the final message: @samp{EXPORTING complete}. The files generated should have been
+placed in the given export folder.
+
+The structure of the files will depend whether you have checked or not the
+@samp{Export as a CS library} option. If its is @cite{not} checked, then it will be the
+following:
+
+@itemize @bullet
+@item
+a @file{world} file containing your scene (i.e. all sectors) is created at the root
+of the export directory
+@item
+a @file{textures} directory is created in the export directory, and all texture files are
+put in it
+@item
+a @file{factories} directory is created in the export directory, and all library files (i.e.
+the mesh factories) are put in it
+@end itemize
+
+If the @samp{Export as a CS library} option @cite{is} checked, then there will be only one
+file generated:
+
+@itemize @bullet
+@item
+a @file{library} file containing all mesh factories is created at the root of the export
+directory
+@item
+a @file{textures} directory is also created in the export directory, and all texture files
+are put in it
+@end itemize
+
+If you want to visualize the exported objects, then you can open the library files with
+@samp{viewmesh}. Take care for that that the path where are your files should be mounted
+correctly in the @ref{VFS, Virtual File System} of Crystal Space (@sc{vfs}).
+
+In order to mount the VFS path, use the following command:
+
+@example
+viewmesh -R=<export_path> factories/<library_file>
+@end example
+
+
+@heading The 'Export and Run' button
+
+This button allows the user to either launch the export process and view the result in
+the @ref{Walktest, @samp{walktest}} application.
+
+In order to work correctly, your scene needs:
+
+@itemize @bullet
+@item
+at least one camera,
+@item
+at least one light lighting your objects,
+@item
+some visible objects below the camera, to be used as a roof and in order for the @samp{walktest}'s
+camera to not fall into the void as soon as you start the map.
+@end itemize
+
+Once clicked on the @strong{Export and Run} button, the export process will start until
+the status message: @strong{EXPORTING complete} appears on the Blender console. Shortly
+after that, the @samp{walktest} window should appear (otherwise, check the Blender console
+for some output message).
+
+Using the arrow keys, you will be able to move around your scene. Note that @samp{walktest} 
+has a lot of different keys and options, so you may want to have a look at the
+@ref{Walktest, dedicated manual page} for that.
+
+@subsubheading If the 'walktest' window fails to open
+
+@itemize @bullet
+@item
+Check that there are no errors in the
+@url{http://wiki.blender.org/index.php/Doc:2.6/Manual/Interface/Window_system/Console_window, Blender console window}.
+@end itemize
+
+@subsubheading If the 'walktest' screen is kept black
+
+@itemize @bullet
+@item
+Check if there is a light, and if it is close enough to your geometry.
+@item
+It is also possible that since the gravity is activated by default in walktest, the
+camera pans away from the set view too fast. Ensure that you added a floor below 
+your camera.
+@item
+Check the console to ensure that your entire scene is being exported. Sometimes only the
+camera will be exported hence you will only see a black screen. If you have this problem,
+then check that the visibility of your objects is activated in the viewport.
+@item
+Check that the normals from the visible objects are pointing in the correct direction. 
+If you made a cube surrounding the player this usually means you need to reverse its 
+normals (in Blender and in Edit mode, press the hotkey @samp{W} then select 
+@samp{Flip Normals}).
+@end itemize
+
+
+@node io_scene_cs Export Scenes, io_scene_cs Export Genmesh, io_scene_cs First Steps, Blender
+@subsection Exporting Scenes
+
+This section presents the main objects and files that are created when a Blender scene is
+exported.
+
+The sectors, portals, lights and cameras are all exported in the @file{world} file. This
+also means that they will be exported only if the @samp{Export as a CS library} option
+is not checked. See the section on the @ref{XML File Format, format of the Crystal Space map files}
+for more information on the @file{world} file.
+
+The materials and mesh factories are exported in a Crystal Space @samp{library} file,
+either in the @file{factories} directory or in the main @file{library} file.
+
+These objects are actually exported only if they are visible in the Blender scene (i.e.
+you haven't unchecked the @cite{Restrict visibility in the viewport} option in the
+@url{http://wiki.blender.org/index.php/Doc:2.6/Manual/Data_System/The_Outliner, Blender outliner}).
+
+@subsubheading Sectors and Portals
+
+The maps in Crystal Space can be split in @ref{VIS sectors and portals, several sectors linked by portals}.
+The concept of sectors corresponds to the one of the
+@url{http://wiki.blender.org/index.php/Doc:2.6/Manual/Interface/Scenes, Blender scenes},
+but Blender has no matching concept for the portals.
+
+Each scene in Blender will therefore be exported as a different sector in the Crystal
+Space @file{world} file. For the creation of the portals that will link together the sectors,
+please have a look at the @ref{io_scene_cs Portals, dedicated page}.
+
+@subsubheading Cameras
+
+All visible cameras in Blender will be exported as camera positions (i.e. @code{iCameraPosition} 
+objects) in the Crystal Space @file{world} file. The name of the cameras is important since they
+are exported in the alphabetical order of their name, with the first camera serving usually
+as the starting position in the Crystal Space scene.
+
+@subsubheading Lights
+
+All visible lamps in Blender will be exported as lights in Crystal Space. Whatever the lamp 
+type used in Blender, the lamp will be exported as a point light.
+
+The parameters that get exported from a lamp are the distance (radius), the colour (RGB
+components) and the energy (brightness). The attenuation type and the other lamp properties
+are ignored.
+
+@subsubheading Meshes and Mesh factories
+
+All the mesh objects that are visible in the Blender scene will be exported, either as a
+@ref{io_scene_cs Export Genmesh, static mesh} or an @ref{io_scene_cs Export Animesh, animated mesh}.
+For each different mesh, a file containing the definition of the mesh factory will be generated
+in the @file{factories} directory. Each instance of the mesh will get an entry in the
+@file{world} file.
+
+You can parent objects in Blender and they will be exported as similar object hierachies
+in Crystal Space.
+
+@subsubheading Materials and Textures
+
+All the textures that are used by any of the exported meshes will be exported in the
+@file{textures} directory.
+
+Only the main material properties will be exported, such as the diffuse map, the
+specular map and specular color, the normal map, and the displacement (parallax) map.
+
+In addition to these Blender material properties, a dedicated panel is accessible in the
+@samp{Material} context of the @samp{Properties} window:
+
+@picturess{content,blender,materials}
+
+Note the last two options in the panel, @samp{Render priority} and @samp{Z-buffer mode},
+that allows to define the @ref{HOWTO Render Priorities, rendering behavior} of the submeshes
+associated to the current material. For materials using transparent textures, you would
+typically use a render priority of e.g. @samp{transp}, and the Z-buffer mode @samp{Z-Test}.
+
+Most other Blender material properties are not exported, such as the mirror properties,
+the subsurface scattering, the shadows, etc. Also, materials using the
+@url{http://wiki.blender.org/index.php/Doc:2.6/Manual/Composite_Nodes, node composition system}
+of Blender are not supported at all.
+
+@node io_scene_cs Export Genmesh, io_scene_cs Export Animesh, io_scene_cs Export Scenes, Blender
+@subsection Exporting Static Meshes
+
+If a Blender mesh object has neither an armature nor any shape keys, then it will be
+exported as a @ref{MeshObject Genmesh, Genmesh Mesh Object}. In the other case, then it
+will be @ref{io_scene_cs Export Animesh, exported as an animated mesh}.
+
+@subsubheading Exported Genmesh Data
+
+The data of the mesh that are exported are
+
+@itemize @bullet
+@item
+the vertices of the mesh. Note that because of the triangulation process made, the count
+of vertices once exported in Crystal Space will generally be greater than the one in the
+Blender mesh.
+@item
+the faces of the mesh. Blender can use faces with any number of vertices while Crystal
+Space only uses triangles, therefore the faces are triangulated during the export process.
+@item
+the submeshes of the mesh. Every different Blender material that is actually used by some
+face of the mesh will correspond to a different submesh in the Genmesh. Every face that is
+exported will be placed in the corresponding submesh. 
+@item
+the UV coordinates
+@item
+the normals
+@item
+the vertex colors
+@end itemize
+
+All this data is put in the corresponding library file in the @file{factories} directory.
+
+@subsubheading Instanced Meshes
+
+Instanced meshes can be defined using the @samp{Crystal Mesh Group} panel in the @samp{Object}
+context of the @samp{Properties} window.
+
+@subsubheading Creating a Double Sided mesh
+
+It is possible to export a mesh as double sided, e.g. if you have a flat object that you would
+like to see from both sides. In this case, the @code{io_scene_cs} add-on will duplicate all
+faces, vertices, normals, etc of the mesh, implying much more memory and display costs. Therefore,
+you have to be sure to use this option only if you need it.
+
+The Blender @samp{Double Sided} option is found in the @samp{Object Data} context of the
+@samp{Properties} window:
+
+@picturess{content,blender,blender_double_sided}
+
+By default, this option is enabled for all new meshes that are created. Since this behavior is not
+friendly with the expectations of the @code{io_scene_cs} script, a global setting has been added
+in the @ref{io_scene_cs First Steps, main export panel}, allowing to enable or not the use of the
+@samp{Double Sided} option. If you don't uncheck this last setting, then all meshes are exported
+as single sided.
+
+@subsubheading Smoothing your Mesh
+
+There are basically two ways to create a 'smooth' mesh. The first way is using the window above
+and enabling @samp{Auto Smooth} in the @samp{Object Data} context of the @samp{Properties} window.
+This will cause the export of the Crystal Space @samp{autonormals} flag so Crystal Space will
+itself generate the normals when the mesh is loaded.
+
+The second way is going to edit mode and then selecting @samp{Smooth} in the @samp{Shading} section
+of the @samp{Mesh Tools} window. If you select this option then Blender itself will generate the
+normals and these normals are then also exported to Crystal Space.
+
+@subsubheading Warning on the Blender Object Modifiers
+
+The Blender object modifiers that can be defined in the @samp{Object Modifier}
+context of the @samp{Properties} window are not supported by the @code{io_scene_cs} add-on.
+Please make sure that all modifiers are either applied or removed before exporting your mesh.
+
+
+@node io_scene_cs Export Animesh, io_scene_cs Portals, io_scene_cs Export Genmesh, Blender
+@subsection Exporting Animated Meshes
+
+If a Blender mesh object contains either an armature or any shape keys, then it will be
+exported as an @ref{MeshObject Animesh}. In the other case, then it
+will be @ref{io_scene_cs Export Genmesh, exported as a static mesh}.
+
+The data that is exported is the same as the one exported with static meshes, plus the data
+relevant for the animation (that will be presented in this section).
+
+All this data will be split in two different files in the @file{factories} directory:
+
+@itemize @bullet
+@item
+the animated mesh factory, in a file of the same name than the Blender mesh.
+@item
+the skeleton factory and the animations, in a file of the same name than the Blender mesh
+plus the @samp{_rig} postfix.
+@end itemize
+
+Similarly to the @ref{io_scene_cs Export Genmesh, static meshes}, it is possible to define
+an Animesh as @samp{Double Sided}.
+
+@subsubheading Submeshes
+
+Faces that uses a different material are put in a separate submesh, similarly to the
+@ref{io_scene_cs Export Genmesh, static meshes}.
+
+@subsubheading Morph Targets
+
+The Blender shape keys (i.e. variations of the positions of the vertices of the mesh)
+are exported as Crystal Space's morph targets.
+
+The shape key with the name @samp{Basis} is selected as the default position of the
+vertices (i.e. the main @samp{vertex} render buffer of the animated mesh). All other shape
+keys are exported as a different morph target.
+
+@subsubheading Skeleton and Bone Influences
+
+The Blender armature of the mesh, if any, is exported as the Crystal Space's skeleton
+of the animated mesh. Along with the skeleton, the Blender weight map of the mesh
+(defining in which proportion each vertex is influenced by the motion of the bones)
+is exported as the bone influences of the animated mesh.
+
+@subsubheading Animations
+
+All the keyframe animations of the mesh are exported too.
+
+@emph{Warning}: Only the positional and rotational components of the key frames are
+exported. The Crystal Space's animated mesh doesn't (yet) support morphing and scaling
+components.
+
+@emph{Warning}: The Blender object constraints defined on the skeleton (such as
+@samp{Inverse Kinematics}, @samp{Copy Rotation}) will not be exported correctly. So make
+sure to disable any constraint first (in the @samp{Object Constraints} context of the
+ @samp{Properties} window, when the skeleton is selected).
+
+@subsubheading Sockets
+
+You can attach external meshes to the bone of an animated mesh, in order for them to
+follow the motion of the bone, whatever its animation. This is made through Crystal
+Space socket objects (@code{CS::Mesh::iAnimatedMeshSocket}).
+
+To define a socket in Blender, you must:
+
+@itemize @bullet
+@item
+Create an additional dummy external object that will be used to define the socket. The
+size or shape doesn't matter, only its position and name.
+@item
+Place the dummy mesh at the position you want for of your socket (with the skeleton in
+its default pose).
+@item
+Parent the dummy mesh to a bone of the armature. For this, do @cite{*precisely*} the
+following:
+@itemize @bullet
+@item
+select your armature, put it in @samp{Pose} mode and select the bone on the armature
+@item
+in the @url{http://wiki.blender.org/index.php/Doc:2.6/Manual/Data_System/The_Outliner, Blender outliner},
+left-click to select your dummy mesh
+@item
+still in the Blender outliner, hold down @samp{SHIFT} and left-click on your animated mesh
+@item
+in the @url{http://wiki.blender.org/index.php/Doc:2.6/Manual/3D_interaction/Navigating, Blender 3D view},
+press @samp{CTRL-P} then select @samp{Bone} in the @samp{Parent To} menu
+@end itemize
+@end itemize
+
+There are no restrictions on the number of sockets.
+
+@subsubheading Warning on socket objects attached to scaled armatures
+
+If you're planning to change the default scale of the armature used to attach some objects, 
+you must first define the socket on the armature with its default scale of 1. Afterwards, 
+you can change the armature's scale: in the same way as Blender, the exported socket object 
+will be scaled proportionally to the armature.

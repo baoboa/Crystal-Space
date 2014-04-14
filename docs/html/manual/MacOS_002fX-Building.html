@@ -1,0 +1,228 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 2.4.7.3 Building</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 2.4.7.3 Building">
+<meta name="keywords" content="Crystal Space 2.1.0: 2.4.7.3 Building">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="MacOS_002fX-Building"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="MacOS_002fX-Resources.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="MacOS_002fX-Running-Programs.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Building.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="MacOS_002fX.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Running-The-Demos.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h4 class="subsubsection"> 2.4.7.3 Building </h4>
+
+<p>Once you have obtained the latest Crystal Space source code package
+(see section <a href="Where-to-Get.html#0">Where to Get Crystal Space</a>) and have installed or prepared the supporting libraries
+(see section <a href="MacOS_002fX-Libraries.html#0">Library Prerequisites</a>), unpack the source code archive into a convenient
+directory as shown below.  A description of the directory hierarchy which is
+created when you unpack the source code archive is available,
+<a href="Directory-Hierarchy.html#0">Directory Hierarchy</a>.  A description of the files specific to the MacOS/X
+port is also available, <a href="MacOS_002fX-Details.html#0">MacOS/X</a>.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">gnutar xfz <var>CS-package-name</var>.tgz
+</pre></td></tr></table>
+<p>A note of caution: Take care when obtaining the Crystal Space source code to
+ensure that the line-terminators are in Unix format (a single linefeed should
+terminate each line).  This is an especially important consideration when
+transporting the code from Windows to MacOS/X.  Although many MacOS/X tools
+deal gracefully with Windows line-terminators (a carriage-return followed by a
+linefeed), not all tools do so, and may emit apparently inexplicable error
+messages when encountering files with Windows line-terminators.  The official
+distributions of Crystal Space, including the stable releases and the <small>SVN</small>
+snapshots, are packaged with Unix line-terminators, which are acceptable on all
+supported platforms.  These virgin packages themselves can be transported
+between Windows and MacOS/X safely
+</p>
+<p>Crystal Space can be built from the command-line (Terminal.app) using either
+<tt>&lsquo;make&rsquo;</tt> or Jam (see <a href="Requirements.html#GettingJam">GettingJam</a>).  Both tools work equally well.  In the
+examples below, wherever <samp>&lsquo;make -k&rsquo;</samp> is used, you can instead substitute
+<tt>&lsquo;jam&rsquo;</tt> if you so desire.  <em>Note</em>: Apple ships a very old and
+highly modified version of Jam with older versions of MacOS/X which is
+unsuitable for building Crystal Space.  If this is the only Jam which you have
+installed, then just build Crystal Space using <tt>&lsquo;make&rsquo;</tt>.  Alternately, you
+may download and install a more recent version of Jam (see <a href="Requirements.html#GettingJam">GettingJam</a>) or
+install it via one of the package managers.
+</p>
+<p>The Crystal Space project consists of a number of components and example
+programs.  The following commands are all issued from within the top level
+Crystal Space source code directory named <tt>&lsquo;CS&rsquo;</tt>.
+</p>
+<p>To begin building Crystal Space, first configure the project for MacOS/X by
+typing the following command from within the root <tt>&lsquo;CS&rsquo;</tt> directory:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">./configure
+</pre></td></tr></table>
+<p>At configuration time, you can also specify where Crystal Space should be
+installed.  By default, it is installed in several subdirectories of
+<tt>&lsquo;/usr/local&rsquo;</tt>:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">/usr/local/bin
+/usr/local/etc/crystalspace
+/usr/local/include/crystalspace
+/usr/local/lib
+/usr/local/lib/crystalspace
+/usr/local/share/crystalspace
+/usr/local/share/docs/crystalspace-x.xx
+</pre></td></tr></table>
+<p>You can, however, specify a different location if desired.  This setting is
+remembered and automatically applied later when you install the project.  For
+example:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">./configure --prefix=/Library/CrystalSpace
+</pre></td></tr></table>
+<p>If you plan to work on Crystal Space itself, as opposed to utilizing Crystal
+Space for your own project, you might want to configure Crystal Space to be
+built in debug mode:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">./configure --enable-debug
+</pre></td></tr></table>
+<p>For a full list of configuration options, type:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">./configure --help
+</pre></td></tr></table>
+<p>If the Crystal Space source directory is read-only, if it is shared between
+several developers, or if you simply dislike building a project within its
+source tree, you can instead configure and build from a different directory.
+For instance:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">mkdir $HOME/builddir
+cd $HOME/builddir
+/path/to/CS/configure --enable-debug
+</pre></td></tr></table>
+<p>Once the project has been configured, you can begin building the Crystal Space
+demonstration programs.  Alternately, if you are interested in building only
+certain components of the system, such as drivers or libraries, then you can do
+that instead.
+</p>
+<p>To see a list of all targets which can be built, type:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">make help
+</pre></td></tr></table>
+<p>The simplest way to build the entire package, including all applications,
+drivers, and plug-in modules is to invoke the makefile target <samp>&lsquo;all&rsquo;</samp>:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">make -k all
+</pre></td></tr></table>
+<p>Alternately, if you are using Jam:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">jam all
+</pre></td></tr></table>
+<p>This can be a fairly time consuming operation.  If you would like to be more
+selective and only build the necessary plug-in modules and a subset of the
+available applications, you can invoke their targets individually.
+</p>
+<p>For example, to build all plug-in modules, you could invoke this command:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">make -k plugins  # Builds all plug-in modules.
+</pre></td></tr></table>
+<p>To build only the WalkTest application and the plug-in modules which it most
+commonly requires use the following target:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">make walkall  # Builds WalkTest and most required plug-ins
+</pre></td></tr></table>
+<p>For finer control over which applications and plugins are built, you can invoke
+their targets directly.  For instance:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">make walktest  # Builds <code>walktest</code>, the map exploration program
+make glosx2d   # Builds <code>glosx2d</code>, the MacOS/X OpenGL 2D driver
+make gl3d      # Builds <code>gl3d</code>, the OpenGL renderer
+</pre></td></tr></table>
+<p>All programs require at least some plug-in modules to be present, so be sure to
+build those, as well, by invoking the <samp>&lsquo;plugins&rsquo;</samp> makefile target as
+illustrated above if you have not already invoked the <samp>&lsquo;all&rsquo;</samp> target.
+</p>
+<p>Once you have built the project, you will probably want to install it as a
+<em>software development kit</em> (<small>SDK</small>).  The installation phase installs
+everything needed to create your own programs using Crystal Space.  Some
+resources, such as demonstration applications and certain data files are not
+installed since they are not required for development.  Installing the <small>SDK</small>
+is optional, though recommended.  If you simply wish to run the example
+programs, then you need not invoke the installation phase.
+</p>
+<p>By default, Crystal Space is installed in subdirectories of <tt>&lsquo;/usr/local&rsquo;</tt>,
+however you can specify a different location when you configure the project, as
+explained above.  Installation can be performed with the following command:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">make install
+</pre></td></tr></table>
+<p>Once you have installed the project, you can release disk space used by the
+build process:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">make distclean
+</pre></td></tr></table>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="MacOS_002fX-Resources.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="MacOS_002fX-Running-Programs.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Building.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="MacOS_002fX.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Running-The-Demos.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

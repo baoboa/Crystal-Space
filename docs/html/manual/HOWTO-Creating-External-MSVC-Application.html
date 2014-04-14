@@ -1,0 +1,492 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.20.2 Creating an External MSVC 8, 9 or 10 Application</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.20.2 Creating an External MSVC 8, 9 or 10 Application">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.20.2 Creating an External MSVC 8, 9 or 10 Application">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="HOWTO-Creating-External-MSVC-Application"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="HOWTO-CS-Project.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="HOWTO-Creating-External-Application-Using-KDevelop.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Making-Own-Projects.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 4.20.2 Creating an External <small>MSVC</small> 8, 9 or 10 Application </h3>
+
+
+<p>Originally written by Philip Wyett <a href="mailto:philswyett@gmx.co.uk">philswyett@gmx.co.uk</a>.
+
+<em>Last updated September 2009.</em>
+</p>
+<p>This <small>HOWTO</small> is a step by step guide for creating a basic Crystal Space
+application with <small>MSVC</small> 8 (<small>.NET</small> 2005),
+9 (<small>.NET</small> 2008) or 10 (<small>.NET</small> 2010) outside the Crystal Space source tree. 
+</p>
+<p><em>Note:</em> This text was initially written for an older version of <small>MSVC</small>, 
+consequently, the screenshots are from that version. However, versions 8, 9 and 10,
+while looking somewhat different, have the same options as relevant to this
+<small>HOWTO</small>. Hence the instructions herein should be easily applicable to the
+current versions as well. If there is a setting that needs to be different for
+different <small>MSVC</small> versions, the text will explicitly state that.
+</p>
+<p><small>IMPORTANT</small>: This tutorial assumes you have a basic familiarity with
+<small>MSVC</small> and it's inner workings. This tutorial also assumes you have a fully
+compiled (both release and debug) version of Crystal Space somewhere on your
+computer.
+</p>
+<a name="1"></a>
+<h4 class="subsubheading"> Step 1 - Creating a basic project solution. </h4>
+
+<p>Start <small>MSVC</small> and from the <em>File</em> menu click on <em>File</em> then
+<em>New</em> and once the sub menu of <em>New</em> opens, click on
+<em>Project</em>.  You will now be presented with a dialog box (see image
+below) for creating a new project.
+</p>
+<p><img src="usingcs/ownprojects/msvc7proj/snap0.jpg" alt="usingcs/ownprojects/msvc7proj/snap0">
+</p>
+<p>Firstly we need to select the type of project we wish to create.  Crystal Space
+applications are Win32 applications and primarily work from a console base.
+This still allows the creation of <em>Graphical User Interface</em> (<small>GUI</small>)
+applications.  However, it also allows you to use the <em>-console</em> command
+line switch and access more verbose runtime data normally only available with
+debug builds.  If you do wish to create standard win32 applications, you may do
+so.  However...  the <em>-console</em> switch will not operate correctly in that
+type of application.
+</p>
+<p>In the <em>Project Types:</em> window select <em>Visual C++ projects</em>.  Next we
+move to the <em>Templates:</em> window and choose the application type we wish to
+create.  As mentioned above Crystal Space applications are Win32 applications.
+So, search that window and select <em>Win32 Project</em>.  Now enter the name of
+your application in the <em>Name</em> text box.  In our example, the application
+will be named <tt>&lsquo;simple1&rsquo;</tt>.  Once done, click on the <em><small>OK</small></em> button.
+</p>
+<p>You will now be presented with another dialog box (see image below).
+</p>
+<p><img src="usingcs/ownprojects/msvc7proj/snap1.jpg" alt="usingcs/ownprojects/msvc7proj/snap1">
+</p>
+<p>We wish to specify some application settings.  So, click on hyperlink text
+<em>Application Settings</em> below <em>Overview</em> and you will be presented
+with what can be seen in the screenshot below.
+</p>
+<p><img src="usingcs/ownprojects/msvc7proj/snap2.jpg" alt="usingcs/ownprojects/msvc7proj/snap2">
+</p>
+<p>As discussed above, Crystal Space applications are primarily console based
+(though <small>GUI</small> are allowed) inorder to give us acces to the verbose
+diagnostic text via <em>-console</em>.  Under <em>Application type:</em>, select
+<em>Console application</em>.  We are starting from a blank canvas. So, in the
+<em>Additional options:</em> section, check the box <em>Empty project</em>.  Once
+done, click on the <em>Finish</em> button.
+</p>
+<p>You should now be in the <small>MSVC IDE</small> (Intergrated Development
+Environment), with the <em>simple1</em> project loaded.  Lets move on...
+</p>
+<a name="2"></a>
+<h4 class="subsubheading"> Step 2 - Adding files/code to the project solution. </h4>
+
+<p>Rather than create code for this tutorial and keeping inline with time honored
+tradition - We are now going to cheat and use existing Crystal Space code. :-)
+</p>
+<p>Firstly copy and paste the <tt>&lsquo;simple1.cpp&rsquo;</tt> and <tt>&lsquo;simple1.h&rsquo;</tt> from the
+Crystal Space code tree, into the newly created <tt>&lsquo;simple1&rsquo;</tt> project
+directory.  These files can be found here:
+</p>
+
+<p><tt>&lsquo;CS\apps\tutorial\simple1\&rsquo;</tt>
+</p>
+<p>Once done, return to the <small>MSVC IDE</small> and select the <em>Solution Explorer</em>
+tab within the <em>Solution Explorer</em> window.  See the image below to see the
+<em>Solution Explorer</em> window from within the <small>MSVC IDE</small>.
+</p>
+<p><img src="usingcs/ownprojects/msvc7proj/snap3.jpg" alt="usingcs/ownprojects/msvc7proj/snap3">
+</p>
+<p>To add file(s) to a project, select the appropriate folder in the
+<em>Solution Explorer</em> window, be that <em>Source Files</em> or
+<em>Header Files</em> etc.  Right click on it to bring up the context menu and
+then hover over <em>Add</em> until the sub menu appears and then click on
+<em>Add Existing Item...</em>.  You will now be presented with the
+<em>Add Existing Item</em> dialog box, which can be seen in the image below.
+</p>
+<p><img src="usingcs/ownprojects/msvc7proj/snap4.jpg" alt="usingcs/ownprojects/msvc7proj/snap4">
+</p>
+<p>After selecting the desired file(s) you wish to add, click on the <em>Open</em>
+button to finalize your choice(s) and be returned back to the <small>MSVC IDE</small>.
+Repeat this process twice adding <tt>&lsquo;simple1.cpp&rsquo;</tt> to the <em>Source Files</em>
+folder and <tt>&lsquo;simple1.h&rsquo;</tt> to the <em>Header Files</em> folder. Once done you
+should have a <em>Solution Explorer</em> window which looks like the image below.
+</p>
+<p><img src="usingcs/ownprojects/msvc7proj/snap5.jpg" alt="usingcs/ownprojects/msvc7proj/snap5">
+</p>
+<a name="3"></a>
+<h4 class="subsubheading"> Step 3 - Setting Crystal Space <small>PATHS</small> inside <small>MSVC</small>. </h4>
+
+<p>First thing we need todo is point <small>MSVC</small> to both Crystal Spaces <tt>&lsquo;include&rsquo;</tt>
+and both the release and debug build <tt>&lsquo;libs&rsquo;</tt> directories, so it may access
+them at compile/link time.  Select <em>Tools</em> from the <em>File menu</em> and
+then <em>Options</em><small class="dots">...</small> You will now be presented with the <em>Options</em>
+dialog box, which can be seen below.
+</p>
+<p><img src="usingcs/ownprojects/msvc7proj/snap6.jpg" alt="usingcs/ownprojects/msvc7proj/snap6">
+</p>
+<p>Click <em>Projects</em> folder of the <em>Options</em> dialog.  Now click on
+<em>VC++ Directories</em>.
+</p>
+<p><img src="usingcs/ownprojects/msvc7proj/snap7.jpg" alt="usingcs/ownprojects/msvc7proj/snap7">
+</p>
+<p>Lets first add the path to the location of the Crystal Space <tt>&lsquo;include&rsquo;</tt>
+directory.  Select <em>Include files</em> in the <em>Show directories</em> for drop
+down menu.  Next click on the <em>New Line</em> button (folder beneath the drop
+down menu).  Click the browse button (button with three dots) on the right hand
+side, enabling you to select the Crystal Space <em>include</em> directory -
+wherever it is on your system.  See the image below for an example of it set.
+</p>
+<p><img src="usingcs/ownprojects/msvc7proj/snap8.jpg" alt="usingcs/ownprojects/msvc7proj/snap8">
+</p>
+<p>To set the paths to the Crystal Space lib files, you must remember you need to
+add two&mdash;one pointing to the location where the release libs are and another
+to where the debug libs are located.  In the <em>Show directories</em> for drop
+down menu, now select <em>Library files</em>.  Follow the same browse and
+selection procedure as you used when adding the <tt>&lsquo;include&rsquo;</tt> path, adding the
+following paths - adjusting for where you have Crystal Space located on your
+system as well as the <small>MSVC</small> version number you compiled with. For version 
+8 you need <tt>&lsquo;out\release8\libs\&rsquo;</tt> and <tt>&lsquo;out\debug8\libs\&rsquo;</tt>, 
+likewise for version 9 you need <tt>&lsquo;out\release9\libs\&rsquo;</tt> and <tt>&lsquo;out\debug9\libs\&rsquo;</tt>.
+</p>
+<p>See image below for an example of this set for version 7.
+(<em>Note: Outdated screenshot, version 7 is now unsupported.</em>)
+</p>
+<p><img src="usingcs/ownprojects/msvc7proj/snap9.jpg" alt="usingcs/ownprojects/msvc7proj/snap9">
+</p>
+<p>Once done, click on the <em>OK</em> button and return to the <small>MSVC IDE</small>.
+</p>
+<a name="4"></a>
+<h4 class="subsubheading"> Step 4 - Setting Preprocessor Definitions in <small>MSVC</small>. </h4>
+
+<p>Crystal Space essentially has some preprocessor definitions which MUST be set
+in-order to successfully compile and link your application.  They are:
+</p><ul>
+<li> <samp>&lsquo;CS_WIN32_CSCONFIG&rsquo;</samp>
+</li><li> <samp>&lsquo;__CRYSTAL_SPACE__&rsquo;</samp>
+</li><li> <samp>&lsquo;CS_USE_SHARED_LIBS&rsquo;</samp> if Crystal Space was built &ldquo;with DLLs&rdquo;
+(the default) or <samp>&lsquo;CS_USE_STATIC_LIBS&rsquo;</samp> if Crystal Space was built
+&ldquo;with static libs&rdquo;
+</li><li> <samp>&lsquo;CS_RELEASE&rsquo;</samp> or <samp>&lsquo;CS_DEBUG&rsquo;</samp>
+</li></ul>
+
+<p>As you would expect <samp>&lsquo;CS_RELEASE&rsquo;</samp> should be set for release builds and
+<samp>&lsquo;CS_DEBUG&rsquo;</samp> should be set for debug builds.
+</p>
+<p>To set the preprocessor definitions for your project first select your project in
+the <em>Workspace</em> window.  See area highlighted in blue in the image below.
+Now, from the <em>Project</em> menu select <em>Properties</em>.  Alternatively, you
+can right click on the highlighted area in the <em>Workspace</em> and then click
+on <em>Properties</em> - both ways work.
+</p>
+<p><img src="usingcs/ownprojects/msvc7proj/snap5.jpg" alt="usingcs/ownprojects/msvc7proj/snap5">
+</p>
+<p>Once you have clicked on <em>Properties</em>.  You will then be presented with
+the <em>Properties</em> dialog box, which can be seen in the image below.
+</p>
+<p><img src="usingcs/ownprojects/msvc7proj/snap10.jpg" alt="usingcs/ownprojects/msvc7proj/snap10">
+</p>
+<p>Open the C/C++ folder and select <em>Preprocessor</em>.  Insert the appropriate
+definitions in the <em>Preprocessor Definitions</em> text box i.e.  for a debug
+build with Crystal Space built with DLLs 
+<samp>&lsquo;CS_WIN32_CSCONFIG;__CRYSTAL_SPACE__;CS_USE_SHARED_LIBS;CS_DEBUG&rsquo;</samp>,
+making sure to separate with semi-colons.  Alternatively, you can click the
+elipsis (<small class="dots">...</small>) button to pull up an easier view.  An example of the ones
+entered for a debug build can be seen in the image below.
+</p>
+<p><img src="usingcs/ownprojects/msvc7proj/snap11.jpg" alt="usingcs/ownprojects/msvc7proj/snap11">
+</p>
+<p>Now do similar for the release configuration.  Open the C/C++ folder and select 
+<em>Preprocessor</em>.  Insert the appropriate definitions in the 
+<em>Preprocessor Definitions</em> text box i.e.  for a release build with 
+Crystal Space built with DLLs 
+<samp>&lsquo;CS_WIN32_CSCONFIG;__CRYSTAL_SPACE__;CS_USE_SHARED_LIBS;CS_RELEASE&rsquo;</samp>,
+making sure to separate with semi-colons.  Alternatively, you can click the
+elipsis (<small class="dots">...</small>) button to pull up an easier view.  An example the ones
+entered for a release build can be seen in the image below.
+</p>
+<p><img src="usingcs/ownprojects/msvc7proj/snap12.jpg" alt="usingcs/ownprojects/msvc7proj/snap12">
+</p>
+<p>Once done, click on the OK button and return to the MSVC <small>MSVC IDE</small>.
+</p>
+<a name="5"></a>
+<h4 class="subsubheading"> Step 5 - Setting Run-Time Library Used with Crystal Space Applications. </h4>
+
+<p>As in step 4 we need to change one or more project settings.  Select your
+project in the <em>Workspace</em> window.  See area highlighted in blue in the
+image below.  Now, from the <em>Project</em> menu select <em>Properties</em>.
+Alternatively, you can right click on the highlighted area in the
+<em>Workspace</em> and then click on <em>Properties</em> - both ways work.
+</p>
+<p><img src="usingcs/ownprojects/msvc7proj/snap5.jpg" alt="usingcs/ownprojects/msvc7proj/snap5">
+</p>
+<p>Once you have clicked on <em>Properties</em>, you will be presented with the
+<em>Properties</em> dialog box once again.
+</p>
+<p>Open the C/C++ folder and select <em>Code Generation</em>.  Crystal Space uses
+the Multithreaded DLL run-time internally, so to avoid conflict and errors
+applications should use the same.
+</p>
+<p>For debug builds you need to select <em>Debug Multithreaded DLL</em> from the
+<em>Runtime Library</em> drop down menu.  As can be seen in the image below.
+</p>
+<p><img src="usingcs/ownprojects/msvc7proj/snap13.jpg" alt="usingcs/ownprojects/msvc7proj/snap13">
+</p>
+<p>For release builds you need to select <em>Multithreaded DLL</em> from the
+<em>Runtime Library</em> drop down menu.  As can be seen in the image below.
+</p>
+<p><img src="usingcs/ownprojects/msvc7proj/snap14.jpg" alt="usingcs/ownprojects/msvc7proj/snap14">
+</p>
+<p>Once done, click on the <em>OK</em> button and return to the <small>MSVC IDE</small>.
+</p>
+<a name="6"></a>
+<h4 class="subsubheading"> Step 6 - Linking with the Crystal Space libraries. </h4>
+
+<p>When compiling Crystal Space in release and debug mode, you will end up with
+the following static libs, some of which you may require at some point in your
+own applications if you use the functionality contained within a given library.
+</p>
+
+<p>Crystal Space debug library names (the <em>_d</em> indicates a debug CS library):
+</p>
+
+<p><code>libcrystalspace_d.lib libcrystalspace_directx_d.lib libcrystalspace_opengl_d.lib libcrystalspace_windows_d.lib</code>
+</p>
+
+<p>Crystal Space release library names:
+</p>
+
+<p><code>libcrystalspace.lib libcrystalspace_directx.lib libcrystalspace_opengl.lib libcrystalspace_windows.lib</code>
+</p>
+<p>To add the necessary libraries to link our application.  If you are unsure
+which libraries to take, using only <tt>&lsquo;libcrystalspace(_d).lib&rsquo;</tt> is 
+sufficient in most cases.  As in step 4 we need to change one or more project 
+settings.  Select your project in the <em>Workspace</em> window.  See area 
+highlighted in blue in the image below. Now, from the <em>Project</em> menu 
+select <em>Properties</em>.  Alternatively, you can right click on the 
+highlighted area in the <em>Workspace</em> and then click on <em>Properties</em> - 
+both ways work.
+</p>
+<p><img src="usingcs/ownprojects/msvc7proj/snap5.jpg" alt="usingcs/ownprojects/msvc7proj/snap5">
+</p>
+<p>For applications we need only link with the primary Crystal Space library.  The
+other libraries provide support for custom plugin modules. Open the
+<em>Linker</em> folder and select <em>Input</em>.  In the text box <em>Additional
+Dependencies</em> add the Crystal Space libraries as named below into the box with
+those already there.
+</p>
+
+<p>Debug:
+</p>
+
+<p><code>libcrystalspace_d.lib</code>
+</p>
+
+<p>See image below for example of debug build link settings.
+</p>
+<p><img src="usingcs/ownprojects/msvc7proj/snap15.jpg" alt="usingcs/ownprojects/msvc7proj/snap15">
+</p>
+
+<p>Release:
+</p>
+
+<p><code>libcrystalspace.lib</code>
+</p>
+
+<p>See image below for example of release build link settings.
+</p>
+<p><img src="usingcs/ownprojects/msvc7proj/snap16.jpg" alt="usingcs/ownprojects/msvc7proj/snap16">
+</p>
+<p>Finally, click on <em>OK</em> to return to the <small>MSVC IDE</small> and then build the
+project.
+</p>
+<a name="7"></a>
+<h4 class="subsubheading"> Commonly encountered problems. </h4>
+
+<ul>
+<li>
+<strong>Q.</strong> I get the following error:
+
+<table><tr><td>&nbsp;</td><td><pre class="example">----------Configuration: simple1 - Win32 Release----------
+Compiling...
+simple1.cpp
+C:\CS\INCLUDE\csplatform.h(26) : fatal error C1083:
+  Cannot open include file: 'csconfig.h': No such file or directory
+Error executing cl.exe.
+
+simple1.exe - 1 error(s), 0 warning(s)
+</pre></td></tr></table>
+<p><strong>A.</strong> Repeat <em>Step 4</em> - You seem to have not set one or more of the
+preprocessor definitions correctly.
+</p>
+</li><li>
+<strong>Q.</strong> I get the following link errors:
+
+<table><tr><td>&nbsp;</td><td><pre class="example">----------Configuration: simple1 - Win32 Release----------
+Compiling...
+simple1.cpp
+Linking...
+simple1.obj : error LNK2001: unresolved external symbol
+  &quot;public: void __thiscall csReversibleTransform::RotateThis(
+    class csVector3 const &amp;,float)&quot;
+simple1.obj : error LNK2001: unresolved external symbol
+  &quot;public: static struct iSCF *  iSCF::SCF&quot;
+simple1.obj : error LNK2001: unresolved external symbol
+  &quot;public: __thiscall csView::csView(
+    struct iEngine *,struct iGraphics3D *)&quot;
+simple1.obj : error LNK2001: unresolved external symbol
+  &quot;public: static bool __cdecl csInitializer::OpenApplication(
+    struct iObjectRegistry *)&quot;
+simple1.obj : error LNK2001: unresolved external symbol
+  &quot;public: static void __cdecl csCommandLineHelper::Help(
+    struct iObjectRegistry *,struct iCommandLineParser *)&quot;
+simple1.obj : error LNK2001: unresolved external symbol
+  &quot;public: static bool __cdecl csCommandLineHelper::CheckHelp(
+    struct iObjectRegistry *,struct iCommandLineParser *)&quot;
+simple1.obj : error LNK2001: unresolved external symbol
+  &quot;public: static bool __cdecl csInitializer::SetupEventHandler(
+    struct iObjectRegistry *,
+    bool (__cdecl*)(struct iEvent &amp;),unsigned int)&quot;
+simple1.obj : error LNK2001: unresolved external symbol
+  &quot;public: static bool __cdecl csInitializer::RequestPlugins(
+  struct iObjectRegistry *,...)&quot;
+simple1.obj : error LNK2001: unresolved external symbol
+  &quot;bool __cdecl csDefaultRunLoop(struct iObjectRegistry *)&quot;
+simple1.obj : error LNK2001: unresolved external symbol
+  &quot;public: static void __cdecl csInitializer::DestroyApplication(
+    struct iObjectRegistry *)&quot;
+simple1.obj : error LNK2001: unresolved external symbol
+  &quot;public: static struct iObjectRegistry * __cdec
+   csInitializer::CreateEnvironment(
+   int,char const * const * const)&quot;
+simple1.obj : error LNK2001: unresolved external symbol
+  &quot;int __cdecl csPrintf(char const *,...)&quot;
+simple1.obj : error LNK2001: unresolved external symbol
+  &quot;int __cdecl csPrintfV(char const *,char *)&quot;
+MSVCRT.lib(crtexe.obj) : error LNK2001:
+  unresolved external symbol _main
+Release/simple1.exe : fatal error LNK1120: 14 unresolved externals
+Error executing link.exe.
+
+simple1.exe - 15 error(s), 0 warning(s)
+</pre></td></tr></table>
+<p><strong>A.</strong> This would indicate that you have forgotten to add the Crystal
+Space static libraries to link with.  Work through <em>Step 6</em> again and
+re-check the settings you have entered.
+</p>
+</li><li>
+<strong>Q.</strong> I get the following link errors:
+
+<table><tr><td>&nbsp;</td><td><pre class="example">----------Configuration: simple1 - Win32 Release----------
+Compiling...
+simple1.cpp
+Linking...
+MSVCRT.lib(MSVCRT.dll) : error LNK2005:
+  _strchr already defined in LIBC.lib(strchr.obj)
+MSVCRT.lib(MSVCRT.dll) : error LNK2005:
+  _strstr already defined in LIBC.lib(strstr.obj)
+MSVCRT.lib(MSVCRT.dll) : error LNK2005:
+  _tolower already defined in LIBC.lib(tolower.obj)
+MSVCRT.lib(MSVCRT.dll) : error LNK2005:
+  _strncpy already defined in LIBC.lib(strncpy.obj)
+MSVCRT.lib(MSVCRT.dll) : error LNK2005:
+  _free already defined in LIBC.lib(free.obj)
+MSVCRT.lib(MSVCRT.dll) : error LNK2005:
+  _memmove already defined in LIBC.lib(memmove.obj)
+MSVCRT.lib(MSVCRT.dll) : error LNK2005:
+  _realloc already defined in LIBC.lib(realloc.obj)
+MSVCRT.lib(MSVCRT.dll) : error LNK2005:
+  _malloc already defined in LIBC.lib(malloc.obj)
+MSVCRT.lib(MSVCRT.dll) : error LNK2005:
+  _strncmp already defined in LIBC.lib(strncmp.obj)
+LINK : warning LNK4098: defaultlib &quot;MSVCRT&quot; conflicts with use
+  of other libs; use /NODEFAULTLIB:library
+Release/simple1.exe : fatal error LNK1169: one or more multiply
+  defined symbols found
+Error executing link.exe.
+
+simple1.exe - 10 error(s), 1 warning(s)
+</pre></td></tr></table>
+<p><strong>A.</strong> This or similar LNK2005 errors, tend to indicate that you have
+forgotten to set the correct run-time library in the project settings.  Work
+through <em>Step 5</em> again and make sure you have your project set to
+<em>Debug Multithreaded DLL</em> or <em>Multithreaded DLL</em> for debug and
+release builds respectively.
+</p></li></ul>
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="HOWTO-CS-Project.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="HOWTO-Creating-External-Application-Using-KDevelop.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Making-Own-Projects.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

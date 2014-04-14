@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.3.1 Shared Class Facility (SCF)</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.3.1 Shared Class Facility (SCF)">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.3.1 Shared Class Facility (SCF)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="SCF"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="SCF-Chapter.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="SCF-Explained.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="SCF-Chapter.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 4.3.1 Shared Class Facility (<small>SCF</small>) </h3>
+
+
+<p><em>Original <small>SCF</small> design and concept by Andrew Zabolotny, 1999.  This
+document and Crystal Space's particular <small>SCF</small> implementation were written,
+and are copyright &copy; 1999 by Andrew Zabolotny,
+<a href="mailto:bit@eltech.ru">bit@eltech.ru</a>.  <small>SCF</small> is distributed under the <small>GNU</small> Library
+General Public License (<small>LGPL</small>).  See section <a href="Licenses.html#0">Licenses</a>.</em>
+</p>
+
+<p><em>Documentation revised significantly by Eric Sunshine,
+<a href="mailto:sunshine@sunshineco.com">sunshine@sunshineco.com</a>.  Last updated September 24, 2003.</em>
+</p>
+
+<p><em><small>SCF</small> implementation revised by M&aring;rten Svanfeldt and Michael Adams
+2005-2006</em>
+</p>
+<p>This library is intended for separating C++ class implementations from programs
+that use them.  This is achieved by separating class implementations into a
+separate module in the form of shared libraries, which are also called
+<em>plugin modules</em>.  Separating the implementation of a class from the
+program helps to address problems regarding shared library facility
+incompatibilities on different platforms.  It also makes it possible to use
+different mechanisms for <small>SCF</small>, for example inter-process communication
+(through pipes, shared memory, or whatever); communication through network or
+through a <small>COM</small> or <small>CORBA</small> request broker; although currently only two
+minimal configurations supported: using shared libraries and using static
+linkage (for platforms that don't have shared library support).
+</p>
+<p>There is a <small>HOWTO</small> which explains how to create a plugin module from the
+ground up using <small>SCF</small> technology (see section <a href="HOWTO-Create-Your-Own-Plugin.html#0">Create Your Own Plugin</a>).
+The <small>HOWTO</small> provides a much more concise explanation about how to create and
+utilize a plugin than what you will find here, since this section is more
+interested in exposing <small>SCF</small> in gory detail.  There is also a <small>HOWTO</small>
+which explains how to make using <small>SCF</small> interfaces easier by using smart
+pointers (see section <a href="Smart-Pointers.html#0">Correctly Using Smart Pointers</a>).
+</p>
+<p>The <small>SCF</small> implementation is resides within the <tt>&lsquo;CS/libs/csutil&rsquo;</tt> module.
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top"><a href="SCF-Explained.html#0">4.3.1.1 How it Works</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="SCF-Using.html#0">4.3.1.2 Using <small>SCF</small></a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="SCF-Multiple-Interfaces.html#0">4.3.1.3 Classes Implementing Multiple Interfaces</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="SCF-Interface-and-implementation-inheritance.html#0">4.3.1.4 Interface and implementation inheritance</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="SCF-Versions.html#0">4.3.1.5 Interface Versions</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="SCF-Client.html#0">4.3.1.6 Client Side</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="SCF-Meta-Info.html#0">4.3.1.7 Plugin Meta-Information</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="SCF-Meta-Info-Embedding.html#0">4.3.1.8 Meta-Information Embedding</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="SCF-Plugin-Discovery.html#0">4.3.1.9 Plugin Discovery</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="SCF-Example.html#0">4.3.1.10 Example</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="SCF-Advanced.html#0">4.3.1.11 Advanced Techniques</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+</table>
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="SCF-Chapter.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="SCF-Explained.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="SCF-Chapter.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

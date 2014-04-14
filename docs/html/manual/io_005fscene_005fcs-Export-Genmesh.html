@@ -1,0 +1,165 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 5.8.4 Exporting Static Meshes</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 5.8.4 Exporting Static Meshes">
+<meta name="keywords" content="Crystal Space 2.1.0: 5.8.4 Exporting Static Meshes">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="io_005fscene_005fcs-Export-Genmesh"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="io_005fscene_005fcs-Export-Scenes.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="io_005fscene_005fcs-Export-Animesh.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Blender.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Internals.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 5.8.4 Exporting Static Meshes </h3>
+
+<p>If a Blender mesh object has neither an armature nor any shape keys, then it will be
+exported as a <a href="MeshObject-Genmesh.html#0">Genmesh Mesh Object</a>. In the other case, then it
+will be <a href="io_005fscene_005fcs-Export-Animesh.html#0">exported as an animated mesh</a>.
+</p>
+<a name="1"></a>
+<h4 class="subsubheading"> Exported Genmesh Data </h4>
+
+<p>The data of the mesh that are exported are
+</p>
+<ul>
+<li>
+the vertices of the mesh. Note that because of the triangulation process made, the count
+of vertices once exported in Crystal Space will generally be greater than the one in the
+Blender mesh.
+</li><li>
+the faces of the mesh. Blender can use faces with any number of vertices while Crystal
+Space only uses triangles, therefore the faces are triangulated during the export process.
+</li><li>
+the submeshes of the mesh. Every different Blender material that is actually used by some
+face of the mesh will correspond to a different submesh in the Genmesh. Every face that is
+exported will be placed in the corresponding submesh. 
+</li><li>
+the UV coordinates
+</li><li>
+the normals
+</li><li>
+the vertex colors
+</li></ul>
+
+<p>All this data is put in the corresponding library file in the <tt>&lsquo;factories&rsquo;</tt> directory.
+</p>
+<a name="2"></a>
+<h4 class="subsubheading"> Instanced Meshes </h4>
+
+<p>Instanced meshes can be defined using the <samp>&lsquo;Crystal Mesh Group&rsquo;</samp> panel in the <samp>&lsquo;Object&rsquo;</samp>
+context of the <samp>&lsquo;Properties&rsquo;</samp> window.
+</p>
+<a name="3"></a>
+<h4 class="subsubheading"> Creating a Double Sided mesh </h4>
+
+<p>It is possible to export a mesh as double sided, e.g. if you have a flat object that you would
+like to see from both sides. In this case, the <code>io_scene_cs</code> add-on will duplicate all
+faces, vertices, normals, etc of the mesh, implying much more memory and display costs. Therefore,
+you have to be sure to use this option only if you need it.
+</p>
+<p>The Blender <samp>&lsquo;Double Sided&rsquo;</samp> option is found in the <samp>&lsquo;Object Data&rsquo;</samp> context of the
+<samp>&lsquo;Properties&rsquo;</samp> window:
+</p>
+<p><img src="content/blender/blender_double_sided.png" alt="content/blender/blender_double_sided">
+</p>
+<p>By default, this option is enabled for all new meshes that are created. Since this behavior is not
+friendly with the expectations of the <code>io_scene_cs</code> script, a global setting has been added
+in the <a href="io_005fscene_005fcs-First-Steps.html#0">main export panel</a>, allowing to enable or not the use of the
+<samp>&lsquo;Double Sided&rsquo;</samp> option. If you don't uncheck this last setting, then all meshes are exported
+as single sided.
+</p>
+<a name="4"></a>
+<h4 class="subsubheading"> Smoothing your Mesh </h4>
+
+<p>There are basically two ways to create a 'smooth' mesh. The first way is using the window above
+and enabling <samp>&lsquo;Auto Smooth&rsquo;</samp> in the <samp>&lsquo;Object Data&rsquo;</samp> context of the <samp>&lsquo;Properties&rsquo;</samp> window.
+This will cause the export of the Crystal Space <samp>&lsquo;autonormals&rsquo;</samp> flag so Crystal Space will
+itself generate the normals when the mesh is loaded.
+</p>
+<p>The second way is going to edit mode and then selecting <samp>&lsquo;Smooth&rsquo;</samp> in the <samp>&lsquo;Shading&rsquo;</samp> section
+of the <samp>&lsquo;Mesh Tools&rsquo;</samp> window. If you select this option then Blender itself will generate the
+normals and these normals are then also exported to Crystal Space.
+</p>
+<a name="5"></a>
+<h4 class="subsubheading"> Warning on the Blender Object Modifiers </h4>
+
+<p>The Blender object modifiers that can be defined in the <samp>&lsquo;Object Modifier&rsquo;</samp>
+context of the <samp>&lsquo;Properties&rsquo;</samp> window are not supported by the <code>io_scene_cs</code> add-on.
+Please make sure that all modifiers are either applied or removed before exporting your mesh.
+</p>
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="io_005fscene_005fcs-Export-Scenes.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="io_005fscene_005fcs-Export-Animesh.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Blender.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Internals.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.12.3.2 General Concepts</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.12.3.2 General Concepts">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.12.3.2 General Concepts">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Texture-Mapping-Concepts"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Texture-Mapping-Conventions.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Texture-Mapping-Perspective-Correction.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Texture-Mapping.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h4 class="subsubsection"> 4.12.3.2 General Concepts </h4>
+
+<p>This section describes general core concepts which are used by following
+discussions.
+</p>
+<a name="1"></a>
+<h4 class="subsubheading"> Polygon </h4>
+
+<p>A polygon is represented as a set of 3D vertices oriented in clockwise order
+(if the orientation is different, the polygon is not visible on screen).
+There are three versions of any polygon:
+</p>
+<ol>
+<li>
+<em>Po</em> is the polygon in object space.  Here the vertices of the polygon are
+given in object space coordinates.
+
+</li><li>
+<em>Pw</em> is the polygon in world space.  For a sector world space is equal to
+object space but for a thing there is a transformation from object space to
+world space given as:
+
+<blockquote><p><em>Vw = Mow * Vo - Vow</em>
+</p></blockquote>
+
+
+<p>This means that the vertex in world space coordinates (<em>Vw</em>) is given as
+the vertex in object space coordinates (<em>Vo</em>) transformed by the matrix
+from object to world space (<em>Mow</em>) and the vector from object to world
+space (<em>Vow</em>).
+</p>
+<p>This transformation is recomputed whenever a thing moves.
+</p>
+</li><li>
+<em>Pc</em> is the polygon in camera space.  Before viewing, every relevant
+vertex is transformed from world space to camera space using the following
+equation:
+
+<blockquote><p><em>Vc = Mwc * (Vw - Vwc)</em>
+</p></blockquote>
+</li></ol>
+
+<p>Note, all three versions of a polygon are represented by the same
+polygon object.  The change from object to world and world to
+camera space happens inside the Vertex class that is referenced by
+the polygon.
+</p>
+<p>Associated with every polygon there is also a plane normal or plane equation:
+</p>
+<blockquote><p><em>N: A * x + B * y + C * z + D = 0</em>
+</p></blockquote>
+
+<p>There are also three versions of this plane equation; one for object space,
+one for world space, and one for camera space:
+</p>
+<blockquote><p><em>No: Ao * x + Bo * y + Co * z + Do = 0</em><br>
+<em>Nw: Aw * x + Bw * y + Cw * z + Dw = 0</em><br>
+<em>Nc: Ac * x + Bc * y + Cc * z + Dc = 0</em>
+</p></blockquote>
+
+<a name="2"></a>
+<h4 class="subsubheading"> Camera </h4>
+
+<p>A camera is represented as a matrix (<em>Mwc</em>) and a vector (<em>Vwc</em>).  In
+fact the camera describes the transformation between world and camera space.
+The inverse transformation (<em>Mcw</em>) from camera space to world space is
+also kept inside a <samp>&lsquo;csCamera&rsquo;</samp> object because it can be used for movement
+(for example, to move forward one would want to move forward along the Z-axis
+in camera space and not in world space).
+</p>
+<a name="3"></a>
+<h4 class="subsubheading"> Texture </h4>
+
+<p>There is also a texture associated with every polygon. 
+The texture represents a 2-dimensional rectangular space
+where (0,0) is one corner of the texture and (1,1) is the opposite corner.  If
+a texture is overlayed onto a rectangular polygon such that one corner is
+mapped onto (0,0) in texture space and the opposite corner is mapped onto
+(2,2) then the texture will be tiled four times across the surface of the
+polygon.
+</p>
+<p>To transform object to texture space we have the following equation:
+</p>
+<blockquote><p><em>Vt = Mot * (Vo - Vot)</em>
+</p></blockquote>
+
+
+<p>Similarly for world space:
+</p>
+<blockquote><p><em>Vt = Mwt * (Vw - Vwt)</em>
+</p></blockquote>
+
+
+<p>And for camera space:
+</p>
+<blockquote><p><em>Vt = Mct * (Vc - Vct)</em>
+</p></blockquote>
+
+<p>So, just as there are three versions of the polygon (<em>Po</em>, <em>Pw</em>, and
+<em>Pc</em>) and three plane equations, we also have three equations transforming
+the various spaces to the texture.  <em>Mot</em> and <em>Vot</em> (object to texture
+space) are fixed (calculated at load time).  <em>Mwt</em> and <em>Vwt</em> (world to
+texture space) are the same for sectors but for things they are calculated
+whenever a thing moves.  <em>Mct</em> and <em>Vct</em> (camera to texture space) are
+calculated every time the corresponding polygon is visible and needs to be
+drawn on screen.
+</p>
+<p>Note that the texture transformation matrix is actually a transformation from
+3D to 3D.  We simply don't use the Z component in texture space (it is just
+ignored).
+</p>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Texture-Mapping-Conventions.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Texture-Mapping-Perspective-Correction.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Texture-Mapping.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

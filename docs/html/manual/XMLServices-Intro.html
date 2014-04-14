@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.16.2.1 Getting the Plugin and Intro</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.16.2.1 Getting the Plugin and Intro">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.16.2.1 Getting the Plugin and Intro">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="XMLServices-Intro"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="XML-Syntax-Services.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="XMLServices-Mixmode.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="XML-Syntax-Services.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h4 class="subsubsection"> 4.16.2.1 Getting the Plugin and Intro </h4>
+
+<a name="1"></a>
+<h4 class="subsubheading"> Getting the Plugin </h4>
+
+<p>This plugin has <samp>&lsquo;crystalspace.syntax.loader.service.text&rsquo;</samp> as plugin id.
+Usually this plugin is already loaded if you also use the main loader plugin.
+In that case you can get this plugin from the object registry by doing:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">csRef&lt;iSyntaxService&gt; services = csQueryRegistry&lt;iSyntaxService&gt; (object_reg);
+</pre></td></tr></table>
+<p>If you need to load the plugin yourselves then the following code would
+work. This code will first check if the plugin is already loaded. If not
+it will load it:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">csRef&lt;iSyntaxService&gt; services = csLoadPluginCheck&lt;iSyntaxService&gt; (
+  object_reg, &quot;crystalspace.syntax.loader.service.text&quot;);
+</pre></td></tr></table>
+<a name="2"></a>
+<h4 class="subsubheading"> Introduction </h4>
+
+<p>This plugin implements the <code>iSyntaxService</code> interface. The definition
+of this interface can be found in <tt>&lsquo;imap/services.h&rsquo;</tt>. There are
+basically three kinds of functions in this interface:
+</p>
+<ul>
+<li> <samp>&lsquo;Reporting Helpers&rsquo;</samp>
+These are functions that make it easier for a plugin writer to report
+an error to the user.
+</li><li> <samp>&lsquo;Parsing Helpers&rsquo;</samp>
+These functions are the main part of this plugin. They all start with
+<samp>&lsquo;Parse&rsquo;</samp> and help with parsing a small part of the <small>XML</small> format.
+They all expect a node (<code>iDocumentNode</code>) to be parsed as the input
+and they return the parsed result or an error.
+</li><li> <samp>&lsquo;Writing Helpers&rsquo;</samp>
+These functions create <small>XML</small> (in the given <code>iDocumentNode</code> parameter)
+for some basic Crystal Space object. They are useful if you ware making
+a plugin that saves <small>XML</small>.
+</li></ul>
+
+<p>In this document we explain a few of the more important parsing functions
+present in this plugin.
+</p>
+<hr size="1">
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

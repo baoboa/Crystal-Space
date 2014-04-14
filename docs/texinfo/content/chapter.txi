@@ -1,0 +1,47 @@
+@c -*-texinfo-*-
+@node Working with Engine Content, Internals, Using Crystal Space, Top
+@chapter Working with Engine Content
+@cindex Working with Engine Content
+
+This section presents how models and scenes can be created and imported in
+Crystal Space.
+
+The first sub-sections present the format of a XML @samp{world} file, along with
+some advises on the way to build and to lid them.
+
+The last sub-sections presents the various solutions available for creating and
+importing your models into Crystal Space.
+
+@menu
+* Map Creation:: How to Create Optimal Maps for Crystal Space
+* Map Creation Tips:: Some Tips for Efficient Maps
+* Simple Map Example::
+* Map Format Reference::
+* Default Lighting Shader Variables::
+* Using lighter2:: Using @code{lighter2}
+* Assimp importer:: Assimp's generic import of models
+* Blender:: Making Levels and Models in Blender
+* 3DSMax:: Making Levels and Models in 3DSMax
+* COLLADA:: Import from the COLLADA file format
+* md32spr Tutorial:: @code{md32spr} Tutorial
+* mdl2spr:: Quake Model Converter (@code{mdl2spr})
+* 3D Sprites::
+* ViewMesh:: Previewing Models (@code{viewmesh})
+@end menu
+
+@@@ TODO: terrain2, Maya
+
+@imports{content,levbuilding.txi}
+@imports{content,maptips.txi}
+@imports{content,simpmap.txi}
+@importss{content,mapformat,chapter.txi}
+@imports{content,shadervars.txi}
+@importss{content,lighter2,lighter2.txi}
+@imports{content,assimp.txi}
+@importss{content,blender,chapter.txi}
+@imports{content,3dsmax.txi}
+@imports{content,collada.txi}
+@imports{content,md32spr.txi}
+@imports{content,mdl2spr.txi}
+@importss{content,sprites,3dsprite.txi}
+@imports{content,viewmesh.txi}

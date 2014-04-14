@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!-- skeleton2ldr.csplugin -->
+<plugin>
+  <scf>
+    <classes>
+      <class>
+        <name>crystalspace.skeletalanimation.loader</name>
+        <implementation>SkeletonLoader</implementation>
+        <description>Crystal Space Skeletal animation loader plugin</description>
+      </class>    
+      <class>
+        <name>crystalspace.skeletalanimation.saver</name>
+        <implementation>SkeletonSaver</implementation>
+        <description>Crystal Space Skeletal animation saver plugin</description>
+      </class>    
+    </classes>
+  </scf>
+</plugin>

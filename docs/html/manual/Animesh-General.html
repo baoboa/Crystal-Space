@@ -1,0 +1,298 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.10.8.1 General concepts of the Animesh</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.10.8.1 General concepts of the Animesh">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.10.8.1 General concepts of the Animesh">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Animesh-General"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="MeshObject-Animesh.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Animesh-Tools.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="MeshObject-Animesh.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h4 class="subsubsection"> 4.10.8.1 General concepts of the Animesh </h4>
+
+<p>This section presents the general concepts that are used to define an Animesh.
+</p>
+<a name="1"></a>
+<h4 class="subsubheading"> The envelope </h4>
+
+<p>An animesh is at first made of an envelope defining its shape, i.e. a set of vertices
+and triangles defining the shape of the mesh. Similarly to a <a href="MeshObject-Genmesh.html#0">Genmesh</a>,
+it will hold render buffers for the vertices, the triangles, the normals, the UV mapping,
+the colors, the tangents and the binormals.
+</p>
+<a name="2"></a>
+<h4 class="subsubheading"> The animation packet </h4>
+
+<p>The animation packets are defined by the classes <code>CS::Animation::iSkeletonAnimPacket</code>
+and <code>CS::Animation::iSkeletonAnimPacketFactory</code>.
+</p>
+<p>Animation packets are logical sets of animations, animation nodes, and skeletons that
+can be loaded or unloaded at once. Only one animation packet can be set per Animesh,
+but animations and animation nodes can link to some data in other animation packets,
+so several packets can coexist at the same time for a given Animesh.
+</p>
+<p>That's the animation packet of the Animesh that will define the skeleton in use, you
+must therefore pass by the animation packet if you want to get access to the skeleton
+of the Animesh.
+</p>
+<a name="3"></a>
+<h4 class="subsubheading"> The skeleton </h4>
+
+<p>The skeleton is defined by the classes <code>CS::Animation::iSkeleton</code> and
+<code>CS::Animation::iSkeletonFactory</code>.
+</p>
+<p>The skeleton of an Animesh is a tree of articulated bones that can be positioned
+separately. Changing the pose of the skeleton of an Animesh will affect the envelope
+of the mesh accordingly. Although the skeleton can be posed manually, it is generally
+animated through an <a href="Animation-Blending-Trees.html#0">animation blending tree</a>.
+</p>
+<p>Every bones of a skeleton must have one parent and can have any number of child bones.
+The root of the skeleton is an exception since it has a null parent (i.e. the ID of its
+parent is <code>CS::Animation::InvalidBoneID</code>).
+</p>
+<p>It is allowed to have several root bones in the skeleton, a skeleton is therefore a
+graph of bones of the <cite>forest</cite> type, not only a tree of bones.
+</p>
+<p>If you want to iterate on all the bones of a skeleton, one of the better way to do it
+is to use the method <code>CS::Animation::iSkeletonFactory::GetBoneOrderList()</code>. This
+method will return the ordered list of all the bones, and will insure both that all the
+bones that you manipulate are created, and that for a given bone, all children and
+sub-children bones are treated after the bone (or before, depending on the direction
+that you use to iterate on the elements of the list). 
+</p>
+<a name="4"></a>
+<h4 class="subsubheading"> Skeleton coordinate spaces </h4>
+
+<p>Several coordinate spaces are defined regardless the skeleton and its bones. These are:
+</p>
+<ul>
+<li>
+<samp>&lsquo;Absolute space&rsquo;</samp>: it is defined by the origin of the Animesh. A transform in
+absolute space is therefore relative to the transform of the mesh, whatever the pose of
+the skeleton.
+</li><li>
+<samp>&lsquo;Bone space&rsquo;</samp>: it is defined by the origin of the parent of a given bone in the
+skeleton factory. A transform in bone space is therefore relative to the transform of the
+parent of a bone when the skeleton is in its default pose.
+</li><li>
+<samp>&lsquo;Bind space&rsquo;</samp>: it is defined by the origin of a given bone when it is in its default
+pose. A transform in bind space is therefore relative to the transform of a bone when the
+skeleton is in its default pose.
+</li></ul>
+
+<p>The transform of the bones can be get or set using either of these coordinate spaces.
+</p>
+<a name="5"></a>
+<h4 class="subsubheading"> Bone influences </h4>
+
+<p>In order to deform the envelope of the mesh, i.e. to modify its vertices, normals and
+bitangents, one must define the bone influences over the vertices of the mesh. This defines
+in which proportion each vertex of the mesh should be moved regardless the motion of the
+bones of the skeleton.
+</p>
+<p>The bone influences are defined by selecting up to four bones for each vertex, and by
+attributing a weight to these bones in order to define in which proportion they affect the
+vertex. For each vertex, the total sum of each bone weight must be equal or inferior to one.
+If it is inferior to one, then the vertex will simply be mainly affected by the position of
+the mesh.
+</p>
+<a name="6"></a>
+<h4 class="subsubheading"> Sub-meshes </h4>
+
+<p>Similarly to a <a href="MeshObject-Genmesh.html#0">Genmesh</a>, an Animesh can be split in several
+sub-meshes that can be displayed separately and with different materials and display properties.
+This allows to use several materials on a single Animesh, as well as to set up some Level of
+Detail management, e.g. by enabling or not the visibility of each sub-mesh.
+</p>
+<p>A sub-mesh is defined by the list of the triangles of the envelope of the mesh that are
+part of it.
+</p>
+<a name="7"></a>
+<h4 class="subsubheading"> Morph targets </h4>
+
+<p>The morph targets are defined by the class <code>CS::Mesh::iAnimatedMeshMorphTarget</code>.
+</p>
+<p>Along with the deformation of the envelope made when changing the pose of the skeleton, the
+envelope can also be deformed by morphing its vertices. In that goal, one can define morph
+targets (a.k.a. blend shapes) that are variations of the positions of the vertices of the
+Animesh. This is useful e.g. to animate the face of a character.
+</p>
+<p>Morph targets are activated by assigning them a weight different than zero. Weigths are
+generally supposed to be used in the range between zero and one, one being the morph target
+fully active, but there are no technical obstruction to use a very different value, even a
+negative one. Various morph targets can be activated at the same time in order to compose
+more complex deformations.
+</p>
+<p>In order to speed up the morphing process, as well as to reduce the amount of data needed
+to define a morph target, the vertices of an Animesh are split in several subsets, and the
+morph targets are defined against these subsets. This is not mandatory to provide manually
+these subsets, and Crystal Space will compute them internally if they are not provided,
+resulting mainly in a slower loading time.
+</p>
+<a name="8"></a>
+<h4 class="subsubheading"> The skinning process </h4>
+
+<p>Every time that the pose of the skeleton or the weight of a morph target is changed, the
+deformation of the envelope must be re-computed through a step called the skinning process.
+During that process, the position of the vertices, as well as the normals, tangents and
+binormals if they are used, are re-computed depending of the bones and morph targets
+affecting them. Crystal Space uses a higher quality dual quaternion skinning in order to
+preserve the volume of the envelope.
+</p>
+<p>The skinning process is computed by default on the CPU but can be delegated on the
+GPU using a dedicated skinning vertex shader, this is however not yet supported natively
+by Crystal Space.
+</p>
+<a name="9"></a>
+<h4 class="subsubheading"> Bone bounding boxes </h4>
+
+<p>In order to speed up the update of the global bounding box of the mesh, as well as the
+collisions and hit beam tests over an Animesh, separate bounding boxes are defined for each
+bone of the skeleton. Each of these bounding boxes should cover the whole part of the
+envelope linked to the given bone, i.e. all the vertices that are affected by this bone.
+</p>
+<p>Again, this is not mandatory to provide manually these bone bounding boxes, and Crystal Space
+will compute them internally if they are not provided, the main drawback being a slower
+loading time.
+</p>
+<a name="10"></a>
+<h4 class="subsubheading"> Sockets </h4>
+
+<p>The sockets are defined by the classes <code>CS::Mesh::iAnimatedMeshSocket</code> and
+<code>CS::Mesh::iAnimatedMeshSocketFactory</code>.
+</p>
+<p>Sockets can be defined on some bones of an Animesh. This allows to attach external meshes
+to an Animesh and to have them follow the motion of a given bone, e.g. for a hat, some
+clothes, or an object in the hands.
+</p>
+<a name="11"></a>
+<h4 class="subsubheading"> Decals </h4>
+
+<p><a href="Decals.html#0">Decals</a> are images that are projected on top of the mesh, allowing to personalize it
+easily. They can be added on Animeshes just like on any other mesh types supporting them,
+and they will be updated automatically to match the deformations of the Animesh.
+</p>
+<p>An example of setting of decals can be found in the <samp>&lsquo;avatartest&rsquo;</samp> application, in the
+<samp>&lsquo;Frankie&rsquo;</samp> scene.
+</p>
+<a name="12"></a>
+<h4 class="subsubheading"> Clothes and Props </h4>
+
+<p>Clothes and props can be attached to an animesh, and be animated physically, either through
+rigid or soft bodies.
+</p>
+<p>To achieve this, you need to use the <samp>&lsquo;Ragdoll&rsquo;</samp> animation node in order to create and
+manage the rigid bodies of the skeleton that will be used to attach your clothes or props.
+</p>
+<p>For soft bodies, you would need to use the dedicated Genmesh animation controller, that will
+deform the mesh depending on the physical simulation.
+</p>
+<p>An example of setting of clothes can be found in the <samp>&lsquo;avatartest&rsquo;</samp> application, in the
+<samp>&lsquo;Krystal&rsquo;</samp> scene.
+</p>
+<a name="13"></a>
+<h4 class="subsubheading"> Hairs and Fur </h4>
+
+<p>Hairs and fur can be added using the <a href="MeshObject-Furmesh.html#0">fur mesh</a>.
+</p>
+<a name="14"></a>
+<h4 class="subsubheading"> The Body Mesh </h4>
+
+<p>The body mesh is defined by the classes <code>CS::Animation::iBodySkeleton</code> and associated.
+</p>
+<p>The body mesh holds the physical description of the skeleton of an animesh. For each relevant
+bone of the skeleton, one has to define a <code>CS::Animation::iBodyBone</code> that will hold the
+colliders, joint and other physical properties of the bone. Subtrees of the skeleton are
+defined through the <code>CS::Animation::iBodyChain</code> object. 
+</p>
+<p>The body mesh is used in several animation nodes such as the <samp>&lsquo;Ragdoll&rsquo;</samp> and the
+<samp>&lsquo;LookAt&rsquo;</samp>.
+</p>
+<a name="15"></a>
+<h4 class="subsubheading"> Creating and importing Animesh meshes </h4>
+
+<p>The main ways to import an Animesh into Crystal Space is either through the
+<a href="Blender.html#0">Blender</a> export script, or the <a href="Assimp-importer.html#0">Assimp loader</a>.
+</p>
+<a name="16"></a>
+<h4 class="subsubheading"> Animating Animesh meshes </h4>
+
+<p>See the <a href="Animation-Blending-Trees.html#0">specific section on that topic</a>.
+</p>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="MeshObject-Animesh.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Animesh-Tools.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="MeshObject-Animesh.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

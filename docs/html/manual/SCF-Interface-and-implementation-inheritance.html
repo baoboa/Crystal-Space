@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.3.1.4 Interface and implementation inheritance</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.3.1.4 Interface and implementation inheritance">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.3.1.4 Interface and implementation inheritance">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="SCF-Interface-and-implementation-inheritance"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="SCF-Multiple-Interfaces.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="SCF-Versions.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="SCF.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h4 class="subsubsection"> 4.3.1.4 Interface and implementation inheritance </h4>
+
+<p>From time to time there might be a need or want for using normal inheritance
+together with <small>SCF</small>. In practice there are two times you want to do this;
+interface deriving from another interface to add methods and deriving from an
+implementation class to add new interfaces.
+</p>
+<p>In the first case where you want an interface to extend another, the declaration
+of the interfaces is straight forward using normal C++ inheritance. However, to
+make the implementation class aware of the base interfaces it should also expose
+you need to use the <code>scfFakeInterface&lt;&gt;</code> template class in the parameter
+to <code>scfImplementationN&lt;&gt;</code>.
+</p>
+<p>Example:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">// Abstract interface file (itest2.h)
+struct iTestBase : public virtual iBase
+{
+  SCF_INTERFACE (iTestBase, 1, 0, 0);
+  ...
+  virtual void SomeFunction () = 0;
+};
+
+struct iTest2 : public iTestBase
+{
+  SCF_INTERFACE (iTest2, 1, 0, 0);
+  ...
+  virtual void NewFunction () = 0;
+};
+
+// Concrete implementation header (test2.h)
+class Test2 : public scfImplementation2&lt;Test2, 
+                                        scfFakeInterface&lt;iTestBase&gt;,
+                                        iTest2&gt;
+{
+  ...
+};
+
+</pre></td></tr></table>
+<p>The other situation is when you want to take an already existing implementation
+class, derive from it and add one or more new interfaces. Using only normal C++
+inheritance and <code>scfImplementationN&lt;&gt;</code> like above is the right way to go if
+the base class does not implement any <small>SCF</small> interfaces, if they do you need
+to use the extra functionality that the template <code>scfImplementationExtN&lt;&gt;</code>.
+</p>
+<p><code>scfImplementationExtN&lt;&gt;</code> have same template parameters as 
+<code>scfImplementationN&lt;&gt;</code> with one difference, the second parameter is the base
+class to use. 
+</p>
+<p>Example: Lets extend Test2 from above with one more interface
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">struct iNewIf : public virtual iBase
+{
+  SCF_INTERFACE (iNewIf, 1, 0, 0);
+  virtual void PrintMe () = 0;
+}
+
+class NewTest2 : public scfImplementationExt1&lt;NewTest2, Test2, iNewIf&gt;
+{
+  ...
+  void PrintMe ();
+}
+
+</pre></td></tr></table>
+
+
+<hr size="1">
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

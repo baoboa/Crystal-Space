@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!-- noise.csplugin -->
+<plugin>
+  <scf>
+    <classes>
+      <class>
+        <name>crystalspace.mesh.animesh.animnode.noise</name>
+        <implementation>NoiseNodeManager</implementation>
+        <description>Crystal Space noise animation nodes of an animated mesh</description>
+      </class>
+    </classes>
+  </scf>
+</plugin>

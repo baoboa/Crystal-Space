@@ -1,0 +1,181 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.9.13.1 About Deferred Rendering</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.9.13.1 About Deferred Rendering">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.9.13.1 About Deferred Rendering">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="About-Deferred"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Deferred-Shading.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Using-Deferred.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Deferred-Shading.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h4 class="subsubsection"> 4.9.13.1 About Deferred Rendering </h4>
+
+<a name="1"></a>
+<h4 class="subsubheading"> What is Deferred Rendering? </h4>
+
+<p>Deferred shading is a rasterization based rendering method that separates the
+rendering of geometry from the process of lighting that geometry. In the
+traditional approach to rasterization (commonly referred to as forward shading)
+the rendering and lighting of geometry are done in tandem. As a result, using
+forward shading tends to limit the number of light sources that can affect a
+single object. However, with deferred shading the cost of adding a light to a
+scene is independent of the number of objects in a scene. This property allows
+for a scene to contain significantly more dynamic light sources before
+performance becomes an issue.
+</p>
+<a name="2"></a>
+<h4 class="subsubheading"> Implementing Deferred Rendering </h4>
+
+<p>From a high-level deferred shading works in two main passes. In the first pass
+all geometry in a scene is drawn to a set of buffers referred to collectively as
+the <em>GBuffer</em> (short for Geometry Buffer). During this pass the
+<em>GBuffer</em> is filled with the information needed to evaluate the lighting
+equation. This information includes as a minimum the surface normal, surface position
+(stored as depth and reconstructed when needed) and shininess. In the second pass
+the filled <em>GBuffer</em> is used to evaluate the lighting equation for each light
+in the scene. The contribution from each light is added to, what is commonly
+referred to as, the accumulation buffer. At the start of the second pass the
+accumulation buffer is initialized to all black. During the pass the accumulation
+buffer will be filled with lighting information from each light. By the end of
+the pass the accumulation buffer will contain enough information to compute
+the final image.
+</p>
+<p>To compute the lighting equation for a light source we must determine what
+pixels in the final image are affected by that light. To do this we take
+advantage of the rasterization capabilities of the GPU by rendering light proxy
+geometry. This proxy geometry is a mesh that approximates the size, shape, and
+position of the light source we are considering. As an example, we might use a
+cone mesh to approximate a spot light or a sphere mesh to approximate a point
+light. Ideally we want the proxy geometries approximation be as tight as
+possible so we do not needlessly consider pixels that are not affected by the
+light. The light proxy geometry is rendered using a shader (see section <a href="Shaders.html#0">Shaders</a>)
+that reads data from the <em>GBuffer</em>, computes the lighting equation, and
+outputs the result to the accumulation buffer at each pixel.
+</p>
+<a name="3"></a>
+<h4 class="subsubheading"> Difference between Deferred Rendering Techniques </h4>
+
+<p>Crystal Space implements two different deferred rendering techniques.
+The first and more traditional one is deferred shading. In this technique
+the <em>GBuffer</em> contains all information that is needed to compute the
+final image is stored in a single pass over the geometry and there's only
+one accumulation buffer to which the results from each light are added.
+The second technique is deferred lighting which only uses a minimal <em>GBuffer</em>
+containing the information needed to accumulate the results of each light,
+but not enough information to compute the final image. Most noteably neither
+the diffuse nor the specular color are stored as they don't vary for a pixel
+so they are not needed to accumulate the irradiance.
+The cost of this small <em>GBuffer</em> is that two accumulation buffers are
+needed (one for diffuse, one for specular light) and that a second pass
+over the geometry after the accumulation is required in which all extra
+information (such as diffuse and specular color, ambient, etc.) is fetched
+and the final image is produced.
+</p>
+<a name="4"></a>
+<h4 class="subsubheading"> Considerations when Using Deferred Shading </h4>
+
+<p>Despite the benefits in lighting that deferred shading provides there are
+multiple issues that should be considered when choosing this rendering method:
+</p>
+<ul>
+<li> The first issue to consider is the hardware requirements necessary to
+implement deferred shading efficiently. At a minimum the hardware must support
+programmable shaders. Although, hardware support for shaders that can output to
+multiple buffers and enough memory to hold 3 to 4 full resolution buffers is
+ideal. Overtime, as hardware improves, this will become less of an issue
+However, depending on your requirements, using deferred shading may limit you
+potential target base.
+
+</li><li> The second issues to consider is that deferred shading does not support
+semitransparent (alpha blended) objects. This is inherent to the method itself
+because of the data stored in the <em>GBuffer</em>. Most notably surface normals
+and surface positions cannot be blended in any meaningful way. The most common
+solution to this problem (and the one Crystal Space takes) is to render the
+semitransparent objects using forward shading after all deferred shading is
+completed. As a result, semitransparent objects will have to use a more
+traditional lighting scheme.
+
+</li><li> The third issues to consider is that deferred shading does not (at the
+time of this writing) have widespread support for hardware based antialiasing.
+More specifically, the Crystal Space implementation of deferred shading does not
+currently support hardware based antialiasing even if hardware support is
+present. 
+</li></ul>
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Deferred-Shading.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Using-Deferred.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Deferred-Shading.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

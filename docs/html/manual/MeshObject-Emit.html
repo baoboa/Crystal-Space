@@ -1,0 +1,374 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.10.16 Emitter Mesh Object</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.10.16 Emitter Mesh Object">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.10.16 Emitter Mesh Object">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="MeshObject-Emit"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="MeshObject-Spr3D.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="MeshObject-Haze.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="MeshObject.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 4.10.16 Emitter Mesh Object </h3>
+
+<p><em>Written by Wouter Wijngaards,
+<a href="mailto:wouterw@cs.vu.nl">wouterw@cs.vu.nl</a>.</em>
+</p>
+<p>An emitter particle system is a very general particle system, that
+can do a variety of things. It is considered mostly deprecated and if possible
+you should use the new particle system instead. In the future we will
+extend the new particles mesh object so that all features of emit are
+supported. See section <a href="MeshObject-Particles.html#0">Particles Mesh Object</a>.
+</p>
+<p>The emitter can be customized to a high degree, using the <samp>&lsquo;iEmitGen3D&rsquo;</samp>
+objects. Particles are emitted from position you choose, with speeds
+and accelerations you choose. During their lifetime they age and change
+as you choose.
+</p>
+<a name="1"></a>
+<h4 class="subsubheading"> Basic Structure </h4>
+
+<p>The following <small>SCF</small> class names are used (for <code>csLoadPlugin</code>):
+</p>
+<ul>
+<li>
+Type plugin: <samp>&lsquo;crystalspace.mesh.object.emit&rsquo;</samp>
+</li><li>
+Loader plugin: <samp>&lsquo;crystalspace.mesh.loader.emit&rsquo;</samp>
+</li><li>
+Factory loader plugin: <samp>&lsquo;crystalspace.mesh.loader.factory.emit&rsquo;</samp>
+</li></ul>
+
+<p>Objects in this plugin implement the following <small>SCF</small> interfaces (acquire
+with <code>scfQueryInterface</code>):
+</p>
+<ul>
+<li>
+<em>MeshObject</em>
+<ul>
+<li>
+Implements <samp>&lsquo;iMeshObject&rsquo;</samp>
+</li><li>
+Implements <samp>&lsquo;iParticleState&rsquo;</samp>
+</li><li>
+Implements <samp>&lsquo;iEmitState&rsquo;</samp>
+</li></ul>
+</li><li>
+<em>MeshObjectFactory</em>
+<ul>
+<li>
+Implements <samp>&lsquo;iMeshObjectFactory&rsquo;</samp>
+</li><li>
+Implements <samp>&lsquo;iEmitFactoryState&rsquo;</samp>
+</li></ul>
+</li><li>
+<em>MeshObjectFactory</em>
+<ul>
+<li>
+Implements <samp>&lsquo;iMeshObjectType&rsquo;</samp>
+</li></ul>
+</li></ul>
+
+<a name="2"></a>
+<h4 class="subsubheading"> Factory State Interface </h4>
+
+<p>The factory state interface has methods to create new emitter objects,
+that implement the <samp>&lsquo;iEmitGen3D&rsquo;</samp> interface. These objects return a random
+3D x,y,z value. They are used to specify starting position, speed and
+acceleration for the particles. Several exist:
+</p>
+<dl compact="compact">
+<dt> <code>iEmitFixed</code></dt>
+<dd><p>This emitter returns a fixed x,y,z value. Corresponds to a point in space,
+a fixed speed, or fixed acceleration.
+</p>
+</dd>
+<dt> <code>iEmitBox</code></dt>
+<dd><p>Returns a value with each component between a min and max.  Corresponds to
+points from a box in space.  Use it to variate x,y,z for speed and
+acceleration, or to get positions inside a box.
+</p>
+</dd>
+<dt> <code>iEmitSphere</code></dt>
+<dd><p>Returns a point in a sphere. The center of the sphere and a min and max radius
+must be given. The point is between the min and max radius from the center.
+Thus you can generate points from a hollowed sphere if you like.
+The points are evenly distributed across the entire volume of the sphere.
+</p>
+</dd>
+<dt> <code>iEmitCone</code></dt>
+<dd><p>Returns a point inside a cone. Give a start point, aperture angle, azimuth
+and elevation just like in the fountain particle system. The points are
+chosen between a min and max distance from the origin.
+</p>
+</dd>
+<dt> <code>iEmitMix</code></dt>
+<dd><p>The mix has a set of other <samp>&lsquo;iEmitGen3D&rsquo;</samp> objects, and samples a weighted
+distribution from them. You can give some other emitgen3ds and a weight
+for each one. Items with a heavier weight will be asked to return a 
+point more often.
+</p>
+<p>For example, you could add several EmitLine objects to the mix, each 
+with a weight equal to its length. Then the mix will return points from
+a random line, but those points will be evenly distributed in space.
+</p>
+</dd>
+<dt> <code>iEmitLine</code></dt>
+<dd><p>Returns points from the line between start and end position.
+</p>
+</dd>
+<dt> <code>iEmitCylinder</code></dt>
+<dd><p>Give the start and end of the middle line of the cylinder, the two end
+points. Returns points between min and max radius from the middle line.
+The points are evenly distributed in space. Also, when the start = end point,
+points from a circle are returned.
+</p>
+</dd>
+<dt> <code>iEmitSphereTangent</code></dt>
+<dd><p>The position point that is passed is used to compute a vector that is
+tangential to a sphere, relative to given origin. Use it to give a speed
+or acceleration tangential to a sphere. Speed is between min and max.
+</p>
+</dd>
+<dt> <code>iEmitCylinderTangent</code></dt>
+<dd><p>The position point that is passed is used to compute a vector that is
+tangential to a cylinder, relative to given start and end of the middle line. 
+Use it to give a speed or acceleration tangential to a cylinder. Speed is 
+between min and max.
+</p></dd>
+</dl>
+
+<a name="3"></a>
+<h4 class="subsubheading"> Factory Loader </h4>
+
+<p>The emitter mesh factory loader has no parameters.
+</p>
+<a name="4"></a>
+<h4 class="subsubheading"> Object State Interface </h4>
+
+<p><samp>&lsquo;iEmitState&rsquo;</samp> is the <small>SCF</small> interface that you can
+use to set/get settings for a emitter object. The definition of this
+interface can be found in <tt>&lsquo;CS/include/imesh/emit.h&rsquo;</tt> and that's also the
+header file you need to include in your applications to use this plugin.
+Using this interface you can access the number of particles, the size
+of the particles, and various other emitter parameters.
+You can set:
+</p>
+<ul>
+<li>
+The number of particles
+
+</li><li>
+If particles are lighted
+
+</li><li>
+The time a particle lives, in msec (1/1000). This is the maximum age 
+of the particles.
+
+</li><li>
+The starting position <samp>&lsquo;iEmitGen3D&rsquo;</samp>.
+
+</li><li>
+The starting speed <samp>&lsquo;iEmitGen3D&rsquo;</samp>.
+
+</li><li>
+The starting acceleration <samp>&lsquo;iEmitGen3D&rsquo;</samp>.
+
+</li><li>
+The attractor <samp>&lsquo;iEmitGen3D&rsquo;</samp>. You can also leave this at <small>NULL</small>, and 
+no attractor is used. If given, each point is mysteriously attracted
+to a point generated by the attractor <samp>&lsquo;iEmitGen3D&rsquo;</samp>. 
+
+</li><li>
+The force of the attractor, higher means a faster acceleration
+towards the attractor. Negative will repel.
+
+</li><li>
+The shape of the particles, either rectangular (given width, height)
+or regular shaped (given number of sides and radius).
+
+</li><li>
+Also a table a ages and settings can be given. The particles will
+have their settings interpolated from the table in their lifetime.
+At a particular time (in milliseconds), you can set the colour of the particle,
+the alpha value of the particle (1=transparent), the swirliness of the
+particle (it will jiggle around a bit), the rotationspeed (positive or
+negative) in radians per second, and the scale (relative to the starting
+scale) of the particle.
+</li></ul>
+
+<p>In addition you can use <samp>&lsquo;iParticleState&rsquo;</samp>.
+</p>
+<a name="5"></a>
+<h4 class="subsubheading"> Object Loader </h4>
+
+<dl compact="compact">
+<dt> <code>&lt;rectparticles w=&quot;&quot; h=&quot;&quot; /&gt;</code></dt>
+<dd><p>Set the width and height of the particles rectangular shape.
+</p></dd>
+<dt> <code>&lt;regularparticles sides=&quot;&quot; radius=&quot;&quot; /&gt;</code></dt>
+<dd><p>Set the number of sides and a radius of the regular shaped particles.
+</p></dd>
+<dt> <code>&lt;totaltime&gt;milliseconds&lt;/totaltime&gt;</code></dt>
+<dd><p>Set the maximum age in milliseconds.
+</p></dd>
+<dt> <code>&lt;lighting&gt;yes/no&lt;/lighting&gt;</code></dt>
+<dd><p>Disable or enable lighting for the particles
+</p></dd>
+<dt> <code>&lt;number&gt;numberparticles&lt;/number&gt;</code></dt>
+<dd><p>Set the number of particles
+</p></dd>
+<dt> <code>&lt;startpos&gt; <small class="dots">...</small></code></dt>
+<dd><p>Give an <small>EMIT</small> object for starting position.
+</p></dd>
+<dt> <code>&lt;startspeed&gt; <small class="dots">...</small></code></dt>
+<dd><p>Give the starting speed <small>EMIT</small>.
+</p></dd>
+<dt> <code>&lt;startaccel&gt; <small class="dots">...</small></code></dt>
+<dd><p>Give the starting acceleration <small>EMIT</small>.
+</p></dd>
+<dt> <code>&lt;attractorforce&gt;forcevalue&lt;/attractorforce&gt;</code></dt>
+<dd><p>Give the attractor force value.
+</p></dd>
+<dt> <code>&lt;attractor&gt; <small class="dots">...</small></code></dt>
+<dd><p>Give the <small>EMIT</small> that makes attracting points (per particle).
+</p></dd>
+<dt> <code>&lt;aging&gt; <small class="dots">...</small></code></dt>
+<dd><table><tr><td>&nbsp;</td><td><pre class="example">&lt;aging&gt;
+  &lt;color red=&quot;&quot; green=&quot;&quot; blue=&quot;&quot; /&gt;
+  &lt;time&gt;time&lt;/time&gt;
+  &lt;alpha&gt;alpha&lt;/alpha&gt;
+  &lt;swirl&gt;swirl&lt;/swirl&gt;
+  &lt;rotspeed&gt;rotspeed&lt;/rotspeed&gt;
+  &lt;scale&gt;scale&lt;/scale&gt;
+&lt;/aging&gt;
+</pre></td></tr></table><p>Give a colour red, colour green, colour blue, age time, alpha, swirl, 
+rotationspeed and scale. 
+</p></dd>
+<dt> <code>&lt;emitfixed x=&quot;&quot; y=&quot;&quot; z=&quot;&quot; /&gt;</code></dt>
+<dd><p>Fixed (x, y, z) emitter.
+</p></dd>
+<dt> <code>&lt;emitbox&gt; <small class="dots">...</small></code></dt>
+<dd><p>Box emitter, min x,y,z, max x,y,z.
+</p><table><tr><td>&nbsp;</td><td><pre class="example">&lt;emitbox&gt;
+  &lt;min x=&quot;&quot; y=&quot;&quot; z=&quot;&quot; /&gt;
+  &lt;max x=&quot;&quot; y=&quot;&quot; z=&quot;&quot; /&gt;
+&lt;/emitbox&gt;
+</pre></td></tr></table></dd>
+<dt> <code>&lt;emitsphere x=&quot;&quot; y=&quot;&quot; z=&quot;&quot; p=&quot;&quot; q=&quot;&quot; r=&quot;&quot; /&gt;</code></dt>
+<dd><p>Sphere emitter, origin x,y,z, min, max.
+</p></dd>
+<dt> <code>&lt;emitcone x=&quot;&quot; y=&quot;&quot; z=&quot;&quot; p=&quot;&quot; q=&quot;&quot; r=&quot;&quot; s=&quot;&quot; t=&quot;&quot; /&gt;</code></dt>
+<dd><p>Cone emitter, start x,y,z, elevation, azimuth, aperture, min,max radius.
+</p></dd>
+<dt> <code>&lt;emitmix&gt; <small class="dots">...</small></code></dt>
+<dd><p>Use several <samp>&lsquo;emitmix&rsquo;</samp> keywords in a row to create a mix with several
+<small>EMIT</small>s.  Inside each <samp>&lsquo;emitmix&rsquo;</samp>, <code>WEIGHT(value)</code> can be used to
+set the weight.
+</p></dd>
+<dt> <code>&lt;emitline&gt;</code></dt>
+<dd><p>Line emitter, start, end point.
+</p><table><tr><td>&nbsp;</td><td><pre class="example">&lt;emitline&gt;
+  &lt;min x=&quot;&quot; y=&quot;&quot; z=&quot;&quot; /&gt;
+  &lt;max x=&quot;&quot; y=&quot;&quot; z=&quot;&quot; /&gt;
+&lt;/emitline&gt;
+</pre></td></tr></table></dd>
+<dt> <code>&lt;emitcylinder p=&quot;&quot; q=&quot;&quot; /&gt;</code></dt>
+<dd><p>Cylinder emitter, min, max distance, start, end point.
+</p><table><tr><td>&nbsp;</td><td><pre class="example">&lt;emitcylinder&gt;
+  &lt;min x=&quot;&quot; y=&quot;&quot; z=&quot;&quot; /&gt;
+  &lt;max x=&quot;&quot; y=&quot;&quot; z=&quot;&quot; /&gt;
+&lt;/emitcylinder&gt;
+</pre></td></tr></table></dd>
+<dt> <code>&lt;emitcylindertangent p=&quot;&quot; q=&quot;&quot; /&gt;</code></dt>
+<dd><p>CylinderTangent emitter. Give start, end point, min, max speed.
+</p><table><tr><td>&nbsp;</td><td><pre class="example">&lt;emitcylindertangent&gt;
+  &lt;min x=&quot;&quot; y=&quot;&quot; z=&quot;&quot; /&gt;
+  &lt;max x=&quot;&quot; y=&quot;&quot; z=&quot;&quot; /&gt;
+&lt;/emitcylindertangent&gt;
+</pre></td></tr></table></dd>
+<dt> <code>&lt;emitspheretangent p=&quot;&quot; q=&quot;&quot; /&gt;</code></dt>
+<dd><p>SphereTangent emitter. Give origin, min, max speed.
+</p><table><tr><td>&nbsp;</td><td><pre class="example">&lt;emitspheretangent&gt;
+  &lt;min x=&quot;&quot; y=&quot;&quot; z=&quot;&quot; /&gt;
+  &lt;max x=&quot;&quot; y=&quot;&quot; z=&quot;&quot; /&gt;
+&lt;/emitspheretangent&gt;
+</pre></td></tr></table></dd>
+</dl>
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="MeshObject-Spr3D.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="MeshObject-Haze.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="MeshObject.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

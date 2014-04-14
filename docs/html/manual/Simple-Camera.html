@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.2.1.4 The Camera</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.2.1.4 The Camera">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.2.1.4 The Camera">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Simple-Camera"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Simple-World.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Simple-Locomotion.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Tutorial-Simple.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h4 class="subsubsection"> 4.2.1.4 The Camera </h4>
+
+<p>In Crystal Space there is an interface called <samp>&lsquo;iView&rsquo;</samp> which
+encapsulates both <samp>&lsquo;iCamera&rsquo;</samp> and <samp>&lsquo;iClipper2D&rsquo;</samp> instances.
+In principle you can use those classes directly but using <samp>&lsquo;iView&rsquo;</samp> is
+easier.  Now, edit <tt>&lsquo;simple.h&rsquo;</tt> to make use of <samp>&lsquo;iView&rsquo;</samp>:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">...
+class Simple
+{
+private:
+  ...
+  csRef&lt;iView&gt; view;
+  ...
+  void Frame ();
+  ...
+</pre></td></tr></table>
+<p>Then, edit <tt>&lsquo;simple.cpp&rsquo;</tt> and make the following changes at the end of
+our <code>SetupModules()</code> function:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">bool Simple::SetupModules ()
+{
+  ...
+  view.AttachNew(new csView (engine, g3d));
+  iGraphics2D* g2d = g3d-&gt;GetDriver2D ();
+  view-&gt;SetRectangle (0, 0, g2d-&gt;GetWidth (), g2d-&gt;GetHeight ());
+  ...
+  view-&gt;GetCamera ()-&gt;SetSector (room);
+  view-&gt;GetCamera ()-&gt;GetTransform ().SetOrigin (csVector3 (0, 5, -3));
+  
+  printer.AttachNew (new FramePrinter (GetObjectRegistry ()));
+
+  return true;
+}
+</pre></td></tr></table>
+<p>So, first we create a view for our world and a particular 3D renderer.
+The view has a current sector which is passed to the camera and is set by
+<code>SetSector()</code>.  The camera also has a position in that sector which you
+can set by first getting the camera with <code>GetCamera()</code> and then setting
+the position (which is a <samp>&lsquo;csVector3&rsquo;</samp>) with <code>SetPosition()</code>.  The
+view also holds a clipping region which corresponds to the area on the window
+that is going to be used for drawing the world.  Crystal Space supports convex
+polygons as viewing areas, but in this case we use a simple rectangle
+the same size as the window.  We set this viewing rectangle with
+<code>SetRectangle()</code>.
+</p>
+<p>The call to create a new view is a bit special. See the discussion
+on smart pointers for a detailed discussion (see section <a href="Smart-Pointers.html#0">Correctly Using Smart Pointers</a>).
+</p>
+<p>Now, this still isn't enough.  We have a camera but the camera is not used.
+We have to write code that actually draws the screen. We will do this
+in the functions <code>ProcessFrame()</code> and <code>FinishFrame()</code>. Note that
+Crystal Space is event driven so the actual drawing needs to be triggered
+by the event handler. Add the following code somewhere in the source file:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">void Simple::Frame ()
+{
+  rm-&gt;RenderView (view);
+}
+</pre></td></tr></table>
+<p>Drawing the screen is done in two steps. First there is the part that
+is done in <code>Frame()</code>. Here, we will actually fill the display.
+In this case we let the engine do most of that work by calling
+<code>rm-&gt;RenderView (view)</code>. But, in principle, you can do any kind of
+drawing here.
+</p>
+<p>The <code>FramePrinter</code> instance we created earlier will take care of updating
+the display.
+</p>
+<p>Compile and run this example.  For the first time you should see something: A
+solid wall.  Congratulations, you have created your first almost useful
+Crystal Space application.
+</p>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Simple-World.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Simple-Locomotion.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Tutorial-Simple.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

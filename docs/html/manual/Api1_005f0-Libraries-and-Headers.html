@@ -1,0 +1,371 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: C.5.8 Libraries and Headers Changes</title>
+
+<meta name="description" content="Crystal Space 2.1.0: C.5.8 Libraries and Headers Changes">
+<meta name="keywords" content="Crystal Space 2.1.0: C.5.8 Libraries and Headers Changes">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Api1_005f0-Libraries-and-Headers"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Api1_005f0-Texture-and-Material-Related-Changes.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Api1_005f0-Rendering-and-Drawing.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Release-Notes-1_005f0.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Licenses.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> C.5.8 Libraries and Headers Changes </h3>
+
+<a name="1"></a>
+<h4 class="subsubheading"> Library Consolidation </h4>
+
+<p>In order to simplify end-user documentation and client usage, the Crystal Space
+link libraries <tt>&lsquo;csutil&rsquo;</tt>, <tt>&lsquo;csgeom&rsquo;</tt>, <tt>&lsquo;csgfx&rsquo;</tt>, and <tt>&lsquo;cstool&rsquo;</tt>
+have been merged into a single master library named <tt>&lsquo;crystalspace&rsquo;</tt> 
+(i.e. <tt>&lsquo;libcrystalspace.a&rsquo;</tt> or <samp>&lsquo;crystalspace.lib&rsquo;</samp>).
+</p>
+<p>The tools <samp>&lsquo;cs-config&rsquo;</samp> and <samp>&lsquo;jamtemplate&rsquo;</samp> (see section <a href="HOWTO-CS-Project.html#0">Creating an External Crystal Space Application</a>),
+documentation, and all other client-oriented utilities have been updated
+appropriately to reflect this change. If you had installed Crystal Space
+previously, you should manually removed the now obsolete installed libraries
+from the installation location (typically, <tt>&lsquo;${prefix}/lib&rsquo;</tt>).
+</p>
+<p>Developers of Crystal Space itself should note that the sources and headers
+continue to reside in their separate <tt>&lsquo;csutil&rsquo;</tt>, <tt>&lsquo;csgeom&rsquo;</tt>, etc.,
+directories; and (importantly) the modules themselves remain conceptually
+distinct. This will not change. The consolidation of the physical link library
+was an end-user convenience.
+</p>
+<a name="2"></a>
+<h4 class="subsubheading"> Convenience Classes and Libraries </h4>
+
+<p>Crystal Space now publishes several convenience classes and libraries which
+eliminate much of the drudgery associated with implementing <small>SCF</small> interfaces
+in certain types of common plugin modules. For example, the <samp>&lsquo;csGraphics2D&rsquo;</samp>
+class implements the <samp>&lsquo;iGraphics2D&rsquo;</samp> interface and provides much of the
+functionality common to most canvases.  Likewise, the <samp>&lsquo;csGraphics3D&rsquo;</samp> class
+implements the <samp>&lsquo;iGraphics3D&rsquo;</samp> interface and provides much functionality
+common to renderers. You are not required to utilize these implementations when
+authoring your own plugins, but they are available for your convenience.
+</p>
+<p>Most of these newly published facilities are bundled in the consolidated master
+<tt>&lsquo;crystalspace&rsquo;</tt> library, but a few are provided in separate libraries
+because they rely upon external resources which may not be present on all
+platforms or in all installations. The convenience libraries are:
+</p>
+<dl compact="compact">
+<dt> <code>crystalspace</code></dt>
+<dd><p>Canvas, image loader, particle system, renderer, shader, sound loader, and
+sound renderer support, in addition to the normal Crystal Space classes and
+utilities.
+</p></dd>
+<dt> <code>crystalspace_directx</code></dt>
+<dd><p>DirectX support.
+</p></dd>
+<dt> <code>crystalspace_macosx</code></dt>
+<dd><p>MacOS/X canvas support.
+</p></dd>
+<dt> <code>crystalspace_opengl</code></dt>
+<dd><p>OpenGL support.
+</p></dd>
+<dt> <code>crystalspace_python</code></dt>
+<dd><p>Python support.
+</p></dd>
+<dt> <code>crystalspace_windows</code></dt>
+<dd><p>Windows support.
+</p></dd>
+</dl>
+
+<p>For a complete list of available convenience classes, consult the header files
+in the subdirectories of <tt>&lsquo;CS/include/csplugincommon&rsquo;</tt>.
+</p>
+<a name="3"></a>
+<h4 class="subsubheading"> Convenience Headers </h4>
+
+<p>For convenience, several top-level <em>master header</em> files have been added to
+the project. These should simplify client usage by allowing users to choose the
+level of granularity which suits them best.  The list of new header files
+follows.
+</p>
+<dl compact="compact">
+<dt> <code>crystalspace.h</code></dt>
+<dd><p>Nearly all public headers in entire Crystal Space <small>SDK</small>.
+</p></dd>
+<dt> <code>csgeom.h</code></dt>
+<dd><p>Content of <tt>&lsquo;CS/include/csgeom&rsquo;</tt>.
+</p></dd>
+<dt> <code>csgfx.h</code></dt>
+<dd><p>Content of <tt>&lsquo;CS/include/csgfx&rsquo;</tt>.
+</p></dd>
+<dt> <code>csplugincommon.h</code></dt>
+<dd><p>Content of <tt>&lsquo;CS/include/csplugincommon&rsquo;</tt>.
+</p></dd>
+<dt> <code>cstool.h</code></dt>
+<dd><p>Content of <tt>&lsquo;CS/include/cstool&rsquo;</tt>.
+</p></dd>
+<dt> <code>csutil.h</code></dt>
+<dd><p>Content of <tt>&lsquo;CS/include/csutil&rsquo;</tt>.
+</p></dd>
+<dt> <code>iaws.h</code></dt>
+<dd><p>Content of <tt>&lsquo;CS/include/iaws&rsquo;</tt>.
+</p></dd>
+<dt> <code>iengine.h</code></dt>
+<dd><p>Content of <tt>&lsquo;CS/include/iengine&rsquo;</tt>.
+</p></dd>
+<dt> <code>igeom.h</code></dt>
+<dd><p>Content of <tt>&lsquo;CS/include/igeom&rsquo;</tt>.
+</p></dd>
+<dt> <code>igraphic.h</code></dt>
+<dd><p>Content of <tt>&lsquo;CS/include/igraphic&rsquo;</tt>.
+</p></dd>
+<dt> <code>imap.h</code></dt>
+<dd><p>Content of <tt>&lsquo;CS/include/imap&rsquo;</tt>.
+</p></dd>
+<dt> <code>imesh.h</code></dt>
+<dd><p>Content of <tt>&lsquo;CS/include/imesh&rsquo;</tt>.
+</p></dd>
+<dt> <code>inetwork.h</code></dt>
+<dd><p>Content of <tt>&lsquo;CS/include/inetwork&rsquo;</tt>.
+</p></dd>
+<dt> <code>isound.h</code></dt>
+<dd><p>Content of <tt>&lsquo;CS/include/isound&rsquo;</tt>.
+</p></dd>
+<dt> <code>itexture.h</code></dt>
+<dd><p>Content of <tt>&lsquo;CS/include/itexture&rsquo;</tt>.
+</p></dd>
+<dt> <code>iutil.h</code></dt>
+<dd><p>Content of <tt>&lsquo;CS/include/iutil&rsquo;</tt>.
+</p></dd>
+<dt> <code>ivaria.h</code></dt>
+<dd><p>Content of <tt>&lsquo;CS/include/ivaria&rsquo;</tt>.
+</p></dd>
+<dt> <code>ivideo.h</code></dt>
+<dd><p>Content of <tt>&lsquo;CS/include/ivideo&rsquo;</tt>.
+</p></dd>
+</dl>
+
+<p>Users new to the <small>SDK</small> will probably want to include <tt>&lsquo;crystalspace.h&rsquo;</tt>
+since it is simplest; whereas more advanced users may want to include
+<tt>&lsquo;csutil.h&rsquo;</tt>, <tt>&lsquo;cstool.h&rsquo;</tt>, etc.; and power users can continue to include
+only the individual headers required by a particular piece of code.
+</p>
+<p>As a corollary, the old <tt>&lsquo;CS/include/css.h&rsquo;</tt> header, which included many,
+though not all Crystal Space header files, has been removed. If you require
+this type functionality from a header, then include the new
+<tt>&lsquo;crystalspace.h&rsquo;</tt> instead.
+</p>
+<p>Be aware that there is a very small set of public headers not included in any
+of the master headers. These are omitted from the master headers because they
+reference external resources which might not be known or available to all
+clients of the master headers. Clients requiring these special-case headers
+will need to include them manually, on an as-needed basis, and arrange that the
+build system has sufficient knowledge about the external resources to satisfy
+the dependencies at build time.  The list of headers which are excluded from
+the master headers follows.
+</p>
+<dl compact="compact">
+<dt> <code>csplugincommon/directx/*.h</code></dt>
+<dd><p>DirectX-specific.
+</p></dd>
+<dt> <code>csplugincommon/macosx/*.h</code></dt>
+<dd><p>MacOS/X-specific.
+</p></dd>
+<dt> <code>csplugincommon/opengl/*.h</code></dt>
+<dd><p>OpenGL-specific.
+</p></dd>
+<dt> <code>csplugincommon/win32/*.h</code></dt>
+<dd><p>Windows-specific.
+</p></dd>
+<dt> <code>csutil/archive.h</code></dt>
+<dd><p>Requires zlib indirectly via <tt>&lsquo;csutil/zip.h&rsquo;</tt>.
+</p></dd>
+<dt> <code>csutil/getopt.h</code></dt>
+<dd><p>Conflicts with platform-supplied <tt>&lsquo;&lt;getopt.h&gt;&rsquo;</tt>.
+</p></dd>
+<dt> <code>csutil/zip.h</code></dt>
+<dd><p>Requires zlib; <a href="http://www.gzip.org/zlib/">http://www.gzip.org/zlib/</a>
+</p></dd>
+<dt> <code>inetwork/vosapi.h</code></dt>
+<dd><p>Requires <small>VOS</small>; <a href="http://www.interreality.org/">http://www.interreality.org/</a>
+</p></dd>
+<dt> <code>ivaria/ode.h</code></dt>
+<dd><p>Requires <small>ODE</small>; <a href="http://www.ode.org/">http://www.ode.org/</a>
+</p></dd>
+<dt> <code>ivideo/wxwin.h</code></dt>
+<dd><p>Requires wxWidgets; <a href="http://www.wxwidgets.org/">http://www.wxwidgets.org/</a>
+</p></dd>
+</dl>
+
+<p>As an example, if you need access to the <samp>&lsquo;iWxWindow&rsquo;</samp> interface, then you
+must include <tt>&lsquo;ivideo/wxwin.h&rsquo;</tt> manually; it will not be included as part of
+<tt>&lsquo;crystalspace.h&rsquo;</tt> or <tt>&lsquo;ivideo.h&rsquo;</tt>. Furthermore, you will need
+to let the build system know where it can find the wxWidgets resources (headers
+and libraries). Typically, this is done by adding a wxWidgets check to your
+project's <tt>&lsquo;configure&rsquo;</tt> script; emitting the results of the check to your
+<tt>&lsquo;Jamconfig&rsquo;</tt> file with the <code>CS_EMIT_BUILD_RESULT()</code> Autoconf macro;
+and finally utilizing the result of that check in your project's <tt>&lsquo;Jamfile&rsquo;</tt>
+by invoking the Jam rule <samp>&lsquo;ExternalLibs&rsquo;</samp>. For <small>MSVC</small> project files, the
+location of the wxWidgets resources will have to be added as <em>additional
+include directories</em> and <em>additional library directories</em>, in the project
+settings or globally, to ensure that <small>MSVC</small> will be able to find them.
+</p>
+<a name="4"></a>
+<h3 class="subheading"> <tt>&lsquo;cssysdef.h&rsquo;</tt> Changes </h3>
+
+<p>The <samp>&lsquo;CS_SYSDEF_PROVIDE_FACILITY&rsquo;</samp> macros, which clients would
+<code>#define</code> before including <tt>&lsquo;cssysdef.h&rsquo;</tt> in order to alter the
+behavior of <tt>&lsquo;cssysdef.h&rsquo;</tt>, have been removed. Retirement of these macros
+eliminates the polymorphic behavior of <tt>&lsquo;cssysdef.h&rsquo;</tt>, thus helping to pave
+the way toward eventually pre-compiling Crystal Space's headers in order to
+reduce overall compilation time.  In addition to removing these macros from
+your code, the following table explains what else (if anything) needs to be
+done to account for the removal.
+</p>
+<dl compact="compact">
+<dt> <code>CS_SYSDEF_PROVIDE_ACCESS</code></dt>
+<dd><p>No additional changes.
+</p></dd>
+<dt> <code>CS_SYSDEF_PROVIDE_ALLOCA</code></dt>
+<dd><p>Use the <samp>&lsquo;CS_ALLOC_STACK_ARRAY()&rsquo;</samp> macro, rather than <code>alloca()</code>.
+</p></dd>
+<dt> <code>CS_SYSDEF_PROVIDE_CASE</code></dt>
+<dd><p>No additional changes.
+</p></dd>
+<dt> <code>CS_SYSDEF_PROVIDE_DIR</code></dt>
+<dd><p>No additional changes.
+</p></dd>
+<dt> <code>CS_SYSDEF_PROVIDE_EXPAND_PATH</code></dt>
+<dd><p>No additional changes.
+</p></dd>
+<dt> <code>CS_SYSDEF_PROVIDE_GETCWD</code></dt>
+<dd><p>No additional changes.
+</p></dd>
+<dt> <code>CS_SYSDEF_PROVIDE_GETOPT</code></dt>
+<dd><p>Include <tt>&lsquo;csutil/getopt.h&rsquo;</tt>.
+</p></dd>
+<dt> <code>CS_SYSDEF_PROVIDE_MKDIR</code></dt>
+<dd><p>Use the <samp>&lsquo;CS_MKDIR(path)&rsquo;</samp> macro to create the directory, rather than the
+obsolete <samp>&lsquo;MKDIR()&rsquo;</samp> macro.
+</p></dd>
+<dt> <code>CS_SYSDEF_PROVIDE_PATH</code></dt>
+<dd><p>No additional changes.
+</p></dd>
+<dt> <code>CS_SYSDEF_PROVIDE_SELECT</code></dt>
+<dd><p>No additional changes.
+</p></dd>
+<dt> <code>CS_SYSDEF_PROVIDE_SOCKETS</code></dt>
+<dd><p>Include <tt>&lsquo;csutil/sockets.h&rsquo;</tt>.
+</p></dd>
+<dt> <code>CS_SYSDEF_PROVIDE_SOFTWARE2D</code></dt>
+<dd><p>No additional changes.
+</p></dd>
+<dt> <code>CS_SYSDEF_PROVIDE_TEMP</code></dt>
+<dd><p>Use the <samp>&lsquo;CS_TEMP_DIR&rsquo;</samp> and <samp>&lsquo;CS_TEMP_FILE&rsquo;</samp> macros, rather than the
+obsolete <samp>&lsquo;TEMP_DIR&rsquo;</samp> and <samp>&lsquo;TEMP_FILE&rsquo;</samp> macros.
+</p></dd>
+<dt> <code>CS_SYSDEF_PROVIDE_UNLINK</code></dt>
+<dd><p>No additional changes.
+</p></dd>
+<dt> <code>CS_SYSDEF_VFS_PROVIDE_CHECK_VAR</code></dt>
+<dd><p>No additional changes.
+</p></dd>
+</dl>
+
+<p>The age-old restriction that <tt>&lsquo;cssysdef.h&rsquo;</tt> could be included only by source
+files (<tt>&lsquo;.cpp&rsquo;</tt>) has been lifted. This restriction was an unfortunate
+side-effect of the polymorphic behavior of <tt>&lsquo;cssysdef.h&rsquo;</tt> in the presence
+of various <samp>&lsquo;CS_SYSDEF_PROVIDE_FACILITY&rsquo;</samp> macros. It is now safe, even
+recommended, to include <tt>&lsquo;cssysdef.h&rsquo;</tt> in header files (<tt>&lsquo;.h&rsquo;</tt>). Doing so
+helps to make header files more self-contained, thus reducing the burden of
+clients of those headers.
+</p>
+<a name="5"></a>
+<h4 class="subsubheading"> C++ Standard Conformance </h4>
+
+<p>Crystal Space's public header files are now C++ Language Standard
+conformant. This means that Crystal Space-based projects which choose to adhere
+strictly to the C++ Language Standard (such as those which employ <em>gcc</em>'s
+<samp>&lsquo;-ansi&rsquo;</samp> and <samp>&lsquo;-pedantic&rsquo;</samp> options) can now include Crystal Space
+headers safely.
+</p>
+<a name="6"></a>
+<h4 class="subsubheading"> <tt>&lsquo;imap/parser.h&rsquo;</tt> Deprecated </h4>
+
+<p>All functionality in the header <tt>&lsquo;imap/parser.h&rsquo;</tt> was long ago moved to
+<tt>&lsquo;imap/loader.h&rsquo;</tt>, which declares interfaces to access the Crystal Space
+map loader. At that time, <tt>&lsquo;imap/parser.h&rsquo;</tt> became a very thin wrapper which
+merely included <tt>&lsquo;imap/loader.h&rsquo;</tt> and did nothing more. Since
+<tt>&lsquo;imap/parser.h&rsquo;</tt> has no useful purpose, it is now officially deprecated,
+and deprecation warnings have been added. Use <tt>&lsquo;imap/loader.h&rsquo;</tt> instead.
+</p>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Api1_005f0-Texture-and-Material-Related-Changes.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Api1_005f0-Rendering-and-Drawing.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Release-Notes-1_005f0.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Licenses.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

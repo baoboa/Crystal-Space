@@ -1,0 +1,105 @@
+@c -*-texinfo-*-
+@node Release Notes 1_4_1, Release Notes 1_4, Release Notes 2_0, Release Notes
+@appendixsec Release Notes from 1.4 to 1.4.1
+@cindex Release Notes
+
+This section documents changes between versions 1.4 and 1.4.1 of
+Crystal Space.
+
+@strong{Fixes that apply to tickets in Trac:}
+
+@itemize @bullet
+
+@item
+Ticket #737: Projects created by @file{jamtemplate}/@file{createproject.sh} now take @code{MSVC_VERSION} into account when linking against @sc{cel} libraries.
+
+@item
+Ticket #803: Don't use a deprecated @file{libpng} function.
+
+@item
+Ticket #805: Fix problem where @code{csTinyXmlDocument::Parse(iDataBuffer*)} overload did not ensure that string passed to @code{Parse(const char*)} overload was null-terminated.
+
+@item
+Ticket #810: Fix OpenGL context-related build error on Snow Leopard by taking advantage of @sc{api} available since 10.3 rather than employing hack needed by earlier versions.
+
+@item
+Ticket #811: Fix @emph{cannot convert size_t to UInt32} compilation error on Snow Leopard where @code{size_t} is now 64-bit by default rather than 32-bit.
+
+@item
+Ticket #812: Fix leak reported in oggstream2. @code{ov_clear} must be called when the ogg stream is no more needed according to vorbis documentation. It seems as a result leaks reported by openal have disappeared. patch by agy.
+
+@item
+Ticket #813:
+
+Fix problem where version number was appended to the executable name at @file{jam install} time on Windows without regard for file extension (i.e. @file{foobar.exe-1.9}) rather than being inserted just before the extension (i.e. @file{foobar-1.9.exe}).
+
+Fix problem where symbolic-link creation failed on Windows at @file{jam install} time when linking non-versioned to versioned executable name.
+
+@item
+Ticket #817: Update @sc{cs} repository @sc{url} to latest format specified by SourceForge.
+
+@item
+Ticket #895: Cherry picked doc updates. Many thanks to darkenor for taking the time to make the submission.
+@end itemize
+
+@strong{Other changes:}
+
+@itemize @bullet
+@item
+Removal of special autoresume code when unpausing on Mac OS X as multiple consecutive @code{NSApplicationDidResignActiveNotification} messages may be sent causing the app to permanently freeze.
+
+@item
+Set @code{CS_CONFIGDIR} for @sc{vfs}.
+
+@item
+Change Bullet configure test to look for (apparently) new-style @code{BulletCollision -lLinearMath} as well as previous @code{-lbulletcollision} and @code{-lbulletmath}.
+
+@item
+Moved @file{Python.h} @code{_DEBUG} hack into it's own file.
+
+@item
+Fixed release mode compile errors in cspython.
+
+@item
+Fixed usage of m4_default in call to @code{CS_CHECK_PROG_VERSION} to work with the now stable interface tested on @file{autoconf} 2.66 and 2.67
+
+@item
+Relocated @sc{posix} dl-based @file{libs/csutil/unix/loadlib.cpp} to @file{libs/csutil/generic} since it should be portable to various @sc{posix} platforms.
+  
+Genericized @file{libs/csutil/generic/loadlib.cpp} to allow platform-specific file extensions (@file{.csplugin}/@file{.so}) to be specified at compile time.
+  
+Retired the Mac OS X specific dynamic module loading facilities in favor of @file{libs/csutil/generic/loadlib.cpp}.  This is possible since Mac OS X supports @sc{posix} @file{dl} facilities, unlike ancestors NextStep, OpenStep, Rhapsody from which the OS X port arose. In addition to reducing Mac OS X specific implementation, this also resolves Apple deprecation warnings from the Darwin module-loading @sc{api}.
+
+@item
+Fix wrongly placed @code{break}.
+
+@item
+Fix a wrong data size validation check. Spotted by Lirrec.
+
+@item
+Remove redundancy.
+
+@item
+1.4 requires @sc{cegui} 0.5 but is known to work with 0.6. 1.4 will not compile with @sc{cegui} 0.7.x.
+
+We don't want bug reports about this on such an old release and the work involved in changes to 1.4 to now support 0.7 is not really worth it.
+
+Added test for versions greater than 0.6 of @sc{cegui}, so it fails the 1.4 @file{configure} test.
+
+@item
+Add arm support.
+
+@item
+Disable Java build.
+
+@item
+Removed @file{csdemo} from the default build.
+
+This is due to the @file{demodata.zip} file no longer being available.
+Code has been left in place for review and learning purposes.
+Removed @file{csdemo} from @file{startme} application list.
+Updated docs to indicate the above.
+
+@item
+Documented options for running @file{phystut} with preferred physics plug-in more explanatory.
+@end itemize

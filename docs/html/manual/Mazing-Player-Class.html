@@ -1,0 +1,275 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.2.4.6 Player Class</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.2.4.6 Player Class">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.2.4.6 Player Class">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Mazing-Player-Class"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Mazing-Maze-Class.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Mazing-Adversary-Class.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Tutorial-Mazing.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h4 class="subsubsection"> 4.2.4.6 Player Class </h4>
+
+<p>The <code>Player</code> class manages the player and player movement including collision
+detection.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">class Player
+{
+private:
+  AppMazing* app;
+
+  csRef&lt;iCollider&gt; player_collider;
+
+  // For the movement system.
+  csVector3 desired_location;
+  csVector3 desired_lookat;
+  float amount_moved;
+  float amount_rotated;
+  csVector3 start_location;
+  csVector3 start_lookat;
+
+public:
+  Player (AppMazing* app);
+
+  bool InitCollisionDetection ();
+
+  void StartMovement (const csVector3&amp; dir);
+  void StartRotation (const csVector3&amp; rot);
+  void MoveAndRotateCamera (float elapsed_seconds);
+};
+</pre></td></tr></table>
+<p>First it keeps track of the <samp>&lsquo;player_collider&rsquo;</samp>. This will be used for
+detecting collision detection. Then it keeps track of where the player wants
+to go too and in what direction it wants to look (<samp>&lsquo;desired_location&rsquo;</samp> and
+<samp>&lsquo;desired_lookat&rsquo;</samp>). The function <code>StartMovement()</code> initiates a movement
+in some direction (relative). The function <code>StartRotation()</code> initiates
+a rotation in some rotational direction. It is important to note that these
+functions don't actually do the movement and the rotation. This is done in
+the function <code>MoveAndRotateCamera()</code>. This function takes the elapsed
+seconds since the last frame as a parameter. This makes sure that movement speed
+will be equal on fast and slow hardware. i.e. the movement speed is independent
+from framerate. That's a very important principle to maintain in games.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">Player::Player (AppMazing* app)
+{
+  Player::app = app;
+
+  desired_location.Set (0, 0, 0);
+  desired_lookat.Set (0, 0, 1);
+  start_location.Set (0, 0, 0);
+  start_lookat.Set (0, 0, 1);
+  amount_moved = 0;
+  amount_rotated = 0;
+}
+
+bool Player::InitCollisionDetection ()
+{
+  float ps = PLAYER_SIZE / 2.0;
+  csTriangleMeshBox* box = new csTriangleMeshBox (csBox3 (
+  	csVector3 (-ps, -ps, -ps), csVector3 (ps, ps, ps)));
+  player_collider = app-&gt;GetCollisionDetectionSystem ()
+  	-&gt;CreateCollider (box);
+  box-&gt;DecRef ();
+  if (player_collider == 0) return false;
+  return true;
+}
+</pre></td></tr></table>
+<p>First we have the constructor. In this constructor we set all the defaults for
+the movement system. In <code>InitCollisionDetection()</code> we set up the collider
+that the collision detection system is going to use. Basically we represent
+the player as a box. The class <code>csTriangleMeshBox</code> can be used to quickly
+create an implementation of <code>iTriangleMesh</code> for a box.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">void Player::StartMovement (const csVector3&amp; dir)
+{
+  iCamera* camera = app-&gt;GetCamera ();
+
+  amount_moved = 0;
+  csReversibleTransform camera_trans = camera-&gt;GetTransform ();
+  start_location = camera_trans.GetOrigin ();
+
+  // Calculate the spot where we want to move too depending on elapsed
+  // time and current direction the camera is facing.
+  csVector3 world_dir = camera_trans.This2OtherRelative (dir);
+  desired_location = start_location + MOVE_DISTANCE * world_dir;
+
+  // First we find all meshes that are near the path that we want to move.
+  // To do that we take the center point of our movement vector and
+  // calculate all objects that touch the circle around that point with
+  // radius (MOVE_DISTANCE+PLAYER_SIZE) / 2.0.
+  csRef&lt;iMeshWrapperIterator&gt; it = app-&gt;GetEngine ()-&gt;GetNearbyMeshes (
+  	camera-&gt;GetSector (), (start_location + desired_location) / 2.0,
+	(MOVE_DISTANCE + PLAYER_SIZE) / 2.0);
+
+  if (!it-&gt;HasNext ())
+  {
+    // We have no objects in the iterator so there can be no collision.
+    // We can move freely.
+    return;
+  }
+
+  // If we have meshes then we will calculate collision detection for our
+  // object along the path we want to move.
+  desired_location = start_location;
+  csVector3 test_location = start_location + STEP_DISTANCE * world_dir;
+  iCollideSystem* cdsys = app-&gt;GetCollisionDetectionSystem ();
+  float current_move = STEP_DISTANCE;
+  while (current_move &lt;= MOVE_DISTANCE)
+  {
+    camera_trans.SetOrigin (test_location);
+
+    // Test collision with our iterator.
+    it-&gt;Reset ();
+    while (it-&gt;HasNext ())
+    {
+      iMeshWrapper* mesh = it-&gt;Next ();
+      csColliderWrapper* collide_wrap = csColliderWrapper::GetColliderWrapper (
+    	  mesh-&gt;QueryObject ());
+      if (collide_wrap)
+      {
+        csReversibleTransform mesh_trans = mesh-&gt;GetMovable ()
+      	  -&gt;GetFullTransform ();
+	cdsys-&gt;ResetCollisionPairs ();
+        if (cdsys-&gt;Collide (
+      	      collide_wrap-&gt;GetCollider (), &amp;mesh_trans,
+	      player_collider, &amp;camera_trans))
+        {
+	  // Collision, so we can stop. 'desired_location' will contain
+	  // the last valid location that we can move too.
+	  return;
+	}
+      }
+    }
+    desired_location = test_location;
+    test_location += STEP_DISTANCE * world_dir;
+    current_move += STEP_DISTANCE;
+  }
+}
+
+void Player::StartRotation (const csVector3&amp; rot)
+{
+  float angle = ROTATE_ANGLE;
+  csOrthoTransform trans = app-&gt;GetCamera ()-&gt;GetTransform ();
+  start_lookat = trans.This2OtherRelative (csVector3 (0, 0, 1));
+  trans.RotateThis (rot, angle);
+  desired_lookat = trans.This2OtherRelative (csVector3 (0, 0, 1));
+  amount_rotated = 0;
+}
+</pre></td></tr></table>
+<p>The <code>StartMovement()</code> function will handle the movement in a certain
+direction. It will first calculate where the relative direction would take the
+player. Based on that it will try to do collision detection to move as close
+as possible to the desired end position. If it finds a suitable spot that is
+not embedded in a wall it will then store the final desired location so that
+<code>MoveAndRotateCamera()</code> can use that to do the actual movement.
+</p>
+<p>The <code>StartRotation()</code> function is easier. It will not do any collision
+detection but instead just calculate where the rotation should go too.
+</p>
+<p>Note that there is actually a bug in this code. Because we are ignoring collision
+detection when rotating and because our player is represented by a box it is
+actually possible to move and rotate at the same time and end up stuck in the
+wall.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">void Player::MoveAndRotateCamera (float elapsed_seconds)
+{
+  iCamera* camera = app-&gt;GetCamera ();
+
+  // First we move the camera.
+  amount_moved += MOVECAMERA_SPEED * elapsed_seconds;
+  float move_val = 1 - pow (2.0f, -amount_moved);
+  csVector3 current_pos = camera-&gt;GetTransform ().GetOrigin ();
+  csVector3 new_pos = start_location * (1-move_val)
+  	+ desired_location * move_val;
+  camera-&gt;MoveWorld (new_pos - current_pos, false);
+
+  // Now we rotate the camera.
+  amount_rotated += ROTATECAMERA_SPEED * elapsed_seconds;
+  float rotate_val = 1 - pow (2.0f, -amount_rotated);
+  csVector3 new_lookat = start_lookat * (1-rotate_val)
+  	+ desired_lookat * rotate_val;
+  camera-&gt;GetTransform ().LookAt (new_lookat, csVector3 (0, 1, 0));
+}
+</pre></td></tr></table>
+<p>Based on the desired end position and rotation this function will actually
+move the player there. It will use the actual number of seconds that have
+elapsed since the previous frame to ensure that movement is the same on
+all hardware.
+</p>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Mazing-Maze-Class.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Mazing-Adversary-Class.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Tutorial-Mazing.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

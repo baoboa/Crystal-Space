@@ -1,0 +1,199 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.10.18 Watermesh Mesh Object</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.10.18 Watermesh Mesh Object">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.10.18 Watermesh Mesh Object">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="MeshObject-Watermesh"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="MeshObject-Haze.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Furmesh-Mesh.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="MeshObject.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 4.10.18 Watermesh Mesh Object </h3>
+
+<p><em>Written by Pavel Krajcevski,
+<a href="mailto:Krajcevski@gmail.com">Krajcevski@gmail.com</a>.</em>
+</p>
+<p>A watermesh is a simple mesh representing a grid. In its simplest form it can
+be used to render a square. It requires a specific shader to make it look like
+water. A watermesh is generally preferred since it is very simple to define the
+bounds and furthermore it supports ocean creation with very basic LOD calculations.
+</p>
+<a name="1"></a>
+<h4 class="subsubheading"> Basic Structure </h4>
+
+<p>The following <small>SCF</small> class names are used (for <code>csLoadPlugin</code>):
+</p>
+<ul>
+<li>
+Type plugin: <code>crystalspace.mesh.object.watermesh</code>
+</li><li>
+Loader plugin: <code>crystalspace.mesh.loader.watermesh</code>
+</li><li>
+Factory loader plugin: <code>crystalspace.mesh.loader.factory.watermesh</code>
+</li></ul>
+
+<p>Objects in this plugin implement the following <small>SCF</small> interfaces, which you
+can retrieve with <code>scfQueryInterface</code>:
+</p>
+<ul>
+<li>
+<em>MeshObject</em>
+<ul>
+<li>
+Implements <samp>&lsquo;iMeshObject&rsquo;</samp>
+</li><li>
+Implements <samp>&lsquo;iWaterMeshState&rsquo;</samp>
+</li></ul>
+</li><li>
+<em>MeshObjectFactory</em>
+<ul>
+<li>
+Implements <samp>&lsquo;iMeshObjectFactory&rsquo;</samp>
+</li><li>
+Implements <samp>&lsquo;iWaterFactoryState&rsquo;</samp>
+</li></ul>
+</li><li>
+<em>MeshObjectType</em>
+<ul>
+<li>
+Implements <samp>&lsquo;iMeshObjectType&rsquo;</samp>
+</li></ul>
+</li></ul>
+
+<a name="2"></a>
+<h4 class="subsubheading"> Factory State Interface </h4>
+
+<p>Use the <samp>&lsquo;iWaterFactoryState&rsquo;</samp> <small>SCF</small> interface to access settings for
+a watermesh factory.  The definition of this interface can be found in
+<tt>&lsquo;CS/include/imesh/watermesh.h&rsquo;</tt> and that is also the include file you need
+to include in your applications to use this plugin.  Using this interface you
+can access the material, dimensions, murkiness, and whether or not you want an
+ocean for your watermesh factory.
+</p>
+<a name="3"></a>
+<h4 class="subsubheading"> Factory Loader </h4>
+
+<p>Here is a list of all the tags supported by a watermesh factory and their
+meaning:
+</p><ul>
+<li> <samp>&lsquo;width&rsquo;</samp>
+Determine the width of the watermesh in the x direction. This must be an integer.
+</li><li> <samp>&lsquo;length&rsquo;</samp>
+Determine the length of the watermesh in the z direction. This must be an integer.
+</li><li> <samp>&lsquo;gran&rsquo;</samp>
+Determine the granularity of the mesh, i.e. the amount of vertices per unit length.
+For example, a granularity of two would make vertex coordinates at 0, 0.5, 1, 1.5, etc.
+</li><li> <samp>&lsquo;murk&rsquo;</samp>
+Set the murkiness of the water. This determines how transparent the water is. Must be a number
+between zero and one. Default is 0.3.
+</li><li> <samp>&lsquo;isocean&rsquo;</samp>
+Boolean value for whether or not you want the factory to define an ocean. If the mesh is an
+ocean then the values for <samp>&lsquo;width&rsquo;</samp>, <samp>&lsquo;length&rsquo;</samp>, and <samp>&lsquo;gran&rsquo;</samp> are ignored.
+</li></ul>
+
+<a name="4"></a>
+<h4 class="subsubheading"> Object State Interface </h4>
+
+<p><samp>&lsquo;iWaterMeshState&rsquo;</samp> (residing in <tt>&lsquo;CS/include/imesh/watermesh.h&rsquo;</tt>) is
+the <small>SCF</small> interface that you can use to manipulate settings for a watermesh
+object.  By using this interface you can access the material for a watermesh object.
+</p>
+<a name="5"></a>
+<h4 class="subsubheading"> Object Loader </h4>
+
+<p>Here is a list of all the tags supported by a watermesh object and their
+meaning:
+</p><ul>
+<li> <samp>&lsquo;factory&rsquo;</samp>
+The name of the factory to use.
+</li><li> <samp>&lsquo;material&rsquo;</samp>
+For this object, override the material from the factory.
+</li></ul>
+
+<a name="6"></a>
+<h4 class="subsubheading"> Water Shaders </h4>
+
+<p>Currently, most of the work into rendering realistic water is determined by the shaders
+associated with the mesh. For this there is a predefined shader in 
+<tt>&lsquo;CS/data/shader/water/water.xml&rsquo;</tt>. Also, the shader currently supports the use of
+multisampling a normal map to create a rippling effect on the water. This requires a
+normal map defined in tangent space, some of which can be found in <tt>&lsquo;CS/data/water/&rsquo;</tt>
+</p>
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="MeshObject-Haze.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Furmesh-Mesh.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="MeshObject.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

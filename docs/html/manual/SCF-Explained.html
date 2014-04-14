@@ -1,0 +1,210 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.3.1.1 How it Works</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.3.1.1 How it Works">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.3.1.1 How it Works">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="SCF-Explained"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="SCF.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="SCF-Using.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="SCF.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h4 class="subsubsection"> 4.3.1.1 How it Works </h4>
+
+<p>This section contains technical details about <small>SCF</small>. If you're not
+interested in details, you can skip directly to the next section which
+explains how <small>SCF</small> should be used from the end-user's point of view.
+</p>
+<p><small>SCF</small> is somewhat similar to <small>COM</small>. This is because historically
+Crystal Space initially used <small>COM</small> for inter-module communication. Thanks
+to Dan Ogles for the initial implementation of a cross-platform <small>COM</small>
+library; his implementation was a good test-bed for this <small>SCF</small>
+implementation.
+</p>
+<p>The differences between <small>COM</small> and <small>SCF</small> are due to the increased need for
+an easier-to-use and more lightweight mechanism than <small>COM</small>.  The <small>COM</small>
+implementation caused some problems (because of historic bugs in <small>EGCS</small>
+1.1.x and incompatibilities with platforms to which Crystal Space has ported).
+Also it has some problems due to the native Windows types used in <small>COM</small>;
+this experience was taken into account while developing <small>SCF</small>.
+</p>
+<p>The main paradigm of <small>SCF</small>, as in <small>COM</small>/<small>CORBA</small>/Java/etc. is the
+<em>interface</em>.  You define an <em>interface</em>, that is, a set of abstract
+methods that you want to access within some object.  <small>SCF</small> interfaces are
+plain C++ structs (or classes, it doesn't matter much except that if you're
+using classes to which you will have to add the <samp>&lsquo;public:&rsquo;</samp> keyword).
+Theoretically, interfaces can contain member variables and inline methods
+(though not non-virtual methods or constructors), <em>but</em> this practice is
+not encouraged because later someone may want to add a <small>COM</small>, <small>CORBA</small>,
+etc.  layer between the client and the actual object, and this will not be
+possible if the interfaces contains variables, inline methods, or non-virtual
+methods.  If you don't plan to use <small>COM</small> or <small>CORBA</small> later, then you can
+use variables and inline functions as much as you like in your own code.
+In Crystal Space code, the use of inline methods is acceptable if the methods
+have the nature of small helper or convenience methods and would work for any
+implementation. The use of member variables is highly discouraged.
+</p>
+<p>Here is an example of an interface in a file named <tt>&lsquo;idog.h&rsquo;</tt>:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">struct iDog
+{
+  virtual bool IsAlive() = 0;
+  virtual char const* GetName() = 0;
+  virtual void SetName (char const*) = 0;
+  virtual void Shout(int Volume) = 0;
+  virtual void Run(int Speed, float Direction) = 0;
+  virtual bool GetChildren(iObjVector* oBrood) = 0;
+};
+</pre></td></tr></table>
+<p>Note the last method that gets a pointer of <samp>&lsquo;iObjVector&rsquo;</samp> type.
+<samp>&lsquo;iObjVector&rsquo;</samp> is yet another interface.  We could pass a pointer to a
+<samp>&lsquo;csObjVector&rsquo;</samp> (the implementation of that interface) as well, but this
+will mean both modules (caller and callee) should have same idea about what a
+<samp>&lsquo;csObjVector&rsquo;</samp> is, and if it happened that you compiled the shared library
+with a slightly different version of <samp>&lsquo;csObjVector&rsquo;</samp> (that, say, had one
+member variable fewer) you will end up with a <small>SIGSEGV</small> crash.  By instead
+specifying the abstract <samp>&lsquo;iObjVector&rsquo;</samp>, there is no need to link the
+<samp>&lsquo;csObjVector&rsquo;</samp> class into both the caller and the callee.
+</p>
+<p>Now let's write a particular <em>implementation</em> of the above interface.
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">#include &quot;idog.h&quot;
+
+class MyDog : public iDog
+{
+private:
+  // private member functions &amp; variables ...
+  csString Name;
+public:
+  virtual bool IsAlive();
+  virtual char const* GetName();
+  virtual void SetName(char const*);
+  virtual void Shout(int Volume);
+  virtual void Run(int Speed, float Direction);
+  virtual bool GetChildren(iObjVector* oBrood);
+  ... public member functions &amp; variables ...
+};
+
+bool MyDog::IsAlive()
+{
+  return true;
+};
+
+char const* MyDog::GetName()
+{
+  return Name;
+}
+
+void MyDog::SetName(char const* NewName)
+{
+  Name = NewName;
+}
+
+// And so on ...
+</pre></td></tr></table>
+<p>Now, we put the actual implementation into a separate module (i.e. into a
+shared library), and include within the client just the interface file
+<tt>&lsquo;idog.h&rsquo;</tt>. Since the client does not have any idea how we should build
+an object of the <samp>&lsquo;MyDog&rsquo;</samp> class, we also provide a function that will
+return a newly-allocated object of that class. This is called the
+<em>class factory</em> (in fact, a class factory is a bit more than just this,
+but more about this later). Here is how to do it:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">static iDog* MyDog_Create()
+{
+  return new MyDog();
+}
+</pre></td></tr></table>
+<p>Okay, we did it. Now back to the client. To work with an object that
+implements the <samp>&lsquo;iDog&rsquo;</samp> interface we need to load the shared library, get
+a pointer to the <code>MyDog_Create()</code> function, call it and get a new
+<samp>&lsquo;MyDog&rsquo;</samp> object. Further we work with this pointer as if it were pointing
+to an <samp>&lsquo;iDog&rsquo;</samp> object:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">csLibraryHandle handle = csLoadLibrary(&quot;./libdog.so&quot;);
+iDog (*iDog_Create)() = csGetLibrarySymbol(handle, &quot;MyDog_Create&quot;);
+iDog* dog = iDog_Create();
+printf(&quot;Doggy's name is %s\n&quot;, dog-&gt;GetName());
+dog-&gt;Shout(100);
+...
+</pre></td></tr></table>
+<p>Of course, you don't have to do all this stuff manually with the <small>SCF</small>
+implementation. The <small>SCF</small> library provides a number of useful templates and
+functions which hide these ugly implementation details from end-user.
+</p>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="SCF.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="SCF-Using.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="SCF.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

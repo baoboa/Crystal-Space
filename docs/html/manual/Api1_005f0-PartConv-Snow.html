@@ -1,0 +1,171 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: C.5.18.3 Snow</title>
+
+<meta name="description" content="Crystal Space 2.1.0: C.5.18.3 Snow">
+<meta name="keywords" content="Crystal Space 2.1.0: C.5.18.3 Snow">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Api1_005f0-PartConv-Snow"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Api1_005f0-PartConv-Rain.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Api1_005f0-PartConv-Fire.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Api1_005f0-Particle-system-changes.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Licenses.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h4 class="subsubsection"> C.5.18.3 Snow </h4>
+
+<p>To convert the old snow particle system to new particles you
+can use a box emitter which is oriented at the top where the snow drops
+should appear and which is very thin. You can use a force effector
+with random acceleration on the <small>XZ</small> plane to get the effect that
+snowflakes drift. Here you see an example of a snow particle system in the
+world file:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">  &lt;meshfact name=&quot;snowFact&quot;&gt;
+    &lt;plugin&gt;crystalspace.mesh.loader.factory.particles&lt;/plugin&gt;
+    &lt;params&gt;
+      &lt;particlesize x=&quot;0.17&quot; y=&quot;0.17&quot; /&gt;
+      &lt;minbb&gt;
+        &lt;min x=&quot;-5&quot; y=&quot;-0.3&quot; z=&quot;-5&quot; /&gt;
+        &lt;max x=&quot;10&quot; y=&quot;6&quot; z=&quot;10&quot; /&gt;
+      &lt;/minbb&gt;
+      &lt;sortmode&gt;none&lt;/sortmode&gt;
+      &lt;emitter type=&quot;box&quot;&gt;
+        &lt;emissionrate&gt;250&lt;/emissionrate&gt;
+        &lt;mass min=&quot;5&quot; max=&quot;7.5&quot; /&gt;
+        &lt;box&gt;
+          &lt;min x=&quot;-5&quot; y=&quot;6&quot; z=&quot;-5&quot; /&gt;
+          &lt;max x=&quot;10&quot; y=&quot;6&quot; z=&quot;10&quot; /&gt;
+        &lt;/box&gt;
+        &lt;uniformvelocity /&gt;
+        &lt;initialvelocity x=&quot;0&quot; y=&quot;-1.42&quot; z=&quot;0&quot; /&gt;
+        &lt;initialttl min=&quot;5&quot; max=&quot;5&quot; /&gt;
+        &lt;placement&gt;volume&lt;/placement&gt;
+      &lt;/emitter&gt;
+      &lt;effector type=&quot;lincolor&quot;&gt;
+        &lt;color red=&quot;0&quot; green=&quot;0&quot; blue=&quot;1&quot; time=&quot;5&quot; /&gt;
+      &lt;/effector&gt;
+      &lt;effector type=&quot;force&quot;&gt;
+	&lt;randomacceleration x=&quot;2.5&quot; y=&quot;0&quot; z=&quot;2.5&quot; /&gt;
+      &lt;/effector&gt;
+    &lt;/params&gt;
+  &lt;/meshfact&gt;
+  ...
+  &lt;meshobj name=&quot;snowfall&quot;&gt;
+    &lt;priority&gt;alpha&lt;/priority&gt;
+    &lt;plugin&gt;crystalspace.mesh.loader.particles&lt;/plugin&gt;
+    &lt;ztest /&gt;
+    &lt;params&gt;
+      &lt;factory&gt;snowFact&lt;/factory&gt;
+      &lt;mixmode&gt;
+        &lt;add /&gt;
+      &lt;/mixmode&gt;
+      &lt;material&gt;snow&lt;/material&gt;
+    &lt;/params&gt;
+    &lt;move&gt;
+      &lt;v x=&quot;10&quot; y=&quot;0&quot; z=&quot;10&quot; /&gt;
+    &lt;/move&gt;
+  &lt;/meshobj&gt;
+</pre></td></tr></table>
+<p>Here is how this could work in code:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">  csRef&lt;iMeshFactoryWrapper&gt; mfw = engine-&gt;CreateMeshFactory (
+      &quot;crystalspace.mesh.object.particles&quot;, &quot;snow&quot;);
+  if (!mfw) return;
+
+  csRef&lt;iMeshWrapper&gt; exp = engine-&gt;CreateMeshWrapper (mfw, &quot;custom snow&quot;,
+	sector, csVector3 (0, 0, 0));
+
+  exp-&gt;SetZBufMode(CS_ZBUF_TEST);
+  exp-&gt;GetMeshObject()-&gt;SetMixMode (CS_FX_ADD);
+  exp-&gt;GetMeshObject()-&gt;SetMaterialWrapper (mat);
+
+  csRef&lt;iParticleBuiltinEmitterFactory&gt; emit_factory = 
+      csLoadPluginCheck&lt;iParticleBuiltinEmitterFactory&gt; (
+        Sys-&gt;object_reg, &quot;crystalspace.mesh.object.particles.emitter&quot;, false);
+  csRef&lt;iParticleBuiltinEffectorFactory&gt; eff_factory = 
+      csLoadPluginCheck&lt;iParticleBuiltinEffectorFactory&gt; (
+        Sys-&gt;object_reg, &quot;crystalspace.mesh.object.particles.effector&quot;, false);
+
+  csRef&lt;iParticleBuiltinEmitterBox&gt; boxemit = emit_factory-&gt;CreateBox ();
+  boxemit-&gt;SetBox (bbox);
+  boxemit-&gt;SetParticlePlacement (CS_PARTICLE_BUILTIN_VOLUME);
+  boxemit-&gt;SetEmissionRate (num / 5f);
+  boxemit-&gt;SetInitialMass (5.0f, 7.5f);
+  boxemit-&gt;SetUniformVelocity (true);
+  boxemit-&gt;SetInitialTTL (5f, 5f);
+  boxemit-&gt;SetInitialVelocity (csVector3 (0, -1.42f, 0), csVector3 (0));
+
+  csRef&lt;iParticleBuiltinEffectorLinColor&gt; lincol = eff_factory-&gt;
+    CreateLinColor ();
+  lincol-&gt;AddColor (csColor4 (.25,.25,.25,1), 2.5f);
+
+  csRef&lt;iParticleBuiltinEffectorForce&gt; force = eff_factory-&gt;
+    CreateForce ();
+  force-&gt;SetRandomAcceleration (csVector3 (1.5f, 0.0f, 1.5f));
+
+  csRef&lt;iParticleSystem&gt; partstate =
+  	scfQueryInterface&lt;iParticleSystem&gt; (exp-&gt;GetMeshObject ());
+  partstate-&gt;SetMinBoundingBox (bbox);
+  partstate-&gt;SetParticleSize (csVector2 (0.07f, 0.07f));
+  partstate-&gt;AddEmitter (boxemit);
+  partstate-&gt;AddEffector (lincol);
+  partstate-&gt;AddEffector (force);
+</pre></td></tr></table>
+<hr size="1">
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

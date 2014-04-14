@@ -1,0 +1,11 @@
+SubDir TOP apps tools lod ;
+
+Description cslodgen : "Sliding Window LOD generation tool" ;
+Application cslodgen : lod.cpp lod.h lodgen.cpp lodgen.h : console ;
+LinkWith cslodgen : crystalspace ;
+FileListEntryApplications cslodgen : app-tool ;
+
+Description cslodview : "Sliding Window LOD viewer" ;
+Application cslodview : lodview.cpp lodview.h : console ;
+LinkWith cslodview : crystalspace ;
+FileListEntryApplications cslodview : app-tool ;

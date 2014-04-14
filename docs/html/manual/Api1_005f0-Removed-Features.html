@@ -1,0 +1,380 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: C.5.22 Removed Features</title>
+
+<meta name="description" content="Crystal Space 2.1.0: C.5.22 Removed Features">
+<meta name="keywords" content="Crystal Space 2.1.0: C.5.22 Removed Features">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Api1_005f0-Removed-Features"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Api1_005f0-Model-Importing.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Release-Notes-98.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Release-Notes-1_005f0.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Licenses.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> C.5.22 Removed Features </h3>
+
+<p>In order to clean up the codebase and simplify maintenance, a couple of 
+features and plugins have been removed.
+</p>
+<a name="1"></a>
+<h3 class="subheading"> Ball Mesh Removed </h3>
+
+<p>The ball mesh has been removed. The genmesh mesh can now be used to generate
+spheres instead. Here is an example how you would have to change the map file. 
+First here is the old way:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">&lt;meshfact name=&quot;ballFact&quot;&gt;
+  &lt;plugin&gt;crystalspace.mesh.loader.factory.ball&lt;/plugin&gt;
+  &lt;params /&gt;
+&lt;/meshfact&gt;
+...
+&lt;sector name=&quot;room&quot;&gt;
+  &lt;meshobj name=&quot;ball&quot;&gt;
+    &lt;plugin&gt;crystalspace.mesh.loader.ball&lt;/plugin&gt;
+    &lt;params&gt;
+      &lt;factory&gt;ballFact&lt;/factory&gt;
+      &lt;material&gt;plasma&lt;/material&gt;
+      &lt;numrim&gt;16&lt;/numrim&gt;
+      &lt;radius x=&quot;2&quot; y=&quot;1&quot; z=&quot;.5&quot; /&gt;
+      &lt;shift x=&quot;0&quot; y=&quot;.5&quot; z=&quot;0&quot; /&gt;
+      &lt;reversed /&gt;
+      &lt;toponly /&gt;
+      &lt;cylindrical /&gt;
+    &lt;/params&gt;
+    &lt;move&gt; &lt;v x=&quot;15&quot; y=&quot;4&quot; z=&quot;14&quot; /&gt; &lt;/move&gt;
+  &lt;/meshobj&gt;
+&lt;/sector&gt;
+</pre></td></tr></table>
+<p>And here is the new way:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">&lt;meshfact name=&quot;ballFact&quot;&gt;
+  &lt;plugin&gt;crystalspace.mesh.loader.factory.genmesh&lt;/plugin&gt;
+  &lt;params&gt;
+    &lt;sphere rimvertices=&quot;16&quot; reversed=&quot;true&quot; toponly=&quot;true&quot; cylindrical=&quot;true&quot; &gt;
+      &lt;radius x=&quot;2&quot; y=&quot;1&quot; z=&quot;.5&quot; /&gt;
+      &lt;center x=&quot;0&quot; y=&quot;.5&quot; z=&quot;0&quot; /&gt;
+    &lt;/sphere&gt;
+  &lt;/params&gt;
+&lt;/meshfact&gt;
+...
+&lt;sector name=&quot;room&quot;&gt;
+  &lt;meshobj name=&quot;transpBall&quot;&gt;
+    &lt;plugin&gt;crystalspace.mesh.loader.genmesh&lt;/plugin&gt;
+    &lt;params&gt;
+      &lt;factory&gt;ballFact&lt;/factory&gt;
+      &lt;material&gt;plasma&lt;/material&gt;
+    &lt;/params&gt;
+    &lt;move&gt; &lt;v x=&quot;15&quot; y=&quot;4&quot; z=&quot;14&quot; /&gt; &lt;/move&gt;
+  &lt;/meshobj&gt;
+&lt;/sector&gt;
+</pre></td></tr></table>
+<p>It is important to note that the geometry defining the sphere is now in the
+factory (as with all genmeshes).
+</p>
+<p>If you want to create them from code then you have to get rid of using the
+<code>iBallState</code> and instead use <code>iGeneralFactoryState-&gt;GenerateSphere()</code>
+to generate the desired sphere in a genmesh factory.
+</p>
+<a name="2"></a>
+<h3 class="subheading"> Stars Mesh Removed </h3>
+
+<p>Due to limited use (and it having been broken for more then a year) the
+stars mesh has been removed.
+</p>
+<a name="3"></a>
+<h3 class="subheading"> Simple Console Removed </h3>
+
+<p>The simple console (<samp>&lsquo;crystalspace.console.output.simple&rsquo;</samp> has been
+removed. Instead use <samp>&lsquo;crystalspace.console.output.standard&rsquo;</samp>.
+</p>
+<a name="4"></a>
+<h3 class="subheading"> Old Renderer Architecture Removal </h3>
+
+<p>The old rendering architecture along with the old renderer plugins have been
+removed. Additionally, a few plugins, applications, classes, and methods have
+been deprecated because they are not applicable to the new rendering
+architecture. The results of the old renderer removal are summarized below.
+</p>
+<a name="5"></a>
+<h4 class="subsubheading"> Removed Plugins </h4>
+
+<p>The following plugin modules have been removed:
+</p>
+<ul>
+<li>
+<code>terrfunc</code> (<code>crystalspace.mesh.object.terrfunc</code>)
+</li><li>
+Old <code>gl3d</code> (<tt>&lsquo;plugins/video/renderer/opengl&rsquo;</tt>)
+</li><li>
+Old <code>soft3d</code> (<tt>&lsquo;plugins/video/renderer/software&rsquo;</tt>)
+</li><li>
+Old <code>null3d</code> (<tt>&lsquo;plugins/video/renderer/null&rsquo;</tt>)
+</li></ul>
+
+<a name="6"></a>
+<h4 class="subsubheading"> Removed Application </h4>
+
+<p>The <samp>&lsquo;perftest&rsquo;</samp> application has been removed, since it is no longer has any
+purpose.  For the future the <samp>&lsquo;csbench&rsquo;</samp> application should be extended to
+provide more information.
+</p>
+<a name="7"></a>
+<h4 class="subsubheading"> Removed and Renamed Files </h4>
+
+<p>The following files were removed:
+</p>
+<ul>
+<li>
+<code>include/ivideo/vbufmgr.h</code>
+</li></ul>
+
+<p>The following files in <tt>&lsquo;data/shader&rsquo;</tt> were renamed:
+</p>
+<ul>
+<li>
+<code>or_lighting.xml</code> =&gt; <code>std_lighting.xml</code>
+</li><li>
+<code>or_lighting_detail.xml</code> =&gt; <code>std_lighting_detail.xml</code>
+</li><li>
+<code>or_lighting_detail_add.xml</code> =&gt; <code>std_lighting_detail_add.xml</code>
+</li><li>
+<code>or_lighting_detail_alpha.xml</code> =&gt;
+<code>std_lighting_detail_alpha.xml</code>
+</li><li>
+<code>or_lighting_portal.xml</code> =&gt; <code>std_lighting_portal.xml</code>
+</li></ul>
+
+<a name="8"></a>
+<h4 class="subsubheading"> Removed Methods and Classes </h4>
+
+<p>The following methods have been removed from the <samp>&lsquo;iGraphics3D&rsquo;</samp> interface:
+</p>
+<ul>
+<li>
+<code>ClearCache()</code>
+</li><li>
+<code>CloseFogObject()</code>
+</li><li>
+<code>DrawFogPolygon()</code>
+</li><li>
+<code>DrawPolygonDebug()</code>
+</li><li>
+<code>DrawPolygonFX()</code>
+</li><li>
+<code>DrawPolygonMesh()</code>
+</li><li>
+<code>DrawTriangleMesh()</code>
+</li><li>
+<code>DumpCache()</code>
+</li><li>
+<code>GetVertexBufferManager()</code>
+</li><li>
+<code>GetZBuffAt()</code>
+</li><li>
+<code>OpenFogObject()</code>
+</li></ul>
+
+<p>From <samp>&lsquo;iRenderView&rsquo;</samp>, the following fog-related methods have been removed.
+Fog is now calculated within the renderer.
+</p>
+<ul>
+<li>
+<code>CalculateFogMesh()</code>
+</li><li>
+<code>CalculateFogPolygon()</code>
+</li></ul>
+
+<p>From <samp>&lsquo;iMeshObject&rsquo;</samp> and <samp>&lsquo;iParticle&rsquo;</samp>, the following rendering-related
+methods have been removed:
+</p>
+<ul>
+<li>
+<code>Draw()</code>
+</li><li>
+<code>DrawTest()</code>
+</li></ul>
+
+<p>Apart from these methods, the following classes and structures have been
+removed or have become private, and are no longer available to client code:
+</p>
+<ul>
+<li>
+<code>G3DFogInfo</code>
+</li><li>
+<code>G3DPolygonDFP</code>
+</li><li>
+<code>G3DPolygonDPFX</code>
+</li><li>
+<code>G3DPolygonDPF</code>
+</li><li>
+<code>G3DPolygonDP</code>
+</li><li>
+<code>G3DPolygonMesh</code>
+</li><li>
+<code>G3DTriangleMesh</code>
+</li></ul>
+
+<a name="9"></a>
+<h3 class="subheading"> <small>CSWS</small> Removal </h3>
+
+<p>The long-deprecated Crystal Space Windowing System (<small>CSWS</small>) was removed. 
+Instead use <small>AWS</small>.
+</p>
+<a name="10"></a>
+<h3 class="subheading"> <small>RAPID</small> Collision Detection Plugin Removal </h3>
+
+<p>The <small>RAPID</small> collision detection plugin has been removed. In addition to
+being slower than the <small>OPCODE</small> plugin and consuming more memory, its license
+prevented its use in commercial applications.  You should instead now use the
+<small>OPCODE</small> plugin.
+</p>
+<a name="11"></a>
+<h3 class="subheading"> <code>CS_DECLARE_OBJECT_ITERATOR()</code> Removal </h3>
+
+<p>The <samp>&lsquo;iObject&rsquo;</samp> iterator creation macro <code>CS_DECLARE_OBJECT_ITERATOR()</code>
+has been replaced by the templated class <code>csTypedObjectIterator&lt;&gt;</code>. Given
+existing code, such as:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">iObject* parent = ...;
+CS_DECLARE_OBJECT_ITERATOR(MyFooIter, iFoo);
+MyFooIter iter(parent);
+while (iter.HasNext())
+{
+  iFoo* foo = iter.Next();
+  ...
+}
+</pre></td></tr></table>
+
+<p>Revise the code by instantiating the new template class:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">typedef csTypedObjectIterator&lt;iFoo&gt; MyFooIter;
+MyFooIter iter(parent);
+while (iter.HasNext())
+{
+</pre></td></tr></table>
+
+<p>Or, even simpler without the <samp>&lsquo;typedef&rsquo;</samp>:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">csTypedObjectIterator&lt;iFoo&gt; iter(parent);
+while (iter.HasNext())
+{
+</pre></td></tr></table>
+<a name="12"></a>
+<h3 class="subheading"> <samp>&lsquo;chunklod&rsquo;</samp> Terrain Removal </h3>
+
+<p>The <samp>&lsquo;chunklod&rsquo;</samp> terrain plugin has been removed:
+</p>
+
+<p><code>crystalspace.mesh.object.terrain.chunklod</code>
+</p>
+
+<p>Instead use the <samp>&lsquo;bruteblock&rsquo;</samp> terrain engine.
+</p>
+
+<p><code>crystalspace.mesh.object.terrain.bruteblock</code>
+</p>
+<a name="13"></a>
+<h3 class="subheading"> <code>csRGBVector</code> Removed </h3>
+
+<p>The <code>csRGBVector</code> class has been removed. A <code>csComparator&lt;&gt;</code> 
+specialization has been provided, so equivalent functionality can be achieved
+by simply using <code>csArray&lt;csRGBcolor*&gt;</code>.
+</p>
+<a name="14"></a>
+<h3 class="subheading"> Miscellaneous Removals </h3>
+
+<p>The following facilities have been removed because they were unused and/or of
+questionable use.
+</p>
+<ul>
+<li>
+<code>csCrystalBall</code> and <tt>&lsquo;csgeom/crysball.h&rsquo;</tt>
+</li><li>
+<code>csIndPrint</code> and <tt>&lsquo;csutil/indprint.h&rsquo;</tt>
+</li><li>
+<code>iMaterialHandle</code>.  Use <samp>&lsquo;iTextureHandle&rsquo;</samp> or <samp>&lsquo;iMaterial&rsquo;</samp> directly
+(whichever is more appropriate) to achieve equivalent functionality.
+</li><li>
+<code>csRenderMeshHolderMultiple</code>. Equivalent functionality can be achieved by 
+using <samp>&lsquo;csFrameDataHolder&lt;csDirtyAccessArray&lt;csRenderMesh*&gt; &gt;&rsquo;</samp>.
+</li></ul>
+
+<p>The casting macros (e.g. <code>CS_STATIC_CAST</code>) have been removed. Any compiler
+that does not support proper C++-style casts is likely also incapable of
+correctly supporting other advanced C++ features, e.g the use of complex
+templates in CrystalSpace.
+</p>
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Api1_005f0-Model-Importing.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Release-Notes-98.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Release-Notes.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Release-Notes-1_005f0.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Licenses.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

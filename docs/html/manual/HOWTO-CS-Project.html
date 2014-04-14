@@ -1,0 +1,244 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>Crystal Space 2.1.0: 4.20.1 Creating an External Crystal Space Application</title>
+
+<meta name="description" content="Crystal Space 2.1.0: 4.20.1 Creating an External Crystal Space Application">
+<meta name="keywords" content="Crystal Space 2.1.0: 4.20.1 Creating an External Crystal Space Application">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="HOWTO-CS-Project"></a>
+<a name="0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Making-Own-Projects.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="HOWTO-Creating-External-MSVC-Application.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Making-Own-Projects.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<hr size="1">
+<h3 class="subsection"> 4.20.1 Creating an External Crystal Space Application </h3>
+
+<p>This section describes how to use the Crystal Space development kit for your
+own application.  Two methods are described: (1) using the Crystal Space
+Jam-based build system, (2) using a traditional Makefile-based build system.
+</p>
+<a name="1"></a>
+<h4 class="subsubheading"> External Application Requirements </h4>
+
+<p>For these techniques to work you need to have a sufficiently Unix-like
+environment.  The environments provided by <small>GNU</small>/Linux, MacOS/X, Msys/Mingw,
+and Cygwin are all acceptable.
+</p>
+<p>If you installed Crystal Space in a non-standard location, then you probably
+will also need to set the <samp>&lsquo;CRYSTAL&rsquo;</samp> environment variable to point at the
+the location where the <small>SDK</small> was installed.  For instance, if you specified
+<samp>&lsquo;--prefix=/site/sdk&rsquo;</samp> when configuring Crystal Space, then you will need to
+set <samp>&lsquo;CRYSTAL&rsquo;</samp> to <tt>&lsquo;/site/sdk&rsquo;</tt>.  Using the Bourne shell or compatible
+(such as Bash), for instance, you can do this with the following commands:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">CRYSTAL=/site/sdk
+export CRYSTAL
+</pre></td></tr></table>
+<p>From a C-shell or compatible (such as T-csh), you can use:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">setenv CRYSTAL /site/sdk
+</pre></td></tr></table>
+<a name="2"></a>
+<h4 class="subsubheading"> The <tt>&lsquo;cs-config&rsquo;</tt> Script </h4>
+
+<p>When you build and install Crystal Space, a script named <tt>&lsquo;cs-config&rsquo;</tt> is
+installed along with the rest of the package.  This script provides access to
+bits of information which can be fed to the development tools in order to
+incorporate Crystal Space into your project.  For instance, if you invoke
+<tt>&lsquo;cs-config&rsquo;</tt> with the <samp>&lsquo;--cxxflags&rsquo;</samp> argument, it will return Crystal
+Space-specific C++ compiler switches with which you should invoke the C++
+compiler.  Likewise, the <samp>&lsquo;--libs&rsquo;</samp> argument will return the Crystal
+Space-specific linker switches and libraries with which you should link your
+program.
+</p>
+<p>For best results, be sure that the installation location of <tt>&lsquo;cs-config&rsquo;</tt> is
+mentioned by your <samp>&lsquo;PATH&rsquo;</samp> environment variable. The default location,
+<tt>&lsquo;/usr/local/bin&rsquo;</tt>, normally is mentioned by <samp>&lsquo;PATH&rsquo;</samp>, so you likely will
+not have to do anything special to make <tt>&lsquo;cs-config&rsquo;</tt> available.
+</p>
+<a name="3"></a>
+<h4 class="subsubheading"> Jamtemplate </h4>
+
+<p>The Jamtemplate utility sets up a skeleton project on your behalf which is
+based upon Autoconf and the Jam build system featured in Crystal Space.  By
+utilizing these tools, your project gets many advanced build features for free.
+For instance, on MacOS/X, it will correctly create the Cocoa wrapper
+(<tt>&lsquo;.app&rsquo;</tt>) for an application; on some platforms it knows how to embed
+plugin meta-information directly into the plugin module; and understands many
+of the familiar build targets, such as <samp>&lsquo;all&rsquo;</samp>, <samp>&lsquo;clean&rsquo;</samp>,
+<samp>&lsquo;distclean&rsquo;</samp>, <samp>&lsquo;install&rsquo;</samp>, etc.  The Jam system knows how to
+build applications, plugin modules, and libraries on all platforms supported by
+Crystal Space.  The generated project skeleton even features support for
+generating Microsoft Visual C++ project files for your application
+automatically (via the <samp>&lsquo;jam msvcgen&rsquo;</samp> target).
+</p>
+<p>Jamtemplate is quite easy to use.  After setting up your <samp>&lsquo;CRYSTAL&rsquo;</samp>
+environment variable, go to the directory under which you would like to create
+the new project, run the <samp>&lsquo;createproject.sh&rsquo;</samp> script, and follow the
+instructions which it presents.  If you have installed the Crystal Space
+<small>SDK</small> (via <samp>&lsquo;make install&rsquo;</samp> or <samp>&lsquo;jam install&rsquo;</samp>), then the script will
+reside at:
+</p>
+
+<p><code>${prefix}/share/crystalspace/build/jamtemplate/createproject.sh</code>
+</p>
+
+<p>where <code>${prefix}</code> is the package installation location (typically,
+<tt>&lsquo;/usr/local&rsquo;</tt>). Alternately, you may run the script directly from the
+Crystal Space source tree, where it resides at:
+</p>
+
+<p><code>CS/scripts/jamtemplate/createproject.sh</code>
+</p>
+<a name="4"></a>
+<h4 class="subsubheading"> Makefile </h4>
+
+<p>If you prefer to have your project utilize a traditional Makefile, rather than
+being based upon the Crystal Space Jam build system, then follow these
+intructions.  Note, however, that the skeleton Makefile-based build system
+created by these instructions is bare-bones; it does not feature the fancy
+bells and whistles available with the Jam build system.
+</p>
+<p>To begin, locate the files <tt>&lsquo;Makefile.template&rsquo;</tt> and <tt>&lsquo;appwrap.sh&rsquo;</tt>.  If
+you have installed the Crystal Space <small>SDK</small> (via <samp>&lsquo;make install&rsquo;</samp> or
+<samp>&lsquo;jam install&rsquo;</samp>), then thes files will reside at:
+</p>
+
+<p><code>${prefix}/share/build/maketemplate/Makefile.template</code><br>
+<code>${prefix}/share/build/maketemplate/appwrap.sh</code>
+</p>
+
+<p>where <code>${prefix}</code> is the package installation location (typically,
+<tt>&lsquo;/usr/local&rsquo;</tt>). Alternately, you may access the files directly from the
+Crystal Space source tree, where they resides at:
+</p>
+
+<p><code>CS/scripts/maketemplate/Makefile.template</code><br>
+<code>CS/scripts/maketemplate/appwrap.sh</code>
+</p>
+
+<p>Copy these files to the directory where your project is located and rename
+<tt>&lsquo;Makefile.template&rsquo;</tt> to <tt>&lsquo;Makefile&rsquo;</tt>.  The <tt>&lsquo;appwrap.sh&rsquo;</tt> script
+creates Cocoa application wrappers on MacOS/X.  You may omit this file if you
+do not plan to support MacOS/X.
+</p>
+<p>You need to edit <tt>&lsquo;Makefile&rsquo;</tt> for your own project.  This template makefile
+is capable of building an executable program or a plugin module.  It is
+recommended that you change at least the following variables:
+</p>
+<ul class="toc">
+<li>
+<samp>&lsquo;TARGET_TYPE&rsquo;</samp> should be set to either <samp>&lsquo;exe&rsquo;</samp> or <samp>&lsquo;plugin&rsquo;</samp>,
+depending upon whether your project is an executable program or a plugin
+module.
+
+</li><li>
+<samp>&lsquo;TARGET_NAME&rsquo;</samp> should be the base name of your executable or plugin module.
+The file extension (<tt>&lsquo;.exe&rsquo;</tt>, <tt>&lsquo;.dll&rsquo;</tt>, <tt>&lsquo;.so&rsquo;</tt>, etc.) is appended
+automatically, so do not add the suffix yourself.
+
+</li><li>
+<samp>&lsquo;SRC&rsquo;</samp> should list all the source files in your project which comprise the
+program or plugin module.
+
+</li><li>
+<samp>&lsquo;LINKFLAGS&rsquo;</samp> should be modified to list all the Crystal Space libraries
+that you want to use.  Typically, you need only the <samp>&lsquo;crystalspace&rsquo;</samp>
+library, though plugin modules which want to inherit some common functionality
+from pre-written classes might also need to link with
+<samp>&lsquo;crystalspace_directx&rsquo;</samp>, <samp>&lsquo;crystalspace_macosx&rsquo;</samp>, 
+<samp>&lsquo;crystalspace_opengl&rsquo;</samp>, and/or <samp>&lsquo;crystalspace_windows&rsquo;</samp>.
+
+</li><li>
+<samp>&lsquo;VERSION&rsquo;</samp> should indicate your product's version number (for example,
+1.0).
+
+</li><li>
+<samp>&lsquo;RELEASE_DATE&rsquo;</samp> should indicate the date of your product's release.
+</li></ul>
+
+<p>The following targets are supported by this makefile:
+</p>
+<ul class="toc">
+<li>
+<samp>&lsquo;all&rsquo;</samp>: Builds the application or plugin module.
+</li><li>
+<samp>&lsquo;clean&rsquo;</samp>: Removes object files and other detritus.
+</li><li>
+<samp>&lsquo;depend&rsquo;</samp>: Calculates dependency information.
+</li></ul>
+
+<hr size="1">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="Making-Own-Projects.html#0" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="HOWTO-Creating-External-MSVC-Application.html#0" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="Using-Crystal-Space.html#0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="Making-Own-Projects.html#0" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="Working-with-Engine-Content.html#0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="index.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="cs_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="cs_Index.html#0" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="cs_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

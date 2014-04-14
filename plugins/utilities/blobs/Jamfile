@@ -1,0 +1,8 @@
+SubDir TOP plugins utilities blobs ;
+
+Description blobs : "Blobs Manager plugin" ;
+
+Plugin blobs
+	: [ Wildcard *.cpp *.h ]
+;
+LinkWith blobs : crystalspace ;
